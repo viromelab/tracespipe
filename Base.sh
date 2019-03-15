@@ -7,7 +7,7 @@ GET_FRUIT=1;
 GET_FALCON=1;
 GET_GULL=1;
 GET_GOOSE=1;
-GET_KESTREL=1;
+GET_MAGNET=1;
 GET_GECO=1;
 GET_AC=1;
 GET_CRYFA=1;
@@ -96,5 +96,5 @@ if [[ "$GET_MAGNET" -eq "1" ]]; then
   cd ../../
 fi
 #==============================================================================
-# GET ...
+# GET ... chester , ac, geco , cryfa
 

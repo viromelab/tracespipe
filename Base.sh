@@ -10,9 +10,10 @@ GET_GOOSE=1;
 GET_MAGNET=1;
 GET_GECO=1;
 GET_AC=1;
-GET_CRYFA=1;
 GET_GECO=1;
 GET_CHESTER=1;
+#
+GET_CRYFA=1;
 GET_SMASHPP=1;
 GET_FRUIT=1;
 #
@@ -32,11 +33,17 @@ if [[ "$GET_EXTERNAL_B_TOOLS" -eq "1" ]]; then
   conda config --add channels bioconda
   conda config --add channels conda-forge
   #
-  conda install bwa
-  conda install bowtie2
-  conda install mapDamage2
-  conda install centrifuge
-  conda install spades
+  conda install -c bioconda bwa
+  conda install -c bioconda bowtie
+  conda install -c bioconda bowtie2 
+  conda install -c bioconda mapDamage2 
+  conda install -c bioconda centrifuge
+  conda install -c bioconda spades 
+  conda install -c bioconda bamtools 
+  conda install -c bioconda samtools 
+  conda install -c bioconda vcftools
+  conda install -c bioconda fastqc 
+  conda install -c bioconda fqzcomp 
   conda install -c maxibor falcon
 fi
 #==============================================================================

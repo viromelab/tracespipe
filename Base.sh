@@ -2,6 +2,8 @@
 #
 GET_TOOLS=1;
 #
+GET_SMASHPP=1;
+GET_FRUIT=1;
 GET_FALCON=1;
 GET_GULL=1;
 GET_GOOSE=1;
@@ -14,11 +16,32 @@ GET_CHESTER=1;
 #
 #
 #==============================================================================
-# GET FALCON
+# GET TOOLS
 #
 if [[ "$GET_TOOLS" -eq "1" ]]; then
   sudo apt-get install terminator;
   sudo apt-get install git;
+fi
+#==============================================================================
+# GET SMASHPP
+#
+if [[ "$GET_SMASHPP" -eq "1" ]]; then
+  git clone https://pratas@github.com/smortezah/smashpp.git
+  cd smashpp/
+  cmake .
+  make -j4
+  cp smashpp ..
+  cd ..
+fi
+#==============================================================================
+# GET FRUIT
+#
+if [[ "$GET_FRUIT" -eq "1" ]]; then
+  git clone https://pratas@github.com/smortezah/fruit.git
+  cp fruit-map ..
+  cp fruit-filter ..
+  cp fruit-visual ..
+  cd ..
 fi
 #
 #==============================================================================

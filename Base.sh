@@ -24,7 +24,16 @@ GET_FRUIT=1;
 #
 if [[ "$GET_TOOLS" -eq "1" ]]; then
   sudo apt-get update
-  sudo apt-get install vim terminator git cmake conda
+  sudo apt-get install vim terminator git cmake
+  # INSTALL CONDA
+  wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+  chmod +x Miniconda3-latest-Linux-x86_64.sh
+  ./Miniconda3-latest-Linux-x86_64.sh
+  #
+  . ~/.bashrc
+  conda config --add channels defaults
+  conda config --add channels bioconda
+  conda config --add channels conda-forge
 fi
 #
 #==============================================================================
@@ -32,10 +41,6 @@ fi
 #==============================================================================
 #
 if [[ "$GET_EXTERNAL_B_TOOLS" -eq "1" ]]; then
-  #
-  conda config --add channels defaults
-  conda config --add channels bioconda
-  conda config --add channels conda-forge
   #
   conda install -c bioconda bwa
   conda install -c bioconda bowtie

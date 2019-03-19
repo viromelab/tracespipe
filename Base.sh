@@ -53,7 +53,7 @@ if [[ "$GET_EXTERNAL_B_TOOLS" -eq "1" ]]; then
   conda install -c bioconda vcftools
   conda install -c bioconda fastqc 
   conda install -c bioconda fqzcomp 
-  conda install trimmomatic
+  conda install -c bioconda trimmomatic
   conda install -c maxibor falcon
 fi
 #==============================================================================

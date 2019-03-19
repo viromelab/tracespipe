@@ -24,7 +24,7 @@ GET_FRUIT=1;
 #
 if [[ "$GET_TOOLS" -eq "1" ]]; then
   sudo apt-get update
-  sudo apt-get install vim terminator git cmake
+  sudo apt-get install vim terminator git cmake net-tools
   # INSTALL CONDA
   wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
   chmod +x Miniconda3-latest-Linux-x86_64.sh

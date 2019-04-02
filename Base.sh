@@ -99,9 +99,9 @@ fi
 # GET KESTREL
 #
 if [[ "$GET_MAGNET" -eq "1" ]]; then
-  rm -rf Magnet/ MAGNET
+  rm -rf magnet/ MAGNET
   git clone https://github.com/pratas/magnet.git
-  cd Magnet/src/
+  cd magnet/src/
   cmake .
   make
   cp Magnet ../../

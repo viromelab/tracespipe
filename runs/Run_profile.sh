@@ -15,9 +15,8 @@
 #
 # ==============================================================================
 # ================================ DEFINITIONS =================================
-GET_GTO=0;
-GET_GOOSE=0;
-GET_GECO=0;
+GET_GTO=1;
+GET_GECO=1;
 #
 BUILD_DATABASE=0; # USE ONLY IF THERE IS NO VDB.fa (FASTA REFERENCE DATABASE)
 #

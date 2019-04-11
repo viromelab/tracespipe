@@ -39,18 +39,6 @@ if [[ "$GET_GTO" -eq "1" ]];
 #
 # ==============================================================================
 # ================================= GET GOOSE ==================================
-if [[ "$GET_GOOSE" -eq "1" ]];
-  then
-  rm -fr goose/
-  git clone https://github.com/pratas/goose.git
-  cd goose/src/
-  make
-  cp goose-* ../../
-  cd ../../
-  fi
-#
-# ==============================================================================
-# ================================= GET GOOSE ==================================
 if [[ "$GET_GECO" -eq "1" ]];
   then
   rm -fr geco/
@@ -97,8 +85,8 @@ if [[ "$BUILD_DATABASE" -eq "1" ]];
 # ================================ FILTER READS ================================
 if [[ "$FILTER_READS" -eq "1" ]];
   then
-  IFS=$'\r\n' GLOBIGNORE='*' command eval  'IDS_ARRAY=($(cat ids_of_genomes.txt))'
-  for ids_gen in ${IDS_ARRAY[@]}; 
+  IFS=$'\r\n' GLOBIGNORE='*' command eval 'IDS_ARRAY=($(cat ids_of_genomes.txt))'
+  for ids_gen in ${IDS_ARRAY[@]};
     do
     ./gto_fasta_extract_read_by_pattern -p "$ids_gen" < VDB.fa > S$ids_gen.fa
     done

@@ -30,16 +30,17 @@ for read in "${READS[@]}"
   zcat $SPL_R2A $SPL_R2B | gzip > RV_READS.fq.gz
 
   #
-  TRIM_FILTER_READS.sh
+  ./TRIM_FILTER_READS.sh
   #
-  REMOVE_PHIX.sh
+  ./REMOVE_PHIX.sh
   #
-  METAGENOMICS.sh $ORGAN_T
+  ./METAGENOMICS.sh $ORGAN_T
   #
   # profiles...
-  EXTRACT_MTDNA.sh
+  ./EXTRACT_MTDNA.sh
   #
-  MT_ASSEMBLY.sh
+  ./ASSEMBLE_MT.sh $ORGAN_T
+  #
   done
 #
 

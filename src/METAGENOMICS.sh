@@ -35,3 +35,6 @@ cat GIS-$ORGAN | while read line
 FALCON-inter -v -m 6:1:1:0/0 -m 13:20:1:3/10 -m 20:100:1:5/10 -c 30 -n 8 -x $ORGAN-MATRIX.csv `cat $ORGAN-FNAMES.fil`
 FALCON-inter-visual -v -w 25 -a 8 -x $ORGAN-HEAT.svg $ORGAN-MATRIX.csv
 
+## CONVERT SVG OUTPUT TO PDF
+rsvg-convert -f pdf -o $ORGAN-HEAT.pdf $ORGAN-HEAT.svg
+

@@ -5,7 +5,7 @@
 # |     THIS PROGRAM COMPUTES COMPLEXITY AND RELATIVE COMPLEXITY PROFILES      |
 # |     =================================================================      |
 # |                                                                            |
-# |                 ./PROFILES.sh ids.txt VDB.fa reads.fq blood                |
+# |                ./ki_profiles.sh ids.txt VDB.fa reads.fq blood              |
 # |                                                                            |
 # |                FILES NEEDED TO THE WHOLE COMPUTATION:                      |
 # |                                                                            |

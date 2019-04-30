@@ -11,15 +11,15 @@ declare -a READS=("healthy-skin:MT18021B_S1_L001_R1_001.fastq.gz:MT18021B_S1_L00
 #
 if [[ "$INSTALL_AND_GENERATE" -eq "1" ]];
   then
-  ./INSTALL.sh
+  ./ki_install.sh
   ##
   #gto_build_db.sh # BUILD_DB.sh
-  ##
-  ./GENERATE_ADAPTERS.sh
-  ./GET_PHIX.sh
-  ./GET_MTDNA.sh
-  #
   gunzip VDB.fa.gz
+  ##
+  ./ki_generate_adapters.sh
+  ./ki_get_phix.sh
+  ./ki_get_mito.sh
+  #
   fi
 #
 # ==============================================================================
@@ -42,17 +42,17 @@ for read in "${READS[@]}" #
   zcat $SPL_R2A $SPL_R2B | gzip > RV_READS.fq.gz
 
   #
-  ./TRIM_FILTER_READS.sh
+  ./ki_trim_filter_reads.sh
   #
-  ./REMOVE_PHIX.sh
+  ./ki_remove_phix.sh
   #
-  ./METAGENOMICS.sh $ORGAN_T
+  ./ki_metagenomics.sh $ORGAN_T
   #
-  ./PROFILES.sh GIS-$ORGAN_T VDB.fa $ORGAN_T
+  ./ki_profiles.sh GIS-$ORGAN_T VDB.fa $ORGAN_T
   #
-  ./EXTRACT_MTDNA.sh
+  ./ki_extract_mito.sh
   #
-  ./ASSEMBLE_MT.sh $ORGAN_T
+  ./ki_assemble_mito.sh $ORGAN_T
   #
   done
 #

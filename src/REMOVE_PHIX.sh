@@ -1,5 +1,8 @@
 #!/bin/bash
 #
+# IT ASSUMES THAT THE FOLLOWING OUTPUT FILES EXIST:
+# o_fw_pr.fq.gz o_fw_unpr.fq.gz o_rv_pr.fq.gz o_rv_unpr.fq.gz
+#
 gunzip o_fw_pr.fq.gz 
 gunzip o_rv_pr.fq.gz 
 gunzip o_fw_unpr.fq.gz 

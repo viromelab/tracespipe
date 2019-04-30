@@ -17,7 +17,7 @@ FALCON-filter-visual -v -e 1 -F -o $ORGAN.svg $ORGAN.pos
 rsvg-convert -f pdf -o $ORGAN.pdf $ORGAN.svg
 
 ## RUN GULL FOR INTER-GENOMIC SIMILARITY ANALYSIS
-cat top-$ORGAN.csv | awk '{ if($3 > 0.01) print $1"\t"$2"\t"$3"\t"$4; }' \
+cat top-$ORGAN.csv | awk '{ if($3 > 1) print $1"\t"$2"\t"$3"\t"$4; }' \
 | awk '{ print $4;}' | tr '|' '\t' | tr '_' '\t' | awk '{ print $1;}' > GIS-$ORGAN;
 idx=0;
 cat GIS-$ORGAN | while read line

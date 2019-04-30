@@ -1,20 +1,32 @@
 #!/bin/bash
 #
-INSTALL.sh
+INSTALL_AND_GENERATE=0;
 #
-# BUILD_DB.sh
-#
-GENERATE_ADAPTERS.sh
-GET_PHIX.sh
-GET_MTDNA.sh
-#
-gunzip VDB.fa.gz
+################################################################################
+# ==============================================================================
 #
 declare -a READS=("healthy-skin:MT18021B_S1_L001_R1_001.fastq.gz:MT18021B_S1_L001_R2_001.fastq.gz:MT18021B_S1_L002_R1_001.fastq.gz:MT18021B_S1_L002_R2_001.fastq.gz" "skin:MT18021C_S2_L001_R1_001.fastq.gz:MT18021C_S2_L001_R2_001.fastq.gz:MT18021C_S2_L002_R1_001.fastq.gz:MT18021C_S2_L002_R2_001.fastq.gz" "bone:MT18021D_S3_L001_R1_001.fastq.gz:MT18021D_S3_L001_R2_001.fastq.gz:MT18021D_S3_L002_R1_001.fastq.gz:MT18021D_S3_L002_R2_001.fastq.gz" "colon:MT18021E_S4_L001_R1_001.fastq.gz:MT18021E_S4_L001_R2_001.fastq.gz:MT18021E_S4_L002_R1_001.fastq.gz:MT18021E_S4_L002_R2_001.fastq.gz" "heart:MT18021F_S5_L001_R1_001.fastq.gz:MT18021F_S5_L001_R2_001.fastq.gz:MT18021F_S5_L002_R1_001.fastq.gz:MT18021F_S5_L002_R2_001.fastq.gz" "liver:MT18021G_S6_L001_R1_001.fastq.gz:MT18021G_S6_L001_R2_001.fastq.gz:MT18021G_S6_L002_R1_001.fastq.gz:MT18021G_S6_L002_R2_001.fastq.gz" "spleen:MT18022B_S7_L001_R1_001.fastq.gz:MT18022B_S7_L001_R2_001.fastq.gz:MT18022B_S7_L002_R1_001.fastq.gz:MT18022B_S7_L002_R2_001.fastq.gz" "kidney:MT18022C_S8_L001_R1_001.fastq.gz:MT18022C_S8_L001_R2_001.fastq.gz:MT18022C_S8_L002_R1_001.fastq.gz:MT18022C_S8_L002_R2_001.fastq.gz" "lung:MT18022D_S9_L001_R1_001.fastq.gz:MT18022D_S9_L001_R2_001.fastq.gz:MT18022D_S9_L002_R1_001.fastq.gz:MT18022D_S9_L002_R2_001.fastq.gz" "plasma:MT18022E_S10_L001_R1_001.fastq.gz:MT18022E_S10_L001_R2_001.fastq.gz:MT18022E_S10_L002_R1_001.fastq.gz:MT18022E_S10_L002_R2_001.fastq.gz" "blood:MT18022F_S11_L001_R1_001.fastq.gz:MT18022F_S11_L001_R2_001.fastq.gz:MT18022F_S11_L002_R1_001.fastq.gz:MT18022F_S11_L002_R2_001.fastq.gz" "bone-marrow:MT18022G_S12_L001_R1_001.fastq.gz:MT18022G_S12_L001_R2_001.fastq.gz:MT18022G_S12_L002_R1_001.fastq.gz:MT18022G_S12_L002_R2_001.fastq.gz" "teeth:MT18023B_S13_L001_R1_001.fastq.gz:MT18023B_S13_L001_R2_001.fastq.gz:MT18023B_S13_L002_R1_001.fastq.gz:MT18023B_S13_L002_R2_001.fastq.gz" "brain:MT18023C_S14_L001_R1_001.fastq.gz:MT18023C_S14_L001_R2_001.fastq.gz:MT18023C_S14_L002_R1_001.fastq.gz:MT18023C_S14_L002_R2_001.fastq.gz")
-
-################################################################################
+#
+# ==============================================================================
+#
+if [[ "$INSTALL_AND_GENERATE" -eq "1" ]];
+  then
+  ./INSTALL.sh
+  ##
+  #gto_build_db.sh # BUILD_DB.sh
+  ##
+  ./GENERATE_ADAPTERS.sh
+  ./GET_PHIX.sh
+  ./GET_MTDNA.sh
+  #
+  gunzip VDB.fa.gz
+  fi
+#
+# ==============================================================================
+#
 ## LOOP TRHOUGH THE ARRAY READS AND SPLITS THE DATA INTO 5 FIELDS
-for read in "${READS[@]}"
+#
+for read in "${READS[@]}" # 
   do
   ORGAN_T=`echo $read | tr ':' '\t' | awk '{ print $1 }'`;
   SPL_R1A=`echo $read | tr ':' '\t' | awk '{ print $2 }'`;
@@ -36,12 +48,13 @@ for read in "${READS[@]}"
   #
   ./METAGENOMICS.sh $ORGAN_T
   #
-  # profiles...
+  ./PROFILES.sh GIS-$ORGAN_T VDB.fa $ORGAN_T
+  #
   ./EXTRACT_MTDNA.sh
   #
   ./ASSEMBLE_MT.sh $ORGAN_T
   #
   done
 #
-
+# ==============================================================================
 ################################################################################

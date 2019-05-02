@@ -11,11 +11,10 @@
 # ============================================================================== #
 ##################################################################################
 #
-mapfile -t READS < reads_info.txt
-#
 SHOW_HELP=0;
 INSTALL=0;
 BUILD_VDB=0;
+BUILD_UDB=0;
 GEN_ADAPTERS=0;
 GET_PHIX=0;
 GET_MITO=0;
@@ -38,8 +37,13 @@ for i in "$@"
       SHOW_HELP=0;
       shift
     ;;
-    -vi|--build-viral)
+    -vdb|--build-viral)
       BUILD_VDB=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -udb|--build-unviral)
+      BUILD_UDB=1;
       SHOW_HELP=0;
       shift
     ;;
@@ -66,6 +70,7 @@ for i in "$@"
     -all|--run-all)
       INSTALL=1;
       BUILD_VDB=1;
+      BUILD_UDB=1;
       GEN_ADAPTERS=1;
       GET_PHIX=1;
       GET_MITO=1;
@@ -102,7 +107,7 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "    -h,   --help           Show this help message and exit,     "
     echo "    -i,   --install        Installation of all the tools,       "
     echo "    -vdb, --build-viral    Build viral database,                "
-    echo "    -udb, --build-unviral  Build non viral database,            "
+    echo "    -udb, --build-unviral  Build non viral database (control),  "
     echo "    -gad, --gen-adapters   Generate FASTA file with adapters,   "
     echo "    -gp,  --get-phix       Downloads PhiX genomes,              "
     echo "    -gm,  --get-mito       Downloads human Mitochondrial genome,"
@@ -112,8 +117,8 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "                                                                "
     echo -e "\e[93m    Example: ./ki.sh -all                                         \e[0m"
     echo "                                                                "
-    echo "    reads_info.txt -> 'name:reads_forward.fa.gz:reads_reverse.fa.gz'  "
-    echo "    The reads and reads_info.txt must be in the src/ folder.    "
+    echo "    meta_info.txt -> 'name:reads_forward.fa.gz:reads_reverse.fa.gz'  "
+    echo "    The reads and meta_info.txt must be in the src/ folder.     "
     echo "                                                                "
     exit 1
   fi
@@ -129,7 +134,7 @@ if [[ "$INSTALL" -eq "1" ]];
 #
 if [[ "$BUILD_VDB" -eq "1" ]];
   then
-  #gto_build_dbs -vi
+  gto_build_dbs.sh -vi
   gunzip VDB.fa.gz
   fi
 #
@@ -137,8 +142,9 @@ if [[ "$BUILD_VDB" -eq "1" ]];
 #
 if [[ "$BUILD_UDB" -eq "1" ]];
   then
-  #gto_build_dbs -all
-  gunzip DB.fa.gz
+  gto_build_dbs.sh -ba -ar -pr -fu -pl -in -mi -ps 
+  # -vm -vo
+  zcat BDB.fa.gz ADB.fa.gz PDB.fa.gz FDB.fa.gz TDB.fa.gz TDB.fa.gz IDB.fa.gz MTDB.fa.gz PLDB.fa.gz > DB.fa
   fi
 #
 # ==============================================================================
@@ -166,11 +172,11 @@ if [[ "$GET_MITO" -eq "1" ]];
 #
 if [[ "$RUN_ANALYSIS" -eq "1" ]];
   then
+  #
+  mapfile -t READS < meta_info.txt
+  #
   for read in "${READS[@]}" # 
     do
-    # # MAKE RESULTS FOLDER & CLEAN
-    # mkdir -p results;
-    # rm -f results/*
     #
     ORGAN_T=`echo $read | tr ':' '\t' | awk '{ print $1 }'`;
     SPL_Forward=`echo $read | tr ':' '\t' | awk '{ print $2 }'`;
@@ -200,9 +206,9 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     ./ki_profiles.sh GIS-$ORGAN_T VDB.fa ki_sample_reads.fq $ORGAN_T
     echo -e "\e[34m[ki]\e[32m Done!\e[0m";
     #
-    # echo -e "\e[34m[ki]\e[32m Running NON viral metagenomic analysis with FALCON ...\e[0m";
-    # ./ki_metagenomics.sh $ORGAN_T-NON_VIRAL DB.fa 
-    # echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+    echo -e "\e[34m[ki]\e[32m Running NON viral metagenomic analysis with FALCON ...\e[0m";
+    ./ki_metagenomics.sh $ORGAN_T-NON_VIRAL DB.fa 
+    echo -e "\e[34m[ki]\e[32m Done!\e[0m";
     #
     echo -e "\e[34m[ki]\e[32m Extracting mitochondrial reads with MAGNET ...\e[0m";
     ./ki_extract_mito.sh
@@ -213,6 +219,12 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     echo -e "\e[34m[ki]\e[32m Done!\e[0m";
     #
     done
+  #
+  mkdir -p results;
+  rm -f results/*
+  mv *.pdf results/
+  mv *.svg results/
+  #
   fi
 #
 # ==============================================================================

@@ -1,7 +1,15 @@
 #!/bin/bash
 #
-# 
-#
+##################################################################################
+# ============================================================================== #
+# =                                                                            = #
+# =                                    KI                                      = #
+# =                                                                            = #
+# =          An automatic pipeline for viral genome identification             = #
+# =           in the contexts of clinical virology and forensics.              = #
+# =                                                                            = #
+# ============================================================================== #
+##################################################################################
 #
 mapfile -t READS < reads_info.txt
 #
@@ -13,10 +21,15 @@ GET_PHIX=0;
 GET_MITO=0;
 RUN_ANALYSIS=0;
 #
+if [ "$#" -eq 0 ];
+  then
+  SHOW_HELP=1;
+  fi
+#
 for i in "$@"
   do
   case $i in
-    -h|--help)
+    -h|--help|?)
       SHOW_HELP=1;
       shift
     ;;
@@ -89,6 +102,7 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "    -h,   --help           Show this help message and exit,     "
     echo "    -i,   --install        Installation of all the tools,       "
     echo "    -vdb, --build-viral    Build viral database,                "
+    echo "    -udb, --build-unviral  Build non viral database,            "
     echo "    -gad, --gen-adapters   Generate FASTA file with adapters,   "
     echo "    -gp,  --get-phix       Downloads PhiX genomes,              "
     echo "    -gm,  --get-mito       Downloads human Mitochondrial genome,"
@@ -98,8 +112,8 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "                                                                "
     echo -e "\e[93m    Example: ./ki.sh -all                                         \e[0m"
     echo "                                                                "
-    echo "    reads_info.txt -> 'name:readsf1:readsf1:readsr1:readsr2'    "
-    echo "    The reads must be in the src/ folder.                       "
+    echo "    reads_info.txt -> 'name:reads_forward.fa.gz:reads_reverse.fa.gz'  "
+    echo "    The reads and reads_info.txt must be in the src/ folder.    "
     echo "                                                                "
     exit 1
   fi
@@ -117,6 +131,14 @@ if [[ "$BUILD_VDB" -eq "1" ]];
   then
   #gto_build_dbs -vi
   gunzip VDB.fa.gz
+  fi
+#
+# ==============================================================================
+#
+if [[ "$BUILD_UDB" -eq "1" ]];
+  then
+  #gto_build_dbs -all
+  gunzip DB.fa.gz
   fi
 #
 # ==============================================================================
@@ -146,22 +168,19 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
   then
   for read in "${READS[@]}" # 
     do
+    # # MAKE RESULTS FOLDER & CLEAN
+    # mkdir -p results;
+    # rm -f results/*
+    #
     ORGAN_T=`echo $read | tr ':' '\t' | awk '{ print $1 }'`;
-    SPL_R1A=`echo $read | tr ':' '\t' | awk '{ print $2 }'`;
-    SPL_R2A=`echo $read | tr ':' '\t' | awk '{ print $3 }'`;
-    SPL_R1B=`echo $read | tr ':' '\t' | awk '{ print $4 }'`;
-    SPL_R2B=`echo $read | tr ':' '\t' | awk '{ print $5 }'`;
-    echo -e "\e[34m[ki]\e[93m Running ORGAN=$ORGAN_T F1=$SPL_R1A R1=$SPL_R2A F2=$SPL_R1B R2=$SPL_R2B \e[0m";
+    SPL_Forward=`echo $read | tr ':' '\t' | awk '{ print $2 }'`;
+    SPL_Reverse=`echo $read | tr ':' '\t' | awk '{ print $3 }'`;
+    echo -e "\e[34m[ki]\e[93m Running: Organ=$ORGAN_T Forward=$SPL_Forward Reverse=$SPL_Reverse\e[0m";
     #
-#   # MAKE RESULTS FOLDER & CLEAN
-#   mkdir -p results;
-#   rm -f results/*
-    #
-    # MERGE FILES
     rm -f FW_READS.fq.gz RV_READS.fq.gz
-    echo -e "\e[34m[ki]\e[32m Mergging the files ...\e[0m";
-    zcat $SPL_R1A $SPL_R1B | gzip > FW_READS.fq.gz
-    zcat $SPL_R2A $SPL_R2B | gzip > RV_READS.fq.gz
+    echo -e "\e[34m[ki]\e[32m Copping an instance of the files ...\e[0m";
+    cp $SPL_Forward FW_READS.fq.gz;
+    cp $SPL_Reverse RV_READS.fq.gz;
     echo -e "\e[34m[ki]\e[32m Done!\e[0m";
     #
     echo -e "\e[34m[ki]\e[32m Trimming and filtering with Trimmomatic ...\e[0m";
@@ -172,14 +191,18 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     ./ki_remove_phix.sh
     echo -e "\e[34m[ki]\e[32m Done!\e[0m";
     #
-    echo -e "\e[34m[ki]\e[32m Running metagenomic analysis with FALCON ...\e[0m";
-    ./ki_metagenomics.sh $ORGAN_T
+    echo -e "\e[34m[ki]\e[32m Running viral metagenomic analysis with FALCON ...\e[0m";
+    ./ki_metagenomics.sh $ORGAN_T VDB.fa
     echo -e "\e[34m[ki]\e[32m Done!\e[0m";
     #
     echo -e "\e[34m[ki]\e[32m Building complexity profiles with gto ...\e[0m";
     cat NP-o_fw_pr.fq NP-o_fw_unpr.fq NP-o_rv_pr.fq NP-o_rv_unpr.fq > ki_sample_reads.fq
     ./ki_profiles.sh GIS-$ORGAN_T VDB.fa ki_sample_reads.fq $ORGAN_T
     echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+    #
+    # echo -e "\e[34m[ki]\e[32m Running NON viral metagenomic analysis with FALCON ...\e[0m";
+    # ./ki_metagenomics.sh $ORGAN_T-NON_VIRAL DB.fa 
+    # echo -e "\e[34m[ki]\e[32m Done!\e[0m";
     #
     echo -e "\e[34m[ki]\e[32m Extracting mitochondrial reads with MAGNET ...\e[0m";
     ./ki_extract_mito.sh

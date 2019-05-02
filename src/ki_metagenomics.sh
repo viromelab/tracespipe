@@ -5,10 +5,11 @@
 #
 
 ORGAN="$1";
+DB="$2";
 RNAMES="NP-o_fw_pr.fq:NP-o_fw_unpr.fq:NP-o_rv_pr.fq:NP-o_rv_unpr.fq";
 
 ## RUN METAGENOMIC COMPOSITION
-FALCON -v -n 12 -t 38 -F -Z -l 47 -c 20 -x top-$ORGAN.csv -y $ORGAN.com $RNAMES VDB.fa
+FALCON -v -n 12 -t 38 -F -Z -l 47 -c 20 -x top-$ORGAN.csv -y $ORGAN.com $RNAMES $DB
 FALCON-filter -v -F -t 1.0 -o $ORGAN.pos $ORGAN.com
 FALCON-filter-visual -v -e 1 -F -o $ORGAN.svg $ORGAN.pos
 
@@ -16,7 +17,7 @@ FALCON-filter-visual -v -e 1 -F -o $ORGAN.svg $ORGAN.pos
 rsvg-convert -f pdf -o $ORGAN.pdf $ORGAN.svg
 
 ## RUN GULL FOR INTER-GENOMIC SIMILARITY ANALYSIS
-cat top-$ORGAN.csv | awk '{ if($3 > 22 print $1"\t"$2"\t"$3"\t"$4; }' \
+cat top-$ORGAN.csv | awk '{ if($3 > 2) print $1"\t"$2"\t"$3"\t"$4; }' \
 | awk '{ print $4;}' | tr '|' '\t' | tr '_' '\t' | awk '{ print $1;}' > GIS-$ORGAN;
 idx=0;
 cat GIS-$ORGAN | while read line
@@ -28,7 +29,7 @@ cat GIS-$ORGAN | while read line
     else
     printf ":%s" "$namex" >> $ORGAN-FNAMES.fil;
     fi
-  gto_fasta_extract_read_by_pattern -p "$line" < VDB.fa > $namex;
+  gto_fasta_extract_read_by_pattern -p "$line" < $DB > $namex;
   ((idx++));
   done
 FALCON-inter -v -m 6:1:1:0/0 -m 13:20:1:3/10 -m 20:100:1:5/10 -c 30 -n 8 -x $ORGAN-MATRIX.csv `cat $ORGAN-FNAMES.fil`

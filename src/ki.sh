@@ -1,7 +1,6 @@
 #!/bin/bash
 #
-#
-#### declare -a READS=("healthy-skin:MT18021B_S1_L001_R1_001.fastq.gz:MT18021B_S1_L001_R2_001.fastq.gz:MT18021B_S1_L002_R1_001.fastq.gz:MT18021B_S1_L002_R2_001.fastq.gz" "skin:MT18021C_S2_L001_R1_001.fastq.gz:MT18021C_S2_L001_R2_001.fastq.gz:MT18021C_S2_L002_R1_001.fastq.gz:MT18021C_S2_L002_R2_001.fastq.gz" "bone:MT18021D_S3_L001_R1_001.fastq.gz:MT18021D_S3_L001_R2_001.fastq.gz:MT18021D_S3_L002_R1_001.fastq.gz:MT18021D_S3_L002_R2_001.fastq.gz" "colon:MT18021E_S4_L001_R1_001.fastq.gz:MT18021E_S4_L001_R2_001.fastq.gz:MT18021E_S4_L002_R1_001.fastq.gz:MT18021E_S4_L002_R2_001.fastq.gz" "heart:MT18021F_S5_L001_R1_001.fastq.gz:MT18021F_S5_L001_R2_001.fastq.gz:MT18021F_S5_L002_R1_001.fastq.gz:MT18021F_S5_L002_R2_001.fastq.gz" "liver:MT18021G_S6_L001_R1_001.fastq.gz:MT18021G_S6_L001_R2_001.fastq.gz:MT18021G_S6_L002_R1_001.fastq.gz:MT18021G_S6_L002_R2_001.fastq.gz" "spleen:MT18022B_S7_L001_R1_001.fastq.gz:MT18022B_S7_L001_R2_001.fastq.gz:MT18022B_S7_L002_R1_001.fastq.gz:MT18022B_S7_L002_R2_001.fastq.gz" "kidney:MT18022C_S8_L001_R1_001.fastq.gz:MT18022C_S8_L001_R2_001.fastq.gz:MT18022C_S8_L002_R1_001.fastq.gz:MT18022C_S8_L002_R2_001.fastq.gz" "lung:MT18022D_S9_L001_R1_001.fastq.gz:MT18022D_S9_L001_R2_001.fastq.gz:MT18022D_S9_L002_R1_001.fastq.gz:MT18022D_S9_L002_R2_001.fastq.gz" "plasma:MT18022E_S10_L001_R1_001.fastq.gz:MT18022E_S10_L001_R2_001.fastq.gz:MT18022E_S10_L002_R1_001.fastq.gz:MT18022E_S10_L002_R2_001.fastq.gz" "blood:MT18022F_S11_L001_R1_001.fastq.gz:MT18022F_S11_L001_R2_001.fastq.gz:MT18022F_S11_L002_R1_001.fastq.gz:MT18022F_S11_L002_R2_001.fastq.gz" "bone-marrow:MT18022G_S12_L001_R1_001.fastq.gz:MT18022G_S12_L001_R2_001.fastq.gz:MT18022G_S12_L002_R1_001.fastq.gz:MT18022G_S12_L002_R2_001.fastq.gz" "teeth:MT18023B_S13_L001_R1_001.fastq.gz:MT18023B_S13_L001_R2_001.fastq.gz:MT18023B_S13_L002_R1_001.fastq.gz:MT18023B_S13_L002_R2_001.fastq.gz" "brain:MT18023C_S14_L001_R1_001.fastq.gz:MT18023C_S14_L001_R2_001.fastq.gz:MT18023C_S14_L002_R1_001.fastq.gz:MT18023C_S14_L002_R2_001.fastq.gz")
+# 
 #
 #
 mapfile -t READS < reads_info.txt
@@ -99,6 +98,9 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "                                                                "
     echo -e "\e[93m    Example: ./ki.sh -all                                         \e[0m"
     echo "                                                                "
+    echo "    reads_info.txt -> 'name:readsf1:readsf1:readsr1:readsr2'    "
+    echo "    The reads must be in the src/ folder.                       "
+    echo "                                                                "
     exit 1
   fi
 #
@@ -149,25 +151,43 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     SPL_R2A=`echo $read | tr ':' '\t' | awk '{ print $3 }'`;
     SPL_R1B=`echo $read | tr ':' '\t' | awk '{ print $4 }'`;
     SPL_R2B=`echo $read | tr ':' '\t' | awk '{ print $5 }'`;
-    echo "RUN ORGAN=$ORGAN_T F1=$SPL_R1A R1=$SPL_R2A F2=$SPL_R1B R2=$SPL_R2B";
+    echo -e "\e[34m[ki]\e[93m Running ORGAN=$ORGAN_T F1=$SPL_R1A R1=$SPL_R2A F2=$SPL_R1B R2=$SPL_R2B \e[0m";
     #
-    ## MERGE FILES
-    echo "MERGGING FILES ...";
+#   # MAKE RESULTS FOLDER & CLEAN
+#   mkdir -p results;
+#   rm -f results/*
+    #
+    # MERGE FILES
     rm -f FW_READS.fq.gz RV_READS.fq.gz
+    echo -e "\e[34m[ki]\e[32m Mergging the files ...\e[0m";
     zcat $SPL_R1A $SPL_R1B | gzip > FW_READS.fq.gz
     zcat $SPL_R2A $SPL_R2B | gzip > RV_READS.fq.gz
+    echo -e "\e[34m[ki]\e[32m Done!\e[0m";
     #
+    echo -e "\e[34m[ki]\e[32m Trimming and filtering with Trimmomatic ...\e[0m";
     ./ki_trim_filter_reads.sh
+    echo -e "\e[34m[ki]\e[32m Done!\e[0m";
     #
+    echo -e "\e[34m[ki]\e[32m Removing PhiX from the samples with MAGNET ...\e[0m";
     ./ki_remove_phix.sh
+    echo -e "\e[34m[ki]\e[32m Done!\e[0m";
     #
+    echo -e "\e[34m[ki]\e[32m Running metagenomic analysis with FALCON ...\e[0m";
     ./ki_metagenomics.sh $ORGAN_T
+    echo -e "\e[34m[ki]\e[32m Done!\e[0m";
     #
-    ./ki_profiles.sh GIS-$ORGAN_T VDB.fa $ORGAN_T
+    echo -e "\e[34m[ki]\e[32m Building complexity profiles with gto ...\e[0m";
+    cat NP-o_fw_pr.fq NP-o_fw_unpr.fq NP-o_rv_pr.fq NP-o_rv_unpr.fq > ki_sample_reads.fq
+    ./ki_profiles.sh GIS-$ORGAN_T VDB.fa ki_sample_reads.fq $ORGAN_T
+    echo -e "\e[34m[ki]\e[32m Done!\e[0m";
     #
+    echo -e "\e[34m[ki]\e[32m Extracting mitochondrial reads with MAGNET ...\e[0m";
     ./ki_extract_mito.sh
+    echo -e "\e[34m[ki]\e[32m Done!\e[0m";
     #
+    echo -e "\e[34m[ki]\e[32m Running mitochondrial DNA assembly with SPAdes ...\e[0m";
     ./ki_assemble_mito.sh $ORGAN_T
+    echo -e "\e[34m[ki]\e[32m Done!\e[0m";
     #
     done
   fi

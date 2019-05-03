@@ -18,6 +18,7 @@ BUILD_UDB=0;
 GEN_ADAPTERS=0;
 GET_PHIX=0;
 GET_MITO=0;
+GET_CY=0;
 RUN_ANALYSIS=0;
 #
 if [ "$#" -eq 0 ];
@@ -62,6 +63,12 @@ for i in "$@"
       SHOW_HELP=0;
       shift
     ;;
+    -gy|--get-y-chromo)
+      GET_CY=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+
     -ra|--run-analysis)
       RUN_ANALYSIS=1;
       SHOW_HELP=0;
@@ -74,6 +81,7 @@ for i in "$@"
       GEN_ADAPTERS=1;
       GET_PHIX=1;
       GET_MITO=1;
+      GET_CY=1;
       RUN_ANALYSIS=1;
       SHOW_HELP=0;
       shift
@@ -111,6 +119,7 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "    -gad, --gen-adapters   Generate FASTA file with adapters,   "
     echo "    -gp,  --get-phix       Downloads PhiX genomes,              "
     echo "    -gm,  --get-mito       Downloads human Mitochondrial genome,"
+    echo "    -gy,  --get-y-chromo   Downloads human Y-chromosome,        "
     echo "    -ra,  --run-analysis   Run data analysis,                   "
     echo "                                                                "
     echo "    -all, --run-all        Run all the options.                 "
@@ -218,6 +227,10 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     echo -e "\e[34m[ki]\e[32m Extracting mitochondrial reads with MAGNET ...\e[0m";
     ./ki_extract_mito.sh
+    echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+    #
+    echo -e "\e[34m[ki]\e[32m Extracting Y chromosome reads with MAGNET ...\e[0m";
+    ./ki_extract_cy.sh
     echo -e "\e[34m[ki]\e[32m Done!\e[0m";
     #
     echo -e "\e[34m[ki]\e[32m Running mitochondrial DNA assembly with SPAdes ...\e[0m";

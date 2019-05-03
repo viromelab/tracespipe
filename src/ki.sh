@@ -21,6 +21,12 @@ GET_MITO=0;
 GET_CY=0;
 RUN_ANALYSIS=0;
 #
+RUN_META_ON=0;
+RUN_PROFILES_ON=0;
+RUN_META_NON_VIRAL_ON=0;
+RUN_MITO_ON=1;
+RUN_CY_ON=0;
+#
 if [ "$#" -eq 0 ];
   then
   SHOW_HELP=1;
@@ -211,31 +217,48 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     echo -e "\e[34m[ki]\e[32m Removing PhiX from the samples with MAGNET ...\e[0m";
     ./ki_remove_phix.sh
     echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+
+    o_fw_pr.fq  o_fw_unpr.fq  o_rv_pr.fq  o_rv_unpr.fq
     #
-    echo -e "\e[34m[ki]\e[32m Running viral metagenomic analysis with FALCON ...\e[0m";
-    ./ki_metagenomics.sh $ORGAN_T VDB.fa
-    echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+    if [[ "$RUN_META_ON" -eq "1" ]];
+      then
+      echo -e "\e[34m[ki]\e[32m Running viral metagenomic analysis with FALCON ...\e[0m";
+      ./ki_metagenomics.sh $ORGAN_T VDB.fa
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+      fi
     #
-    echo -e "\e[34m[ki]\e[32m Building complexity profiles with gto ...\e[0m";
-    cat NP-o_fw_pr.fq NP-o_fw_unpr.fq NP-o_rv_pr.fq NP-o_rv_unpr.fq > ki_sample_reads.fq
-    ./ki_profiles.sh GIS-$ORGAN_T VDB.fa ki_sample_reads.fq $ORGAN_T
-    echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+    if [[ "$RUN_PROFILES_ON" -eq "1" ]];
+      then
+      echo -e "\e[34m[ki]\e[32m Building complexity profiles with gto ...\e[0m";
+      cat NP-o_fw_pr.fq NP-o_fw_unpr.fq NP-o_rv_pr.fq NP-o_rv_unpr.fq > ki_sample_reads.fq
+      ./ki_profiles.sh GIS-$ORGAN_T VDB.fa ki_sample_reads.fq $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+      fi
     #
-    echo -e "\e[34m[ki]\e[32m Running NON viral metagenomic analysis with FALCON ...\e[0m";
-    ./ki_metagenomics.sh $ORGAN_T-NON_VIRAL DB.fa 
-    echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+    if [[ "$RUN_META_NON_VIRAL_ON" -eq "1" ]];
+      then
+      echo -e "\e[34m[ki]\e[32m Running NON viral metagenomic analysis with FALCON ...\e[0m";
+      ./ki_metagenomics.sh $ORGAN_T-NON_VIRAL DB.fa 
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+      fi
     #
-    echo -e "\e[34m[ki]\e[32m Extracting mitochondrial reads with MAGNET ...\e[0m";
-    ./ki_extract_mito.sh
-    echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+    if [[ "$RUN_MITO_ON" -eq "1" ]];
+      then
+      echo -e "\e[34m[ki]\e[32m Extracting mitochondrial reads with MAGNET ...\e[0m";
+      ./ki_extract_mito.sh
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+      #
+      echo -e "\e[34m[ki]\e[32m Running mitochondrial DNA assembly with SPAdes ...\e[0m";
+      ./ki_assemble_mito.sh $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+      fi
     #
-    echo -e "\e[34m[ki]\e[32m Extracting Y chromosome reads with MAGNET ...\e[0m";
-    ./ki_extract_cy.sh
-    echo -e "\e[34m[ki]\e[32m Done!\e[0m";
-    #
-    echo -e "\e[34m[ki]\e[32m Running mitochondrial DNA assembly with SPAdes ...\e[0m";
-    ./ki_assemble_mito.sh $ORGAN_T
-    echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+    if [[ "$RUN_CY_ON" -eq "1" ]];
+      then
+      echo -e "\e[34m[ki]\e[32m Extracting Y chromosome reads with MAGNET ...\e[0m";
+      ./ki_extract_classify_cy.sh $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+      fi
     #
     done
   #

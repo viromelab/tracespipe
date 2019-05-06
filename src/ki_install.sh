@@ -39,6 +39,10 @@ if [[ "$INSTALL_PIPELINE" -eq "1" ]];
   conda install -c cobilab falcon --yes
   conda install -c cobilab gto --yes
   conda install -c bioconda spades --yes
+  conda install -c bioconda igv --yes
+  conda install -c bioconda bwa --yes
+  conda install -c bioconda bowtie2 --yes
+  conda install -c bioconda samtools --yes
   #
   Program_installed "trimmomatic";
   Program_installed "cryfa";
@@ -46,6 +50,10 @@ if [[ "$INSTALL_PIPELINE" -eq "1" ]];
   Program_installed "FALCON";
   Program_installed "gto";
   Program_installed "spades.py";
+  Program_installed "igv";
+  Program_installed "bwa";
+  Program_installed "bowtie2";
+  Program_installed "samtools";
   fi
 #
 # ==============================================================================

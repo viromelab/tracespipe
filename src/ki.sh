@@ -86,7 +86,7 @@ for i in "$@"
       SHOW_HELP=0;
       shift
     ;;
-    -rmc|--run-mito-consensus)
+    -rmc|--run-mito-cons)
       RUN_ANALYSIS=1;
       RUN_MITO_ON=1;
       RUN_MITO_CONSENSUS=1;
@@ -141,7 +141,7 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "    -gy,  --get-y-chromo   Downloads human Y-chromosome,        "
     echo "    -ra,  --run-analysis   Run data analysis,                   "
     echo "    -rm,  --run-mito       Run Mito align and sort (BAM),       "
-    echo "    -rmc, --run-mito       Run Mito align, sort and consensus seq,   "
+    echo "    -rmc, --run-mito-cons  Run Mito align, sort and consensus seq,   "
     echo "                                                                "
     echo "    -all, --run-all        Run all the options.                 "
     echo "                                                                "
@@ -235,7 +235,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     # COMPATIBILITY PROBLEMS WITH SPADES AND PROBABLY BOWTIE2
     echo -e "\e[34m[ki]\e[32m Done!\e[0m";
 
-    o_fw_pr.fq  o_fw_unpr.fq  o_rv_pr.fq  o_rv_unpr.fq
+    # o_fw_pr.fq  o_fw_unpr.fq  o_rv_pr.fq  o_rv_unpr.fq
     #
     if [[ "$RUN_META_ON" -eq "1" ]];
       then

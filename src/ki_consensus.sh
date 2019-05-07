@@ -13,11 +13,13 @@ bcftools mpileup -Ou -f $Reference $Alignments | bcftools call -mv -Oz -o calls.
 bcftools index calls.vcf.gz
 #
 # normalize indels
-bcftools norm -f $Reference calls.vcf.gz -Ob -o calls.norm.bcf
+bcftools norm -f $Reference calls.vcf.gz -Oz -o calls.norm.vcf.gz
 #
 # filter adjacent indels within 5bp
-bcftools filter --IndelGap 5 calls.norm.bcf -Ob -o calls.norm.flt-indels.bcf
+bcftools filter --IndelGap 5 calls.norm.vcf.gz -Oz -o calls.norm.flt-indels.vcf.gz
 #
-bcftools index calls.norm.flt-indels.bcf
-bcftools consensus -f mtDNA.fa calls.norm.flt-indels.bcf > consensus-$Organ.fa
+bcftools index calls.norm.flt-indels.vcf.gz
+bcftools consensus -f mtDNA.fa calls.norm.flt-indels.vcf.gz > consensus-$Organ.fa
+#
+zcat calls.norm.flt-indels.vcf.gz |vcf2bed --snvs > calls.$Organ.bed
 #

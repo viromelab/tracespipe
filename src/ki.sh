@@ -24,7 +24,8 @@ RUN_ANALYSIS=0;
 RUN_META_ON=0;
 RUN_PROFILES_ON=0;
 RUN_META_NON_VIRAL_ON=0;
-RUN_MITO_ON=1;
+RUN_MITO_ON=0;
+RUN_MITO_CONSENSUS=0;
 RUN_CY_ON=0;
 #
 if [ "$#" -eq 0 ];
@@ -74,9 +75,21 @@ for i in "$@"
       SHOW_HELP=0;
       shift
     ;;
-
     -ra|--run-analysis)
       RUN_ANALYSIS=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rm|--run-mito)
+      RUN_ANALYSIS=1;
+      RUN_MITO_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rmc|--run-mito-consensus)
+      RUN_ANALYSIS=1;
+      RUN_MITO_ON=1;
+      RUN_MITO_CONSENSUS=1;
       SHOW_HELP=0;
       shift
     ;;
@@ -127,6 +140,8 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "    -gm,  --get-mito       Downloads human Mitochondrial genome,"
     echo "    -gy,  --get-y-chromo   Downloads human Y-chromosome,        "
     echo "    -ra,  --run-analysis   Run data analysis,                   "
+    echo "    -rm,  --run-mito       Run Mito align and sort (BAM),       "
+    echo "    -rmc, --run-mito       Run Mito align, sort and consensus seq,   "
     echo "                                                                "
     echo "    -all, --run-all        Run all the options.                 "
     echo "                                                                "
@@ -247,8 +262,17 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_MITO_ON" -eq "1" ]];
       then
       echo -e "\e[34m[ki]\e[32m Aliggning reads to mitochondrial ref with bowtie2 ...\e[0m";
-      ./ki_align_reads.sh mtDNA.fa $ORGAN
+      ./ki_align_reads.sh mtDNA.fa $ORGAN_T
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+      #
+      if [[ "$RUN_MITO_CONSENSUS" -eq "1" ]];
+        then
+        echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+        ./ki_consensus.sh mtDNA.fa aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        echo -e "\e[34m[ki]\e[32m Done!\e[0m"
+	fi
+      #
+
    #   #
    #   echo -e "\e[34m[ki]\e[32m Extracting mitochondrial reads with MAGNET ...\e[0m";
    #   ./ki_extract_mito.sh

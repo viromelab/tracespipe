@@ -21,5 +21,6 @@ bcftools filter --IndelGap 5 calls.norm.vcf.gz -Oz -o calls.norm.flt-indels.vcf.
 bcftools index calls.norm.flt-indels.vcf.gz
 bcftools consensus -f mtDNA.fa calls.norm.flt-indels.vcf.gz > consensus-$Organ.fa
 #
+#zcat calls.norm.flt-indels.vcf.gz |vcf2bed --snvs > calls.$Organ.bed
 zcat calls.norm.flt-indels.vcf.gz |vcf2bed --snvs > calls.$Organ.bed
 #

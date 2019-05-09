@@ -77,6 +77,12 @@ for i in "$@"
     ;;
     -ra|--run-analysis)
       RUN_ANALYSIS=1;
+      RUN_META_ON=1;
+      RUN_PROFILES_ON=1;
+      RUN_META_NON_VIRAL_ON=1;
+      RUN_MITO_ON=1;
+      RUN_MITO_CONSENSUS=1;
+      RUN_CY_ON=1;
       SHOW_HELP=0;
       shift
     ;;
@@ -229,16 +235,15 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     ./ki_trim_filter_reads.sh
     echo -e "\e[34m[ki]\e[32m Done!\e[0m";
     #
-    echo -e "\e[34m[ki]\e[32m Removing PhiX from the samples with MAGNET ...\e[0m";
-    #./ki_remove_phix.sh
-    # CHANGE MAGNET
-    # COMPATIBILITY PROBLEMS WITH SPADES AND PROBABLY BOWTIE2
-    echo -e "\e[34m[ki]\e[32m Done!\e[0m";
-
     # o_fw_pr.fq  o_fw_unpr.fq  o_rv_pr.fq  o_rv_unpr.fq
     #
     if [[ "$RUN_META_ON" -eq "1" ]];
       then
+      echo -e "\e[34m[ki]\e[32m Removing PhiX from the samples with MAGNET ...\e[0m";
+      ./ki_remove_phix.sh
+      # CHANGE MAGNET: COMPATIBILITY PROBLEMS WITH SPADES AND PROBABLY BOWTIE2
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+      #
       echo -e "\e[34m[ki]\e[32m Running viral metagenomic analysis with FALCON ...\e[0m";
       ./ki_metagenomics.sh $ORGAN_T VDB.fa
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
@@ -272,7 +277,6 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[ki]\e[32m Done!\e[0m"
 	fi
       #
-
    #   #
    #   echo -e "\e[34m[ki]\e[32m Extracting mitochondrial reads with MAGNET ...\e[0m";
    #   ./ki_extract_mito.sh

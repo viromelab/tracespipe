@@ -296,13 +296,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_MITO_ON" -eq "1" ]];
       then
       echo -e "\e[34m[ki]\e[32m Aliggning reads to mitochondrial ref with bowtie2 ...\e[0m";
-      ./ki_align_reads.sh mtDNA.fa $ORGAN_T
+      ./ki_mt_align_reads.sh mtDNA.fa $ORGAN_T
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       #
       if [[ "$RUN_MITO_CONSENSUS" -eq "1" ]];
         then
         echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./ki_mito_consensus.sh mtDNA.fa aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./ki_mt_consensus.sh mtDNA.fa aligned_sorted-$ORGAN_T.bam $ORGAN_T
         echo -e "\e[34m[ki]\e[32m Done!\e[0m"
 	fi
       fi
@@ -310,7 +310,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_B19_ON" -eq "1" ]];
       then
       echo -e "\e[34m[ki]\e[32m Aliggning reads to B19 ref with bowtie2 ...\e[0m";
-      ./ki_align_reads.sh B19.fa $ORGAN_T
+      ./ki_b19_align_reads.sh B19.fa $ORGAN_T
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       #
       if [[ "$RUN_B19_CONSENSUS" -eq "1" ]];
@@ -320,8 +320,6 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[ki]\e[32m Done!\e[0m"
         fi
       fi
-
-
 
 
 

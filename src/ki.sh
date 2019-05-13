@@ -26,7 +26,10 @@ RUN_PROFILES_ON=0;
 RUN_META_NON_VIRAL_ON=0;
 RUN_MITO_ON=0;
 RUN_MITO_CONSENSUS=0;
+RUN_B19_ON=0;
+RUN_B19_CONSENSUS=0;
 RUN_CY_ON=0;
+RUN_DE_NOVO_ASSEMBLY=0;
 #
 if [ "$#" -eq 0 ];
   then
@@ -99,6 +102,14 @@ for i in "$@"
       SHOW_HELP=0;
       shift
     ;;
+    -rbc|--run-b19-cons)
+      RUN_ANALYSIS=1;
+      RUN_B19_ON=1;
+      RUN_B19_CONSENSUS=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+
     -all|--run-all)
       INSTALL=1;
       BUILD_VDB=1;
@@ -108,6 +119,16 @@ for i in "$@"
       GET_MITO=1;
       GET_CY=1;
       RUN_ANALYSIS=1;
+      #
+      RUN_META_ON=1;
+      RUN_PROFILES_ON=1;
+      RUN_META_NON_VIRAL_ON=1;
+      RUN_MITO_ON=1;
+      RUN_MITO_CONSENSUS=1;
+      RUN_B19_ON=1;
+      RUN_B19_CONSENSUS=1;
+      RUN_CY_ON=1;
+      RUN_DE_NOVO_ASSEMBLY=1;
       SHOW_HELP=0;
       shift
     ;;
@@ -148,6 +169,7 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "    -ra,  --run-analysis   Run data analysis,                   "
     echo "    -rm,  --run-mito       Run Mito align and sort (BAM),       "
     echo "    -rmc, --run-mito-cons  Run Mito align, sort and consensus seq,   "
+    echo "    -rbc, --run-b19-cons   Run B19 align, sort and consensus seq,    "
     echo "                                                                "
     echo "    -all, --run-all        Run all the options.                 "
     echo "                                                                "
@@ -205,6 +227,13 @@ if [[ "$GET_MITO" -eq "1" ]];
   fi
 # ==============================================================================
 #
+if [[ "$GET_B19" -eq "1" ]];
+  then
+  ./ki_get_b19.sh
+  fi
+#
+# ==============================================================================
+#
 if [[ "$GET_CY" -eq "1" ]];
   then
   ./ki_get_cy.sh
@@ -235,13 +264,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     ./ki_trim_filter_reads.sh
     echo -e "\e[34m[ki]\e[32m Done!\e[0m";
     #
+    # THE OUTPUT OF TRIMMING IS:
     # o_fw_pr.fq  o_fw_unpr.fq  o_rv_pr.fq  o_rv_unpr.fq
     #
     if [[ "$RUN_META_ON" -eq "1" ]];
       then
       echo -e "\e[34m[ki]\e[32m Removing PhiX from the samples with MAGNET ...\e[0m";
-      ./ki_remove_phix.sh
-      # CHANGE MAGNET: COMPATIBILITY PROBLEMS WITH SPADES AND PROBABLY BOWTIE2
+      ./ki_remove_phix.sh # IT IS USED ONLY FOR FALCON
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[ki]\e[32m Running viral metagenomic analysis with FALCON ...\e[0m";
@@ -276,21 +305,39 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         ./ki_consensus.sh mtDNA.fa aligned_sorted-$ORGAN_T.bam $ORGAN_T
         echo -e "\e[34m[ki]\e[32m Done!\e[0m"
 	fi
-      #
-   #   #
-   #   echo -e "\e[34m[ki]\e[32m Extracting mitochondrial reads with MAGNET ...\e[0m";
-   #   ./ki_extract_mito.sh
-   #   echo -e "\e[34m[ki]\e[32m Done!\e[0m";
-   #   #
-   #   echo -e "\e[34m[ki]\e[32m Running mitochondrial DNA assembly with SPAdes ...\e[0m";
-   #   ./ki_assemble_mito.sh $ORGAN_T
-   #   echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       fi
+    #
+    if [[ "$RUN_B19_ON" -eq "1" ]];
+      then
+      echo -e "\e[34m[ki]\e[32m Aliggning reads to B19 ref with bowtie2 ...\e[0m";
+      ./ki_align_reads.sh B19.fa $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+      #
+      if [[ "$RUN_B19_CONSENSUS" -eq "1" ]];
+        then
+        echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+        ./ki_consensus_B19.sh B19.fa aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        echo -e "\e[34m[ki]\e[32m Done!\e[0m"
+        fi
+      fi
+
+
+
+
+
+
     #
     if [[ "$RUN_CY_ON" -eq "1" ]];
       then
       echo -e "\e[34m[ki]\e[32m Extracting Y chromosome reads with MAGNET ...\e[0m";
       ./ki_extract_classify_cy.sh $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+      fi
+    #
+    if [[ "$RUN_DE_NOVO_ASSEMBLY" -eq "1" ]];
+      then
+      echo -e "\e[34m[ki]\e[32m Running do-novo DNA assembly with SPAdes ...\e[0m";
+      ./ki_assemble_all.sh $ORGAN_T
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       fi
     #

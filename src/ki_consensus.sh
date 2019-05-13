@@ -9,7 +9,7 @@ Organ=$3;         # organ name
 rm -f calls.vcf.gz calls.vcf.gz.csi calls.norm.bcf calls.norm.flt-indels.bcf 
 #
 # call variants
-bcftools mpileup -Ou -f $Reference $Alignments | bcftools call -mv -Oz -o calls.vcf.gz
+bcftools mpileup -Ou -f $Reference $Alignments | bcftools call --ploidy 1 -mv -Oz -o calls.vcf.gz
 bcftools index calls.vcf.gz
 #
 # normalize indels

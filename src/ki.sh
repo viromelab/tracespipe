@@ -15,19 +15,28 @@ SHOW_HELP=0;
 INSTALL=0;
 BUILD_VDB=0;
 BUILD_UDB=0;
+#
 GEN_ADAPTERS=0;
 GET_PHIX=0;
 GET_MITO=0;
+GET_B19=0;
 GET_CY=0;
+GET_HV3=0;
+GET_HV4=0;
+GET_HV7=0;
+GET_AV=0;
+#
 RUN_ANALYSIS=0;
 #
 RUN_META_ON=0;
 RUN_PROFILES_ON=0;
 RUN_META_NON_VIRAL_ON=0;
 RUN_MITO_ON=0;
-RUN_MITO_CONSENSUS=0;
 RUN_B19_ON=0;
-RUN_B19_CONSENSUS=0;
+RUN_HV3_ON=0;
+RUN_HV4_ON=0;
+RUN_HV7_ON=0;
+RUN_AV_ON=0;
 RUN_CY_ON=0;
 RUN_DE_NOVO_ASSEMBLY=0;
 #
@@ -73,6 +82,31 @@ for i in "$@"
       SHOW_HELP=0;
       shift
     ;;
+    -gb|--get-b19)
+      GET_B19=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -gh3|--get-hv3)
+      GET_HV3=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -gh4|--get-hv4)
+      GET_HV4=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -gh7|--get-hv7)
+      GET_HV7=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -gav|--get-av)
+      GET_AV=1;
+      SHOW_HELP=0;
+      shift
+    ;;
     -gy|--get-y-chromo)
       GET_CY=1;
       SHOW_HELP=0;
@@ -84,8 +118,13 @@ for i in "$@"
       RUN_PROFILES_ON=1;
       RUN_META_NON_VIRAL_ON=1;
       RUN_MITO_ON=1;
-      RUN_MITO_CONSENSUS=1;
+      RUN_B19_ON=1;
+      RUN_HV3_ON=1;
+      RUN_HV4_ON=1;
+      RUN_HV7_ON=1;
+      RUN_AV_ON=1;
       RUN_CY_ON=1;
+      #RUN_DE_NOVO_ASSEMBLY=1;
       SHOW_HELP=0;
       shift
     ;;
@@ -95,21 +134,48 @@ for i in "$@"
       SHOW_HELP=0;
       shift
     ;;
-    -rmc|--run-mito-cons)
-      RUN_ANALYSIS=1;
-      RUN_MITO_ON=1;
-      RUN_MITO_CONSENSUS=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rbc|--run-b19-cons)
+    -rb|--run-b19)
       RUN_ANALYSIS=1;
       RUN_B19_ON=1;
-      RUN_B19_CONSENSUS=1;
       SHOW_HELP=0;
       shift
     ;;
-
+    -rh3|--run-hv3)
+      RUN_ANALYSIS=1;
+      RUN_HV3_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rh4|--run-hv4)
+      RUN_ANALYSIS=1;
+      RUN_HV4_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rh7|--run-hv7)
+      RUN_ANALYSIS=1;
+      RUN_HV7_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rav|--run-av)
+      RUN_ANALYSIS=1;
+      RUN_AV_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rcy|--run-y-chromo)
+      RUN_ANALYSIS=1;
+      RUN_CY_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rda|--run-de-novo)
+      RUN_ANALYSIS=1;
+      RUN_DE_NOVO_ASSEMBLY=1;
+      SHOW_HELP=0;
+      shift
+    ;;
     -all|--run-all)
       INSTALL=1;
       BUILD_VDB=1;
@@ -117,6 +183,11 @@ for i in "$@"
       GEN_ADAPTERS=1;
       GET_PHIX=1;
       GET_MITO=1;
+      GET_B19=1;
+      GET_HV3=1;
+      GET_HV4=1;
+      GET_HV7=1;
+      GET_AV=1;
       GET_CY=1;
       RUN_ANALYSIS=1;
       #
@@ -124,9 +195,11 @@ for i in "$@"
       RUN_PROFILES_ON=1;
       RUN_META_NON_VIRAL_ON=1;
       RUN_MITO_ON=1;
-      RUN_MITO_CONSENSUS=1;
       RUN_B19_ON=1;
-      RUN_B19_CONSENSUS=1;
+      RUN_HV3_ON=1;
+      RUN_HV4_ON=1;
+      RUN_HV7_ON=1;
+      RUN_AV_ON=1;
       RUN_CY_ON=1;
       RUN_DE_NOVO_ASSEMBLY=1;
       SHOW_HELP=0;
@@ -158,20 +231,34 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo -e "    \e[32mAn automatic pipeline for viral genome identification\e[0m" 
     echo -e "    \e[32min the contexts of clinical virology and forensics\e[0m.         "
     echo "                                                                "
-    echo "    -h,   --help           Show this help message and exit,     "
-    echo "    -i,   --install        Installation of all the tools,       "
-    echo "    -vdb, --build-viral    Build viral database,                "
-    echo "    -udb, --build-unviral  Build non viral database (control),  "
-    echo "    -gad, --gen-adapters   Generate FASTA file with adapters,   "
-    echo "    -gp,  --get-phix       Downloads PhiX genomes,              "
-    echo "    -gm,  --get-mito       Downloads human Mitochondrial genome,"
-    echo "    -gy,  --get-y-chromo   Downloads human Y-chromosome,        "
-    echo "    -ra,  --run-analysis   Run data analysis,                   "
-    echo "    -rm,  --run-mito       Run Mito align and sort (BAM),       "
-    echo "    -rmc, --run-mito-cons  Run Mito align, sort and consensus seq,   "
-    echo "    -rbc, --run-b19-cons   Run B19 align, sort and consensus seq,    "
+    echo "    -h,    --help           Show this help message and exit,     "
+    echo "    -i,    --install        Installation of all the tools,       "
+    echo "    -vdb,  --build-viral    Build viral database,                "
+    echo "    -udb,  --build-unviral  Build non viral database (control),  "
+    echo "                                                                 "
+    echo "    -gad,  --gen-adapters   Generate FASTA file with adapters,   "
+    echo "    -gp,   --get-phix       Extracts PhiX genomes (Needs viral DB),  "
+    echo "    -gm,   --get-mito       Downloads human Mitochondrial genome,"
+    echo "    -gb,   --get-b19        Extracts B19 genome (Needs viral DB),"
+    echo "    -gh3,  --get-hv3        Extracts HV3 genome (Needs viral DB),"
+    echo "    -gh4,  --get-hv4        Extracts HV4 genome (Needs viral DB),"
+    echo "    -gh7,  --get-hv7        Extracts HV7 genome (Needs viral DB),"
+    echo "    -gav,  --get-av         Extracts AV genome (Needs viral DB),"
+    echo "    -gy,   --get-y-chromo   Downloads human Y-chromosome,        "
+    echo "                                                                 "
+    echo "    -ra,   --run-analysis   Run data analysis,                   "
+    echo "                                                                 "
+    echo "    -rm,   --run-mito       Run Mito align, sort and consensus seq,   "
+    echo "    -rb,   --run-b19        Run B19 align, sort and consensus seq,    "
+    echo "    -rh3,  --run-hv3        Run HV3 align, sort and consensus seq,    "
+    echo "    -rh4,  --run-hv4        Run HV4 align, sort and consensus seq,    "
+    echo "    -rh7,  --run-hv7        Run HV7 align, sort and consensus seq,    "
+    echo "    -rav,  --run-av         Run AV align, sort and consensus seq,    "
     echo "                                                                "
-    echo "    -all, --run-all        Run all the options.                 "
+    echo "    -rcy,  --run-y-chromo   Run Y align, sort and consensus seq,    "
+    echo "    -rda,  --run-de-novo    Run de-novo assembly,               "
+    echo "                                                                "
+    echo "    -all,  --run-all        Run all the options.                 "
     echo "                                                                "
     echo -e "\e[93m    Example: ./ki.sh -all                                         \e[0m"
     echo "                                                                "
@@ -231,6 +318,30 @@ if [[ "$GET_B19" -eq "1" ]];
   then
   ./ki_get_b19.sh
   fi
+# ==============================================================================
+#
+if [[ "$GET_HV3" -eq "1" ]];
+  then
+  ./ki_get_hv3.sh
+  fi
+# ==============================================================================
+#
+if [[ "$GET_HV4" -eq "1" ]];
+  then
+  ./ki_get_hv4.sh
+  fi
+# ==============================================================================
+#
+if [[ "$GET_HV7" -eq "1" ]];
+  then
+  ./ki_get_hv7.sh
+  fi
+# ==============================================================================
+#
+if [[ "$GET_AV" -eq "1" ]];
+  then
+  ./ki_get_av.sh
+  fi
 #
 # ==============================================================================
 #
@@ -260,12 +371,18 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     cp $SPL_Reverse RV_READS.fq.gz;
     echo -e "\e[34m[ki]\e[32m Done!\e[0m";
     #
+    # ==========================================================================
+    # TRIM AND FILTER READS
+    #
     echo -e "\e[34m[ki]\e[32m Trimming and filtering with Trimmomatic ...\e[0m";
     ./ki_trim_filter_reads.sh
     echo -e "\e[34m[ki]\e[32m Done!\e[0m";
     #
     # THE OUTPUT OF TRIMMING IS:
     # o_fw_pr.fq  o_fw_unpr.fq  o_rv_pr.fq  o_rv_unpr.fq
+    #
+    # ========================================================================== 
+    # METAGENOMICS USING ONLY A VIRAL DATABASE
     #
     if [[ "$RUN_META_ON" -eq "1" ]];
       then
@@ -278,6 +395,9 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       fi
     #
+    # ==========================================================================
+    # COMPLEXITY PROFILES FOR TOP IDENTIFIED VIRAL SEQUENCES
+    #
     if [[ "$RUN_PROFILES_ON" -eq "1" ]];
       then
       echo -e "\e[34m[ki]\e[32m Building complexity profiles with gto ...\e[0m";
@@ -286,6 +406,9 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       fi
     #
+    # ========================================================================== 
+    # METAGENOMICS WITH ALL NON VIRAL
+    #
     if [[ "$RUN_META_NON_VIRAL_ON" -eq "1" ]];
       then
       echo -e "\e[34m[ki]\e[32m Running NON viral metagen. analysis with FALCON ...\e[0m";
@@ -293,19 +416,22 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       fi
     #
+    # ==========================================================================
+    # MITOCHONDRIAL GENOME ALIGN AND CONSENSUS
+    #
     if [[ "$RUN_MITO_ON" -eq "1" ]];
       then
       echo -e "\e[34m[ki]\e[32m Aliggning reads to mitochondrial ref with bowtie2 ...\e[0m";
       ./ki_mt_align_reads.sh mtDNA.fa $ORGAN_T
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       #
-      if [[ "$RUN_MITO_CONSENSUS" -eq "1" ]];
-        then
-        echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./ki_mt_consensus.sh mtDNA.fa aligned_sorted-$ORGAN_T.bam $ORGAN_T
-        echo -e "\e[34m[ki]\e[32m Done!\e[0m"
-	fi
+      echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+      ./ki_mt_consensus.sh mtDNA.fa mt_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m"
       fi
+    #
+    # ========================================================================== 
+    # SPECIFIC VIRAL ALIGN AND CONSENSUS: B19, HV3, HV4, HV7, AV
     #
     if [[ "$RUN_B19_ON" -eq "1" ]];
       then
@@ -313,17 +439,57 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       ./ki_b19_align_reads.sh B19.fa $ORGAN_T
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       #
-      if [[ "$RUN_B19_CONSENSUS" -eq "1" ]];
-        then
-        echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./ki_b19_consensus.sh B19.fa aligned_sorted-$ORGAN_T.bam $ORGAN_T
-        echo -e "\e[34m[ki]\e[32m Done!\e[0m"
-        fi
+      echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+      ./ki_b19_consensus.sh B19.fa b19_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m"
       fi
-
-
-
-
+    #
+    if [[ "$RUN_HV3_ON" -eq "1" ]];
+      then
+      echo -e "\e[34m[ki]\e[32m Aliggning reads to HV3 ref with bowtie2 ...\e[0m";
+      ./ki_hv3_align_reads.sh HV3.fa $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+      #
+      echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+      ./ki_hv3_consensus.sh HV3.fa hv3_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m"
+      fi
+    #
+    if [[ "$RUN_HV4_ON" -eq "1" ]];
+      then
+      echo -e "\e[34m[ki]\e[32m Aliggning reads to HV4 ref with bowtie2 ...\e[0m";
+      ./ki_hv4_align_reads.sh HV4.fa $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+      #
+      echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+      ./ki_hv4_consensus.sh HV4.fa hv4_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m"
+      if
+    #
+    if [[ "$RUN_HV7_ON" -eq "1" ]];
+      then
+      echo -e "\e[34m[ki]\e[32m Aliggning reads to HV7 ref with bowtie2 ...\e[0m";
+      ./ki_hv7_align_reads.sh HV7.fa $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+      #
+      echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+      ./ki_hv7_consensus.sh HV7.fa hv7_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m"
+      if	      
+    #
+    if [[ "$RUN_AV_ON" -eq "1" ]];
+      then
+      echo -e "\e[34m[ki]\e[32m Aliggning reads to AV ref with bowtie2 ...\e[0m";
+      ./ki_av_align_reads.sh AV.fa $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+      #
+      echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+      ./ki_av_consensus.sh AV.fa av_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m"
+      if   
+    #
+    # ========================================================================== 
+    # CY VERYFICATION
     #
     if [[ "$RUN_CY_ON" -eq "1" ]];
       then
@@ -332,6 +498,9 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       fi
     #
+    # ==========================================================================
+    # DE-NOVO ASSEMBLY
+    #
     if [[ "$RUN_DE_NOVO_ASSEMBLY" -eq "1" ]];
       then
       echo -e "\e[34m[ki]\e[32m Running do-novo DNA assembly with SPAdes ...\e[0m";
@@ -339,6 +508,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       fi
     #
+    # ==========================================================================
     done
   #
   mkdir -p results;

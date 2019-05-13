@@ -2,8 +2,8 @@
 #
 # moreFilters: http://samtools.github.io/bcftools/howtos/variant-calling.html
 #
-Reference=$1;     # B19.fa
-Alignments=$2;    # b19_aligned_sorted-heart.bam
+Reference=$1;     # HV7.fa
+Alignments=$2;    # hv7_aligned_sorted-heart.bam
 Organ=$3;         # organ name
 #
 rm -f calls.vcf.gz calls.vcf.gz.csi calls.norm.bcf calls.norm.flt-indels.bcf calls.norm.flt-indels.vcf.gz calls.norm.vcf.gz 
@@ -20,8 +20,8 @@ bcftools filter --IndelGap 5 calls.norm.vcf.gz -Oz -o calls.norm.flt-indels.vcf.
 #
 # create consensus sequence
 bcftools index calls.norm.flt-indels.vcf.gz
-bcftools consensus -f $Reference calls.norm.flt-indels.vcf.gz > B19-consensus-$Organ.fa
+bcftools consensus -f $Reference calls.norm.flt-indels.vcf.gz > HV7-consensus-$Organ.fa
 #
 # create bed file
-zcat calls.norm.flt-indels.vcf.gz |vcf2bed --snvs > B19-calls-$Organ.bed
+zcat calls.norm.flt-indels.vcf.gz |vcf2bed --snvs > HV7-calls-$Organ.bed
 #

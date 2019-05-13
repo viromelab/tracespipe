@@ -464,7 +464,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
       ./ki_hv4_consensus.sh HV4.fa hv4_aligned_sorted-$ORGAN_T.bam $ORGAN_T
       echo -e "\e[34m[ki]\e[32m Done!\e[0m"
-      if
+      fi
     #
     if [[ "$RUN_HV7_ON" -eq "1" ]];
       then
@@ -475,7 +475,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
       ./ki_hv7_consensus.sh HV7.fa hv7_aligned_sorted-$ORGAN_T.bam $ORGAN_T
       echo -e "\e[34m[ki]\e[32m Done!\e[0m"
-      if	      
+      fi	      
     #
     if [[ "$RUN_AV_ON" -eq "1" ]];
       then
@@ -486,7 +486,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
       ./ki_av_consensus.sh AV.fa av_aligned_sorted-$ORGAN_T.bam $ORGAN_T
       echo -e "\e[34m[ki]\e[32m Done!\e[0m"
-      if   
+      fi   
     #
     # ========================================================================== 
     # CY VERYFICATION

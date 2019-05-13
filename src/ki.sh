@@ -302,7 +302,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$RUN_MITO_CONSENSUS" -eq "1" ]];
         then
         echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./ki_consensus.sh mtDNA.fa aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./ki_mito_consensus.sh mtDNA.fa aligned_sorted-$ORGAN_T.bam $ORGAN_T
         echo -e "\e[34m[ki]\e[32m Done!\e[0m"
 	fi
       fi
@@ -316,7 +316,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$RUN_B19_CONSENSUS" -eq "1" ]];
         then
         echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./ki_consensus_B19.sh B19.fa aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./ki_b19_consensus.sh B19.fa aligned_sorted-$ORGAN_T.bam $ORGAN_T
         echo -e "\e[34m[ki]\e[32m Done!\e[0m"
         fi
       fi

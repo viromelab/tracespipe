@@ -1,6 +1,7 @@
 #!/bin/bash
 #
 # moreFilters: http://samtools.github.io/bcftools/howtos/variant-calling.html
+# MITOCHONDRIAL SNIPS DATABASE: http://www.mtdb.igp.uu.se/
 #
 Reference=$1;     # mtDNA.fa
 Alignments=$2;    # aligned_sorted-heart.bam

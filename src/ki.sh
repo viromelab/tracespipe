@@ -128,7 +128,13 @@ for i in "$@"
       SHOW_HELP=0;
       shift
     ;;
-    -rm|--run-mito)
+    -rm|--run-meta)
+      RUN_ANALYSIS=1;
+      RUN_META_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rmt|--run-mito)
       RUN_ANALYSIS=1;
       RUN_MITO_ON=1;
       SHOW_HELP=0;
@@ -226,10 +232,10 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "                       ██║  ██╗ ██║                             "
     echo -e "                       ╚═╝  ╚═╝ ╚═╝                             \e[0m"
     echo "                                                                "
-    echo -e "\e[93m    Usage: ./ki.sh [options]                                    \e[0m"
-    echo "                                                                "
     echo -e "    \e[32mAn automatic pipeline for viral genome identification\e[0m" 
     echo -e "    \e[32min the contexts of clinical virology and forensics\e[0m.         "
+    echo "                                                                "
+    echo -e "\e[93m    Usage: ./ki.sh [options]                                    \e[0m"
     echo "                                                                "
     echo "    -h,    --help           Show this help message and exit,     "
     echo "    -i,    --install        Installation of all the tools,       "
@@ -248,7 +254,9 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "                                                                 "
     echo "    -ra,   --run-analysis   Run data analysis,                   "
     echo "                                                                 "
-    echo "    -rm,   --run-mito       Run Mito align, sort and consensus seq,   "
+    echo "    -rm,   --run-meta       Run viral metagenomic identification,    "
+    echo "                                                                 "
+    echo "    -rmt,  --run-mito       Run Mito align, sort and consensus seq,   "
     echo "    -rb,   --run-b19        Run B19 align, sort and consensus seq,    "
     echo "    -rh3,  --run-hv3        Run HV3 align, sort and consensus seq,    "
     echo "    -rh4,  --run-hv4        Run HV4 align, sort and consensus seq,    "

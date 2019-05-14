@@ -25,6 +25,7 @@ GET_HV3=0;
 GET_HV4=0;
 GET_HV7=0;
 GET_AV=0;
+GET_EXTRA=0;
 #
 RUN_ANALYSIS=0;
 #
@@ -109,6 +110,11 @@ for i in "$@"
     ;;
     -gy|--get-y-chromo)
       GET_CY=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -gx|--get-extra-vir)
+      GET_EXTRA=1;
       SHOW_HELP=0;
       shift
     ;;
@@ -257,6 +263,7 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "    -gh7,  --get-hv7        Extracts HV7 genome (Needs viral DB),"
     echo "    -gav,  --get-av         Extracts AV genome (Needs viral DB),"
     echo "    -gy,   --get-y-chromo   Downloads human Y-chromosome,        "
+    echo "    -gx,   --get-extra-vir  Downloads/appends (VDB) extra viral seq, "
     echo "                                                                 "
     echo "    -ra,   --run-analysis   Run data analysis,                   "
     echo "                                                                 "
@@ -363,6 +370,13 @@ if [[ "$GET_AV" -eq "1" ]];
 if [[ "$GET_CY" -eq "1" ]];
   then
   ./ki_get_cy.sh
+  fi
+#
+# ==============================================================================
+#
+if [[ "$GET_EXTRA" -eq "1" ]];
+  then
+  ./ki_get_enriched_sequences.sh VDB.fa
   fi
 #
 # ==============================================================================

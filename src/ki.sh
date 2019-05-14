@@ -134,6 +134,12 @@ for i in "$@"
       SHOW_HELP=0;
       shift
     ;;
+    -ro|--run-meta-nv)
+      RUN_ANALYSIS=1;
+      RUN_META_NON_VIRAL_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
     -rmt|--run-mito)
       RUN_ANALYSIS=1;
       RUN_MITO_ON=1;
@@ -255,6 +261,7 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "    -ra,   --run-analysis   Run data analysis,                   "
     echo "                                                                 "
     echo "    -rm,   --run-meta       Run viral metagenomic identification,    "
+    echo "    -ro,   --run-meta-nv    Run NON-viral metagenomic identification,   "
     echo "                                                                 "
     echo "    -rmt,  --run-mito       Run Mito align, sort and consensus seq,   "
     echo "    -rb,   --run-b19        Run B19 align, sort and consensus seq,    "

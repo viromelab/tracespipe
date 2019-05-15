@@ -522,8 +522,9 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     if [[ "$RUN_CY_ON" -eq "1" ]];
       then
-      echo -e "\e[34m[ki]\e[32m Extracting Y chromosome reads with MAGNET ...\e[0m";
-      ./ki_extract_classify_cy.sh $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Searching for Y chromosome halotypes ...\e[0m";
+      ./ki_cy_markers.sh $ORGAN_T
+      #./ki_extract_classify_cy.sh $ORGAN_T
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       fi
     #

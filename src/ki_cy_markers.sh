@@ -15,9 +15,11 @@
 # ==============================================================================
 #
 # ALIGN READS OF CY
+echo "Searching for specific SNPs in Y chromosome ..." ;
 ./ki_cy_align_reads.sh cy.fa $1     #$1->ORGAN
 ./ki_cy_consensus.sh cy.fa cy_aligned_sorted-$1.bam $1
 ./ki_search_halotypes.sh $1
+echo "Done";
 ##
 # mapfile -t ENTRIES < cy_halotype_data.csv # http://www.phylotree.org/Y/marker_list.htm
 ##

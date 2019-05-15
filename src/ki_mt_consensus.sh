@@ -21,7 +21,11 @@ bcftools filter --IndelGap 5 calls.norm.vcf.gz -Oz -o calls.norm.flt-indels.vcf.
 #
 # create consensus sequence
 bcftools index calls.norm.flt-indels.vcf.gz
+#
 bcftools consensus -f $Reference calls.norm.flt-indels.vcf.gz > mt-consensus-$Organ.fa
+tail -n +2 mt-consensus-$Organ.fa > TMP_FILE_X_KI.xki
+echo "> $Organ Mitochondrial consensus" > mt-consensus-$Organ.fa
+cat TMP_FILE_X_KI.xki >> mt-consensus-$Organ.fa
 #
 # create bed file
 zcat calls.norm.flt-indels.vcf.gz |vcf2bed --snvs > mt-calls.$Organ.bed

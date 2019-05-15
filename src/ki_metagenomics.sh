@@ -1,6 +1,6 @@
 #!/bin/bash
 # 
-# IT ASSUMES THAT THE FOLLOWING OUTPUT FILES EXIST:
+# IT ASSUMES THAT THE FOLLOWING OUTPUT TRIMMED FILES EXIST:
 # NP-o_fw_pr.fq NP-o_fw_unpr.fq NP-o_rv_pr.fq NP-o_rv_unpr.fq
 #
 
@@ -9,7 +9,7 @@ DB="$2";
 RNAMES="NP-o_fw_pr.fq:NP-o_fw_unpr.fq:NP-o_rv_pr.fq:NP-o_rv_unpr.fq";
 
 ## RUN METAGENOMIC COMPOSITION
-FALCON -v -n 12 -t 38 -F -Z -l 47 -c 20 -x top-$ORGAN.csv -y $ORGAN.com $RNAMES $DB
+FALCON -v -n 12 -t 200 -F -Z -l 47 -c 20 -x top-$ORGAN.csv -y $ORGAN.com $RNAMES $DB
 FALCON-filter -v -F -t 1.0 -o $ORGAN.pos $ORGAN.com
 FALCON-filter-visual -v -e 1 -F -o $ORGAN.svg $ORGAN.pos
 
@@ -17,7 +17,7 @@ FALCON-filter-visual -v -e 1 -F -o $ORGAN.svg $ORGAN.pos
 rsvg-convert -f pdf -o $ORGAN.pdf $ORGAN.svg
 
 ## RUN GULL FOR INTER-GENOMIC SIMILARITY ANALYSIS
-cat top-$ORGAN.csv | awk '{ if($3 > 2) print $1"\t"$2"\t"$3"\t"$4; }' \
+cat top-$ORGAN.csv | awk '{ if($3 > 10) print $1"\t"$2"\t"$3"\t"$4; }' \
 | awk '{ print $4;}' | tr '|' '\t' | tr '_' '\t' | awk '{ print $1;}' > GIS-$ORGAN;
 idx=0;
 cat GIS-$ORGAN | while read line

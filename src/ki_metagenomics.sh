@@ -6,10 +6,11 @@
 
 ORGAN="$1";
 DB="$2";
+TOP_SIZE="$3";
 RNAMES="NP-o_fw_pr.fq:NP-o_fw_unpr.fq:NP-o_rv_pr.fq:NP-o_rv_unpr.fq";
 
 ## RUN METAGENOMIC COMPOSITION
-FALCON -v -n 12 -t 500 -F -Z -l 47 -c 20 -x top-$ORGAN.csv -y $ORGAN.com $RNAMES $DB
+FALCON -v -n 12 -t $TOP_SIZE -F -Z -m 6:1:1:0/0 -m 11:50:1:0/0 -m 18:500:1:5/10 -g 0.85 -c 70 -x top-$ORGAN.csv -y $ORGAN.com $RNAMES $DB
 FALCON-filter -v -F -t 1.0 -o $ORGAN.pos $ORGAN.com
 FALCON-filter-visual -v -e 1 -F -o $ORGAN.svg $ORGAN.pos
 

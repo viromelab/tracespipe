@@ -420,7 +420,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[ki]\e[32m Running viral metagenomic analysis with FALCON ...\e[0m";
-      ./ki_metagenomics.sh $ORGAN_T VDB.fa
+      ./ki_metagenomics.sh $ORGAN_T VDB.fa 500
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       fi
     #
@@ -441,7 +441,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_META_NON_VIRAL_ON" -eq "1" ]];
       then
       echo -e "\e[34m[ki]\e[32m Running NON viral metagen. analysis with FALCON ...\e[0m";
-      ./ki_metagenomics.sh $ORGAN_T-NON_VIRAL DB.fa 
+      ./ki_metagenomics.sh $ORGAN_T-NON_VIRAL DB.fa 5000 
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       fi
     #

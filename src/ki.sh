@@ -26,6 +26,7 @@ GET_HV3=0;
 GET_HV4=0;
 GET_HV7=0;
 GET_AV=0;
+GET_JCV=0;
 GET_EXTRA=0;
 #
 RUN_ANALYSIS=0;
@@ -41,6 +42,7 @@ RUN_HV3_ON=0;
 RUN_HV4_ON=0;
 RUN_HV7_ON=0;
 RUN_AV_ON=0;
+RUN_JCV_ON=0;
 RUN_CY_ON=0;
 #
 RUN_DE_NOVO_ASSEMBLY=0;
@@ -117,6 +119,11 @@ for i in "$@"
       SHOW_HELP=0;
       shift
     ;;
+    -gjc|--get-jcv)
+      GET_JCV=1;
+      SHOW_HELP=0;
+      shift
+    ;;
     -gy|--get-y-chromo)
       GET_CY=1;
       SHOW_HELP=0;
@@ -139,6 +146,7 @@ for i in "$@"
       RUN_HV4_ON=1;
       RUN_HV7_ON=1;
       RUN_AV_ON=1;
+      RUN_JCV_ON=1;
       RUN_CY_ON=1;
       #RUN_DE_NOVO_ASSEMBLY=1;
       SHOW_HELP=0;
@@ -198,6 +206,12 @@ for i in "$@"
       SHOW_HELP=0;
       shift
     ;;
+    -rjc|--run-jcv)
+      RUN_ANALYSIS=1;
+      RUN_JCV_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
     -rcy|--run-y-chromo)
       RUN_ANALYSIS=1;
       RUN_CY_ON=1;
@@ -222,6 +236,7 @@ for i in "$@"
       GET_HV4=1;
       GET_HV7=1;
       GET_AV=1;
+      GET_JCV=1;
       GET_CY=1;
       RUN_ANALYSIS=1;
       #
@@ -235,6 +250,7 @@ for i in "$@"
       RUN_HV4_ON=1;
       RUN_HV7_ON=1;
       RUN_AV_ON=1;
+      RUN_JCV_ON=1;
       RUN_CY_ON=1;
       RUN_DE_NOVO_ASSEMBLY=1;
       SHOW_HELP=0;
@@ -281,6 +297,7 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "    -gh4,  --get-hv4        Extracts HV4 genome (Needs viral DB),"
     echo "    -gh7,  --get-hv7        Extracts HV7 genome (Needs viral DB),"
     echo "    -gav,  --get-av         Extracts AV genome (Needs viral DB),"
+    echo "    -gjc,  --get-jcv        Extracts JCV genome (Needs viral DB),"
     echo "    -gy,   --get-y-chromo   Downloads human Y-chromosome,        "
     echo "                                                                 "
     echo "    -ra,   --run-analysis   Run data analysis,                   "
@@ -296,6 +313,7 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "    -rh4,  --run-hv4        Run HV4 align, sort and consensus seq,    "
     echo "    -rh7,  --run-hv7        Run HV7 align, sort and consensus seq,    "
     echo "    -rav,  --run-av         Run AV align, sort and consensus seq,    "
+    echo "    -rjc,  --run-jcv        Run JCV align, sort and consensus seq,    "
     echo "                                                                "
     echo "    -rcy,  --run-y-chromo   Run Y align, sort and consensus seq,    "
     echo "                                                                 "
@@ -395,6 +413,13 @@ if [[ "$GET_HV7" -eq "1" ]];
 if [[ "$GET_AV" -eq "1" ]];
   then
   ./ki_get_av.sh
+  fi
+#
+# ==============================================================================
+#
+if [[ "$GET_JCV" -eq "1" ]];
+  then
+  ./ki_get_jcv.sh
   fi
 #
 # ==============================================================================
@@ -559,6 +584,17 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       ./ki_av_consensus.sh AV.fa av_aligned_sorted-$ORGAN_T.bam $ORGAN_T
       echo -e "\e[34m[ki]\e[32m Done!\e[0m"
       fi   
+    #
+    if [[ "$RUN_JCV_ON" -eq "1" ]];
+      then
+      echo -e "\e[34m[ki]\e[32m Aliggning reads to JCV ref with bowtie2 ...\e[0m";
+      ./ki_jcv_align_reads.sh JCV.fa $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+      #
+      echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+      ./ki_jcv_consensus.sh JCV.fa av_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m"
+      fi
     #
     # ========================================================================== 
     # CY VERYFICATION

@@ -21,6 +21,7 @@ GET_PHIX=0;
 GET_MITO=0;
 GET_B19=0;
 GET_CY=0;
+GET_CY_CDS=0;
 GET_HV3=0;
 GET_HV4=0;
 GET_HV7=0;
@@ -32,13 +33,16 @@ RUN_ANALYSIS=0;
 RUN_META_ON=0;
 RUN_PROFILES_ON=0;
 RUN_META_NON_VIRAL_ON=0;
+#
 RUN_MITO_ON=0;
 RUN_B19_ON=0;
+RUN_B19_CDS_ON=0;
 RUN_HV3_ON=0;
 RUN_HV4_ON=0;
 RUN_HV7_ON=0;
 RUN_AV_ON=0;
 RUN_CY_ON=0;
+#
 RUN_DE_NOVO_ASSEMBLY=0;
 #
 if [ "$#" -eq 0 ];
@@ -88,6 +92,11 @@ for i in "$@"
       SHOW_HELP=0;
       shift
     ;;
+    -gbc|--get-b19-cds)
+      GET_B19_CDS=1;
+      SHOW_HELP=0;
+      shift
+    ;;
     -gh3|--get-hv3)
       GET_HV3=1;
       SHOW_HELP=0;
@@ -125,6 +134,7 @@ for i in "$@"
       RUN_META_NON_VIRAL_ON=1;
       RUN_MITO_ON=1;
       RUN_B19_ON=1;
+      RUN_B19_CDS=1;
       RUN_HV3_ON=1;
       RUN_HV4_ON=1;
       RUN_HV7_ON=1;
@@ -155,6 +165,12 @@ for i in "$@"
     -rb|--run-b19)
       RUN_ANALYSIS=1;
       RUN_B19_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rbc|--run-b19-cds)
+      RUN_ANALYSIS=1;
+      RUN_B19_CDS_ON=1;
       SHOW_HELP=0;
       shift
     ;;
@@ -214,6 +230,7 @@ for i in "$@"
       RUN_META_NON_VIRAL_ON=1;
       RUN_MITO_ON=1;
       RUN_B19_ON=1;
+      RUN_B19_CDS_ON=1;
       RUN_HV3_ON=1;
       RUN_HV4_ON=1;
       RUN_HV7_ON=1;
@@ -254,16 +271,17 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "    -vdb,  --build-viral    Build viral database,                "
     echo "    -udb,  --build-unviral  Build non viral database (control),  "
     echo "                                                                 "
+    echo "    -gx,   --get-extra-vir  Downloads/appends (VDB) extra viral seq, "
     echo "    -gad,  --gen-adapters   Generate FASTA file with adapters,   "
     echo "    -gp,   --get-phix       Extracts PhiX genomes (Needs viral DB),  "
     echo "    -gm,   --get-mito       Downloads human Mitochondrial genome,"
     echo "    -gb,   --get-b19        Extracts B19 genome (Needs viral DB),"
+    echo "    -gbc,  --get-b19-cds    Extracts B19 CDS genome (Needs viral DB),"
     echo "    -gh3,  --get-hv3        Extracts HV3 genome (Needs viral DB),"
     echo "    -gh4,  --get-hv4        Extracts HV4 genome (Needs viral DB),"
     echo "    -gh7,  --get-hv7        Extracts HV7 genome (Needs viral DB),"
     echo "    -gav,  --get-av         Extracts AV genome (Needs viral DB),"
     echo "    -gy,   --get-y-chromo   Downloads human Y-chromosome,        "
-    echo "    -gx,   --get-extra-vir  Downloads/appends (VDB) extra viral seq, "
     echo "                                                                 "
     echo "    -ra,   --run-analysis   Run data analysis,                   "
     echo "                                                                 "
@@ -271,13 +289,16 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "    -ro,   --run-meta-nv    Run NON-viral metagenomic identification,   "
     echo "                                                                 "
     echo "    -rmt,  --run-mito       Run Mito align, sort and consensus seq,   "
+    echo "                                                                 "
     echo "    -rb,   --run-b19        Run B19 align, sort and consensus seq,    "
+    echo "    -rbc,  --run-b19-cds    Run B19 CDS align, sort and consensus seq,    "
     echo "    -rh3,  --run-hv3        Run HV3 align, sort and consensus seq,    "
     echo "    -rh4,  --run-hv4        Run HV4 align, sort and consensus seq,    "
     echo "    -rh7,  --run-hv7        Run HV7 align, sort and consensus seq,    "
     echo "    -rav,  --run-av         Run AV align, sort and consensus seq,    "
     echo "                                                                "
     echo "    -rcy,  --run-y-chromo   Run Y align, sort and consensus seq,    "
+    echo "                                                                 "
     echo "    -rda,  --run-de-novo    Run de-novo assembly,               "
     echo "                                                                "
     echo "    -all,  --run-all        Run all the options.                 "
@@ -340,24 +361,35 @@ if [[ "$GET_B19" -eq "1" ]];
   then
   ./ki_get_b19.sh
   fi
+#
+# ==============================================================================
+#
+if [[ "$GET_B19_CDS" -eq "1" ]];
+  then
+  ./ki_get_b19_cds.sh
+  fi
+#
 # ==============================================================================
 #
 if [[ "$GET_HV3" -eq "1" ]];
   then
   ./ki_get_hv3.sh
   fi
+#
 # ==============================================================================
 #
 if [[ "$GET_HV4" -eq "1" ]];
   then
   ./ki_get_hv4.sh
   fi
+#
 # ==============================================================================
 #
 if [[ "$GET_HV7" -eq "1" ]];
   then
   ./ki_get_hv7.sh
   fi
+#
 # ==============================================================================
 #
 if [[ "$GET_AV" -eq "1" ]];
@@ -460,7 +492,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       fi
     #
     # ========================================================================== 
-    # SPECIFIC VIRAL ALIGN AND CONSENSUS: B19, HV3, HV4, HV7, AV
+    # SPECIFIC VIRAL ALIGN AND CONSENSUS: B19, B19_CDS, HV3, HV4, HV7, AV
     #
     if [[ "$RUN_B19_ON" -eq "1" ]];
       then
@@ -470,6 +502,17 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
       ./ki_b19_consensus.sh B19.fa b19_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m"
+      fi
+    #
+    if [[ "$RUN_B19_CDS_ON" -eq "1" ]];
+      then
+      echo -e "\e[34m[ki]\e[32m Aliggning reads to B19 CDS ref with bowtie2 ...\e[0m";
+      ./ki_b19_cds_align_reads.sh B19_cds.fa $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+      #
+      echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+      ./ki_b19_cds_consensus.sh B19_cds.fa b19_cds_aligned_sorted-$ORGAN_T.bam $ORGAN_T
       echo -e "\e[34m[ki]\e[32m Done!\e[0m"
       fi
     #

@@ -592,7 +592,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-      ./ki_jcv_consensus.sh JCV.fa av_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+      ./ki_jcv_consensus.sh JCV.fa jcv_aligned_sorted-$ORGAN_T.bam $ORGAN_T
       echo -e "\e[34m[ki]\e[32m Done!\e[0m"
       fi
     #

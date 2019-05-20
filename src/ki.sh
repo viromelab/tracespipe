@@ -12,6 +12,7 @@
 ##################################################################################
 #
 SHOW_HELP=0;
+#
 INSTALL=0;
 BUILD_VDB=0;
 BUILD_UDB=0;
@@ -283,6 +284,7 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo -e "\e[93m    Usage: ./ki.sh [options]                                    \e[0m"
     echo "                                                                "
     echo "    -h,    --help           Show this help message and exit,     "
+    echo "                                                                 "
     echo "    -i,    --install        Installation of all the tools,       "
     echo "    -vdb,  --build-viral    Build viral database,                "
     echo "    -udb,  --build-unviral  Build non viral database (control),  "

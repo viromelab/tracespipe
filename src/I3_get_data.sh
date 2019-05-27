@@ -1,5 +1,5 @@
 #!/bin/bash
-scp dpratas@atlas.fimm.fi:/fas/NGS/pipes/fastq/fimm_ngs_mtoppinen/autopsy_NGS_novaseq1/V9_* . 
+scp dpratas@atlas.fimm.fi:/fas/NGS/pipes/fastq/fimm_ngs_mtoppinen/autopsy_NGS_novaseq1/V9_* .
 scp dpratas@atlas.fimm.fi:/fas/NGS/pipes/fastq/fimm_ngs_mtoppinen/autopsy_NGS_novaseq1/V10_* .
 scp dpratas@atlas.fimm.fi:/fas/NGS/pipes/fastq/fimm_ngs_mtoppinen/autopsy_NGS_novaseq1/V11_* .
 scp dpratas@atlas.fimm.fi:/fas/NGS/pipes/fastq/fimm_ngs_mtoppinen/autopsy_NGS_novaseq1/V12_* .

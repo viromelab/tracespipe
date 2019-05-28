@@ -2,7 +2,7 @@
 ORGAN=$1;
 #
 cat top-$ORGAN.csv \
-| grep -e "Epstein" -e "epstein" -e "herpesvirus_4" -e "gammaherpesvirus_4" \
+| grep -e "Epstein" -e "epstein" -e "herpesvirus_4"" \
 | awk '{ if($3 > 1 && $2 > 110000 && $2 < 300000) print $3"\t"$4; }' \
 | head -n 1 \
 | awk '{ print $2;}' \

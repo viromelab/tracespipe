@@ -20,14 +20,8 @@ BUILD_UDB=0;
 GEN_ADAPTERS=0;
 GET_PHIX=0;
 GET_MITO=0;
-GET_B19=0;
 GET_CY=0;
-GET_CY_CDS=0;
-GET_HV3=0;
-GET_HV4=0;
-GET_HV7=0;
-GET_AV=0;
-GET_JCV=0;
+#GET_CY_CDS=0;
 GET_EXTRA=0;
 #
 RUN_ANALYSIS=0;
@@ -37,13 +31,17 @@ RUN_PROFILES_ON=0;
 RUN_META_NON_VIRAL_ON=0;
 #
 RUN_MITO_ON=0;
+#
 RUN_B19_ON=0;
-RUN_B19_CDS_ON=0;
 RUN_HV3_ON=0;
 RUN_HV4_ON=0;
+RUN_HV5_ON=0;
+RUN_HV6_ON=0;
 RUN_HV7_ON=0;
-RUN_AV_ON=0;
+RUN_TTV_ON=0;
 RUN_JCV_ON=0;
+RUN_MCV_ON=0;
+#
 RUN_CY_ON=0;
 #
 RUN_DE_NOVO_ASSEMBLY=0;
@@ -90,41 +88,6 @@ for i in "$@"
       SHOW_HELP=0;
       shift
     ;;
-    -gb|--get-b19)
-      GET_B19=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -gbc|--get-b19-cds)
-      GET_B19_CDS=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -gh3|--get-hv3)
-      GET_HV3=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -gh4|--get-hv4)
-      GET_HV4=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -gh7|--get-hv7)
-      GET_HV7=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -gav|--get-av)
-      GET_AV=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -gjc|--get-jcv)
-      GET_JCV=1;
-      SHOW_HELP=0;
-      shift
-    ;;
     -gy|--get-y-chromo)
       GET_CY=1;
       SHOW_HELP=0;
@@ -142,14 +105,16 @@ for i in "$@"
       RUN_META_NON_VIRAL_ON=1;
       RUN_MITO_ON=1;
       RUN_B19_ON=1;
-      RUN_B19_CDS=1;
       RUN_HV3_ON=1;
       RUN_HV4_ON=1;
+      RUN_HV5_ON=1;
+      RUN_HV6_ON=1;
       RUN_HV7_ON=1;
-      RUN_AV_ON=1;
+      RUN_TTV_ON=1;
       RUN_JCV_ON=1;
+      RUN_MCV_ON=1;
       RUN_CY_ON=1;
-      #RUN_DE_NOVO_ASSEMBLY=1;
+      RUN_DE_NOVO_ASSEMBLY=1;
       SHOW_HELP=0;
       shift
     ;;
@@ -177,12 +142,6 @@ for i in "$@"
       SHOW_HELP=0;
       shift
     ;;
-    -rbc|--run-b19-cds)
-      RUN_ANALYSIS=1;
-      RUN_B19_CDS_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
     -rh3|--run-hv3)
       RUN_ANALYSIS=1;
       RUN_HV3_ON=1;
@@ -195,21 +154,39 @@ for i in "$@"
       SHOW_HELP=0;
       shift
     ;;
+    -rh5|--run-hv5)
+      RUN_ANALYSIS=1;
+      RUN_HV5_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rh6|--run-hv6)
+      RUN_ANALYSIS=1;
+      RUN_HV6_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
     -rh7|--run-hv7)
       RUN_ANALYSIS=1;
       RUN_HV7_ON=1;
       SHOW_HELP=0;
       shift
     ;;
-    -rav|--run-av)
+    -rtt|--run-ttv)
       RUN_ANALYSIS=1;
-      RUN_AV_ON=1;
+      RUN_TTV_ON=1;
       SHOW_HELP=0;
       shift
     ;;
     -rjc|--run-jcv)
       RUN_ANALYSIS=1;
       RUN_JCV_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rmc|--run-mcv)
+      RUN_ANALYSIS=1;
+      RUN_MCV_ON=1;
       SHOW_HELP=0;
       shift
     ;;
@@ -232,12 +209,6 @@ for i in "$@"
       GEN_ADAPTERS=1;
       GET_PHIX=1;
       GET_MITO=1;
-      GET_B19=1;
-      GET_HV3=1;
-      GET_HV4=1;
-      GET_HV7=1;
-      GET_AV=1;
-      GET_JCV=1;
       GET_CY=1;
       RUN_ANALYSIS=1;
       #
@@ -246,12 +217,14 @@ for i in "$@"
       RUN_META_NON_VIRAL_ON=1;
       RUN_MITO_ON=1;
       RUN_B19_ON=1;
-      RUN_B19_CDS_ON=1;
       RUN_HV3_ON=1;
       RUN_HV4_ON=1;
+      RUN_HV5_ON=1;
+      RUN_HV6_ON=1;
       RUN_HV7_ON=1;
-      RUN_AV_ON=1;
+      RUN_TTV_ON=1;
       RUN_JCV_ON=1;
+      RUN_MCV_ON=1;
       RUN_CY_ON=1;
       RUN_DE_NOVO_ASSEMBLY=1;
       SHOW_HELP=0;
@@ -293,13 +266,6 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "    -gad,  --gen-adapters   Generate FASTA file with adapters,   "
     echo "    -gp,   --get-phix       Extracts PhiX genomes (Needs viral DB),  "
     echo "    -gm,   --get-mito       Downloads human Mitochondrial genome,"
-    echo "    -gb,   --get-b19        Extracts B19 genome (Needs viral DB),"
-    echo "    -gbc,  --get-b19-cds    Extracts B19 CDS genome (Needs viral DB),"
-    echo "    -gh3,  --get-hv3        Extracts HV3 genome (Needs viral DB),"
-    echo "    -gh4,  --get-hv4        Extracts HV4 genome (Needs viral DB),"
-    echo "    -gh7,  --get-hv7        Extracts HV7 genome (Needs viral DB),"
-    echo "    -gav,  --get-av         Extracts AV genome (Needs viral DB),"
-    echo "    -gjc,  --get-jcv        Extracts JCV genome (Needs viral DB),"
     echo "    -gy,   --get-y-chromo   Downloads human Y-chromosome,        "
     echo "                                                                 "
     echo "    -ra,   --run-analysis   Run data analysis,                   "
@@ -310,12 +276,14 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "    -rmt,  --run-mito       Run Mito align, sort and consensus seq,   "
     echo "                                                                 "
     echo "    -rb,   --run-b19        Run B19 align, sort and consensus seq,    "
-    echo "    -rbc,  --run-b19-cds    Run B19 CDS align, sort and consensus seq,    "
     echo "    -rh3,  --run-hv3        Run HV3 align, sort and consensus seq,    "
     echo "    -rh4,  --run-hv4        Run HV4 align, sort and consensus seq,    "
+    echo "    -rh5,  --run-hv5        Run HV5 align, sort and consensus seq,    "
+    echo "    -rh6,  --run-hv6        Run HV6 align, sort and consensus seq,    "
     echo "    -rh7,  --run-hv7        Run HV7 align, sort and consensus seq,    "
-    echo "    -rav,  --run-av         Run AV align, sort and consensus seq,    "
+    echo "    -rtt,  --run-ttv        Run TTV align, sort and consensus seq,    "
     echo "    -rjc,  --run-jcv        Run JCV align, sort and consensus seq,    "
+    echo "    -rmc,  --run-mcv        Run MCV align, sort and consensus seq,    "
     echo "                                                                "
     echo "    -rcy,  --run-y-chromo   Run Y align, sort and consensus seq,    "
     echo "                                                                 "
@@ -375,54 +343,6 @@ if [[ "$GET_MITO" -eq "1" ]];
   then
   ./ki_get_mito.sh
   fi
-# ==============================================================================
-#
-if [[ "$GET_B19" -eq "1" ]];
-  then
-  ./ki_get_b19.sh
-  fi
-#
-# ==============================================================================
-#
-if [[ "$GET_B19_CDS" -eq "1" ]];
-  then
-  ./ki_get_b19_cds.sh
-  fi
-#
-# ==============================================================================
-#
-if [[ "$GET_HV3" -eq "1" ]];
-  then
-  ./ki_get_hv3.sh
-  fi
-#
-# ==============================================================================
-#
-if [[ "$GET_HV4" -eq "1" ]];
-  then
-  ./ki_get_hv4.sh
-  fi
-#
-# ==============================================================================
-#
-if [[ "$GET_HV7" -eq "1" ]];
-  then
-  ./ki_get_hv7.sh
-  fi
-#
-# ==============================================================================
-#
-if [[ "$GET_AV" -eq "1" ]];
-  then
-  ./ki_get_av.sh
-  fi
-#
-# ==============================================================================
-#
-if [[ "$GET_JCV" -eq "1" ]];
-  then
-  ./ki_get_jcv.sh
-  fi
 #
 # ==============================================================================
 #
@@ -479,8 +399,21 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[ki]\e[32m Running viral metagenomic analysis with FALCON ...\e[0m";
-      ./ki_metagenomics_viral.sh $ORGAN_T VDB.fa 500
+      ./ki_metagenomics_viral.sh $ORGAN_T VDB.fa 1000
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+      #
+      echo -e "\e[34m[ki]\e[32m Finding the best references ...\e[0m";
+      ./ki_get_best_B19.sh $ORGAN_T >  REPORT_META_VIRAL_$ORGAN_T.txt
+      ./ki_get_best_HV3.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./ki_get_best_HV4.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./ki_get_best_HV5.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./ki_get_best_HV6.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./ki_get_best_HV7.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./ki_get_best_TTV.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./ki_get_best_JCV.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./ki_get_best_MCV.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+      #
       fi
     #
     # ==========================================================================
@@ -519,11 +452,17 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       fi
     #
     # ========================================================================== 
-    # SPECIFIC VIRAL ALIGN AND CONSENSUS: B19, B19_CDS, HV3, HV4, HV7, AV
+    # SPECIFIC VIRAL ALIGN/CONSENSUS B19, HV3, HV4, HV5, HV6, HV7, TTV, MCV, JCV
     #
     if [[ "$RUN_B19_ON" -eq "1" ]];
       then
       echo -e "\e[34m[ki]\e[32m Aliggning reads to B19 ref with bowtie2 ...\e[0m";
+      V_INFO=`./ki_get_best_B19.sh $ORGAN_T`;
+      echo "Best match: $V_INFO";
+      V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
+      echo "Extracting sequence from VDB.fa ..."
+      gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > B19.fa
+      echo "Aliggning ..."
       ./ki_b19_align_reads.sh B19.fa $ORGAN_T
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       #
@@ -532,20 +471,15 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[ki]\e[32m Done!\e[0m"
       fi
     #
-    if [[ "$RUN_B19_CDS_ON" -eq "1" ]];
-      then
-      echo -e "\e[34m[ki]\e[32m Aliggning reads to B19 CDS ref with bowtie2 ...\e[0m";
-      ./ki_b19_cds_align_reads.sh B19_cds.fa $ORGAN_T
-      echo -e "\e[34m[ki]\e[32m Done!\e[0m";
-      #
-      echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-      ./ki_b19_cds_consensus.sh B19_cds.fa b19_cds_aligned_sorted-$ORGAN_T.bam $ORGAN_T
-      echo -e "\e[34m[ki]\e[32m Done!\e[0m"
-      fi
-    #
     if [[ "$RUN_HV3_ON" -eq "1" ]];
       then
       echo -e "\e[34m[ki]\e[32m Aliggning reads to HV3 ref with bowtie2 ...\e[0m";
+      V_INFO=`./ki_get_best_HV3.sh $ORGAN_T`;
+      echo "Best match: $V_INFO";
+      V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
+      echo "Extracting sequence from VDB.fa ..."
+      gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > HV3.fa
+      echo "Aliggning ..."
       ./ki_hv3_align_reads.sh HV3.fa $ORGAN_T
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       #
@@ -557,6 +491,12 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_HV4_ON" -eq "1" ]];
       then
       echo -e "\e[34m[ki]\e[32m Aliggning reads to HV4 ref with bowtie2 ...\e[0m";
+      V_INFO=`./ki_get_best_HV4.sh $ORGAN_T`;
+      echo "Best match: $V_INFO";
+      V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
+      echo "Extracting sequence from VDB.fa ..."
+      gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > HV4.fa
+      echo "Aliggning ..."
       ./ki_hv4_align_reads.sh HV4.fa $ORGAN_T
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       #
@@ -565,36 +505,105 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[ki]\e[32m Done!\e[0m"
       fi
     #
+    if [[ "$RUN_HV5_ON" -eq "1" ]];
+      then
+      echo -e "\e[34m[ki]\e[32m Aliggning reads to HV5 ref with bowtie2 ...\e[0m";
+      V_INFO=`./ki_get_best_HV5.sh $ORGAN_T`;
+      echo "Best match: $V_INFO";
+      V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
+      echo "Extracting sequence from VDB.fa ..."
+      gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > HV5.fa
+      echo "Aliggning ..."
+      ./ki_hv5_align_reads.sh HV5.fa $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+      #
+      echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+      ./ki_hv4_consensus.sh HV5.fa hv5_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m"
+      fi
+    #
+    if [[ "$RUN_HV6_ON" -eq "1" ]];
+      then
+      echo -e "\e[34m[ki]\e[32m Aliggning reads to HV6 ref with bowtie2 ...\e[0m";
+      V_INFO=`./ki_get_best_HV6.sh $ORGAN_T`;
+      echo "Best match: $V_INFO";
+      V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
+      echo "Extracting sequence from VDB.fa ..."
+      gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > HV6.fa
+      echo "Aliggning ..."
+      ./ki_hv6_align_reads.sh HV6.fa $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+      #
+      echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+      ./ki_hv6_consensus.sh HV6.fa hv6_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m"
+      fi
+    #
     if [[ "$RUN_HV7_ON" -eq "1" ]];
       then
       echo -e "\e[34m[ki]\e[32m Aliggning reads to HV7 ref with bowtie2 ...\e[0m";
+      V_INFO=`./ki_get_best_HV7.sh $ORGAN_T`;
+      echo "Best match: $V_INFO";
+      V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
+      echo "Extracting sequence from VDB.fa ..."
+      gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > HV7.fa
+      echo "Aliggning ..."
       ./ki_hv7_align_reads.sh HV7.fa $ORGAN_T
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
       ./ki_hv7_consensus.sh HV7.fa hv7_aligned_sorted-$ORGAN_T.bam $ORGAN_T
       echo -e "\e[34m[ki]\e[32m Done!\e[0m"
-      fi	      
+      fi
     #
-    if [[ "$RUN_AV_ON" -eq "1" ]];
+    if [[ "$RUN_TTV_ON" -eq "1" ]];
       then
-      echo -e "\e[34m[ki]\e[32m Aliggning reads to AV ref with bowtie2 ...\e[0m";
-      ./ki_av_align_reads.sh AV.fa $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Aliggning reads to TTV ref with bowtie2 ...\e[0m";
+      V_INFO=`./ki_get_best_TTV.sh $ORGAN_T`;
+      echo "Best match: $V_INFO";
+      V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
+      echo "Extracting sequence from VDB.fa ..."
+      gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > TTV.fa
+      echo "Aliggning ..."
+      ./ki_ttv_align_reads.sh TTV.fa $ORGAN_T
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-      ./ki_av_consensus.sh AV.fa av_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+      ./ki_ttv_consensus.sh TTV.fa ttv_aligned_sorted-$ORGAN_T.bam $ORGAN_T
       echo -e "\e[34m[ki]\e[32m Done!\e[0m"
-      fi   
+      fi
     #
     if [[ "$RUN_JCV_ON" -eq "1" ]];
       then
       echo -e "\e[34m[ki]\e[32m Aliggning reads to JCV ref with bowtie2 ...\e[0m";
+      V_INFO=`./ki_get_best_JCV.sh $ORGAN_T`;
+      echo "Best match: $V_INFO";
+      V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
+      echo "Extracting sequence from JCV.fa ..."
+      gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > JCV.fa
+      echo "Aliggning ..."
       ./ki_jcv_align_reads.sh JCV.fa $ORGAN_T
       echo -e "\e[34m[ki]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
       ./ki_jcv_consensus.sh JCV.fa jcv_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m"
+      fi
+    #
+    if [[ "$RUN_MCV_ON" -eq "1" ]];
+      then
+      echo -e "\e[34m[ki]\e[32m Aliggning reads to MCV ref with bowtie2 ...\e[0m";
+      V_INFO=`./ki_get_best_MCV.sh $ORGAN_T`;
+      echo "Best match: $V_INFO";
+      V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
+      echo "Extracting sequence from MCV.fa ..."
+      gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > MCV.fa
+      echo "Aliggning ..."
+      ./ki_mcv_align_reads.sh MCV.fa $ORGAN_T
+      echo -e "\e[34m[ki]\e[32m Done!\e[0m";
+      #
+      echo -e "\e[34m[ki]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+      ./ki_mcv_consensus.sh MCV.fa mcv_aligned_sorted-$ORGAN_T.bam $ORGAN_T
       echo -e "\e[34m[ki]\e[32m Done!\e[0m"
       fi
     #
@@ -626,6 +635,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
   rm -f results/*
   mv *.pdf results/
   mv *.svg results/
+  mv REPORT_META_VIRAL_*.txt results/
   #
   fi
 #

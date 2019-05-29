@@ -1,6 +1,9 @@
 #!/bin/bash
 #
 # DOWNLOAD: https://www.ncbi.nlm.nih.gov/genome/viruses/
+#
+# https://www.biostars.org/p/259792/
+#
 # CHECK ALSO THIS: https://www.viprbrc.org/brc/vipr_allSpecies_search.spg?method=SubmitForm&decorator=vipr
 #
 tail -n +3 taxid10239.nbr > DATA.nbr

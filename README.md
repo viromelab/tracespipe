@@ -1,16 +1,15 @@
-# ki
+# TRACES Pipeline
 
-Install ki:
+Install TRACES Pipeline:
 ```
-git clone https://github.com/pratas/ki.git
-cd ki/src/
-chmod +x ki_*.sh
-chmod +x ki.sh
+git clone https://github.com/pratas/traces.git
+cd traces/src/
+chmod +x TRACE*.sh
 ```
 
-Running ki:
+Running TRACES Pipeline:
 ```
-./ki.sh <parameters>
+./TRACES.sh <parameters>
 ```
 
 

@@ -1,5 +1,5 @@
 <p align="center"><img src="imgs/logo.png"
-alt="MAPLE" height="164" border="0" /><br><br>
+alt="TRACES Pipeline" height="200" border="0" /><br><br>
 
 Install TRACES Pipeline:
 ```

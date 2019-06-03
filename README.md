@@ -11,6 +11,7 @@ To install TRACES Pipeline, run the following commands in a Linux OS:
 git clone https://github.com/pratas/traces.git
 cd traces/src/
 chmod +x TRACE*.sh
+./TRACES.sh --install
 ```
 ## 2. Running ##
 

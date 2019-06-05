@@ -535,7 +535,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACES]\e[32m Running viral metagenomic analysis with FALCON ...\e[0m";
-      ./TRACES_metagenomics_viral.sh $ORGAN_T VDB.fa 5000
+      ./TRACES_metagenomics_viral.sh $ORGAN_T VDB.fa 10000
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACES]\e[32m Finding the best references ...\e[0m";

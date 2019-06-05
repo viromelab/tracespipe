@@ -586,7 +586,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
 	echo "TIP: first run ./TRACES --build-unviral"
 	exit 1;
         fi
-      ./TRACES_metagenomics.sh $ORGAN_T DB.fa 5000 
+      ./TRACES_metagenomics.sh $ORGAN_T DB.fa 10000 
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
       fi
     #

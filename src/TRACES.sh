@@ -1064,8 +1064,8 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
   # ALIGNMENT FILES
   mkdir -p TRACES_alignments;
   rm -f TRACES_alignments/*
-  mv *.fa TRACES_alignments/
-  mv *.fa.fai TRACES_alignments/
+  #mv *.fa TRACES_alignments/ #XXX: THIS WILL MOVE THE DATABASE!
+  #mv *.fa.fai TRACES_alignments/
   mv *_aligned_sorted-*.bam TRACES_alignments/
   mv *_aligned_sorted-*.bam.bai TRACES_alignments/
   #

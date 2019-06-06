@@ -1074,6 +1074,9 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
   rm -f TRACES_bed/*
   mv *-calls-*.bed TRACES_bed/
   #
+  # BUILD COMPLETE VIRAL META TABLE FOR MULTIPLE ORGANS:
+  ./TRACES_get_report_meta.sh
+  #
   fi
 #
 # ==============================================================================

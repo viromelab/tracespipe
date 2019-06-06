@@ -14,7 +14,8 @@
 SHOW_HELP=0;
 #
 INSTALL=0;
-BUILD_VDB=0;
+BUILD_VDB_ALL=0;
+BUILD_VDB_REF=0;
 BUILD_UDB=0;
 #
 GEN_ADAPTERS=0;
@@ -74,7 +75,12 @@ for i in "$@"
       shift
     ;;
     -vdb|--build-viral)
-      BUILD_VDB=1;
+      BUILD_VDB_ALL=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -vdbr|--build-viral-r)
+      BUILD_VDB_REF=1;
       SHOW_HELP=0;
       shift
     ;;
@@ -303,7 +309,7 @@ for i in "$@"
     ;;
     -all|--run-all)
       INSTALL=1;
-      BUILD_VDB=1;
+      BUILD_VDB_ALL=1;
       BUILD_UDB=1;
       GEN_ADAPTERS=1;
       GET_PHIX=1;
@@ -369,7 +375,8 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "    -h,    --help            Show this help message and exit,     "
     echo "                                                                  "
     echo "    -i,    --install         Installation of all the tools,       "
-    echo "    -vdb,  --build-viral     Build viral database,                "
+    echo "    -vdb,  --build-viral     Build viral database (all sequences), "
+    echo "    -vdbr, --build-viral-r   Build viral database (references only),  "
     echo "    -udb,  --build-unviral   Build non viral database (control),  "
     echo "                                                                  "
     echo "    -gx,   --get-extra-vir   Downloads/appends (VDB) extra viral seq, "
@@ -430,10 +437,17 @@ if [[ "$INSTALL" -eq "1" ]];
 #
 # ==============================================================================
 #
-if [[ "$BUILD_VDB" -eq "1" ]];
+if [[ "$BUILD_VDB_REF" -eq "1" ]];
   then
   gto_build_dbs.sh -vi
   gunzip VDB.fa.gz
+  fi
+#
+# ==============================================================================
+#
+if [[ "$BUILD_VDB_ALL" -eq "1" ]];
+  then
+  ./TRACES_download_db.sh
   fi
 #
 # ==============================================================================
@@ -521,7 +535,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACES]\e[32m Running viral metagenomic analysis with FALCON ...\e[0m";
-      ./TRACES_metagenomics_viral.sh $ORGAN_T VDB.fa 2000
+      ./TRACES_metagenomics_viral.sh $ORGAN_T VDB.fa 10000
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACES]\e[32m Finding the best references ...\e[0m";
@@ -572,7 +586,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
 	echo "TIP: first run ./TRACES --build-unviral"
 	exit 1;
         fi
-      ./TRACES_metagenomics.sh $ORGAN_T DB.fa 5000 
+      ./TRACES_metagenomics.sh $ORGAN_T DB.fa 10000 
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
       fi
     #
@@ -1035,11 +1049,30 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     # ==========================================================================
     done
   #
-  mkdir -p results;
-  rm -f results/*
-  mv *.pdf results/
-  mv *.svg results/
-  mv REPORT_META_VIRAL_*.txt results/
+  # RESULTS WITH REPORTS AND IMAGES
+  mkdir -p TRACES_results;
+  rm -f TRACES_results/*
+  mv *.pdf TRACES_results/
+  mv *.svg TRACES_results/
+  mv REPORT_META_VIRAL_*.txt TRACES_results/
+  #
+  # CONSENSUS FILES
+  mkdir -p TRACES_consensus;
+  rm -f TRACES_consensus/*
+  mv *-consensus-*.fa TRACES_consensus/
+  #
+  # ALIGNMENT FILES
+  mkdir -p TRACES_alignments;
+  rm -f TRACES_alignments/*
+  #mv *.fa TRACES_alignments/ #XXX: THIS WILL MOVE THE DATABASE!
+  #mv *.fa.fai TRACES_alignments/
+  mv *_aligned_sorted-*.bam TRACES_alignments/
+  mv *_aligned_sorted-*.bam.bai TRACES_alignments/
+  #
+  # BED FILES
+  mkdir -p TRACES_bed;
+  rm -f TRACES_bed/*
+  mv *-calls-*.bed TRACES_bed/
   #
   fi
 #

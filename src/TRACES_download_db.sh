@@ -8,7 +8,7 @@
 #
 tail -n +3 taxid10239.nbr > DATA.nbr
 #
-rm -f DATABASE.fa
+rm -f VDB.fa
 #
 mapfile -t ENTRIES < DATA.nbr
 #
@@ -16,6 +16,6 @@ for line in "${ENTRIES[@]}" #
   do
   #
   GID=`echo $line | awk '{ print $2 }'`;
-  efetch -db nucleotide -format fasta -id "$GID" >> DATABASE.fa
+  efetch -db nucleotide -format fasta -id "$GID" >> VDB.fa
   done
 #

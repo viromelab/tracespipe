@@ -53,6 +53,8 @@ RUN_HBV_ON=0;
 RUN_HPV_ON=0;
 RUN_VARV_ON=0;
 #
+RUN_SPECIFIC=0;
+#
 RUN_CY_ON=0;
 #
 RUN_DE_NOVO_ASSEMBLY=0;
@@ -131,6 +133,12 @@ for i in "$@"
       RUN_MCV_ON=1;
       RUN_CY_ON=1;
       RUN_DE_NOVO_ASSEMBLY=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rsr|--run-specific)
+      RUN_ANALYSIS=1;
+      RUN_SPECIFIC=1;
       SHOW_HELP=0;
       shift
     ;;
@@ -375,6 +383,7 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "    -h,    --help            Show this help message and exit,     "
     echo "                                                                  "
     echo "    -i,    --install         Installation of all the tools,       "
+    echo "                                                                  "
     echo "    -vdb,  --build-viral     Build viral database (all sequences), "
     echo "    -vdbr, --build-viral-r   Build viral database (references only),  "
     echo "    -udb,  --build-unviral   Build non viral database (control),  "
@@ -412,6 +421,8 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "    -rhbv, --run-hbv         Run HBV align, sort and consensus seq,    "
     echo "    -rhpv, --run-hpv         Run HPV align, sort and consensus seq,    "
     echo "    -rvar, --run-varv        Run VARV align, sort and consensus seq,    "
+    echo "                                                                 "
+    echo "    -rsr,  --run-specific    Run specific REF align/consensus seq, "
     echo "                                                                 "
     echo "    -rmt,  --run-mito        Run Mito align, sort and consensus seq,   "
     echo "    -rcy,  --run-y-chromo    Run CY align, sort and consensus seq,    "
@@ -604,8 +615,24 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
       fi
     #
+    # ==========================================================================
+    # RUN SPECIFIC SPECIFIC ALIGN/CONSENSUS
+    #
+    if [[ "$RUN_SPECIFIC" -eq "1" ]];
+      then
+      echo -e "\e[34m[TRACES]\e[32m Aliggning reads to B19 ref with bowtie2 ...\e[0m";
+      echo "Extracting sequence from VDB.fa ..."
+      ###gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > SPECIFIC-$IDN.fa
+      echo "Aliggning ..."
+      ###./TRACES_b19_align_reads.sh SPECIFIC-$IDN.fa $ORGAN_T
+      echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
+      #
+      echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+      ###./TRACES_b19_consensus.sh SPECIFIC-$IDN.fa b19_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+      fi
+    #
     # ========================================================================== 
-    # SPECIFIC VIRAL ALIGN/CONSENSUS
+    # DETAILED VIRAL ALIGN/CONSENSUS
     #
     if [[ "$RUN_B19_ON" -eq "1" ]];
       then

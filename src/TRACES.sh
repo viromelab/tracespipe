@@ -551,6 +551,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       echo -e "\e[34m[TRACES]\e[32m Finding the best references ...\e[0m";
       ./TRACES_get_best_B19.sh $ORGAN_T > REPORT_META_VIRAL_$ORGAN_T.txt
+      #
       ./TRACES_get_best_HV1.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
       ./TRACES_get_best_HV2.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
       ./TRACES_get_best_HV3.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
@@ -562,12 +563,25 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       ./TRACES_get_best_HV7.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
       ./TRACES_get_best_HV8.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
       ./TRACES_get_best_HBV.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_MCV.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_JCV.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HBoV1.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      #
       ./TRACES_get_best_BK.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_JCV.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_KI.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_WU.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_MCV.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_Polyomavirus_6.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_Polyomavirus_7.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_Polyomavirus_8.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_Polyomavirus_9.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_MW.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_STL.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_Polyomavirus_12.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_Polyomavirus_13.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_Polyomavirus_14.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      # 
       ./TRACES_get_best_HPV.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
       ./TRACES_get_best_TTV.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_HBoV1.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
       ./TRACES_get_best_HBoVnot1.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
       ./TRACES_get_best_VARV.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";

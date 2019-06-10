@@ -2,7 +2,7 @@
 ORGAN=$1;
 #
 RESULT=`cat top-$ORGAN.csv \
-| grep -a -e "olyomavirus_5" -e "MC_polyomavirus" -e "MC_virus" -e "Merkel_cell_polyomavirus" -e "MCPyV" -e "NC_010277" \
+| grep -a -e "JC_polyomavirus" -e "JC_virus" -e "JCPyV" \
 | awk '{ if($3 > 0 && $2 > 3500 && $2 < 7000) print $3"\t"$4; }' \
 | head -n 1 \
 | awk '{ print $1"\t"$2;}' \

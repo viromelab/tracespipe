@@ -562,6 +562,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       ./TRACES_get_best_HV6B.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
       ./TRACES_get_best_HV7.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
       ./TRACES_get_best_HV8.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      #
       ./TRACES_get_best_HBV.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
       #
       ./TRACES_get_best_BK.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
@@ -657,13 +658,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$V_GID" != "-" ]];
         then
         echo "Extracting sequence from VDB.fa ..."
-        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > B19.fa
+        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-B19.fa
         echo "Aliggning ..."
-        ./TRACES_b19_align_reads.sh B19.fa $ORGAN_T
+        ./TRACES_b19_align_reads.sh $ORGAN_T-B19.fa $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_b19_consensus.sh B19.fa b19_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_b19_consensus.sh $ORGAN_T-B19.fa b19_aligned_sorted-$ORGAN_T.bam $ORGAN_T
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
       fi
@@ -677,13 +678,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$V_GID" != "-" ]];
         then
         echo "Extracting sequence from VDB.fa ..."
-        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > HV1.fa
+        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-HV1.fa
         echo "Aliggning ..."
-        ./TRACES_hv1_align_reads.sh HV1.fa $ORGAN_T
+        ./TRACES_hv1_align_reads.sh $ORGAN_T-HV1.fa $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hv1_consensus.sh HV1.fa hv1_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_hv1_consensus.sh $ORGAN_T-HV1.fa hv1_aligned_sorted-$ORGAN_T.bam $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -698,13 +699,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$V_GID" != "-" ]];
         then
         echo "Extracting sequence from VDB.fa ..."
-        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > HV2.fa
+        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-HV2.fa
         echo "Aliggning ..."
-        ./TRACES_hv2_align_reads.sh HV2.fa $ORGAN_T
+        ./TRACES_hv2_align_reads.sh $ORGAN_T-HV2.fa $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hv2_consensus.sh HV2.fa hv1_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_hv2_consensus.sh $ORGAN_T-HV2.fa hv1_aligned_sorted-$ORGAN_T.bam $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -719,13 +720,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$V_GID" != "-" ]];
         then
         echo "Extracting sequence from VDB.fa ..."
-        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > HV3.fa
+        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-HV3.fa
         echo "Aliggning ..."
-        ./TRACES_hv3_align_reads.sh HV3.fa $ORGAN_T
+        ./TRACES_hv3_align_reads.sh $ORGAN_T-HV3.fa $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hv3_consensus.sh HV3.fa hv3_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_hv3_consensus.sh $ORGAN_T-HV3.fa hv3_aligned_sorted-$ORGAN_T.bam $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -740,13 +741,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$V_GID" != "-" ]];
         then
         echo "Extracting sequence from VDB.fa ..."
-        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > HV4.fa
+        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-HV4.fa
         echo "Aliggning ..."
-        ./TRACES_hv4_align_reads.sh HV4.fa $ORGAN_T
+        ./TRACES_hv4_align_reads.sh $ORGAN_T-HV4.fa $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hv4_consensus.sh HV4.fa hv4_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_hv4_consensus.sh $ORGAN_T-HV4.fa hv4_aligned_sorted-$ORGAN_T.bam $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -761,13 +762,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$V_GID" != "-" ]];
         then
         echo "Extracting sequence from VDB.fa ..."
-        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > HV5.fa
+        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-HV5.fa
         echo "Aliggning ..."
-        ./TRACES_hv5_align_reads.sh HV5.fa $ORGAN_T
+        ./TRACES_hv5_align_reads.sh $ORGAN_T-HV5.fa $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hv4_consensus.sh HV5.fa hv5_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_hv4_consensus.sh $ORGAN_T-HV5.fa hv5_aligned_sorted-$ORGAN_T.bam $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -782,13 +783,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$V_GID" != "-" ]];
         then
         echo "Extracting sequence from VDB.fa ..."
-        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > HV6.fa
+        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-HV6.fa
         echo "Aliggning ..."
-        ./TRACES_hv6_align_reads.sh HV6.fa $ORGAN_T
+        ./TRACES_hv6_align_reads.sh $ORGAN_T-HV6.fa $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hv6_consensus.sh HV6.fa hv6_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_hv6_consensus.sh $ORGAN_T-HV6.fa hv6_aligned_sorted-$ORGAN_T.bam $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -803,13 +804,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$V_GID" != "-" ]];
         then
         echo "Extracting sequence from VDB.fa ..."
-        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > HV6A.fa
+        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-HV6A.fa
         echo "Aliggning ..."
-        ./TRACES_hv6A_align_reads.sh HV6A.fa $ORGAN_T
+        ./TRACES_hv6A_align_reads.sh $ORGAN_T-HV6A.fa $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hv6a_consensus.sh HV6A.fa hv6a_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_hv6a_consensus.sh $ORGAN_T-HV6A.fa hv6a_aligned_sorted-$ORGAN_T.bam $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -824,13 +825,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$V_GID" != "-" ]];
         then
         echo "Extracting sequence from VDB.fa ..."
-        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > HV6B.fa
+        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-HV6B.fa
         echo "Aliggning ..."
-        ./TRACES_hv6B_align_reads.sh HV6B.fa $ORGAN_T
+        ./TRACES_hv6B_align_reads.sh $ORGAN_T-HV6B.fa $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hv6b_consensus.sh HV6B.fa hv6b_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_hv6b_consensus.sh $ORGAN_T-HV6B.fa hv6b_aligned_sorted-$ORGAN_T.bam $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -845,13 +846,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$V_GID" != "-" ]];
         then
         echo "Extracting sequence from VDB.fa ..."
-        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > HV7.fa
+        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-HV7.fa
         echo "Aliggning ..."
-        ./TRACES_hv7_align_reads.sh HV7.fa $ORGAN_T
+        ./TRACES_hv7_align_reads.sh $ORGAN_T-HV7.fa $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hv7_consensus.sh HV7.fa hv7_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_hv7_consensus.sh $ORGAN_T-HV7.fa hv7_aligned_sorted-$ORGAN_T.bam $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -866,13 +867,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$V_GID" != "-" ]];
         then
         echo "Extracting sequence from VDB.fa ..."
-        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > HV8.fa
+        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-HV8.fa
         echo "Aliggning ..."
-        ./TRACES_hv8_align_reads.sh HV8.fa $ORGAN_T
+        ./TRACES_hv8_align_reads.sh $ORGAN_T-HV8.fa $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hv8_consensus.sh HV8.fa hv8_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_hv8_consensus.sh $ORGAN_T-HV8.fa hv8_aligned_sorted-$ORGAN_T.bam $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -887,13 +888,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$V_GID" != "-" ]];
         then
         echo "Extracting sequence from VDB.fa ..."
-        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > TTV.fa
+        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-TTV.fa
         echo "Aliggning ..."
-        ./TRACES_ttv_align_reads.sh TTV.fa $ORGAN_T
+        ./TRACES_ttv_align_reads.sh $ORGAN_T-TTV.fa $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_ttv_consensus.sh TTV.fa ttv_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_ttv_consensus.sh $ORGAN_T-TTV.fa ttv_aligned_sorted-$ORGAN_T.bam $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -908,13 +909,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$V_GID" != "-" ]];
         then
         echo "Extracting sequence from JCV.fa ..."
-        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > JCV.fa
+        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-JCV.fa
         echo "Aliggning ..."
-        ./TRACES_jcv_align_reads.sh JCV.fa $ORGAN_T
+        ./TRACES_jcv_align_reads.sh $ORGAN_T-JCV.fa $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_jcv_consensus.sh JCV.fa jcv_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_jcv_consensus.sh $ORGAN_T-JCV.fa jcv_aligned_sorted-$ORGAN_T.bam $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -929,13 +930,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$V_GID" != "-" ]];
         then
         echo "Extracting sequence from MCV.fa ..."
-        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > MCV.fa
+        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-MCV.fa
         echo "Aliggning ..."
-        ./TRACES_mcv_align_reads.sh MCV.fa $ORGAN_T
+        ./TRACES_mcv_align_reads.sh $ORGAN_T-MCV.fa $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_mcv_consensus.sh MCV.fa mcv_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_mcv_consensus.sh $ORGAN_T-MCV.fa mcv_aligned_sorted-$ORGAN_T.bam $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -950,13 +951,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$V_GID" != "-" ]];
         then
         echo "Extracting sequence from MK.fa ..."
-        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > MK.fa
+        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-MK.fa
         echo "Aliggning ..."
-        ./TRACES_bk_align_reads.sh MK.fa $ORGAN_T
+        ./TRACES_bk_align_reads.sh $ORGAN_T-MK.fa $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_bk_consensus.sh BK.fa bk_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_bk_consensus.sh $ORGAN_T-BK.fa bk_aligned_sorted-$ORGAN_T.bam $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -971,13 +972,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$V_GID" != "-" ]];
         then
         echo "Extracting sequence from HBoV1.fa ..."
-        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > HBoV1.fa
+        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-HBoV1.fa
         echo "Aliggning ..."
-        ./TRACES_hbov1_align_reads.sh HBoV1.fa $ORGAN_T
+        ./TRACES_hbov1_align_reads.sh $ORGAN_T-HBoV1.fa $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hbov1_consensus.sh HBoV1.fa hbov1_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_hbov1_consensus.sh $ORGAN_T-HBoV1.fa hbov1_aligned_sorted-$ORGAN_T.bam $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -992,13 +993,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$V_GID" != "-" ]];
         then
         echo "Extracting sequence from HBoVnot1.fa ..."
-        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > HBoVnot1.fa
+        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-HBoVnot1.fa
         echo "Aliggning ..."
-        ./TRACES_hbovnot1_align_reads.sh HBoVnot1.fa $ORGAN_T
+        ./TRACES_hbovnot1_align_reads.sh $ORGAN_T-HBoVnot1.fa $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hbovnot1_consensus.sh HBoVnot1.fa hbovnot1_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_hbovnot1_consensus.sh $ORGAN_T-HBoVnot1.fa hbovnot1_aligned_sorted-$ORGAN_T.bam $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -1013,13 +1014,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$V_GID" != "-" ]];
         then
         echo "Extracting sequence from HBV.fa ..."
-        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > HBV.fa
+        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-HBV.fa
         echo "Aliggning ..."
-        ./TRACES_hbv_align_reads.sh HBV.fa $ORGAN_T
+        ./TRACES_hbv_align_reads.sh $ORGAN_T-HBV.fa $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hbv_consensus.sh HBV.fa hbv_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_hbv_consensus.sh $ORGAN_T-HBV.fa hbv_aligned_sorted-$ORGAN_T.bam $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -1034,13 +1035,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$V_GID" != "-" ]];
         then
         echo "Extracting sequence from HPV.fa ..."
-        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > HPV.fa
+        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-HPV.fa
         echo "Aliggning ..."
-        ./TRACES_hpv_align_reads.sh HPV.fa $ORGAN_T
+        ./TRACES_hpv_align_reads.sh $ORGAN_T-HPV.fa $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hpv_consensus.sh HPV.fa hpv_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_hpv_consensus.sh $ORGAN_T-HPV.fa hpv_aligned_sorted-$ORGAN_T.bam $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -1055,13 +1056,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$V_GID" != "-" ]];
         then
         echo "Extracting sequence from VARV.fa ..."
-        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > VARV.fa
+        gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-VARV.fa
         echo "Aliggning ..."
-        ./TRACES_varv_align_reads.sh VARV.fa $ORGAN_T
+        ./TRACES_varv_align_reads.sh $ORGAN_T-VARV.fa $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_varv_consensus.sh VARV.fa varv_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_varv_consensus.sh $ORGAN_T-VARV.fa varv_aligned_sorted-$ORGAN_T.bam $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"

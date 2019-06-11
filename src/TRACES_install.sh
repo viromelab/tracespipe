@@ -44,6 +44,7 @@ if [[ "$INSTALL_PIPELINE" -eq "1" ]];
   conda install -c bioconda samtools --yes
   conda install -c bioconda bcftools --yes
   conda install -c bioconda bedops --yes
+  conda install -c bioconda fastq-pair --yes
   conda install entrez-direct --yes
   #
   Program_installed "trimmomatic";
@@ -57,6 +58,7 @@ if [[ "$INSTALL_PIPELINE" -eq "1" ]];
   Program_installed "samtools";
   Program_installed "bcftools";
   Program_installed "bedops";
+  Program_installed "fastq_pair";
   Program_installed "efetch";
   fi
 #

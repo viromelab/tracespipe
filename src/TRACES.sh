@@ -545,6 +545,10 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       then
       echo -e "\e[34m[TRACES]\e[32m Removing PhiX from the samples with MAGNET ...\e[0m";
       ./TRACES_remove_phix.sh # IT IS USED ONLY FOR FALCON
+      #
+      # fastq_pair test_R1.fastq test_R2.fastq: [needs adaptation]
+      # IF you want to remove Phix also before assembly
+      #
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACES]\e[32m Running viral metagenomic analysis with FALCON ...\e[0m";

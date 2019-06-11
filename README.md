@@ -34,6 +34,77 @@ To run TRACES Pipeline, use the following commands in a Linux OS:
 ./TRACES.sh -h
 ```
 
+```                                                     
+                                                              
+     ████████╗ ██████╗   █████╗   ██████╗ ███████╗ ███████╗         
+     ╚══██╔══╝ ██╔══██╗ ██╔══██╗ ██╔════╝ ██╔════╝ ██╔════╝         
+        ██║    ██████╔╝ ███████║ ██║      █████╗   ███████╗         
+        ██║    ██╔══██╗ ██╔══██║ ██║      ██╔══╝   ╚════██║         
+        ██║    ██║  ██║ ██║  ██║ ╚██████╗ ███████╗ ███████║         
+        ╚═╝    ╚═╝  ╚═╝ ╚═╝  ╚═╝  ╚═════╝ ╚══════╝ ╚══════╝         
+                                                                
+    An automatic pipeline for viral and human genome analysis
+    in the contexts of clinical virology and forensics.         
+                                                                
+    Usage: ./TRACES.sh [options]                                
+                                                                
+    -h,    --help            Show this help message and exit,     
+                                                                  
+    -i,    --install         Installation of all the tools,       
+                                                                  
+    -vdb,  --build-viral     Build viral database (all sequences), 
+    -vdbr, --build-viral-r   Build viral database (references only),  
+    -udb,  --build-unviral   Build non viral database (control),  
+                                                                  
+    -gx,   --get-extra-vir   Downloads/appends (VDB) extra viral seq, 
+    -gad,  --gen-adapters    Generate FASTA file with adapters,   
+    -gp,   --get-phix        Extracts PhiX genomes (Needs viral DB),  
+    -gm,   --get-mito        Downloads human Mitochondrial genome,
+    -gy,   --get-y-chromo    Downloads human Y-chromosome,        
+                                                                  
+    -ra,   --run-analysis    Run data analysis,                   
+                                                                  
+    -rm,   --run-meta        Run viral metagenomic identification,    
+    -ro,   --run-meta-nv     Run NON-viral metagenomic identification,   
+                                                                  
+    -rava, --run-all-v-alig  Run all viral align/sort/consensus seqs,    
+                                                                 
+    -rb,   --run-b19         Run B19 align, sort and consensus seq,    
+    -rh1,  --run-hv1         Run HV1 align, sort and consensus seq,    
+    -rh2,  --run-hv2         Run HV2 align, sort and consensus seq,    
+    -rh3,  --run-hv3         Run HV3 align, sort and consensus seq,    
+    -rh4,  --run-hv4         Run HV4 align, sort and consensus seq,    
+    -rh5,  --run-hv5         Run HV5 align, sort and consensus seq,    
+    -rh6,  --run-hv6         Run HV6 align, sort and consensus seq,    
+    -rh6a, --run-hv6a        Run HV6A align, sort and consensus seq,    
+    -rh6b, --run-hv6b        Run HV6B align, sort and consensus seq,    
+    -rh7,  --run-hv7         Run HV7 align, sort and consensus seq,    
+    -rh8,  --run-hv8         Run HV8 align, sort and consensus seq,    
+    -rtt,  --run-ttv         Run TTV align, sort and consensus seq,    
+    -rjc,  --run-jcv         Run JCV align, sort and consensus seq,    
+    -rmc,  --run-mcv         Run MCV align, sort and consensus seq,    
+    -rbk,  --run-bk          Run BK align, sort and consensus seq,    
+    -rbv1, --run-hbov1       Run HBoV1 align, sort and consensus seq,    
+    -rbv0, --run-hbovnot1    Run HBoV 2,3,... align, sort and consensus seq,    
+    -rhbv, --run-hbv         Run HBV align, sort and consensus seq,    
+    -rhpv, --run-hpv         Run HPV align, sort and consensus seq,    
+    -rvar, --run-varv        Run VARV align, sort and consensus seq,    
+                                                                 
+    -rsr,  --run-specific    Run specific REF align/consensus seq, 
+                                                                 
+    -rmt,  --run-mito        Run Mito align, sort and consensus seq,   
+    -rcy,  --run-y-chromo    Run CY align, sort and consensus seq,    
+                                                                  
+    -rda,  --run-de-novo     Run de-novo assembly,               
+                                                                 
+    -all,  --run-all         Run all the options.                 
+                                                                
+    Example: ./TRACES.sh --run-meta --run-mito           
+                                                                
+    meta_info.txt -> 'name:reads_forward.fa.gz:reads_reverse.fa.gz'  
+    The reads and meta_info.txt must be in the src/ folder.     
+                                                                
+```
 
 ## 4. Issues ##
 

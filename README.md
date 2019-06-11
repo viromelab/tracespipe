@@ -19,6 +19,10 @@ To install Conda use the following steps:
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
 ```
+Additional instructions can be found here:
+```
+https://docs.conda.io/projects/conda/en/latest/user-guide/install/linux.html
+```
 
 
 ## 2. Running ##

@@ -3,10 +3,10 @@
 ##################################################################################
 # ============================================================================== #
 # =                                                                            = #
-# =                                 T R A C E S                                = #
+# =                              T R A C E S P i p e                           = #
 # =                                                                            = #
-# =       An automatic pipeline for viral and human genome identification      = #
-# =           in the contexts of clinical virology and forensics.              = #
+# =     A Next-Generation Sequencing pipeline for identification, assembly     = #
+# =         and analysis of viral and host genomes for multiple organs         = #
 # =                                                                            = #
 # ============================================================================== #
 ##################################################################################
@@ -375,8 +375,10 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "        ██║    ██║  ██║ ██║  ██║ ╚██████╗ ███████╗ ███████║         "
     echo "        ╚═╝    ╚═╝  ╚═╝ ╚═╝  ╚═╝  ╚═════╝ ╚══════╝ ╚══════╝         "
     echo "                                                                "
-    echo -e "    \e[32mAn automatic pipeline for viral and human genome analysis\e[0m" 
-    echo -e "    \e[32min the contexts of clinical virology and forensics\e[0m.         "
+    echo "                         P I P E L I N E                            "
+    echo "                                                                "
+    echo -e "    \e[32mNext-generation sequencing pipeline for identification, assembly\e[0m" 
+    echo -e "    \e[32mand analysis of viral and host genomes at a multi-organ level\e[0m.         "
     echo "                                                                "
     echo -e "\e[93m    Usage: ./TRACES.sh [options]                                \e[0m"
     echo "                                                                "
@@ -433,7 +435,7 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "                                                                "
     echo -e "\e[93m    Example: ./TRACES.sh --run-meta --run-mito           \e[0m"
     echo "                                                                "
-    echo "    meta_info.txt -> 'name:reads_forward.fa.gz:reads_reverse.fa.gz'  "
+    echo "    meta_info.txt -> 'organ:reads_forward.fa.gz:reads_reverse.fa.gz'  "
     echo "    The reads and meta_info.txt must be in the src/ folder.     "
     echo "                                                                "
     exit 1

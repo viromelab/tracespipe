@@ -13,7 +13,8 @@ cd traces/src/
 chmod +x TRACE*.sh
 ./TRACES.sh --install
 ```
-Conda is needed for installation. To install Conda use the following steps:
+Conda is needed for installation. <br>
+To install Conda use the following steps:
 ```
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh

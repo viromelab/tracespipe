@@ -1,0 +1,10 @@
+skin:V9_S50_R1_001.fastq.gz:V9_S50_R2_001.fastq.gz
+brain:V10_S41_R1_001.fastq.gz:V10_S41_R2_001.fastq.gz
+colon:V11_S51_R1_001.fastq.gz:V11_S51_R2_001.fastq.gz
+liver:V12_S52_R1_001.fastq.gz:V12_S52_R2_001.fastq.gz
+lung:V13_S53_R1_001.fastq.gz:V13_S53_R2_001.fastq.gz
+heart:V14_S54_R1_001.fastq.gz:V14_S54_R2_001.fastq.gz
+kidney:V15_S55_R1_001.fastq.gz:V15_S55_R2_001.fastq.gz
+blood:V16_S56_R1_001.fastq.gz:V16_S56_R2_001.fastq.gz
+bone:V51_S3_R1_001.fastq.gz:V51_S3_R2_001.fastq.gz
+marrow:V52_S4_R1_001.fastq.gz:V52_S4_R2_001.fastq.gz

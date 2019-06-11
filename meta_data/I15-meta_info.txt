@@ -1,0 +1,2 @@
+bone:V65_S17_R1_001.fastq.gz:V65_S17_R2_001.fastq.gz
+marrow:V66_S18_R1_001.fastq.gz:V66_S18_R2_001.fastq.gz

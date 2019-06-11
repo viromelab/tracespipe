@@ -1,0 +1,2 @@
+bone:V59_S11_R1_001.fastq.gz:V59_S11_R2_001.fastq.gz
+marrow:V60_S12_R1_001.fastq.gz:V60_S12_R2_001.fastq.gz

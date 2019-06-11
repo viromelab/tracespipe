@@ -1,0 +1,1 @@
+marrow:V72_S24_R1_001.fastq.gz:V72_S24_R2_001.fastq.gz

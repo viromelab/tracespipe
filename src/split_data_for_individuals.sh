@@ -24,6 +24,7 @@ for x in "${INDIVIDUALS[@]}"
   cp TRACE*.sh ../../$x
   cp ../meta_data/$x-meta_info.txt ../../$x/meta_info.txt
   # 
+  scp dpratas@atlas.fimm.fi:/fas/NGS/pipes/fastq/fimm_ngs_mtoppinen/autopsy_NGS_novaseq1/V*.fa.gz .
   mapfile -t READS < ../../$x/meta_info.txt
   #
   for read in "${READS[@]}" # 
@@ -36,7 +37,6 @@ for x in "${INDIVIDUALS[@]}"
     #ln -s /fas/NGS/pipes/fastq/fimm_ngs_mtoppinen/autopsy_NGS_novaseq1/$reverse ../../$x/$reverse
     #
     # FOR REMOTELY, RUN THIS:
-    scp dpratas@atlas.fimm.fi:/fas/NGS/pipes/fastq/fimm_ngs_mtoppinen/autopsy_NGS_novaseq1/V*.fa.gz .
     mv $forward ../../$x/$forward
     mv $reverse ../../$x/$reverse    
     #

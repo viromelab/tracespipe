@@ -1,3 +1,4 @@
+<p align="center">
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](LICENSE)
 [![Speed](https://img.shields.io/static/v1.svg?label=Ultra-Fast&message=High%20speed%20performance&color=green)](#)
 [![Release](https://img.shields.io/static/v1.svg?label=Release&message=v1.1.1&color=orange)](#)
@@ -5,7 +6,7 @@
 [![Conda](https://img.shields.io/static/v1.svg?label=Conda&message=Cobilab&color=green)](#)
 [![TinyURL](https://img.shields.io/static/v1.svg?label=TinyURL&message=traces-pipe&color=blue)](https://tinyurl.com/traces-pipe)
 <!--[![Build Status](https://travis-ci.org/pratas/traces.svg?branch=master)](https://travis-ci.org/pratas/traces)-->
-
+</p>
 <br>
 <p align="center">
 <img src="imgs/logo.png" alt="TRACES Pipeline" height="200" border="0" />

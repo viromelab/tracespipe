@@ -137,8 +137,9 @@ IGV
 ## 5. Citation ##
 
 If you use this pipeline, please cite:
-
+```
 null
+```
 
 ## 6. Issues ##
 

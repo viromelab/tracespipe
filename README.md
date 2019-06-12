@@ -131,9 +131,9 @@ TRACES Pipeline uses a combination of the following tools:
 &#x1F49A;&nbsp; FALCON-meta [[https://github.com/cobilab/falcon]](https://github.com/cobilab/falcon)<br>
 &#x1F49A;&nbsp; Bowtie2 [[http://bowtie-bio.sourceforge.net/bowtie2]](http://bowtie-bio.sourceforge.net/bowtie2)<br>
 &#x1F49A;&nbsp; SPAdes  [[http://cab.spbu.ru/software/spades/]](http://cab.spbu.ru/software/spades/)<br>
-&#x1F49A;&nbsp; Samtools<br>
-&#x1F49A;&nbsp; Bcftools<br>
-&#x1F49A;&nbsp; IGV<br>
+&#x1F49A;&nbsp; Samtools [[http://samtools.sourceforge.net/]](http://samtools.sourceforge.net/)<br>
+&#x1F49A;&nbsp; Bcftools [[http://www.htslib.org/doc/bcftools.html]](http://www.htslib.org/doc/bcftools.html)<br>
+&#x1F49A;&nbsp; IGV<br> [[https://software.broadinstitute.org/software/igv/]](https://software.broadinstitute.org/software/igv/)<br>
 
 ## 5. Citation ##
 

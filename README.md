@@ -11,9 +11,9 @@
 </div>
 <br>
 <p align="center">
-<img src="imgs/logo.png" alt="TRACES Pipeline" height="200" border="0" /><br>
+<img src="imgs/logo.png" alt="TRACES Pipeline" height="200" border="0" /><br><br>
 <b>A next-generation sequencing pipeline for identification, <br>assembly, and analysis of viral and host genomes at multi-organ level</b>.
-<br>
+<br><br>
 
 ## 1. Installation ##
 

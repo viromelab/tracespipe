@@ -123,13 +123,13 @@ To run TRACES Pipeline, use the following commands in a Linux OS:
 ## 4. Programs ##
 
 TRACES Pipeline uses a combination of the following tools:
-```
-Cryfa
-GTO
-Trimmomatic
-MAGNET
-FALCON-meta
-Bowtie2
+
+&#x1F49A; Cryfa<br>
+&#x1F49A; GTO<br>
+&#x1F49A; Trimmomatic
+&#x1F49A; MAGNET
+&#x1F49A; FALCON-meta
+&#x1F49A; Bowtie2
 SPAdes
 Samtools
 Bcftools

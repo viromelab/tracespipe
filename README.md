@@ -2,6 +2,7 @@
 [![Speed](https://img.shields.io/static/v1.svg?label=Ultra-Fast&message=High%20speed%20performance&color=green)](#)
 <!--[![Build Status](https://travis-ci.org/pratas/traces.svg?branch=master)](https://travis-ci.org/pratas/traces)-->
 
+<br>
 <p align="center"><img src="imgs/logo.png"
 alt="TRACES Pipeline" height="200" border="0" /><br><br>
 

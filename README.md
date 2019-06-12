@@ -16,10 +16,7 @@
   <h2>
 
 ```diff
-- red
-+ green
-! orange
-# gray
++ A next-generation sequencing pipeline for identification, <br>assembly, and analysis of viral and host genomes at multi-organ level.
 ```
 
 </h2>

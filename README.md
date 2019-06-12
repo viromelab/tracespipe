@@ -126,15 +126,14 @@ TRACES Pipeline uses a combination of the following tools:
 
 &#x1F49A; Cryfa<br>
 &#x1F49A; GTO<br>
-&#x1F49A; Trimmomatic
-&#x1F49A; MAGNET
-&#x1F49A; FALCON-meta
-&#x1F49A; Bowtie2
-SPAdes
-Samtools
-Bcftools
-IGV
-```
+&#x1F49A; Trimmomatic<br>
+&#x1F49A; MAGNET<br>
+&#x1F49A; FALCON-meta<br>
+&#x1F49A; Bowtie2<br>
+&#x1F49A; SPAdes<br>
+&#x1F49A; Samtools<br>
+&#x1F49A; Bcftools<br>
+&#x1F49A; IGV<br>
 
 ## 5. Citation ##
 

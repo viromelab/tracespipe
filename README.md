@@ -12,7 +12,7 @@
 <br>
 <p align="center">
 <img src="imgs/logo.png" alt="TRACES Pipeline" height="200" border="0" /><br><br>
-A next-generation sequencing pipeline for identification, <br>assembly, and analysis of viral and host genomes at multi-organ level.
+<i>A next-generation sequencing pipeline for identification, <br>assembly, and analysis of viral and host genomes at multi-organ level.</i>
 <br><br>
 
 ## 1. Installation ##

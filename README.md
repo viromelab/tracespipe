@@ -126,11 +126,11 @@ TRACES Pipeline uses a combination of the following tools:
 
 &#x1F49A;&nbsp; Cryfa [[https://github.com/cobilab/cryfa]](https://github.com/cobilab/cryfa)<br>
 &#x1F49A;&nbsp; GTO [[https://github.com/cobilab/gto]](https://github.com/cobilab/gto)<br>
-&#x1F49A;&nbsp; Trimmomatic<br>
+&#x1F49A;&nbsp; Trimmomatic [[http://www.usadellab.org/cms/?page=trimmomatic]](http://www.usadellab.org/cms/?page=trimmomatic)<br>
 &#x1F49A;&nbsp; MAGNET [[https://github.com/cobilab/magnet]](https://github.com/cobilab/magnet)<br>
 &#x1F49A;&nbsp; FALCON-meta [[https://github.com/cobilab/falcon]](https://github.com/cobilab/falcon)<br>
 &#x1F49A;&nbsp; Bowtie2 [[http://bowtie-bio.sourceforge.net/bowtie2]](http://bowtie-bio.sourceforge.net/bowtie2)<br>
-&#x1F49A;&nbsp; SPAdes<br>
+&#x1F49A;&nbsp; SPAdes  [[http://cab.spbu.ru/software/spades/]](http://cab.spbu.ru/software/spades/)<br>
 &#x1F49A;&nbsp; Samtools<br>
 &#x1F49A;&nbsp; Bcftools<br>
 &#x1F49A;&nbsp; IGV<br>

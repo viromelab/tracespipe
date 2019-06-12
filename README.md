@@ -1,12 +1,11 @@
-<p align="center">
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](LICENSE)
-[![Speed](https://img.shields.io/static/v1.svg?label=Ultra-Fast&message=High%20speed%20performance&color=green)](#)
-[![Release](https://img.shields.io/static/v1.svg?label=Release&message=v1.1.1&color=orange)](#)
-[![Conda](https://img.shields.io/static/v1.svg?label=Conda&message=Bioconda&color=green)](#)
-[![Conda](https://img.shields.io/static/v1.svg?label=Conda&message=Cobilab&color=green)](#)
-[![TinyURL](https://img.shields.io/static/v1.svg?label=TinyURL&message=traces-pipe&color=blue)](https://tinyurl.com/traces-pipe)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](LICENSE){ style="display: block; margin: 0 auto" }
+[![Speed](https://img.shields.io/static/v1.svg?label=Ultra-Fast&message=High%20speed%20performance&color=green)](#){ style="display: block; margin: 0 auto" }
+[![Release](https://img.shields.io/static/v1.svg?label=Release&message=v1.1.1&color=orange)](#){ style="display: block; margin: 0 auto" }
+[![Conda](https://img.shields.io/static/v1.svg?label=Conda&message=Bioconda&color=green)](#){ style="display: block; margin: 0 auto" }
+[![Conda](https://img.shields.io/static/v1.svg?label=Conda&message=Cobilab&color=green)](#){ style="display: block; margin: 0 auto" }
+[![TinyURL](https://img.shields.io/static/v1.svg?label=TinyURL&message=traces-pipe&color=blue)](https://tinyurl.com/traces-pipe){ style="display: block; margin: 0 auto" }
 <!--[![Build Status](https://travis-ci.org/pratas/traces.svg?branch=master)](https://travis-ci.org/pratas/traces)-->
-</p>
+
 <br>
 <p align="center">
 <img src="imgs/logo.png" alt="TRACES Pipeline" height="200" border="0" />

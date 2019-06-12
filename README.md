@@ -1,5 +1,3 @@
-<p align="center">
-  
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](LICENSE)
 [![Speed](https://img.shields.io/static/v1.svg?label=Ultra-Fast&message=High%20speed%20performance&color=green)](#)
 [![Release](https://img.shields.io/static/v1.svg?label=Release&message=v1.1.1&color=orange)](#)
@@ -8,6 +6,7 @@
 <!--[![Build Status](https://travis-ci.org/pratas/traces.svg?branch=master)](https://travis-ci.org/pratas/traces)-->
 
 <br><br><br>
+<p align="center">
 <img src="imgs/logo.png" alt="TRACES Pipeline" height="200" border="0" />
 
 ## 1. Installation ##

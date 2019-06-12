@@ -118,12 +118,33 @@ To run TRACES Pipeline, use the following commands in a Linux OS:
     The reads and meta_info.txt must be in the src/ folder.     
                                                                 
 ```
+## 4. Programs ##
 
-## 4. Issues ##
+TRACES Pipeline uses a combination of the following tools:
+```
+Cryfa
+GTO
+Trimmomatic
+MAGNET
+FALCON-meta
+Bowtie2
+SPAdes
+Samtools
+Bcftools
+IGV
+```
+
+## 5. Citation ##
+
+If you use this pipeline, please cite:
+
+null
+
+## 6. Issues ##
 
 For any issue let us know at [issues link](https://github.com/pratas/traces/issues).
 
-## 5. License ##
+## 7. License ##
 
 GPL v3.
 

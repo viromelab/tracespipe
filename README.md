@@ -124,12 +124,12 @@ To run TRACES Pipeline, use the following commands in a Linux OS:
 
 TRACES Pipeline uses a combination of the following tools:
 
-&#x1F49A;&nbsp; Cryfa [ [https://github.com/cobilab/cryfa] ](https://github.com/cobilab/cryfa)<br>
-&#x1F49A;&nbsp; GTO [ [https://github.com/cobilab/gto] ](https://github.com/cobilab/gto)<br>
+&#x1F49A;&nbsp; Cryfa [[https://github.com/cobilab/cryfa]](https://github.com/cobilab/cryfa)<br>
+&#x1F49A;&nbsp; GTO [[https://github.com/cobilab/gto]](https://github.com/cobilab/gto)<br>
 &#x1F49A;&nbsp; Trimmomatic<br>
-&#x1F49A;&nbsp; MAGNET - [https://github.com/cobilab/magnet](https://github.com/cobilab/magnet)<br>
-&#x1F49A;&nbsp; FALCON-meta - [https://github.com/cobilab/falcon](https://github.com/cobilab/falcon)<br>
-&#x1F49A;&nbsp; Bowtie2<br>
+&#x1F49A;&nbsp; MAGNET [[https://github.com/cobilab/magnet]](https://github.com/cobilab/magnet)<br>
+&#x1F49A;&nbsp; FALCON-meta [[https://github.com/cobilab/falcon]](https://github.com/cobilab/falcon)<br>
+&#x1F49A;&nbsp; Bowtie2 [[http://bowtie-bio.sourceforge.net/bowtie2]](http://bowtie-bio.sourceforge.net/bowtie2)<br>
 &#x1F49A;&nbsp; SPAdes<br>
 &#x1F49A;&nbsp; Samtools<br>
 &#x1F49A;&nbsp; Bcftools<br>

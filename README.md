@@ -124,7 +124,7 @@ To run TRACES Pipeline, use the following commands in a Linux OS:
 
 TRACES Pipeline uses a combination of the following tools:
 
-&#x1F49A;&nbsp; Cryfa<br>
+&#x1F49A;&nbsp; Cryfa - [Cryfa](https://github.com/cobilab/cryfa)<br>
 &#x1F49A;&nbsp; GTO<br>
 &#x1F49A;&nbsp; Trimmomatic<br>
 &#x1F49A;&nbsp; MAGNET<br>

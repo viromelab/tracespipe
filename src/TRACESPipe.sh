@@ -12,6 +12,7 @@
 ##################################################################################
 #
 SHOW_HELP=0;
+SHOW_VERSION=0;
 #
 INSTALL=0;
 BUILD_VDB_ALL=0;
@@ -69,6 +70,10 @@ for i in "$@"
   case $i in
     -h|--help|?)
       SHOW_HELP=1;
+      shift
+    ;;
+    -v|-V|--version)
+      SHOW_VERSION=1;
       shift
     ;;
     -i|--install)
@@ -368,7 +373,7 @@ for i in "$@"
     ;;
     *) # unknown option
     echo "Invalid arg "$1
-    echo "For help, try: ./TRACES.sh -h"
+    echo "For help, try: ./TRACESPipe.sh -h"
     ;;
   esac
   done
@@ -395,6 +400,7 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo -e "\e[93m    Usage: ./TRACESPipe.sh [options]                             \e[0m"
     echo "                                                                "
     echo "    -h,    --help            Show this help message and exit,     "
+    echo "    -v,    --version         Show the version and some information,  "
     echo "                                                                  "
     echo "    -i,    --install         Installation of all the tools,       "
     echo "                                                                  "
@@ -450,6 +456,14 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "    The reads and meta_info.txt must be in the src/ folder.     "
     echo "                                                                "
     exit 1
+  fi
+#
+# ==============================================================================
+# VERSION
+#
+if [ "$SHOW_VERSION" -eq "1" ];
+  then
+  echo "1.0.0";
   fi
 #
 # ==============================================================================

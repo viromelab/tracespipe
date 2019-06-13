@@ -444,7 +444,7 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "    -ra,   --run-analysis    Run data analysis,                   "
     echo "    -all,  --run-all         Run all the options.                 "
     echo "                                                                "
-    echo -e "\e[93m    Example: ./TRACESPipe.sh --run-meta --run-mito   \e[0m"
+    echo -e "\e[93m    Example: ./TRACESPipe.sh --run-meta --run-b19 --run-mito \e[0m"
     echo "                                                                "
     echo "    meta_info.txt -> 'organ:reads_forward.fa.gz:reads_reverse.fa.gz'  "
     echo "    The reads and meta_info.txt must be in the src/ folder.     "

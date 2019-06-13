@@ -523,6 +523,14 @@ if [[ "$GET_EXTRA" -eq "1" ]];
 if [[ "$RUN_ANALYSIS" -eq "1" ]];
   then
   #
+  if [ ! -f meta_info.txt ];
+    then
+    echo -e "\e[31mERROR: meta_info.txt file not found!\e[0m"
+    echo "Please create a meta information file before the run."
+    echo "For addition information, see the instructions at the web page."
+    exit 1;
+  fi
+  #
   mapfile -t READS < meta_info.txt
   #
   for read in "${READS[@]}" # 
@@ -542,6 +550,14 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     # ==========================================================================
     # TRIM AND FILTER READS
     #
+    if [ ! -f adapters.fa ];
+      then
+      echo -e "\e[31mERROR: adapter sequences (adapters.fa) not found!\e[0m"
+      echo "TIP: before this, run: ./TRACESPipe.sh --gen-adapters"
+      echo "For addition information, see the instructions at the web page."
+      exit 1;
+    fi
+    #
     echo -e "\e[34m[TRACES]\e[32m Trimming and filtering with Trimmomatic ...\e[0m";
     ./TRACES_trim_filter_reads.sh
     echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
@@ -554,6 +570,22 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     if [[ "$RUN_META_ON" -eq "1" ]];
       then
+      if [ ! -f VDB.fa ];
+        then
+	echo -e "\e[31mERROR: viral database (VDB.fa) not found!\e[0m"
+        echo "TIP: before this, run: ./TRACESPipe.sh --build-viral"
+        echo "For addition information, see the instructions at the web page."
+        exit 1;
+        fi
+      #
+      if [ ! -f F_PHIX.fa ];
+        then
+        echo -e "\e[31mERROR: viral PhiX (F_PHIX.fa) not found!\e[0m"
+        echo "TIP: before this, run: ./TRACESPipe.sh --get-phix"
+        echo "For addition information, see the instructions at the web page."
+        exit 1;
+        fi
+      #
       echo -e "\e[34m[TRACES]\e[32m Removing PhiX from the samples with MAGNET ...\e[0m";
       ./TRACES_remove_phix.sh # IT IS USED ONLY FOR FALCON
       #
@@ -611,6 +643,14 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     if [[ "$RUN_PROFILES_ON" -eq "1" ]];
       then
+      if [ ! -f VDB.fa ];
+        then
+        echo -e "\e[31mERROR: viral database (VDB.fa) not found!\e[0m"
+        echo "TIP: before this, run: ./TRACESPipe.sh --build-viral"
+        echo "For addition information, see the instructions at the web page."
+        exit 1;
+        fi
+      #
       echo -e "\e[34m[TRACES]\e[32m Building complexity profiles with gto ...\e[0m";
       cat NP-o_fw_pr.fq NP-o_fw_unpr.fq NP-o_rv_pr.fq NP-o_rv_unpr.fq > P_TRACES_sample_reads.fq
       ./TRACES_profiles.sh GIS-$ORGAN_T VDB.fa P_TRACES_sample_reads.fq $ORGAN_T
@@ -622,29 +662,16 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     if [[ "$RUN_META_NON_VIRAL_ON" -eq "1" ]];
       then
-      echo -e "\e[34m[TRACES]\e[32m Running NON viral metagenomic analysis with FALCON ...\e[0m";
       if [ ! -f DB.fa ]; 
         then
 	echo -e "\e[31mERROR: Non-viral database FASTA file (DB.fa) not found!\e[0m"
-	echo "TIP: first run ./TRACES --build-unviral"
+	echo "TIP: first run ./TRACESPipe --build-unviral"
 	exit 1;
         fi
+      #	
+      echo -e "\e[34m[TRACES]\e[32m Running NON viral metagenomic analysis with FALCON ...\e[0m";
       ./TRACES_metagenomics.sh $ORGAN_T DB.fa 10000 
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
-      fi
-    #
-    # ==========================================================================
-    # MITOCHONDRIAL GENOME ALIGN AND CONSENSUS
-    #
-    if [[ "$RUN_MITO_ON" -eq "1" ]];
-      then
-      echo -e "\e[34m[TRACES]\e[32m Aliggning reads to mitochondrial ref with bowtie2 ...\e[0m";
-      ./TRACES_mt_align_reads.sh mtDNA.fa $ORGAN_T
-      echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
-      #
-      echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-      ./TRACES_mt_consensus.sh mtDNA.fa mt_aligned_sorted-$ORGAN_T.bam $ORGAN_T
-      echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
       fi
     #
     # ==========================================================================
@@ -1085,11 +1112,41 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
       fi
     #
+    # ==========================================================================
+    # MITOCHONDRIAL GENOME ALIGN AND CONSENSUS
+    #
+    if [[ "$RUN_MITO_ON" -eq "1" ]];
+      then
+      if [ ! -f mtDNA.fa ];
+        then
+        echo -e "\e[31mERROR: reference mitochondrial DNA (mtDNA.fa) not found!\e[0m"
+        echo "TIP: before this, run: ./TRACESPipe.sh --get-mito"
+        echo "For addition information, see the instructions at the web page."
+        exit 1;
+      fi
+      #
+      echo -e "\e[34m[TRACES]\e[32m Aliggning reads to mitochondrial ref with bowtie2 ...\e[0m";
+      ./TRACES_mt_align_reads.sh mtDNA.fa $ORGAN_T
+      echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
+      #
+      echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+      ./TRACES_mt_consensus.sh mtDNA.fa mt_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+      echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
+      fi
+    #
     # ========================================================================== 
     # CY VERYFICATION
     #
     if [[ "$RUN_CY_ON" -eq "1" ]];
       then
+      if [ ! -f cy.fa ];
+        then
+        echo -e "\e[31mERROR: reference human y-chromosome (cy.fa) not found!\e[0m"
+        echo "TIP: before this, run: ./TRACESPipe.sh --get-cy-chromo"
+        echo "For addition information, see the instructions at the web page."
+        exit 1;
+      fi
+      #
       echo -e "\e[34m[TRACES]\e[32m Searching for Y chromosome halotypes ...\e[0m";
       ./TRACES_cy_markers.sh $ORGAN_T
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";

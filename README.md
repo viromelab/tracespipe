@@ -21,8 +21,8 @@ To install TRACES Pipeline, run the following commands in a Linux OS:
 ```
 git clone https://github.com/pratas/traces.git
 cd traces/src/
-chmod +x TRACE*.sh
-./TRACES.sh --install
+chmod +x TRACES*.sh
+./TRACESPipe.sh --install
 ```
 Conda is needed for installation. <br>
 To install Conda use the following steps:
@@ -40,16 +40,17 @@ https://docs.conda.io/projects/conda/en/latest/user-guide/install/linux.html
 
 To run TRACES Pipeline, use the following commands in a Linux OS:
 ```
-./TRACES.sh <parameters>
+./TRACESPipe.sh <parameters>
 ```
 
 ## 3. Usage ##
 
 ```
-./TRACES.sh -h
+./TRACESPipe.sh -h
 ```
 
 ```                                                     
+                                                                
                                                               
      ████████╗ ██████╗   █████╗   ██████╗ ███████╗ ███████╗         
      ╚══██╔══╝ ██╔══██╗ ██╔══██╗ ██╔════╝ ██╔════╝ ██╔════╝         
@@ -58,10 +59,12 @@ To run TRACES Pipeline, use the following commands in a Linux OS:
         ██║    ██║  ██║ ██║  ██║ ╚██████╗ ███████╗ ███████║         
         ╚═╝    ╚═╝  ╚═╝ ╚═╝  ╚═╝  ╚═════╝ ╚══════╝ ╚══════╝         
                                                                 
-    An automatic pipeline for viral and human genome analysis
-    in the contexts of clinical virology and forensics.         
+                         P I P E L I N E                            
                                                                 
-    Usage: ./TRACES.sh [options]                                
+    A Next-generation sequencing pipeline for identification, assembly,
+    and analysis of viral and human-host genomes at a multi-organ level.
+                                                                
+    Usage: ./TRACESPipe.sh [options]                             
                                                                 
     -h,    --help            Show this help message and exit,     
                                                                   
@@ -77,48 +80,47 @@ To run TRACES Pipeline, use the following commands in a Linux OS:
     -gm,   --get-mito        Downloads human Mitochondrial genome,
     -gy,   --get-y-chromo    Downloads human Y-chromosome,        
                                                                   
-    -ra,   --run-analysis    Run data analysis,                   
-                                                                  
     -rm,   --run-meta        Run viral metagenomic identification,    
     -ro,   --run-meta-nv     Run NON-viral metagenomic identification,   
                                                                   
     -rava, --run-all-v-alig  Run all viral align/sort/consensus seqs,    
                                                                  
-    -rb,   --run-b19         Run B19 align, sort and consensus seq,    
-    -rh1,  --run-hv1         Run HV1 align, sort and consensus seq,    
-    -rh2,  --run-hv2         Run HV2 align, sort and consensus seq,    
-    -rh3,  --run-hv3         Run HV3 align, sort and consensus seq,    
-    -rh4,  --run-hv4         Run HV4 align, sort and consensus seq,    
-    -rh5,  --run-hv5         Run HV5 align, sort and consensus seq,    
-    -rh6,  --run-hv6         Run HV6 align, sort and consensus seq,    
-    -rh6a, --run-hv6a        Run HV6A align, sort and consensus seq,    
-    -rh6b, --run-hv6b        Run HV6B align, sort and consensus seq,    
-    -rh7,  --run-hv7         Run HV7 align, sort and consensus seq,    
-    -rh8,  --run-hv8         Run HV8 align, sort and consensus seq,    
-    -rtt,  --run-ttv         Run TTV align, sort and consensus seq,    
-    -rjc,  --run-jcv         Run JCV align, sort and consensus seq,    
-    -rmc,  --run-mcv         Run MCV align, sort and consensus seq,    
-    -rbk,  --run-bk          Run BK align, sort and consensus seq,    
-    -rbv1, --run-hbov1       Run HBoV1 align, sort and consensus seq,    
-    -rbv0, --run-hbovnot1    Run HBoV 2,3,... align, sort and consensus seq,    
-    -rhbv, --run-hbv         Run HBV align, sort and consensus seq,    
-    -rhpv, --run-hpv         Run HPV align, sort and consensus seq,    
-    -rvar, --run-varv        Run VARV align, sort and consensus seq,    
+    -rb,   --run-b19         Run B19   align and consensus seq,    
+    -rh1,  --run-hv1         Run HV1   align and consensus seq,    
+    -rh2,  --run-hv2         Run HV2   align and consensus seq,    
+    -rh3,  --run-hv3         Run HV3   align and consensus seq,    
+    -rh4,  --run-hv4         Run HV4   align and consensus seq,    
+    -rh5,  --run-hv5         Run HV5   align and consensus seq,    
+    -rh6,  --run-hv6         Run HV6   align and consensus seq,    
+    -rh6a, --run-hv6a        Run HV6A  align and consensus seq,    
+    -rh6b, --run-hv6b        Run HV6B  align and consensus seq,    
+    -rh7,  --run-hv7         Run HV7   align and consensus seq,    
+    -rh8,  --run-hv8         Run HV8   align and consensus seq,    
+    -rtt,  --run-ttv         Run TTV   align and consensus seq,    
+    -rjc,  --run-jcv         Run JCV   align and consensus seq,    
+    -rmc,  --run-mcv         Run MCV   align and consensus seq,    
+    -rbk,  --run-bk          Run BK    align and consensus seq,    
+    -rbv1, --run-hbov1       Run HBoV1 align and consensus seq,    
+    -rbv0, --run-hbovnot1    Run HBoV (2,3,...) align/consensus seq, 
+    -rhbv, --run-hbv         Run HBV   align and consensus seq,    
+    -rhpv, --run-hpv         Run HPV   align and consensus seq,    
+    -rvar, --run-varv        Run VARV  align and consensus seq,    
                                                                  
     -rsr,  --run-specific    Run specific REF align/consensus seq, 
                                                                  
-    -rmt,  --run-mito        Run Mito align, sort and consensus seq,   
-    -rcy,  --run-y-chromo    Run CY align, sort and consensus seq,    
+    -rmt,  --run-mito        Run Mito  align and consensus seq,   
+    -rcy,  --run-y-chromo    Run CY    align and consensus seq,    
                                                                   
     -rda,  --run-de-novo     Run de-novo assembly,               
                                                                  
+    -ra,   --run-analysis    Run data analysis,                   
     -all,  --run-all         Run all the options.                 
                                                                 
-    Example: ./TRACES.sh --run-meta --run-mito           
+    Example: ./TRACESPipe.sh --run-meta --run-mito   
                                                                 
-    meta_info.txt -> 'name:reads_forward.fa.gz:reads_reverse.fa.gz'  
+    meta_info.txt -> 'organ:reads_forward.fa.gz:reads_reverse.fa.gz'  
     The reads and meta_info.txt must be in the src/ folder.     
-                                                                
+ 
 ```
 ## 4. Examples ##
 ...

@@ -18,6 +18,8 @@ bcftools norm -f $Reference calls.vcf.gz -Oz -o calls.norm.vcf.gz
 # filter adjacent indels within 5bp
 bcftools filter --IndelGap 5 calls.norm.vcf.gz -Oz -o calls.norm.flt-indels.vcf.gz
 #
+
+#
 # create consensus sequence
 bcftools index calls.norm.flt-indels.vcf.gz
 bcftools consensus -f $Reference calls.norm.flt-indels.vcf.gz > B19-consensus-$Organ.fa
@@ -28,3 +30,8 @@ cat TMP_FILE_X_KI.xki >> B19-consensus-$Organ.fa
 # create bed file
 zcat calls.norm.flt-indels.vcf.gz |vcf2bed --snvs > B19-calls-$Organ.bed
 #
+
+
+#filter low quality reads
+#bcftools filter -s LOWQUAL -e '%QUAL<20 || DP>100' WSR_vc_calls.flt-indels.vcf.gz -Oz -o WSR_vc_calls.flt-indels-lq.vcf.gz
+

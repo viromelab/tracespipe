@@ -5,8 +5,8 @@
 # =                                                                            = #
 # =                              T R A C E S P i p e                           = #
 # =                                                                            = #
-# =     A Next-Generation Sequencing pipeline for identification, assembly     = #
-# =         and analysis of viral and host genomes for multiple organs         = #
+# =     A Next-Generation Sequencing pipeline for identification, assembly,    = #
+# =     and analysis of viral and human-host genomes at multi-organ level.     = #
 # =                                                                            = #
 # ============================================================================== #
 ##################################################################################
@@ -389,10 +389,10 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "                                                                "
     echo "                         P I P E L I N E                            "
     echo "                                                                "
-    echo -e "    \e[32mNext-generation sequencing pipeline for identification, assembly\e[0m" 
-    echo -e "    \e[32mand analysis of viral and host genomes at a multi-organ level\e[0m.         "
+    echo -e "    \e[32mA Next-generation sequencing pipeline for identification, assembly,\e[0m" 
+    echo -e "    \e[32mand analysis of viral and human-host genomes at a multi-organ level\e[0m."
     echo "                                                                "
-    echo -e "\e[93m    Usage: ./TRACES.sh [options]                                \e[0m"
+    echo -e "\e[93m    Usage: ./TRACESPipe.sh [options]                             \e[0m"
     echo "                                                                "
     echo "    -h,    --help            Show this help message and exit,     "
     echo "                                                                  "
@@ -444,7 +444,7 @@ if [ "$SHOW_HELP" -eq "1" ];
     echo "    -ra,   --run-analysis    Run data analysis,                   "
     echo "    -all,  --run-all         Run all the options.                 "
     echo "                                                                "
-    echo -e "\e[93m    Example: ./TRACES.sh --run-meta --run-mito      \e[0m"
+    echo -e "\e[93m    Example: ./TRACESPipe.sh --run-meta --run-mito   \e[0m"
     echo "                                                                "
     echo "    meta_info.txt -> 'organ:reads_forward.fa.gz:reads_reverse.fa.gz'  "
     echo "    The reads and meta_info.txt must be in the src/ folder.     "

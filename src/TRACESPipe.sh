@@ -464,16 +464,16 @@ if [ "$SHOW_HELP" -eq "1" ];
 if [ "$SHOW_VERSION" -eq "1" ];
   then
   echo "                                       ";
-  echo "TRACESPipe                             ";
+  echo "           TRACESPipe                  ";
   echo "                                       ";
-  echo "Version: 1.0.0                         ";
+  echo "         Version: 1.0.0                ";
   echo "                                       ";
-  echo "Department of Virology and             ";
-  echo "Department of Forensic Medicine,       ";
-  echo "University of Helsinki, Finland.       ";
-  echo "                                       ";
-  echo "IEETA/DETI,                            ";
-  echo "University of Aveiro, Portugal.        ";
+  echo "   Department of Virology and          ";
+  echo " Department of Forensic Medicine,      ";
+  echo " University of Helsinki, Finland.      ";
+  echo "                &                      ";
+  echo "           IEETA/DETI,                 ";
+  echo " University of Aveiro, Portugal.       ";
   echo "                                       ";
   fi
 #

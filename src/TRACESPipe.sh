@@ -44,10 +44,23 @@ RUN_HV6A_ON=0;
 RUN_HV6B_ON=0;
 RUN_HV7_ON=0;
 RUN_HV8_ON=0;
+#
+RUN_POLY1=0;
+RUN_POLY2=0;
+RUN_POLY3=0;
+RUN_POLY4=0;
+RUN_POLY5=0;
+RUN_POLY6=0;
+RUN_POLY7=0;
+RUN_POLY8=0;
+RUN_POLY9=0;
+RUN_POLY10=0;
+RUN_POLY11=0;
+RUN_POLY12=0;
+RUN_POLY13=0;
+RUN_POLY14=0;
+#
 RUN_TTV_ON=0;
-RUN_JCV_ON=0;
-RUN_MCV_ON=0;
-RUN_BK_ON=0;
 RUN_HBOV1_ON=0;
 RUN_HBOVNOT1_ON=0;
 RUN_HBV_ON=0;
@@ -137,10 +150,21 @@ for i in "$@"
       RUN_HV6B_ON=1;
       RUN_HV7_ON=1;
       RUN_HV8_ON=1;
+      RUN_POLY1=1;
+      RUN_POLY2=1;
+      RUN_POLY3=1;
+      RUN_POLY4=1;
+      RUN_POLY5=1;
+      RUN_POLY6=1;
+      RUN_POLY7=1;
+      RUN_POLY8=1;
+      RUN_POLY9=1;
+      RUN_POLY10=1;
+      RUN_POLY11=1;
+      RUN_POLY12=1;
+      RUN_POLY13=1;
+      RUN_POLY14=1;
       RUN_TTV_ON=1;
-      RUN_JCV_ON=1;
-      RUN_MCV_ON=1;
-      RUN_BK_ON=1;
       RUN_HBOV1_ON=1;
       RUN_HBOVNOT1_ON=1;
       RUN_HBV_ON=1;
@@ -189,10 +213,21 @@ for i in "$@"
       RUN_HV6B_ON=1;
       RUN_HV7_ON=1;
       RUN_HV8_ON=1;
+      RUN_POLY1=1;
+      RUN_POLY2=1;
+      RUN_POLY3=1;
+      RUN_POLY4=1;
+      RUN_POLY5=1;
+      RUN_POLY6=1;
+      RUN_POLY7=1;
+      RUN_POLY8=1;
+      RUN_POLY9=1;
+      RUN_POLY10=1;
+      RUN_POLY11=1;
+      RUN_POLY12=1;
+      RUN_POLY13=1;
+      RUN_POLY14=1;
       RUN_TTV_ON=1;
-      RUN_JCV_ON=1;
-      RUN_MCV_ON=1;
-      RUN_BK_ON=1;
       RUN_HBOV1_ON=1;
       RUN_HBOVNOT1_ON=1;
       RUN_HBV_ON=1;
@@ -266,27 +301,93 @@ for i in "$@"
       SHOW_HELP=0;
       shift
     ;;
+    -rp1|--run-poly1)
+      RUN_ANALYSIS=1;
+      RUN_POLY1_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rp2|--run-poly2)
+      RUN_ANALYSIS=1;
+      RUN_POLY2_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rp3|--run-poly3)
+      RUN_ANALYSIS=1;
+      RUN_POLY3_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rp4|--run-poly4)
+      RUN_ANALYSIS=1;
+      RUN_POLY4_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rp5|--run-poly5)
+      RUN_ANALYSIS=1;
+      RUN_POLY5_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rp6|--run-poly6)
+      RUN_ANALYSIS=1;
+      RUN_POLY6_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rp7|--run-poly7)
+      RUN_ANALYSIS=1;
+      RUN_POLY7_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rp8|--run-poly8)
+      RUN_ANALYSIS=1;
+      RUN_POLY8_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rp9|--run-poly9)
+      RUN_ANALYSIS=1;
+      RUN_POLY9_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rp10|--run-poly10)
+      RUN_ANALYSIS=1;
+      RUN_POLY10_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rp11|--run-poly11)
+      RUN_ANALYSIS=1;
+      RUN_POLY11_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rp12|--run-poly12)
+      RUN_ANALYSIS=1;
+      RUN_POLY12_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rp13|--run-poly13)
+      RUN_ANALYSIS=1;
+      RUN_POLY13_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rp14|--run-poly14)
+      RUN_ANALYSIS=1;
+      RUN_POLY14_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
     -rtt|--run-ttv)
       RUN_ANALYSIS=1;
       RUN_TTV_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rjc|--run-jcv)
-      RUN_ANALYSIS=1;
-      RUN_JCV_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rmc|--run-mcv)
-      RUN_ANALYSIS=1;
-      RUN_MCV_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rbk|--run-bk)
-      RUN_ANALYSIS=1;
-      RUN_BK_ON=1;
       SHOW_HELP=0;
       shift
     ;;
@@ -356,10 +457,21 @@ for i in "$@"
       RUN_HV6B_ON=1;
       RUN_HV7_ON=1;
       RUN_HV8_ON=1;
+      RUN_POLY1=1;
+      RUN_POLY2=1;
+      RUN_POLY3=1;
+      RUN_POLY4=1;
+      RUN_POLY5=1;
+      RUN_POLY6=1;
+      RUN_POLY7=1;
+      RUN_POLY8=1;
+      RUN_POLY9=1;
+      RUN_POLY10=1;
+      RUN_POLY11=1;
+      RUN_POLY12=1;
+      RUN_POLY13=1;
+      RUN_POLY14=1;
       RUN_TTV_ON=1;
-      RUN_JCV_ON=1;
-      RUN_MCV_ON=1;
-      RUN_BK_ON=1;
       RUN_HBOV1_ON=1;
       RUN_HBOVNOT1_ON=1;
       RUN_HBV_ON=1;
@@ -430,10 +542,24 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -rh6b, --run-hv6b        Run HV6B  align and consensus seq,    "
   echo "    -rh7,  --run-hv7         Run HV7   align and consensus seq,    "
   echo "    -rh8,  --run-hv8         Run HV8   align and consensus seq,    "
+  echo "    -rh8,  --run-hv8         Run HV8   align and consensus seq,    "
+
+  echo "    -rp1,  --run-poly1       Run Polyoma 1  align and consensus seq,  "
+  echo "    -rp2,  --run-poly2       Run Polyoma 2  align and consensus seq,  "
+  echo "    -rp3,  --run-poly3       Run Polyoma 3  align and consensus seq,  "
+  echo "    -rp4,  --run-poly4       Run Polyoma 4  align and consensus seq,  "
+  echo "    -rp5,  --run-poly5       Run Polyoma 5  align and consensus seq,  "
+  echo "    -rp6,  --run-poly6       Run Polyoma 6  align and consensus seq,  "
+  echo "    -rp7,  --run-poly7       Run Polyoma 7  align and consensus seq,  "
+  echo "    -rp8,  --run-poly8       Run Polyoma 8  align and consensus seq,  "
+  echo "    -rp9,  --run-poly9       Run Polyoma 9  align and consensus seq,  "
+  echo "    -rp10, --run-poly10      Run Polyoma 10 align and consensus seq,  "
+  echo "    -rp11, --run-poly11      Run Polyoma 11 align and consensus seq,  "
+  echo "    -rp12, --run-poly12      Run Polyoma 12 align and consensus seq,  "
+  echo "    -rp13, --run-poly13      Run Polyoma 13 align and consensus seq,  "
+  echo "    -rp14, --run-poly14      Run Polyoma 14 align and consensus seq,  "
+
   echo "    -rtt,  --run-ttv         Run TTV   align and consensus seq,    "
-  echo "    -rjc,  --run-jcv         Run JCV   align and consensus seq,    "
-  echo "    -rmc,  --run-mcv         Run MCV   align and consensus seq,    "
-  echo "    -rbk,  --run-bk          Run BK    align and consensus seq,    "
   echo "    -rbv1, --run-hbov1       Run HBoV1 align and consensus seq,    "
   echo "    -rbv0, --run-hbovnot1    Run HBoV (2,3,...) align/consensus seq, "
   echo "    -rhbv, --run-hbv         Run HBV   align and consensus seq,    "

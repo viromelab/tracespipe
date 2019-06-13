@@ -120,7 +120,10 @@ To run TRACES Pipeline, use the following commands in a Linux OS:
     The reads and meta_info.txt must be in the src/ folder.     
                                                                 
 ```
-## 4. Programs ##
+## 4. Examples ##
+...
+
+## 5. Programs ##
 
 TRACES Pipeline uses a combination of the following tools:
 
@@ -135,18 +138,18 @@ TRACES Pipeline uses a combination of the following tools:
 &#x1F49A;&nbsp; Bcftools [[http://www.htslib.org/doc/bcftools.html]](http://www.htslib.org/doc/bcftools.html)<br>
 &#x1F49A;&nbsp; IGV [[https://software.broadinstitute.org/software/igv/]](https://software.broadinstitute.org/software/igv/)<br>
 
-## 5. Citation ##
+## 6. Citation ##
 
 If you use this pipeline, please cite:
 ```
 null
 ```
 
-## 6. Issues ##
+## 7. Issues ##
 
 For any issue let us know at [issues link](https://github.com/pratas/traces/issues).
 
-## 7. License ##
+## 8. License ##
 
 GPL v3.
 

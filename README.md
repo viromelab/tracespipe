@@ -15,7 +15,20 @@
 <i>A next-generation sequencing pipeline for identification, assembly,<br> and analysis of viral and human-host genomes at multi-organ level.</i>
 <br><br>
 
-## 1. Installation ##
+## 1. About ##
+
+TRACESPipe is a next-generation sequencing pipeline for identification, assembly, and analysis of viral and human-host genomes at multi-organ level. 
+The identification and assembly of viral genomes relies on a cooperation between three modalities: 
+<ul>
+<li>compression-based predictors;</li>
+<li>sequence alignments;</li>
+<li>\textit{de-novo} assembly.</li>
+</ul>
+The compression-based prediction uses the FALCON tecnhology to find the reference genome (from a Large database) which has the higgest similarity value relative to the sequenced reads. After, the best reference is used by Bowtie2 to read alignment. A consensus sequence is built. Then, de-novo assembly (SPAdes) is used to draft scaffolds. The high coverage scaffolds that overlap totally or partially the consensus sequence are used to validate or augment the new genome.
+
+This pipeline has been tested in Illumina HiSeq and NovaSeq platforms.
+
+## 2. Installation ##
 
 To install TRACES Pipeline, run the following commands in a Linux OS:
 ```
@@ -36,14 +49,14 @@ https://docs.conda.io/projects/conda/en/latest/user-guide/install/linux.html
 ```
 
 
-## 2. Running ##
+## 3. Running ##
 
 To run TRACES Pipeline, use the following commands in a Linux OS:
 ```
 ./TRACESPipe.sh <parameters>
 ```
 
-## 3. Usage ##
+## 4. Usage ##
 
 ```
 ./TRACESPipe.sh -h
@@ -122,10 +135,10 @@ To run TRACES Pipeline, use the following commands in a Linux OS:
     The reads and meta_info.txt must be in the src/ folder.     
  
 ```
-## 4. Examples ##
+## 5. Examples ##
 ...
 
-## 5. Programs ##
+## 6. Programs ##
 
 TRACES Pipeline uses a combination of the following tools:
 
@@ -143,18 +156,18 @@ TRACES Pipeline uses a combination of the following tools:
 | &#x1F49A;&nbsp; IGV | [[https://software.broadinstitute.org/software/igv/]](https://software.broadinstitute.org/software/igv/) | [![Article](https://img.shields.io/static/v1.svg?label=View&message=Article&color=green)](http://cancerres.aacrjournals.org/content/77/21/e31.long) |
 
 
-## 6. Citation ##
+## 7. Citation ##
 
 If you use this pipeline, please cite:
 ```
 null
 ```
 
-## 7. Issues ##
+## 8. Issues ##
 
 For any issue let us know at [issues link](https://github.com/pratas/traces/issues).
 
-## 8. License ##
+## 9. License ##
 
 GPL v3.
 

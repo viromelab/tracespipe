@@ -765,20 +765,20 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       ./TRACES_get_best_HBV.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
       #
-      ./TRACES_get_best_BK.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_JCV.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_KI.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_WU.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_MCV.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_Polyomavirus_6.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_Polyomavirus_7.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_Polyomavirus_8.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_Polyomavirus_9.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_MW.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_STL.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_Polyomavirus_12.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_Polyomavirus_13.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_Polyomavirus_14.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_Poly1.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_Poly2.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_Poly3.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_Poly4.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_Poly5.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_Poly6.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_Poly7.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_Poly8.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_Poly9.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_Poly10.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_Poly11.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_Poly12.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_Poly13.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_Poly14.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
       # 
       ./TRACES_get_best_HPV.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
       ./TRACES_get_best_TTV.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
@@ -1080,7 +1080,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_POLY1_ON" -eq "1" ]];
       then
       echo -e "\e[34m[TRACES]\e[32m Aliggning reads to Polyomavirus 1 ref with bowtie2 ...\e[0m";
-      V_INFO=`./TRACES_get_best_poly1.sh $ORGAN_T`;
+      V_INFO=`./TRACES_get_best_Poly1.sh $ORGAN_T`;
       echo "Best match: $V_INFO";
       V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
       if [[ "$V_GID" != "-" ]]; 
@@ -1088,7 +1088,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo "Extracting sequence from VDB.fa ...";
         gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-POLY1.fa
         echo "Aliggning ..." 
-        ./TRACES_poly1_align_reads.sh $ORGAN_T-POLY1.fa $ORGAN_T 
+        ./TRACES_poly1_align_reads.sh $ORGAN_T-POLY1.fa $ORGAN_T 12
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
@@ -1101,7 +1101,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_POLY2_ON" -eq "1" ]];
       then
       echo -e "\e[34m[TRACES]\e[32m Aliggning reads to Polyomavirus 2 ref with bowtie2 ...\e[0m";
-      V_INFO=`./TRACES_get_best_poly2.sh $ORGAN_T`;
+      V_INFO=`./TRACES_get_best_Poly2.sh $ORGAN_T`;
       echo "Best match: $V_INFO";
       V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
       if [[ "$V_GID" != "-" ]]; 
@@ -1109,7 +1109,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo "Extracting sequence from VDB.fa ...";
         gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-POLY2.fa
         echo "Aliggning ..." 
-        ./TRACES_poly2_align_reads.sh $ORGAN_T-POLY2.fa $ORGAN_T 
+        ./TRACES_poly2_align_reads.sh $ORGAN_T-POLY2.fa $ORGAN_T 12
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
@@ -1122,7 +1122,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_POLY3_ON" -eq "1" ]];
       then
       echo -e "\e[34m[TRACES]\e[32m Aliggning reads to Polyomavirus 3 ref with bowtie2 ...\e[0m";
-      V_INFO=`./TRACES_get_best_poly3.sh $ORGAN_T`;
+      V_INFO=`./TRACES_get_best_Poly3.sh $ORGAN_T`;
       echo "Best match: $V_INFO";
       V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
       if [[ "$V_GID" != "-" ]]; 
@@ -1130,7 +1130,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo "Extracting sequence from VDB.fa ...";
         gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-POLY3.fa
         echo "Aliggning ..." 
-        ./TRACES_poly3_align_reads.sh $ORGAN_T-POLY3.fa $ORGAN_T 
+        ./TRACES_poly3_align_reads.sh $ORGAN_T-POLY3.fa $ORGAN_T 12
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
@@ -1143,7 +1143,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_POLY4_ON" -eq "1" ]];
       then
       echo -e "\e[34m[TRACES]\e[32m Aliggning reads to Polyomavirus 4 ref with bowtie2 ...\e[0m";
-      V_INFO=`./TRACES_get_best_poly4.sh $ORGAN_T`;
+      V_INFO=`./TRACES_get_best_Poly4.sh $ORGAN_T`;
       echo "Best match: $V_INFO";
       V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
       if [[ "$V_GID" != "-" ]]; 
@@ -1151,7 +1151,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo "Extracting sequence from VDB.fa ...";
         gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-POLY4.fa
         echo "Aliggning ..." 
-        ./TRACES_poly4_align_reads.sh $ORGAN_T-POLY4.fa $ORGAN_T 
+        ./TRACES_poly4_align_reads.sh $ORGAN_T-POLY4.fa $ORGAN_T 12
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
@@ -1164,7 +1164,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_POLY5_ON" -eq "1" ]];
       then
       echo -e "\e[34m[TRACES]\e[32m Aliggning reads to Polyomavirus 5 ref with bowtie2 ...\e[0m";
-      V_INFO=`./TRACES_get_best_poly5.sh $ORGAN_T`;
+      V_INFO=`./TRACES_get_best_Poly5.sh $ORGAN_T`;
       echo "Best match: $V_INFO";
       V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
       if [[ "$V_GID" != "-" ]]; 
@@ -1172,7 +1172,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo "Extracting sequence from VDB.fa ...";
         gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-POLY5.fa
         echo "Aliggning ..." 
-        ./TRACES_poly5_align_reads.sh $ORGAN_T-POLY5.fa $ORGAN_T 
+        ./TRACES_poly5_align_reads.sh $ORGAN_T-POLY5.fa $ORGAN_T 12
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
@@ -1185,7 +1185,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_POLY6_ON" -eq "1" ]];
       then
       echo -e "\e[34m[TRACES]\e[32m Aliggning reads to Polyomavirus 6 ref with bowtie2 ...\e[0m";
-      V_INFO=`./TRACES_get_best_poly6.sh $ORGAN_T`;
+      V_INFO=`./TRACES_get_best_Poly6.sh $ORGAN_T`;
       echo "Best match: $V_INFO";
       V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
       if [[ "$V_GID" != "-" ]]; 
@@ -1193,7 +1193,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo "Extracting sequence from VDB.fa ...";
         gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-POLY6.fa
         echo "Aliggning ..." 
-        ./TRACES_poly6_align_reads.sh $ORGAN_T-POLY6.fa $ORGAN_T 
+        ./TRACES_poly6_align_reads.sh $ORGAN_T-POLY6.fa $ORGAN_T 12
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
@@ -1206,7 +1206,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_POLY7_ON" -eq "1" ]];
       then
       echo -e "\e[34m[TRACES]\e[32m Aliggning reads to Polyomavirus 7 ref with bowtie2 ...\e[0m";
-      V_INFO=`./TRACES_get_best_poly7.sh $ORGAN_T`;
+      V_INFO=`./TRACES_get_best_Poly7.sh $ORGAN_T`;
       echo "Best match: $V_INFO";
       V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
       if [[ "$V_GID" != "-" ]]; 
@@ -1214,7 +1214,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo "Extracting sequence from VDB.fa ...";
         gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-POLY7.fa
         echo "Aliggning ..." 
-        ./TRACES_poly7_align_reads.sh $ORGAN_T-POLY7.fa $ORGAN_T 
+        ./TRACES_poly7_align_reads.sh $ORGAN_T-POLY7.fa $ORGAN_T 12
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
@@ -1227,7 +1227,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_POLY8_ON" -eq "1" ]];
       then
       echo -e "\e[34m[TRACES]\e[32m Aliggning reads to Polyomavirus 8 ref with bowtie2 ...\e[0m";
-      V_INFO=`./TRACES_get_best_poly8.sh $ORGAN_T`;
+      V_INFO=`./TRACES_get_best_Poly8.sh $ORGAN_T`;
       echo "Best match: $V_INFO";
       V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
       if [[ "$V_GID" != "-" ]]; 
@@ -1235,7 +1235,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo "Extracting sequence from VDB.fa ...";
         gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-POLY8.fa
         echo "Aliggning ..." 
-        ./TRACES_poly8_align_reads.sh $ORGAN_T-POLY8.fa $ORGAN_T 
+        ./TRACES_poly8_align_reads.sh $ORGAN_T-POLY8.fa $ORGAN_T 12
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
@@ -1248,7 +1248,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_POLY9_ON" -eq "1" ]];
       then
       echo -e "\e[34m[TRACES]\e[32m Aliggning reads to Polyomavirus 9 ref with bowtie2 ...\e[0m";
-      V_INFO=`./TRACES_get_best_poly9.sh $ORGAN_T`;
+      V_INFO=`./TRACES_get_best_Poly9.sh $ORGAN_T`;
       echo "Best match: $V_INFO";
       V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
       if [[ "$V_GID" != "-" ]]; 
@@ -1256,7 +1256,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo "Extracting sequence from VDB.fa ...";
         gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-POLY9.fa
         echo "Aliggning ..." 
-        ./TRACES_poly9_align_reads.sh $ORGAN_T-POLY9.fa $ORGAN_T 
+        ./TRACES_poly9_align_reads.sh $ORGAN_T-POLY9.fa $ORGAN_T 12
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
@@ -1269,7 +1269,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_POLY10_ON" -eq "1" ]];
       then
       echo -e "\e[34m[TRACES]\e[32m Aliggning reads to Polyomavirus 10 ref with bowtie2 ...\e[0m";
-      V_INFO=`./TRACES_get_best_poly10.sh $ORGAN_T`;
+      V_INFO=`./TRACES_get_best_Poly10.sh $ORGAN_T`;
       echo "Best match: $V_INFO";
       V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
       if [[ "$V_GID" != "-" ]]; 
@@ -1277,7 +1277,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo "Extracting sequence from VDB.fa ...";
         gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-POLY10.fa
         echo "Aliggning ..." 
-        ./TRACES_poly10_align_reads.sh $ORGAN_T-POLY10.fa $ORGAN_T 
+        ./TRACES_poly10_align_reads.sh $ORGAN_T-POLY10.fa $ORGAN_T 12
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
@@ -1290,7 +1290,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_POLY11_ON" -eq "1" ]];
       then
       echo -e "\e[34m[TRACES]\e[32m Aliggning reads to Polyomavirus 11 ref with bowtie2 ...\e[0m";
-      V_INFO=`./TRACES_get_best_poly11.sh $ORGAN_T`;
+      V_INFO=`./TRACES_get_best_Poly11.sh $ORGAN_T`;
       echo "Best match: $V_INFO";
       V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
       if [[ "$V_GID" != "-" ]]; 
@@ -1298,7 +1298,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo "Extracting sequence from VDB.fa ...";
         gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-POLY11.fa
         echo "Aliggning ..." 
-        ./TRACES_poly11_align_reads.sh $ORGAN_T-POLY11.fa $ORGAN_T 
+        ./TRACES_poly11_align_reads.sh $ORGAN_T-POLY11.fa $ORGAN_T 12
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
@@ -1311,7 +1311,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_POLY12_ON" -eq "1" ]];
       then
       echo -e "\e[34m[TRACES]\e[32m Aliggning reads to Polyomavirus 12 ref with bowtie2 ...\e[0m";
-      V_INFO=`./TRACES_get_best_poly12.sh $ORGAN_T`;
+      V_INFO=`./TRACES_get_best_Poly12.sh $ORGAN_T`;
       echo "Best match: $V_INFO";
       V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
       if [[ "$V_GID" != "-" ]]; 
@@ -1319,7 +1319,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo "Extracting sequence from VDB.fa ...";
         gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-POLY12.fa
         echo "Aliggning ..." 
-        ./TRACES_poly12_align_reads.sh $ORGAN_T-POLY12.fa $ORGAN_T 
+        ./TRACES_poly12_align_reads.sh $ORGAN_T-POLY12.fa $ORGAN_T 12
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
@@ -1332,7 +1332,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_POLY13_ON" -eq "1" ]];
       then
       echo -e "\e[34m[TRACES]\e[32m Aliggning reads to Polyomavirus 13 ref with bowtie2 ...\e[0m";
-      V_INFO=`./TRACES_get_best_poly13.sh $ORGAN_T`;
+      V_INFO=`./TRACES_get_best_Poly13.sh $ORGAN_T`;
       echo "Best match: $V_INFO";
       V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
       if [[ "$V_GID" != "-" ]]; 
@@ -1340,7 +1340,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo "Extracting sequence from VDB.fa ...";
         gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-POLY13.fa
         echo "Aliggning ..." 
-        ./TRACES_poly13_align_reads.sh $ORGAN_T-POLY13.fa $ORGAN_T 
+        ./TRACES_poly13_align_reads.sh $ORGAN_T-POLY13.fa $ORGAN_T 12
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
@@ -1353,7 +1353,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_POLY14_ON" -eq "1" ]];
       then
       echo -e "\e[34m[TRACES]\e[32m Aliggning reads to Polyomavirus 14 ref with bowtie2 ...\e[0m";
-      V_INFO=`./TRACES_get_best_poly14.sh $ORGAN_T`;
+      V_INFO=`./TRACES_get_best_Poly14.sh $ORGAN_T`;
       echo "Best match: $V_INFO";
       V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
       if [[ "$V_GID" != "-" ]]; 
@@ -1361,7 +1361,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo "Extracting sequence from VDB.fa ...";
         gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-POLY14.fa
         echo "Aliggning ..." 
-        ./TRACES_poly14_align_reads.sh $ORGAN_T-POLY14.fa $ORGAN_T 
+        ./TRACES_poly14_align_reads.sh $ORGAN_T-POLY14.fa $ORGAN_T 12
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 

@@ -17,16 +17,19 @@
 
 ## 1. About ##
 
-TRACESPipe is a next-generation sequencing pipeline for identification, assembly, and analysis of viral and human-host genomes at multi-organ level. 
-The identification and assembly of viral genomes relies on a cooperation between three modalities: 
+
+TRACESPipe is a next-generation sequencing pipeline for identification, assembly, and analysis of viral and human-host genomes at multi-organ level. The identification and assembly of viral genomes rely on cooperation between three modalities:
 <ul>
 <li>compression-based predictors;</li>
 <li>sequence alignments;</li>
 <li><i>de-novo</i> assembly.</li>
 </ul>
-The compression-based prediction uses FALCON tecnhology to find the best reference genome (from a Large viral database) which has the higgest similarity value relative to the sequenced reads. After, the best reference is used by Bowtie2 in read alignment. A consensus sequence is built using Bcftools. Then, <i>de-novo</i> assembly (SPAdes) is used to draft scaffolds. The high coverage scaffolds that overlap totally or partially the consensus sequence are used to validate or augment the new genome. The final analysis of the assembly is supervised with the IGV, before a final sequence draft.
+The compression-based prediction applies FALCON technology with ultra-fast comparative quantification to find the best reference genome (from a large viral database) containing the highest similarity relative to the sequenced reads. After identification, the reads are aligned according to the best reference by Bowtie2. A consensus sequence is produced with specific filters using Bcftools. Then, <i>de-novo</i> assembly (SPAdes) is involved in building scaffolds. The high coverage scaffolds that overlap totally or partially the consensus sequence are used to validate or either augment the new genome. The final analysis of the assembly is interactively supervised with the IGV with the goal of drafting the final sequence.
+
+For the human-host variant call identification, the same procedure is followed although directly starting within the second point, given the use of the same reference (Cambridge Reference) to all the cases.
 
 This pipeline has been tested in Illumina HiSeq and NovaSeq platforms.
+
 
 ## 2. Installation ##
 

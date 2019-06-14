@@ -142,8 +142,10 @@ TRACES Pipeline uses a combination of the following tools:
 
 | Tool | URL | Article |
 | --- | --- | --- |
-| Cryfa |[[https://github.com/cobilab/cryfa]](https://github.com/cobilab/cryfa) | [![Article](https://img.shields.io/static/v1.svg?label=View&message=Article&color=green)](https://doi.org/10.1093/bioinformatics/bty645)|
-| bar | baz | boo |
+| &#x1F49A;&nbsp; Cryfa |[[https://github.com/cobilab/cryfa]](https://github.com/cobilab/cryfa) | [![Article](https://img.shields.io/static/v1.svg?label=View&message=Article&color=green)](https://doi.org/10.1093/bioinformatics/bty645)|
+| &#x1F49A;&nbsp; GTO | [[https://github.com/cobilab/gto]](https://github.com/cobilab/gto) | 
+| &#x1F49A;&nbsp; GTO | [[https://software.broadinstitute.org/software/igv/]](https://software.broadinstitute.org/software/igv/) | [![Article](https://img.shields.io/static/v1.svg?label=View&message=Article&color=green)](http://cancerres.aacrjournals.org/content/77/21/e31.long)|
+
 
 ## 6. Citation ##
 

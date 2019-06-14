@@ -2,9 +2,10 @@
 #
 # moreFilters: http://samtools.github.io/bcftools/howtos/variant-calling.html
 #
-Reference=$1;     # B19.fa
-Alignments=$2;    # b19_aligned_sorted-heart.bam
-Organ=$3;         # organ name
+Reference=$1;     # EXAMPLE: TTV.fa
+Alignments=$2;    # EXAMPLE: ttv_aligned_sorted-heart.bam
+Organ=$3;         # Example: heart
+LABEL=$4;         # Example: TTV
 #
 rm -f calls.vcf.gz calls.vcf.gz.csi calls.norm.bcf calls.norm.flt-indels.bcf calls.norm.flt-indels.vcf.gz calls.norm.vcf.gz 
 #
@@ -20,15 +21,11 @@ bcftools filter --IndelGap 5 calls.norm.vcf.gz -Oz -o calls.norm.flt-indels.vcf.
 #
 # create consensus sequence
 bcftools index calls.norm.flt-indels.vcf.gz
-bcftools consensus -f $Reference calls.norm.flt-indels.vcf.gz > B19-consensus-$Organ.fa
-tail -n +2 B19-consensus-$Organ.fa > TMP_FILE_X_KI.xki
-echo "> $Organ B19 consensus" > B19-consensus-$Organ.fa
-cat TMP_FILE_X_KI.xki >> B19-consensus-$Organ.fa
+bcftools consensus -f $Reference calls.norm.flt-indels.vcf.gz > $LABEL-consensus-$Organ.fa
+tail -n +2 $LABEL-consensus-$Organ.fa > TMP_FILE_X_KI.xki
+echo "> $Organ $LABEL consensus" > $LABEL-consensus-$Organ.fa
+cat TMP_FILE_X_KI.xki >> $LABEL-consensus-$Organ.fa
 #
 # create bed file
-zcat calls.norm.flt-indels.vcf.gz |vcf2bed --snvs > B19-calls-$Organ.bed
+zcat calls.norm.flt-indels.vcf.gz |vcf2bed --snvs > $LABEL-calls-$Organ.bed
 #
-
-#filter low quality reads
-#bcftools filter -s LOWQUAL -e '%QUAL<20 || DP>100' WSR_vc_calls.flt-indels.vcf.gz -Oz -o WSR_vc_calls.flt-indels-lq.vcf.gz
-

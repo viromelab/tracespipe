@@ -24,7 +24,7 @@ The identification and assembly of viral genomes relies on a cooperation between
 <li>sequence alignments;</li>
 <li><i>de-novo</i> assembly.</li>
 </ul>
-The compression-based prediction uses FALCON tecnhology to find the best reference genome (from a Large viral database) which has the higgest similarity value relative to the sequenced reads. After, the best reference is used by Bowtie2 in read alignment. A consensus sequence is built using Bcftools. Then, <i>de-novo</i> assembly (SPAdes) is used to draft scaffolds. The high coverage scaffolds that overlap totally or partially the consensus sequence are used to validate or augment the new genome. The final analysis of the assembly is supervised with the IGV, before drafting a final sequence.
+The compression-based prediction uses FALCON tecnhology to find the best reference genome (from a Large viral database) which has the higgest similarity value relative to the sequenced reads. After, the best reference is used by Bowtie2 in read alignment. A consensus sequence is built using Bcftools. Then, <i>de-novo</i> assembly (SPAdes) is used to draft scaffolds. The high coverage scaffolds that overlap totally or partially the consensus sequence are used to validate or augment the new genome. The final analysis of the assembly is supervised with the IGV, before a final sequence draft.
 
 This pipeline has been tested in Illumina HiSeq and NovaSeq platforms.
 

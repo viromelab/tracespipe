@@ -838,7 +838,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-      ###./TRACES_b19_consensus.sh SPECIFIC-$IDN.fa b19_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+      ###./TRACES_b19_consensus.sh SPECIFIC-$IDN.fa b19_aligned_sorted-$ORGAN_T.bam $ORGAN_T $IDN
       fi
     #
     # ========================================================================== 
@@ -859,7 +859,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_b19_consensus.sh $ORGAN_T-B19.fa b19_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_viral_consensus.sh $ORGAN_T-B19.fa b19_aligned_sorted-$ORGAN_T.bam $ORGAN_T B19
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
       fi
@@ -879,7 +879,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hv1_consensus.sh $ORGAN_T-HV1.fa hv1_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_viral_consensus.sh $ORGAN_T-HV1.fa hv1_aligned_sorted-$ORGAN_T.bam $ORGAN_T HV1
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -900,7 +900,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hv2_consensus.sh $ORGAN_T-HV2.fa hv1_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_viral_consensus.sh $ORGAN_T-HV2.fa hv1_aligned_sorted-$ORGAN_T.bam $ORGAN_T HV2
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -921,7 +921,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hv3_consensus.sh $ORGAN_T-HV3.fa hv3_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_viral_consensus.sh $ORGAN_T-HV3.fa hv3_aligned_sorted-$ORGAN_T.bam $ORGAN_T HV3
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -942,7 +942,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hv4_consensus.sh $ORGAN_T-HV4.fa hv4_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_viral_consensus.sh $ORGAN_T-HV4.fa hv4_aligned_sorted-$ORGAN_T.bam $ORGAN_T HV4
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -963,7 +963,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hv4_consensus.sh $ORGAN_T-HV5.fa hv5_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_viral_consensus.sh $ORGAN_T-HV5.fa hv5_aligned_sorted-$ORGAN_T.bam $ORGAN_T HV5
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -984,7 +984,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hv6_consensus.sh $ORGAN_T-HV6.fa hv6_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_viral_consensus.sh $ORGAN_T-HV6.fa hv6_aligned_sorted-$ORGAN_T.bam $ORGAN_T HV6
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -1005,7 +1005,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hv6a_consensus.sh $ORGAN_T-HV6A.fa hv6a_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_viral_consensus.sh $ORGAN_T-HV6A.fa hv6a_aligned_sorted-$ORGAN_T.bam $ORGAN_T HV6A
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -1026,7 +1026,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hv6b_consensus.sh $ORGAN_T-HV6B.fa hv6b_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_viral_consensus.sh $ORGAN_T-HV6B.fa hv6b_aligned_sorted-$ORGAN_T.bam $ORGAN_T HV6B
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -1047,7 +1047,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hv7_consensus.sh $ORGAN_T-HV7.fa hv7_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_viral_consensus.sh $ORGAN_T-HV7.fa hv7_aligned_sorted-$ORGAN_T.bam $ORGAN_T HV7
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -1068,7 +1068,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hv8_consensus.sh $ORGAN_T-HV8.fa hv8_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_viral_consensus.sh $ORGAN_T-HV8.fa hv8_aligned_sorted-$ORGAN_T.bam $ORGAN_T HV8
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -1092,7 +1092,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
-        ./TRACES_poly1_consensus.sh $ORGAN_T-POLY1.fa poly1_aligned_sorted-$ORGAN_T.bam $ORGAN_T 
+        ./TRACES_viral_consensus.sh $ORGAN_T-POLY1.fa poly1_aligned_sorted-$ORGAN_T.bam $ORGAN_T POLY1
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m" 
         fi 
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
@@ -1113,7 +1113,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
-        ./TRACES_poly2_consensus.sh $ORGAN_T-POLY2.fa poly2_aligned_sorted-$ORGAN_T.bam $ORGAN_T 
+        ./TRACES_viral_consensus.sh $ORGAN_T-POLY2.fa poly2_aligned_sorted-$ORGAN_T.bam $ORGAN_T POLY2
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m" 
         fi 
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
@@ -1134,7 +1134,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
-        ./TRACES_poly3_consensus.sh $ORGAN_T-POLY3.fa poly3_aligned_sorted-$ORGAN_T.bam $ORGAN_T 
+        ./TRACES_viral_consensus.sh $ORGAN_T-POLY3.fa poly3_aligned_sorted-$ORGAN_T.bam $ORGAN_T POLY3
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m" 
         fi 
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
@@ -1155,7 +1155,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
-        ./TRACES_poly4_consensus.sh $ORGAN_T-POLY4.fa poly4_aligned_sorted-$ORGAN_T.bam $ORGAN_T 
+        ./TRACES_viral_consensus.sh $ORGAN_T-POLY4.fa poly4_aligned_sorted-$ORGAN_T.bam $ORGAN_T POLY4
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m" 
         fi 
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
@@ -1176,7 +1176,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
-        ./TRACES_poly5_consensus.sh $ORGAN_T-POLY5.fa poly5_aligned_sorted-$ORGAN_T.bam $ORGAN_T 
+        ./TRACES_viral_consensus.sh $ORGAN_T-POLY5.fa poly5_aligned_sorted-$ORGAN_T.bam $ORGAN_T POLY5
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m" 
         fi 
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
@@ -1197,7 +1197,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
-        ./TRACES_poly6_consensus.sh $ORGAN_T-POLY6.fa poly6_aligned_sorted-$ORGAN_T.bam $ORGAN_T 
+        ./TRACES_viral_consensus.sh $ORGAN_T-POLY6.fa poly6_aligned_sorted-$ORGAN_T.bam $ORGAN_T POLY6
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m" 
         fi 
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
@@ -1218,7 +1218,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
-        ./TRACES_poly7_consensus.sh $ORGAN_T-POLY7.fa poly7_aligned_sorted-$ORGAN_T.bam $ORGAN_T 
+        ./TRACES_viral_consensus.sh $ORGAN_T-POLY7.fa poly7_aligned_sorted-$ORGAN_T.bam $ORGAN_T POLY7
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m" 
         fi 
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
@@ -1239,7 +1239,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
-        ./TRACES_poly8_consensus.sh $ORGAN_T-POLY8.fa poly8_aligned_sorted-$ORGAN_T.bam $ORGAN_T 
+        ./TRACES_viral_consensus.sh $ORGAN_T-POLY8.fa poly8_aligned_sorted-$ORGAN_T.bam $ORGAN_T POLY8
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m" 
         fi 
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
@@ -1260,7 +1260,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
-        ./TRACES_poly9_consensus.sh $ORGAN_T-POLY9.fa poly9_aligned_sorted-$ORGAN_T.bam $ORGAN_T 
+        ./TRACES_viral_consensus.sh $ORGAN_T-POLY9.fa poly9_aligned_sorted-$ORGAN_T.bam $ORGAN_T POLY9
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m" 
         fi 
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
@@ -1281,7 +1281,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
-        ./TRACES_poly10_consensus.sh $ORGAN_T-POLY10.fa poly10_aligned_sorted-$ORGAN_T.bam $ORGAN_T 
+        ./TRACES_viral_consensus.sh $ORGAN_T-POLY10.fa poly10_aligned_sorted-$ORGAN_T.bam $ORGAN_T POLY10
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m" 
         fi 
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
@@ -1302,7 +1302,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
-        ./TRACES_poly11_consensus.sh $ORGAN_T-POLY11.fa poly11_aligned_sorted-$ORGAN_T.bam $ORGAN_T 
+        ./TRACES_viral_consensus.sh $ORGAN_T-POLY11.fa poly11_aligned_sorted-$ORGAN_T.bam $ORGAN_T POLY11
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m" 
         fi 
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
@@ -1323,7 +1323,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
-        ./TRACES_poly12_consensus.sh $ORGAN_T-POLY12.fa poly12_aligned_sorted-$ORGAN_T.bam $ORGAN_T 
+        ./TRACES_viral_consensus.sh $ORGAN_T-POLY12.fa poly12_aligned_sorted-$ORGAN_T.bam $ORGAN_T POLY12
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m" 
         fi 
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
@@ -1344,7 +1344,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
-        ./TRACES_poly13_consensus.sh $ORGAN_T-POLY13.fa poly13_aligned_sorted-$ORGAN_T.bam $ORGAN_T 
+        ./TRACES_viral_consensus.sh $ORGAN_T-POLY13.fa poly13_aligned_sorted-$ORGAN_T.bam $ORGAN_T POLY13
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m" 
         fi 
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
@@ -1365,7 +1365,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"; 
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m"; 
-        ./TRACES_poly14_consensus.sh $ORGAN_T-POLY14.fa poly14_aligned_sorted-$ORGAN_T.bam $ORGAN_T 
+        ./TRACES_viral_consensus.sh $ORGAN_T-POLY14.fa poly14_aligned_sorted-$ORGAN_T.bam $ORGAN_T POLY14
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m" 
         fi 
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
@@ -1390,7 +1390,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_ttv_consensus.sh $ORGAN_T-TTV.fa ttv_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_viral_consensus.sh $ORGAN_T-TTV.fa ttv_aligned_sorted-$ORGAN_T.bam $ORGAN_T TTV
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -1411,7 +1411,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hbov1_consensus.sh $ORGAN_T-HBoV1.fa hbov1_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_viral_consensus.sh $ORGAN_T-HBoV1.fa hbov1_aligned_sorted-$ORGAN_T.bam $ORGAN_T HBoV1
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -1432,7 +1432,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hbovnot1_consensus.sh $ORGAN_T-HBoVnot1.fa hbovnot1_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_viral_consensus.sh $ORGAN_T-HBoVnot1.fa hbovnot1_aligned_sorted-$ORGAN_T.bam $ORGAN_T HBoVnot1
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -1453,7 +1453,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hbv_consensus.sh $ORGAN_T-HBV.fa hbv_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_viral_consensus.sh $ORGAN_T-HBV.fa hbv_aligned_sorted-$ORGAN_T.bam $ORGAN_T HBV
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -1474,7 +1474,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_hpv_consensus.sh $ORGAN_T-HPV.fa hpv_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_viral_consensus.sh $ORGAN_T-HPV.fa hpv_aligned_sorted-$ORGAN_T.bam $ORGAN_T HPV
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
@@ -1495,7 +1495,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_varv_consensus.sh $ORGAN_T-VARV.fa varv_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+        ./TRACES_viral_consensus.sh $ORGAN_T-VARV.fa varv_aligned_sorted-$ORGAN_T.bam $ORGAN_T VARV
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"

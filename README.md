@@ -129,7 +129,7 @@ To run TRACES Pipeline, use the following commands in a Linux OS:
 
 TRACES Pipeline uses a combination of the following tools:
 
-&#x1F49A;&nbsp; Cryfa [[https://github.com/cobilab/cryfa]](https://github.com/cobilab/cryfa) |  [![Article](https://img.shields.io/static/v1.svg?label=Download&color=green&url=https://doi.org/10.1093/bioinformatics/bty645)](#) <a href="https://doi.org/10.1093/bioinformatics/bty645">Article</a><br> 
+&#x1F49A;&nbsp; Cryfa [[https://github.com/cobilab/cryfa]](https://github.com/cobilab/cryfa) |  [![Article](https://img.shields.io/static/v1.svg?label=Download&color=green)](https://doi.org/10.1093/bioinformatics/bty645)<br> 
 &#x1F49A;&nbsp; GTO [[https://github.com/cobilab/gto]](https://github.com/cobilab/gto)<br>
 &#x1F49A;&nbsp; Trimmomatic [[http://www.usadellab.org/cms/?page=trimmomatic]](http://www.usadellab.org/cms/?page=trimmomatic)<br>
 &#x1F49A;&nbsp; MAGNET [[https://github.com/cobilab/magnet]](https://github.com/cobilab/magnet)<br>

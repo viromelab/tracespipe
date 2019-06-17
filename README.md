@@ -140,13 +140,13 @@ To run TRACES Pipeline, use the following commands in a Linux OS:
 ```
 ## 5. Examples ##
 
-5.1 Building a Parvovirus consensus sequence (if exists in the FASTQ samples):
+### 5.1 Building a Parvovirus consensus sequence (if exists in the FASTQ samples): ###
 ```
 ./TRACESPipe.sh --run-b19
 ```
 The output sequence is included at TRACES_consensus.
 
-5.2 Building a mitochondrial consensus sequence:
+### 5.2 Building a mitochondrial consensus sequence ###
 ```
 ./TRACESPipe.sh --run-mito
 ```

@@ -1591,7 +1591,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
   #
   # CONSENSUS VIRAL FILES
   mkdir -p TRACES_viral_consensus;
-  rm -f TRACES_viral_consensus/*
+  #rm -f TRACES_viral_consensus/*
   mv *-consensus-*.fa TRACES_viral_consensus/
   #
   # ALIGNMENT VIRAL FILES

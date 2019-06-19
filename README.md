@@ -174,7 +174,7 @@ TRACES Pipeline uses a combination of the following tools:
 
 If you use this pipeline, please cite:
 ```
-null
+[Manuscript in preparation]
 ```
 
 ## 8. Issues ##

@@ -28,5 +28,5 @@ echo "> $Organ Mitochondrial consensus" > mt-consensus-$Organ.fa
 cat TMP_FILE_X_KI.xki >> mt-consensus-$Organ.fa
 #
 # create bed file
-zcat calls.norm.flt-indels.vcf.gz |vcf2bed --snvs > mt-calls.$Organ.bed
+zcat calls.norm.flt-indels.vcf.gz |vcf2bed --snvs > mt-calls-$Organ.bed
 #

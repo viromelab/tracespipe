@@ -34,7 +34,7 @@ For the human-host variant call identification, the same procedure is followed a
 </p>
 <br>
 
-This pipeline has been tested in Illumina HiSeq and NovaSeq platforms.
+The previous image shows the architecture of TRACESPipe, where the green line stands for the mitochondrial human line. This pipeline has been tested in Illumina HiSeq and NovaSeq platforms.
 
 
 ## 2. Installation ##

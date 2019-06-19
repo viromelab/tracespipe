@@ -28,9 +28,11 @@ The compression-based prediction applies FALCON technology with ultra-fast compa
 
 For the human-host variant call identification, the same procedure is followed although directly starting within the second point, given the use of the same reference (Cambridge Reference) to all the cases.
 
+<br>
 <p align="center">
 <img src="imgs/pipeline.png" alt="TRACESPipe architecture" height="500" border="0" />
 </p>
+<br>
 
 This pipeline has been tested in Illumina HiSeq and NovaSeq platforms.
 

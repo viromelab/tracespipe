@@ -73,15 +73,14 @@ To run TRACES Pipeline, use the following commands in a Linux OS:
 
 ```                                                     
                                                                 
-                                                              
-     ████████╗ ██████╗   █████╗   ██████╗ ███████╗ ███████╗         
-     ╚══██╔══╝ ██╔══██╗ ██╔══██╗ ██╔════╝ ██╔════╝ ██╔════╝         
-        ██║    ██████╔╝ ███████║ ██║      █████╗   ███████╗         
-        ██║    ██╔══██╗ ██╔══██║ ██║      ██╔══╝   ╚════██║         
-        ██║    ██║  ██║ ██║  ██║ ╚██████╗ ███████╗ ███████║         
-        ╚═╝    ╚═╝  ╚═╝ ╚═╝  ╚═╝  ╚═════╝ ╚══════╝ ╚══════╝         
-                                                                
-                         P I P E L I N E                            
+         ████████╗ ██████╗   █████╗   ██████╗ ███████╗ ███████╗   
+         ╚══██╔══╝ ██╔══██╗ ██╔══██╗ ██╔════╝ ██╔════╝ ██╔════╝   
+            ██║    ██████╔╝ ███████║ ██║      █████╗   ███████╗   
+            ██║    ██╔══██╗ ██╔══██║ ██║      ██╔══╝   ╚════██║   
+            ██║    ██║  ██║ ██║  ██║ ╚██████╗ ███████╗ ███████║   
+            ╚═╝    ╚═╝  ╚═╝ ╚═╝  ╚═╝  ╚═════╝ ╚══════╝ ╚══════╝   
+                                                                  
+                             P I P E L I N E                            
                                                                 
     A Next-generation sequencing pipeline for identification, assembly,
     and analysis of viral and human-host genomes at a multi-organ level.
@@ -89,6 +88,7 @@ To run TRACES Pipeline, use the following commands in a Linux OS:
     Usage: ./TRACESPipe.sh [options]                             
                                                                 
     -h,    --help            Show this help message and exit,     
+    -v,    --version         Show the version and some information,  
                                                                   
     -i,    --install         Installation of all the tools,       
                                                                   
@@ -118,10 +118,22 @@ To run TRACES Pipeline, use the following commands in a Linux OS:
     -rh6b, --run-hv6b        Run HV6B  align and consensus seq,    
     -rh7,  --run-hv7         Run HV7   align and consensus seq,    
     -rh8,  --run-hv8         Run HV8   align and consensus seq,    
+    -rh8,  --run-hv8         Run HV8   align and consensus seq,    
+    -rp1,  --run-poly1       Run Polyoma 1  align and consensus seq,  
+    -rp2,  --run-poly2       Run Polyoma 2  align and consensus seq,  
+    -rp3,  --run-poly3       Run Polyoma 3  align and consensus seq,  
+    -rp4,  --run-poly4       Run Polyoma 4  align and consensus seq,  
+    -rp5,  --run-poly5       Run Polyoma 5  align and consensus seq,  
+    -rp6,  --run-poly6       Run Polyoma 6  align and consensus seq,  
+    -rp7,  --run-poly7       Run Polyoma 7  align and consensus seq,  
+    -rp8,  --run-poly8       Run Polyoma 8  align and consensus seq,  
+    -rp9,  --run-poly9       Run Polyoma 9  align and consensus seq,  
+    -rp10, --run-poly10      Run Polyoma 10 align and consensus seq,  
+    -rp11, --run-poly11      Run Polyoma 11 align and consensus seq,  
+    -rp12, --run-poly12      Run Polyoma 12 align and consensus seq,  
+    -rp13, --run-poly13      Run Polyoma 13 align and consensus seq,  
+    -rp14, --run-poly14      Run Polyoma 14 align and consensus seq,  
     -rtt,  --run-ttv         Run TTV   align and consensus seq,    
-    -rjc,  --run-jcv         Run JCV   align and consensus seq,    
-    -rmc,  --run-mcv         Run MCV   align and consensus seq,    
-    -rbk,  --run-bk          Run BK    align and consensus seq,    
     -rbv1, --run-hbov1       Run HBoV1 align and consensus seq,    
     -rbv0, --run-hbovnot1    Run HBoV (2,3,...) align/consensus seq, 
     -rhbv, --run-hbv         Run HBV   align and consensus seq,    
@@ -138,10 +150,10 @@ To run TRACES Pipeline, use the following commands in a Linux OS:
     -ra,   --run-analysis    Run data analysis,                   
     -all,  --run-all         Run all the options.                 
                                                                 
-    Example: ./TRACESPipe.sh --run-meta --run-mito   
+    Example: ./TRACESPipe.sh --run-meta --run-b19 --run-mito 
                                                                 
     meta_info.txt -> 'organ:reads_forward.fa.gz:reads_reverse.fa.gz'  
-    The reads and meta_info.txt must be in the src/ folder.     
+    The reads and meta_info.txt must be in the src/ folder.  
  
 ```
 ## 5. Examples ##

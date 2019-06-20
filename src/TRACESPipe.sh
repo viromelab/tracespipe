@@ -73,6 +73,76 @@ RUN_CY_ON=0;
 #
 RUN_DE_NOVO_ASSEMBLY=0;
 #
+#
+# ==============================================================================
+# CHECK IF FILES EXIST
+#
+CHECK_META_INFO () {
+  if [ ! -f meta_info.txt ];
+    then
+    echo -e "\e[31mERROR: meta_info.txt file not found!\e[0m"
+    echo "Please create a meta information file before the run."
+    echo "For addition information, see the instructions at the web page."
+    exit 1;
+    fi
+  }
+#
+#
+CHECK_VDB () {
+  if [ ! -f VDB.fa ];
+    then
+    echo -e "\e[31mERROR: viral database (VDB.fa) not found!\e[0m"
+    echo "TIP: before this, run: ./TRACESPipe.sh --build-viral"
+    echo "For addition information, see the instructions at the web page."
+    exit 1;
+    fi
+  }
+#
+#
+CHECK_DB () {
+  if [ ! -f DB.fa ];
+    then
+    echo -e "\e[31mERROR: Non-viral database FASTA file (DB.fa) not found!\e[0m"
+    echo "TIP: first run ./TRACESPipe --build-unviral"
+    exit 1;
+    fi
+  }
+#
+#
+CHECK_PHIX () {
+  if [ ! -f F_PHIX.fa ];
+    then
+    echo -e "\e[31mERROR: viral PhiX (F_PHIX.fa) not found!\e[0m"
+    echo "TIP: before this, run: ./TRACESPipe.sh --get-phix"
+    echo "For addition information, see the instructions at the web page."
+    exit 1;
+    fi
+  }
+#
+#
+CHECK_ADAPTERS () {
+  if [ ! -f adapters.fa ];
+    then
+    echo -e "\e[31mERROR: adapter sequences (adapters.fa) not found!\e[0m"
+    echo "TIP: before this, run: ./TRACESPipe.sh --gen-adapters"
+    echo "For addition information, see the instructions at the web page."
+    exit 1;
+    fi
+  }
+#
+#
+CHECK_MT () {
+  if [ ! -f mtDNA.fa ];
+    then
+    echo -e "\e[31mERROR: reference mitochondrial DNA (mtDNA.fa) not found!\e[0m"
+    echo "TIP: before this, run: ./TRACESPipe.sh --get-mito"
+    echo "For addition information, see the instructions at the web page."
+    exit 1;
+    fi
+  }
+#
+# ==============================================================================
+#
 if [ "$#" -eq 0 ];
   then
   SHOW_HELP=1;
@@ -674,13 +744,7 @@ if [[ "$GET_EXTRA" -eq "1" ]];
 if [[ "$RUN_ANALYSIS" -eq "1" ]];
   then
   #
-  if [ ! -f meta_info.txt ];
-    then
-    echo -e "\e[31mERROR: meta_info.txt file not found!\e[0m"
-    echo "Please create a meta information file before the run."
-    echo "For addition information, see the instructions at the web page."
-    exit 1;
-  fi
+  CHECK_META_INFO;
   #
   mapfile -t READS < meta_info.txt
   #
@@ -701,13 +765,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     # ==========================================================================
     # TRIM AND FILTER READS
     #
-    if [ ! -f adapters.fa ];
-      then
-      echo -e "\e[31mERROR: adapter sequences (adapters.fa) not found!\e[0m"
-      echo "TIP: before this, run: ./TRACESPipe.sh --gen-adapters"
-      echo "For addition information, see the instructions at the web page."
-      exit 1;
-    fi
+    CHECK_ADAPTERS;
     #
     echo -e "\e[34m[TRACES]\e[32m Trimming and filtering with Trimmomatic ...\e[0m";
     ./TRACES_trim_filter_reads.sh
@@ -721,21 +779,8 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     if [[ "$RUN_META_ON" -eq "1" ]];
       then
-      if [ ! -f VDB.fa ];
-        then
-	echo -e "\e[31mERROR: viral database (VDB.fa) not found!\e[0m"
-        echo "TIP: before this, run: ./TRACESPipe.sh --build-viral"
-        echo "For addition information, see the instructions at the web page."
-        exit 1;
-        fi
-      #
-      if [ ! -f F_PHIX.fa ];
-        then
-        echo -e "\e[31mERROR: viral PhiX (F_PHIX.fa) not found!\e[0m"
-        echo "TIP: before this, run: ./TRACESPipe.sh --get-phix"
-        echo "For addition information, see the instructions at the web page."
-        exit 1;
-        fi
+      CHECK_VDB;
+      CHECK_PHIX;
       #
       echo -e "\e[34m[TRACES]\e[32m Removing PhiX from the samples with MAGNET ...\e[0m";
       ./TRACES_remove_phix.sh # IT IS USED ONLY FOR FALCON
@@ -794,13 +839,8 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     if [[ "$RUN_PROFILES_ON" -eq "1" ]];
       then
-      if [ ! -f VDB.fa ];
-        then
-        echo -e "\e[31mERROR: viral database (VDB.fa) not found!\e[0m"
-        echo "TIP: before this, run: ./TRACESPipe.sh --build-viral"
-        echo "For addition information, see the instructions at the web page."
-        exit 1;
-        fi
+      #	      
+      CHECK_VDB;
       #
       echo -e "\e[34m[TRACES]\e[32m Building complexity profiles with gto ...\e[0m";
       cat NP-o_fw_pr.fq NP-o_fw_unpr.fq NP-o_rv_pr.fq NP-o_rv_unpr.fq > P_TRACES_sample_reads.fq
@@ -813,12 +853,8 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     if [[ "$RUN_META_NON_VIRAL_ON" -eq "1" ]];
       then
-      if [ ! -f DB.fa ]; 
-        then
-	echo -e "\e[31mERROR: Non-viral database FASTA file (DB.fa) not found!\e[0m"
-	echo "TIP: first run ./TRACESPipe --build-unviral"
-	exit 1;
-        fi
+      #
+      CHECK_DB;
       #	
       echo -e "\e[34m[TRACES]\e[32m Running NON viral metagenomic analysis with FALCON ...\e[0m";
       ./TRACES_metagenomics.sh $ORGAN_T DB.fa 10000 
@@ -831,7 +867,11 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_SPECIFIC" -eq "1" ]];
       then
       echo -e "\e[34m[TRACES]\e[32m Aliggning reads to B19 ref with bowtie2 ...\e[0m";
+      #
       echo "Extracting sequence from VDB.fa ..."
+      #
+      CHECK_VDB;
+      #
       ###gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > SPECIFIC-$IDN.fa
       echo "Aliggning ..."
       ###./TRACES_b19_align_reads.sh SPECIFIC-$IDN.fa $ORGAN_T
@@ -853,13 +893,17 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$V_GID" != "-" ]];
         then
         echo "Extracting sequence from VDB.fa ..."
+	#
+        CHECK_VDB;
+        #
         gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-B19.fa
         echo "Aliggning ..."
-        ./TRACES_b19_align_reads.sh $ORGAN_T-B19.fa $ORGAN_T
+	./TRACES_viral_align_reads.sh $ORGAN_T-B19.fa $ORGAN_T B19
+        #./TRACES_b19_align_reads.sh $ORGAN_T-B19.fa $ORGAN_T
         echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-        ./TRACES_viral_consensus.sh $ORGAN_T-B19.fa b19_aligned_sorted-$ORGAN_T.bam $ORGAN_T B19
+        ./TRACES_viral_consensus.sh $ORGAN_T-B19.fa viral_aligned_sorted-$ORGAN_T-B19.bam $ORGAN_T B19
         fi
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
       fi
@@ -873,6 +917,9 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$V_GID" != "-" ]];
         then
         echo "Extracting sequence from VDB.fa ..."
+	#
+	CHECK_VDB;
+	#
         gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-HV1.fa
         echo "Aliggning ..."
         ./TRACES_hv1_align_reads.sh $ORGAN_T-HV1.fa $ORGAN_T
@@ -1506,13 +1553,8 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     if [[ "$RUN_MITO_ON" -eq "1" ]];
       then
-      if [ ! -f mtDNA.fa ];
-        then
-        echo -e "\e[31mERROR: reference mitochondrial DNA (mtDNA.fa) not found!\e[0m"
-        echo "TIP: before this, run: ./TRACESPipe.sh --get-mito"
-        echo "For addition information, see the instructions at the web page."
-        exit 1;
-      fi
+      #
+      CHECK_MT;
       #
       echo -e "\e[34m[TRACES]\e[32m Aliggning reads to mitochondrial ref with bowtie2 ...\e[0m";
       ./TRACES_mt_align_reads.sh mtDNA.fa $ORGAN_T
@@ -1528,13 +1570,8 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     if [[ "$RUN_CY_ON" -eq "1" ]];
       then
-      if [ ! -f cy.fa ];
-        then
-        echo -e "\e[31mERROR: reference human y-chromosome (cy.fa) not found!\e[0m"
-        echo "TIP: before this, run: ./TRACESPipe.sh --get-cy-chromo"
-        echo "For addition information, see the instructions at the web page."
-        exit 1;
-      fi
+      #
+      CHECK_CY;
       #
       echo -e "\e[34m[TRACES]\e[32m Searching for Y chromosome halotypes ...\e[0m";
       ./TRACES_cy_markers.sh $ORGAN_T

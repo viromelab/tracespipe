@@ -131,11 +131,22 @@ CHECK_ADAPTERS () {
   }
 #
 #
-CHECK_MT () {
+CHECK_MT_DNA () {
   if [ ! -f mtDNA.fa ];
     then
     echo -e "\e[31mERROR: reference mitochondrial DNA (mtDNA.fa) not found!\e[0m"
     echo "TIP: before this, run: ./TRACESPipe.sh --get-mito"
+    echo "For addition information, see the instructions at the web page."
+    exit 1;
+    fi
+  }
+#
+#
+CHECK_CY_DNA () {
+  if [ ! -f cy.fa ];
+    then
+    echo -e "\e[31mERROR: reference y-chromosome DNA (cy.fa) not found!\e[0m"
+    echo "TIP: before this, run: ./TRACESPipe.sh --get-cy"
     echo "For addition information, see the instructions at the web page."
     exit 1;
     fi
@@ -1554,7 +1565,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_MITO_ON" -eq "1" ]];
       then
       #
-      CHECK_MT;
+      CHECK_MT_DNA;
       #
       echo -e "\e[34m[TRACES]\e[32m Aliggning reads to mitochondrial ref with bowtie2 ...\e[0m";
       ./TRACES_mt_align_reads.sh mtDNA.fa $ORGAN_T
@@ -1571,7 +1582,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_CY_ON" -eq "1" ]];
       then
       #
-      CHECK_CY;
+      CHECK_CY_DNA;
       #
       echo -e "\e[34m[TRACES]\e[32m Searching for Y chromosome halotypes ...\e[0m";
       ./TRACES_cy_markers.sh $ORGAN_T

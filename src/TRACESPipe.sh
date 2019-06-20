@@ -183,9 +183,11 @@ if [ "$#" -eq 0 ];
   SHOW_HELP=1;
   fi
 #
+eval set -- "$@"
+#
 for i in "$@"
-  do
-  case $i in
+   do
+   case $i in
     -h|--help|?)
       SHOW_HELP=1;
       shift
@@ -284,8 +286,9 @@ for i in "$@"
     -rsr|--run-specific)
       RUN_ANALYSIS=1;
       RUN_SPECIFIC=1;
+      SPECIFIC_ID="$2";
       SHOW_HELP=0;
-      shift
+      shift 2;
     ;;
     -rm|--run-meta)
       RUN_ANALYSIS=1;
@@ -588,9 +591,10 @@ for i in "$@"
       SHOW_HELP=0;
       shift
     ;;
-    *) # unknown option
-    echo "Invalid arg "$1
+    -*) # unknown option with small
+    echo "Invalid arg ($1)!";
     echo "For help, try: ./TRACESPipe.sh -h"
+    exit 1;
     ;;
   esac
   done
@@ -671,7 +675,8 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -rhpv, --run-hpv         Run HPV   align and consensus seq,    "
   echo "    -rvar, --run-varv        Run VARV  align and consensus seq,    "
   echo "                                                                 "
-  echo "    -rsr,  --run-specific    Run specific REF align/consensus seq, "
+  echo "    -rsr <ID>, --run-specific <ID/PATTERN>                        "
+  echo "                             Run specific reference align/consensus, "
   echo "                                                                 "
   echo "    -rmt,  --run-mito        Run Mito  align and consensus seq,   "
   echo "    -rcy,  --run-y-chromo    Run CY    align and consensus seq,    "
@@ -900,19 +905,19 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     if [[ "$RUN_SPECIFIC" -eq "1" ]];
       then
-      echo -e "\e[34m[TRACES]\e[32m Aliggning reads to specific ref with bowtie2 ...\e[0m";
+      echo -e "\e[34m[TRACES]\e[32m Aliggning reads to specific ref(s) with pattern \"$SPECIFIC_ID\" using bowtie2 ...\e[0m";
       #
-      echo "Extracting sequence from VDB.fa ..."
+      echo "Extracting sequence with pattern \"$SPECIFIC_ID\" from VDB.fa ..."
       #
       CHECK_VDB;
       #
-      ###gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > SPECIFIC-$IDN.fa
+      gto_fasta_extract_read_by_pattern -p "$SPECIFIC_ID" < VDB.fa > SPECIFIC-$SPECIFIC_ID.fa
       echo "Aliggning ..."
-      ###./TRACES_b19_align_reads.sh SPECIFIC-$IDN.fa $ORGAN_T
+      ./TRACES_viral_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-      ###./TRACES_b19_consensus.sh SPECIFIC-$IDN.fa b19_aligned_sorted-$ORGAN_T.bam $ORGAN_T $IDN
+      ./TRACES_viral_consensus.sh SPECIFIC-$SPECIFIC_ID.fa viral_aligned_sorted-$ORGAN_T-$SPECIFIC_ID.bam $ORGAN_T $SPECIFIC_ID
       fi
     #
     # ========================================================================== 

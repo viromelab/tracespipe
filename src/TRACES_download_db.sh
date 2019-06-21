@@ -6,7 +6,7 @@
 #
 # CHECK ALSO THIS: https://www.viprbrc.org/brc/vipr_allSpecies_search.spg?method=SubmitForm&decorator=vipr
 #
-tail -n +3 taxid10239.nbr > DATA.nbr
+tail -n +3 ../system_files/taxid10239.nbr > DATA.nbr
 #
 rm -f VDB.fa
 #

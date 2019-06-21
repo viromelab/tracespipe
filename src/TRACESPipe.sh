@@ -46,20 +46,20 @@ RUN_HV6B_ON=0;
 RUN_HV7_ON=0;
 RUN_HV8_ON=0;
 #
-RUN_POLY1=0;
-RUN_POLY2=0;
-RUN_POLY3=0;
-RUN_POLY4=0;
-RUN_POLY5=0;
-RUN_POLY6=0;
-RUN_POLY7=0;
-RUN_POLY8=0;
-RUN_POLY9=0;
-RUN_POLY10=0;
-RUN_POLY11=0;
-RUN_POLY12=0;
-RUN_POLY13=0;
-RUN_POLY14=0;
+RUN_POLY1_ON=0;
+RUN_POLY2_ON=0;
+RUN_POLY3_ON=0;
+RUN_POLY4_ON=0;
+RUN_POLY5_ON=0;
+RUN_POLY6_ON=0;
+RUN_POLY7_ON=0;
+RUN_POLY8_ON=0;
+RUN_POLY9_ON=0;
+RUN_POLY10_ON=0;
+RUN_POLY11_ON=0;
+RUN_POLY12_ON=0;
+RUN_POLY13_ON=0;
+RUN_POLY14_ON=0;
 #
 RUN_TTV_ON=0;
 RUN_HBOV1_ON=0;
@@ -71,6 +71,7 @@ RUN_VARV_ON=0;
 RUN_SPECIFIC=0;
 #
 RUN_CY_ON=0;
+RUN_CY_QUANT_ON=0;
 #
 RUN_DE_NOVO_ASSEMBLY=0;
 #
@@ -262,27 +263,28 @@ for i in "$@"
       RUN_HV6B_ON=1;
       RUN_HV7_ON=1;
       RUN_HV8_ON=1;
-      RUN_POLY1=1;
-      RUN_POLY2=1;
-      RUN_POLY3=1;
-      RUN_POLY4=1;
-      RUN_POLY5=1;
-      RUN_POLY6=1;
-      RUN_POLY7=1;
-      RUN_POLY8=1;
-      RUN_POLY9=1;
-      RUN_POLY10=1;
-      RUN_POLY11=1;
-      RUN_POLY12=1;
-      RUN_POLY13=1;
-      RUN_POLY14=1;
-      RUN_TTV_ON=1;
+      RUN_POLY1_ON=1;
+      RUN_POLY2_ON=1;
+      RUN_POLY3_ON=1;
+      RUN_POLY4_ON=1;
+      RUN_POLY5_ON=1;
+      RUN_POLY6_ON=1;
+      RUN_POLY7_ON=1;
+      RUN_POLY8_ON=1;
+      RUN_POLY9_ON=1;
+      RUN_POLY10_ON=1;
+      RUN_POLY11_ON=1;
+      RUN_POLY12_ON=1;
+      RUN_POLY13_ON=1;
+      RUN_POLY14_ON=1;
+      RUN_TTV_ON_ON=1;
       RUN_HBOV1_ON=1;
       RUN_HBOVNOT1_ON=1;
       RUN_HBV_ON=1;
       RUN_HPV_ON=1;
       RUN_VARV_ON=1;
       RUN_CY_ON=1;
+      RUN_CY_QUANT_ON=1;
       RUN_MITO_ON=1;
       RUN_DE_NOVO_ASSEMBLY=1;
       SHOW_HELP=0;
@@ -326,20 +328,20 @@ for i in "$@"
       RUN_HV6B_ON=1;
       RUN_HV7_ON=1;
       RUN_HV8_ON=1;
-      RUN_POLY1=1;
-      RUN_POLY2=1;
-      RUN_POLY3=1;
-      RUN_POLY4=1;
-      RUN_POLY5=1;
-      RUN_POLY6=1;
-      RUN_POLY7=1;
-      RUN_POLY8=1;
-      RUN_POLY9=1;
-      RUN_POLY10=1;
-      RUN_POLY11=1;
-      RUN_POLY12=1;
-      RUN_POLY13=1;
-      RUN_POLY14=1;
+      RUN_POLY1_ON=1;
+      RUN_POLY2_ON=1;
+      RUN_POLY3_ON=1;
+      RUN_POLY4_ON=1;
+      RUN_POLY5_ON=1;
+      RUN_POLY6_ON=1;
+      RUN_POLY7_ON=1;
+      RUN_POLY8_ON=1;
+      RUN_POLY9_ON=1;
+      RUN_POLY10_ON=1;
+      RUN_POLY11_ON=1;
+      RUN_POLY12_ON=1;
+      RUN_POLY13_ON=1;
+      RUN_POLY14_ON=1;
       RUN_TTV_ON=1;
       RUN_HBOV1_ON=1;
       RUN_HBOVNOT1_ON=1;
@@ -348,7 +350,7 @@ for i in "$@"
       RUN_VARV_ON=1;
       shift
     ;;
-    -rb|--run-b19)
+    -rb19|--run-b19)
       RUN_ANALYSIS=1;
       RUN_B19_ON=1;
       SHOW_HELP=0;
@@ -534,9 +536,15 @@ for i in "$@"
       SHOW_HELP=0;
       shift
     ;;
-    -rcy|--run-y-chromo)
+    -rya|--run-y-align)
       RUN_ANALYSIS=1;
       RUN_CY_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -ryq|--run-cy-quant)
+      RUN_ANALYSIS=1;
+      RUN_CY_QUANT_ON=1;
       SHOW_HELP=0;
       shift
     ;;
@@ -570,20 +578,20 @@ for i in "$@"
       RUN_HV6B_ON=1;
       RUN_HV7_ON=1;
       RUN_HV8_ON=1;
-      RUN_POLY1=1;
-      RUN_POLY2=1;
-      RUN_POLY3=1;
-      RUN_POLY4=1;
-      RUN_POLY5=1;
-      RUN_POLY6=1;
-      RUN_POLY7=1;
-      RUN_POLY8=1;
-      RUN_POLY9=1;
-      RUN_POLY10=1;
-      RUN_POLY11=1;
-      RUN_POLY12=1;
-      RUN_POLY13=1;
-      RUN_POLY14=1;
+      RUN_POLY1_ON=1;
+      RUN_POLY2_ON=1;
+      RUN_POLY3_ON=1;
+      RUN_POLY4_ON=1;
+      RUN_POLY5_ON=1;
+      RUN_POLY6_ON=1;
+      RUN_POLY7_ON=1;
+      RUN_POLY8_ON=1;
+      RUN_POLY9_ON=1;
+      RUN_POLY10_ON=1;
+      RUN_POLY11_ON=1;
+      RUN_POLY12_ON=1;
+      RUN_POLY13_ON=1;
+      RUN_POLY14_ON=1;
       RUN_TTV_ON=1;
       RUN_HBOV1_ON=1;
       RUN_HBOVNOT1_ON=1;
@@ -592,6 +600,7 @@ for i in "$@"
       RUN_VARV_ON=1;
       RUN_MITO_ON=1;
       RUN_CY_ON=1;
+      RUN_CY_QUANT_ON=1;
       RUN_DE_NOVO_ASSEMBLY=1;
       SHOW_HELP=0;
       shift
@@ -646,7 +655,7 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                                                                  "
   echo "    -rava, --run-all-v-alig  Run all viral align/sort/consensus seqs,    "
   echo "                                                                 "
-  echo "    -rb,   --run-b19         Run B19   align and consensus seq,    "
+  echo "    -rb19, --run-b19         Run B19   align and consensus seq,    "
   echo "    -rh1,  --run-hv1         Run HV1   align and consensus seq,    "
   echo "    -rh2,  --run-hv2         Run HV2   align and consensus seq,    "
   echo "    -rh3,  --run-hv3         Run HV3   align and consensus seq,    "
@@ -684,8 +693,10 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -rsr <ID>, --run-specific <ID/PATTERN>                        "
   echo "                             Run specific reference align/consensus, "
   echo "                                                                 "
-  echo "    -rmt,  --run-mito        Run Mito  align and consensus seq,   "
-  echo "    -rcy,  --run-y-chromo    Run CY    align and consensus seq,    "
+  echo "    -rmt,  --run-mito        Run Mito align and consensus seq,   "
+  echo "                                                                 "
+  echo "    -rya,  --run-cy-align    Run CY align and consensus seq,    "
+  echo "    -ryq,  --run-cy-quant    Estimate the quantity of CY DNA,    "
   echo "                                                                  "
   echo "    -rda,  --run-de-novo     Run de-novo assembly,               "
   echo "                                                                 "
@@ -902,7 +913,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       CHECK_DB;
       #	
       echo -e "\e[34m[TRACES]\e[32m Running NON viral metagenomic analysis with FALCON ...\e[0m";
-      ./TRACES_metagenomics.sh $ORGAN_T DB.fa 10000 
+      ./TRACES_metagenomics.sh $ORGAN_T DB.fa 12000 
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
       fi
     #
@@ -911,7 +922,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     if [[ "$RUN_SPECIFIC" -eq "1" ]];
       then
-      echo -e "\e[34m[TRACES]\e[32m Aliggning reads to specific ref(s) with pattern \"$SPECIFIC_ID\" using bowtie2 ...\e[0m";
+      echo -e "\e[34m[TRACES]\e[32m Aliggning reads to specific viral ref(s) with pattern \"$SPECIFIC_ID\" using bowtie2 ...\e[0m";
       #
       echo "Extracting sequence with pattern \"$SPECIFIC_ID\" from VDB.fa ..."
       #
@@ -1107,15 +1118,32 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       fi
     #
     # ========================================================================== 
-    # CY VERYFICATION
+    # CY VERYFICATION ALIGN/CONSENSUS
     #
     if [[ "$RUN_CY_ON" -eq "1" ]];
       then
       #
       CHECK_CY_DNA;
       #
-      echo -e "\e[34m[TRACES]\e[32m Searching for Y chromosome halotypes ...\e[0m";
-      ./TRACES_cy_markers.sh $ORGAN_T
+      echo -e "\e[34m[TRACES]\e[32m Aliggning reads to Y-chromosome ref with bowtie2 ...\e[0m";
+      ./TRACES_cy_align_reads.sh cy.fa $ORGAN_T
+      echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
+      #
+      echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+      ./TRACES_cy_consensus.sh cy.fa cy_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+      echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
+      fi
+    #
+    # ==========================================================================
+    # CY QUANTITY ESTIMATION
+    #
+    if [[ "$RUN_CY_QUANT_ON" -eq "1" ]];
+      then
+      #
+      CHECK_CY_DNA;
+      #
+      echo -e "\e[34m[TRACES]\e[32m Estimating the quantity of Y-chromosome ...\e[0m";
+      ./TRACES_estimate_cy_quantity.sh $ORGAN_T
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
       fi
     #

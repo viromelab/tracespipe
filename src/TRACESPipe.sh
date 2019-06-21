@@ -1197,79 +1197,80 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
   # ============================================================================
   #
   # RESULTS WITH REPORTS AND IMAGES
-  mkdir -p TRACES_results;
-  rm -f TRACES_results/*
-  mv *.pdf TRACES_results/
-  mv *.svg TRACES_results/
-  mv REPORT_META_VIRAL_*.txt TRACES_results/
+  mkdir -p ../output_data/TRACES_results;
+  #rm -f ../output_data/TRACES_results/*
+  mv *.pdf ../output_data/TRACES_results/
+  mv *.svg ../output_data/TRACES_results/
+  mv REPORT_META_VIRAL_*.txt ../output_data/TRACES_results/
   #
   # ============================================================================
   # Y-CHROMOSOME SEQUENCES
   #
   # CONSENSUS CY FILES
-  mkdir -p TRACES_cy_consensus;
-  #rm -f TRACES_cy_consensus/*
-  mv cy-consensus-*.fa TRACES_cy_consensus/
+  mkdir -p ../output_data/TRACES_cy_consensus;
+  #rm -f ../output_data/TRACES_cy_consensus/*
+  mv cy-consensus-*.fa ../output_data/TRACES_cy_consensus/
   #
   # ALIGNMENT CY FILES
-  mkdir -p TRACES_cy_alignments;
-  #rm -f TRACES_cy_alignments/*
-  cp cy.fa TRACES_cy_alignments/
-  cp cy.fa.fai TRACES_cy_alignments/
-  mv cy_aligned_sorted-*.bam TRACES_cy_alignments/
-  mv cy_aligned_sorted-*.bam.bai TRACES_cy_alignments/
+  mkdir -p ../output_data/TRACES_cy_alignments;
+  #rm -f ../output_data/TRACES_cy_alignments/*
+  cp cy.fa ../output_data/TRACES_cy_alignments/
+  cp cy.fa.fai ../output_data/TRACES_cy_alignments/
+  mv cy_aligned_sorted-*.bam ../output_data/TRACES_cy_alignments/
+  mv cy_aligned_sorted-*.bam.bai ../output_data/TRACES_cy_alignments/
   #
   # BED CY FILES
-  mkdir -p TRACES_cy_bed;
-  #rm -f TRACES_cy_bed/*
-  mv cy-calls-*.bed TRACES_cy_bed/
+  mkdir -p ../output_data/TRACES_cy_bed;
+  #rm -f ../output_data/TRACES_cy_bed/*
+  mv cy-calls-*.bed ../output_data/TRACES_cy_bed/
   #
   # ============================================================================ 
   # MITOCHONDRIAL SEQUENCES
   #
   # CONSENSUS MITO FILES
-  mkdir -p TRACES_mtdna_consensus;
-  #rm -f TRACES_mtdna_consensus/*
-  mv mt-consensus-*.fa TRACES_mtdna_consensus/
+  mkdir -p ../output_data/TRACES_mtdna_consensus;
+  #rm -f ../output_data/TRACES_mtdna_consensus/*
+  mv mt-consensus-*.fa ../output_data/TRACES_mtdna_consensus/
   #
   # ALIGNMENT MITO FILES
-  mkdir -p TRACES_mtdna_alignments;
-  #rm -f TRACES_mtdna_alignments/*
-  cp mtDNA.fa TRACES_mtdna_alignments/
-  cp mtDNA.fa.fai TRACES_mtdna_alignments/
-  mv mt_aligned_sorted-*.bam TRACES_mtdna_alignments/
-  mv mt_aligned_sorted-*.bam.bai TRACES_mtdna_alignments/
+  mkdir -p ../output_data/TRACES_mtdna_alignments;
+  #rm -f ../output_data/TRACES_mtdna_alignments/*
+  cp mtDNA.fa ../output_data/TRACES_mtdna_alignments/
+  cp mtDNA.fa.fai ../output_data/TRACES_mtdna_alignments/
+  mv mt_aligned_sorted-*.bam ../output_data/TRACES_mtdna_alignments/
+  mv mt_aligned_sorted-*.bam.bai ../output_data/TRACES_mtdna_alignments/
   #
   # BED MITO FILES
-  mkdir -p TRACES_mtdna_bed;
-  #rm -f TRACES_mtdna_bed/*
-  mv mt-calls-*.bed TRACES_mdna_bed/
+  mkdir -p ../output_data/TRACES_mtdna_bed;
+  #rm -f ../output_data/TRACES_mtdna_bed/*
+  mv mt-calls-*.bed ../output_data/TRACES_mdna_bed/
   #
   # ============================================================================
   # VIRAL SEQUENCES 
   #
   # CONSENSUS VIRAL FILES
-  mkdir -p TRACES_viral_consensus;
-  #rm -f TRACES_viral_consensus/*
-  mv *-consensus-*.fa TRACES_viral_consensus/
+  mkdir -p ../output_data/TRACES_viral_consensus;
+  #rm -f ../output_data/TRACES_viral_consensus/*
+  mv *-consensus-*.fa ../output_data/TRACES_viral_consensus/
   #
   # ALIGNMENT VIRAL FILES
-  mkdir -p TRACES_viral_alignments;
-  #rm -f TRACES_viral_alignments/*
-  cp *.fa TRACES_viral_alignments/
-  cp *.fa.fai TRACES_viral_alignments/
-  rm -f TRACES_viral_alignments/VDB.fa
-  mv *_aligned_sorted-*.bam TRACES_viral_alignments/
-  mv *_aligned_sorted-*.bam.bai TRACES_viral_alignments/
+  mkdir -p ../output_data/TRACES_viral_alignments;
+  #rm -f ../output_data/TRACES_viral_alignments/*
+  cp *.fa ../output_data/TRACES_viral_alignments/
+  cp *.fa.fai ../output_data/TRACES_viral_alignments/
+  rm -f ../output_data/TRACES_viral_alignments/VDB.fa
+  mv *_aligned_sorted-*.bam ../output_data/TRACES_viral_alignments/
+  mv *_aligned_sorted-*.bam.bai ../output_data/TRACES_viral_alignments/
   #
   # BED VIRAL FILES
-  mkdir -p TRACES_viral_bed;
-  #rm -f TRACES_viral_bed/*
-  mv *-calls-*.bed TRACES_viral_bed/
+  mkdir -p ../output_data/TRACES_viral_bed;
+  #rm -f ../output_data/TRACES_viral_bed/*
+  mv *-calls-*.bed ../output_data/TRACES_viral_bed/
   #
   # BUILD COMPLETE VIRAL META TABLE FOR MULTIPLE ORGANS:
   ./TRACES_get_report_meta.sh
   #
+  # ============================================================================
   fi
 #
 # ==============================================================================

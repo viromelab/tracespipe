@@ -148,7 +148,7 @@ CHECK_CY_DNA () {
   if [ ! -f cy.fa ];
     then
     echo -e "\e[31mERROR: reference y-chromosome DNA (cy.fa) not found!\e[0m"
-    echo "TIP: before this, run: ./TRACESPipe.sh --get-cy"
+    echo "TIP: before this, run: ./TRACESPipe.sh --get-y-chromo"
     echo "For addition information, see the instructions at the web page."
     exit 1;
     fi

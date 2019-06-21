@@ -154,12 +154,27 @@ CHECK_CY_DNA () {
     fi
   }
 #
+#
+CHECK_TOP () {
+  if [ ! -f top-$1.csv ];
+    then
+    echo -e "\e[31mERROR: top-$1.csv not found!\e[0m"
+    echo "Viral alignments are only possible after metagenomic analysis".
+    echo "(Unless is a specific viral alignment by ID/PATTERN)."
+    echo "TIP: before this, run: ./TRACESPipe.sh --run-meta"
+    echo "For addition information, see the instructions at the web page."
+    exit 1;
+    fi
+  }
+  
+#
 # ==============================================================================
 #
 ALIGN_AND_CONSENSUS () {
   #
   V_TAG="$1";
   echo -e "\e[34m[TRACES]\e[32m Aliggning reads to $V_TAG best reference with bowtie2 ...\e[0m";
+  CHECK_TOP "$ORGAN_T";
   V_INFO=`./TRACES_get_best_$V_TAG.sh $ORGAN_T`;
   echo "Best match: $V_INFO";
   V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
@@ -816,8 +831,8 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     rm -f FW_READS.fq.gz RV_READS.fq.gz
     echo -e "\e[34m[TRACES]\e[32m Copping an instance of the files ...\e[0m";
-    cp $SPL_Forward FW_READS.fq.gz;
-    cp $SPL_Reverse RV_READS.fq.gz;
+    cp ../input_data/$SPL_Forward FW_READS.fq.gz;
+    cp ../input_data/$SPL_Reverse RV_READS.fq.gz;
     echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
     #
     # ==========================================================================

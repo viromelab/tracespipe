@@ -14,6 +14,7 @@
 SHOW_HELP=0;
 SHOW_VERSION=0;
 FORCE=0;
+GET_THREADS=0;
 #
 INSTALL=0;
 BUILD_VDB_ALL=0;
@@ -215,6 +216,10 @@ for i in "$@"
     ;;
     -f|-F|--force)
       FORCE=1;
+      shift
+    ;;
+    -gmt|--get-max-threads)
+      GET_THREADS=1;
       shift
     ;;
     -i|--install)
@@ -652,6 +657,7 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -h,    --help            Show this help message and exit,     "
   echo "    -v,    --version         Show the version and some information,  "
   echo "    -f,    --force           Force running and overwrite of files,  "
+  echo "    -gmt,  --get-max-threads Get the number of maximum machine threads, "
   echo "                                                                  "
   echo "    -i,    --install         Installation of all the tools,       "
   echo "                                                                  "
@@ -744,6 +750,14 @@ if [ "$SHOW_VERSION" -eq "1" ];
   echo "           IEETA/DETI,                 ";
   echo " University of Aveiro, Portugal.       ";
   echo "                                       ";
+  fi
+#
+#
+# ==============================================================================
+#
+if [[ "$GET_THREADS" -eq "1" ]];
+  then
+  ./TRACES_get_max_threads.sh
   fi
 #
 # ==============================================================================

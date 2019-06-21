@@ -80,7 +80,7 @@ RUN_DE_NOVO_ASSEMBLY=0;
 # CHECK IF FILES EXIST
 #
 CHECK_META_INFO () {
-  if [ ! -f meta_info.txt ];
+  if [ ! -f ../meta_data/meta_info.txt ];
     then
     echo -e "\e[31mERROR: meta_info.txt file not found!\e[0m"
     echo "Please create a meta information file before the run."
@@ -705,9 +705,10 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                                                                "
   echo -e "\e[93m    Example: ./TRACESPipe.sh --run-meta --run-b19 --run-mito \e[0m"
   echo "                                                                "
+  echo "    Add the file meta_info.txt at ../meta_data/ folder. Example:      "
   echo "    meta_info.txt -> 'organ:reads_forward.fa.gz:reads_reverse.fa.gz'  "
-  echo "    The reads and meta_info.txt must be in the src/ folder.     "
-  echo "                                                                "
+  echo "    The reads must be in the ../input_data/ folder.                   "
+  echo "                                                                      "
   exit 1
   fi
 #
@@ -803,7 +804,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
   #
   CHECK_META_INFO;
   #
-  mapfile -t READS < meta_info.txt
+  mapfile -t READS < ../meta_data/meta_info.txt
   #
   for read in "${READS[@]}" # 
     do

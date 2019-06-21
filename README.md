@@ -63,13 +63,13 @@ https://docs.conda.io/projects/conda/en/latest/user-guide/install/linux.html
 
 To configure TRACESPipe add your FASTQ files gziped at folder
 ```
-input_data
+input_data/
 ```
 Then, add a file exclusively with name meta\_info.txt at folder
 ```
-meta_data
+meta_data/
 ```
-This file needs to especify the organ type (with a single word name) and the files names for the paired end reads. An example of the content of meta\_info.txt is the following:
+This file needs to specify the organ type (with a single word name) and the files names for the paired end reads. An example of the content of meta\_info.txt is the following:
 ```
 skin:V1_S44_R1_001.fastq.gz:V1_S44_R2_001.fastq.gz
 brain:V2_S29_R1_001.fastq.gz:V2_S29_R2_001.fastq.gz

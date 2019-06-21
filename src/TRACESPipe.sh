@@ -1173,12 +1173,33 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
   mv *.svg TRACES_results/
   mv REPORT_META_VIRAL_*.txt TRACES_results/
   #
+  # ============================================================================
+  # Y-CHROMOSOME SEQUENCES
+  #
+  # CONSENSUS CY FILES
+  mkdir -p TRACES_cy_consensus;
+  #rm -f TRACES_cy_consensus/*
+  mv cy-consensus-*.fa TRACES_cy_consensus/
+  #
+  # ALIGNMENT CY FILES
+  mkdir -p TRACES_cy_alignments;
+  #rm -f TRACES_cy_alignments/*
+  cp cy.fa TRACES_cy_alignments/
+  cp cy.fa.fai TRACES_cy_alignments/
+  mv cy_aligned_sorted-*.bam TRACES_cy_alignments/
+  mv cy_aligned_sorted-*.bam.bai TRACES_cy_alignments/
+  #
+  # BED CY FILES
+  mkdir -p TRACES_cy_bed;
+  #rm -f TRACES_cy_bed/*
+  mv cy-calls-*.bed TRACES_cy_bed/
+  #
   # ============================================================================ 
   # MITOCHONDRIAL SEQUENCES
   #
   # CONSENSUS MITO FILES
   mkdir -p TRACES_mtdna_consensus;
-  #rm -f TRACES_consensus/*
+  #rm -f TRACES_mtdna_consensus/*
   mv mt-consensus-*.fa TRACES_mtdna_consensus/
   #
   # ALIGNMENT MITO FILES

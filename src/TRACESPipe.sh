@@ -202,11 +202,12 @@ if [ "$#" -eq 0 ];
   SHOW_HELP=1;
   fi
 #
-eval set -- "$@"
+POSITIONAL=();
 #
-for i in "$@"
-   do
-   case $i in
+while [[ $# -gt 0 ]]
+  do
+  i="$1";
+  case $i in
     -h|--help|?)
       SHOW_HELP=1;
       shift
@@ -224,7 +225,7 @@ for i in "$@"
       shift
     ;;
     -t|--threads)
-      THREADS="$2";
+      THREADS=$2;
       shift 2;
     ;;
     -i|--install)
@@ -637,6 +638,8 @@ for i in "$@"
     ;;
   esac
   done
+#
+set -- "${POSITIONAL[@]}" # restore positional parameters
 #
 # ==============================================================================
 # HELP

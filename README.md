@@ -180,13 +180,36 @@ To run TRACES Pipeline, use the following commands in a Linux OS:
 ```
 ./TRACESPipe.sh --run-meta --run-b19
 ```
-The output sequence is included at output\_data/TRACES\_consensus.
+The output sequence is included at 
+```
+output\_data/TRACES\_viral\_consensus.
+```
+while the alignments at
+```
+output\_data/TRACES\_viral\_alignments
+```
+and the BED files at
+```
+output\_data/TRACES\_viral\_bed
+```
 
 ### 5.2 Building a mitochondrial consensus sequence (if exists in the FASTQ samples): ###
+
 ```
 ./TRACESPipe.sh --run-mito
 ```
-The output sequence is included at output\_data/TRACES\_consensus.
+The output sequence is included at
+```
+output\_data/TRACES\_mtdna\_consensus.
+```
+while the alignments at
+```
+output\_data/TRACES\_mtdna\_alignments
+```
+and the BED files at
+```
+output\_data/TRACES\_mtdna\_bed
+```
 
 ## 6. Programs ##
 

@@ -37,9 +37,11 @@ For the human-host variant call identification, the same procedure is followed a
 The previous image shows the architecture of TRACESPipe, where the green line stands for the mitochondrial human line. This pipeline has been tested in Illumina HiSeq and NovaSeq platforms. The operating system required to run it is Linux. In windows use cygwin (https://www.cygwin.com/) and make sure that it is included in the installation: cmake, make, zcat, unzip, wget, tr, grep (and any dependencies). If you install the complete cygwin packet then all these will be installed. After, all steps will be the same as in Linux.
 
 
-## 2. Installation ##
+## 2. Installation and Configuration ##
 
-To install TRACES Pipeline, run the following commands in a Linux OS:
+### 2.1 Installation ###
+
+To install TRACESPipe, run the following commands in a Linux OS:
 ```
 git clone https://github.com/pratas/traces.git
 cd traces/src/
@@ -57,6 +59,22 @@ Additional instructions can be found here:
 https://docs.conda.io/projects/conda/en/latest/user-guide/install/linux.html
 ```
 
+### 2.2 Configuration ###
+
+To configure TRACESPipe add your FASTQ files gziped at folder
+```
+input_data/
+```
+Then, add a file exclusively with name meta\_info.txt at folder
+```
+meta_data/
+```
+This file needs to specify the organ type (with a single word name) and the files names for the paired end reads. An example of the content of meta\_info.txt is the following:
+```
+skin:V1_S44_R1_001.fastq.gz:V1_S44_R2_001.fastq.gz
+brain:V2_S29_R1_001.fastq.gz:V2_S29_R2_001.fastq.gz
+colon:V3_S45_R1_001.fastq.gz:V3_S45_R2_001.fastq.gz
+```
 
 ## 3. Running ##
 
@@ -160,15 +178,38 @@ To run TRACES Pipeline, use the following commands in a Linux OS:
 
 ### 5.1 Building a Parvovirus consensus sequence (if exists in the FASTQ samples): ###
 ```
-./TRACESPipe.sh --run-b19
+./TRACESPipe.sh --run-meta --run-b19
 ```
-The output sequence is included at TRACES_consensus.
+The output consensus sequence is included at 
+```
+output_data/TRACES_viral_consensus
+```
+while the alignments at
+```
+output_data/TRACES_viral_alignments
+```
+and the BED files at
+```
+output_data/TRACES_viral_bed
+```
 
-### 5.2 Building a mitochondrial consensus sequence ###
+### 5.2 Building a mitochondrial consensus sequence (if exists in the FASTQ samples): ###
+
 ```
 ./TRACESPipe.sh --run-mito
 ```
-The output sequence is included at TRACES_consensus.
+The output consensus sequence is included at
+```
+output_data/TRACES_mtdna_consensus
+```
+while the alignments at
+```
+output_data/TRACES_mtdna_alignments
+```
+and the BED files at
+```
+output_data/TRACES_mtdna_bed
+```
 
 ## 6. Programs ##
 

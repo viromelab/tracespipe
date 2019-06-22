@@ -13,6 +13,8 @@
 #
 SHOW_HELP=0;
 SHOW_VERSION=0;
+FORCE=0;
+GET_THREADS=0;
 #
 INSTALL=0;
 BUILD_VDB_ALL=0;
@@ -45,20 +47,20 @@ RUN_HV6B_ON=0;
 RUN_HV7_ON=0;
 RUN_HV8_ON=0;
 #
-RUN_POLY1=0;
-RUN_POLY2=0;
-RUN_POLY3=0;
-RUN_POLY4=0;
-RUN_POLY5=0;
-RUN_POLY6=0;
-RUN_POLY7=0;
-RUN_POLY8=0;
-RUN_POLY9=0;
-RUN_POLY10=0;
-RUN_POLY11=0;
-RUN_POLY12=0;
-RUN_POLY13=0;
-RUN_POLY14=0;
+RUN_POLY1_ON=0;
+RUN_POLY2_ON=0;
+RUN_POLY3_ON=0;
+RUN_POLY4_ON=0;
+RUN_POLY5_ON=0;
+RUN_POLY6_ON=0;
+RUN_POLY7_ON=0;
+RUN_POLY8_ON=0;
+RUN_POLY9_ON=0;
+RUN_POLY10_ON=0;
+RUN_POLY11_ON=0;
+RUN_POLY12_ON=0;
+RUN_POLY13_ON=0;
+RUN_POLY14_ON=0;
 #
 RUN_TTV_ON=0;
 RUN_HBOV1_ON=0;
@@ -70,6 +72,7 @@ RUN_VARV_ON=0;
 RUN_SPECIFIC=0;
 #
 RUN_CY_ON=0;
+RUN_CY_QUANT_ON=0;
 #
 RUN_DE_NOVO_ASSEMBLY=0;
 #
@@ -78,7 +81,7 @@ RUN_DE_NOVO_ASSEMBLY=0;
 # CHECK IF FILES EXIST
 #
 CHECK_META_INFO () {
-  if [ ! -f meta_info.txt ];
+  if [ ! -f ../meta_data/meta_info.txt ];
     then
     echo -e "\e[31mERROR: meta_info.txt file not found!\e[0m"
     echo "Please create a meta information file before the run."
@@ -146,11 +149,25 @@ CHECK_CY_DNA () {
   if [ ! -f cy.fa ];
     then
     echo -e "\e[31mERROR: reference y-chromosome DNA (cy.fa) not found!\e[0m"
-    echo "TIP: before this, run: ./TRACESPipe.sh --get-cy"
+    echo "TIP: before this, run: ./TRACESPipe.sh --get-y-chromo"
     echo "For addition information, see the instructions at the web page."
     exit 1;
     fi
   }
+#
+#
+CHECK_TOP () {
+  if [ ! -f top-$1.csv ];
+    then
+    echo -e "\e[31mERROR: top-$1.csv not found!\e[0m"
+    echo "Viral alignments are only possible after metagenomic analysis".
+    echo "(Unless is a specific viral alignment by ID/PATTERN)."
+    echo "TIP: before this, run: ./TRACESPipe.sh --run-meta"
+    echo "For addition information, see the instructions at the web page."
+    exit 1;
+    fi
+  }
+  
 #
 # ==============================================================================
 #
@@ -158,6 +175,7 @@ ALIGN_AND_CONSENSUS () {
   #
   V_TAG="$1";
   echo -e "\e[34m[TRACES]\e[32m Aliggning reads to $V_TAG best reference with bowtie2 ...\e[0m";
+  CHECK_TOP "$ORGAN_T";
   V_INFO=`./TRACES_get_best_$V_TAG.sh $ORGAN_T`;
   echo "Best match: $V_INFO";
   V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
@@ -194,6 +212,14 @@ for i in "$@"
     ;;
     -v|-V|--version)
       SHOW_VERSION=1;
+      shift
+    ;;
+    -f|-F|--force)
+      FORCE=1;
+      shift
+    ;;
+    -gmt|--get-max-threads)
+      GET_THREADS=1;
       shift
     ;;
     -i|--install)
@@ -257,27 +283,28 @@ for i in "$@"
       RUN_HV6B_ON=1;
       RUN_HV7_ON=1;
       RUN_HV8_ON=1;
-      RUN_POLY1=1;
-      RUN_POLY2=1;
-      RUN_POLY3=1;
-      RUN_POLY4=1;
-      RUN_POLY5=1;
-      RUN_POLY6=1;
-      RUN_POLY7=1;
-      RUN_POLY8=1;
-      RUN_POLY9=1;
-      RUN_POLY10=1;
-      RUN_POLY11=1;
-      RUN_POLY12=1;
-      RUN_POLY13=1;
-      RUN_POLY14=1;
-      RUN_TTV_ON=1;
+      RUN_POLY1_ON=1;
+      RUN_POLY2_ON=1;
+      RUN_POLY3_ON=1;
+      RUN_POLY4_ON=1;
+      RUN_POLY5_ON=1;
+      RUN_POLY6_ON=1;
+      RUN_POLY7_ON=1;
+      RUN_POLY8_ON=1;
+      RUN_POLY9_ON=1;
+      RUN_POLY10_ON=1;
+      RUN_POLY11_ON=1;
+      RUN_POLY12_ON=1;
+      RUN_POLY13_ON=1;
+      RUN_POLY14_ON=1;
+      RUN_TTV_ON_ON=1;
       RUN_HBOV1_ON=1;
       RUN_HBOVNOT1_ON=1;
       RUN_HBV_ON=1;
       RUN_HPV_ON=1;
       RUN_VARV_ON=1;
       RUN_CY_ON=1;
+      RUN_CY_QUANT_ON=1;
       RUN_MITO_ON=1;
       RUN_DE_NOVO_ASSEMBLY=1;
       SHOW_HELP=0;
@@ -321,20 +348,20 @@ for i in "$@"
       RUN_HV6B_ON=1;
       RUN_HV7_ON=1;
       RUN_HV8_ON=1;
-      RUN_POLY1=1;
-      RUN_POLY2=1;
-      RUN_POLY3=1;
-      RUN_POLY4=1;
-      RUN_POLY5=1;
-      RUN_POLY6=1;
-      RUN_POLY7=1;
-      RUN_POLY8=1;
-      RUN_POLY9=1;
-      RUN_POLY10=1;
-      RUN_POLY11=1;
-      RUN_POLY12=1;
-      RUN_POLY13=1;
-      RUN_POLY14=1;
+      RUN_POLY1_ON=1;
+      RUN_POLY2_ON=1;
+      RUN_POLY3_ON=1;
+      RUN_POLY4_ON=1;
+      RUN_POLY5_ON=1;
+      RUN_POLY6_ON=1;
+      RUN_POLY7_ON=1;
+      RUN_POLY8_ON=1;
+      RUN_POLY9_ON=1;
+      RUN_POLY10_ON=1;
+      RUN_POLY11_ON=1;
+      RUN_POLY12_ON=1;
+      RUN_POLY13_ON=1;
+      RUN_POLY14_ON=1;
       RUN_TTV_ON=1;
       RUN_HBOV1_ON=1;
       RUN_HBOVNOT1_ON=1;
@@ -343,7 +370,7 @@ for i in "$@"
       RUN_VARV_ON=1;
       shift
     ;;
-    -rb|--run-b19)
+    -rb19|--run-b19)
       RUN_ANALYSIS=1;
       RUN_B19_ON=1;
       SHOW_HELP=0;
@@ -529,9 +556,15 @@ for i in "$@"
       SHOW_HELP=0;
       shift
     ;;
-    -rcy|--run-y-chromo)
+    -rya|--run-y-align)
       RUN_ANALYSIS=1;
       RUN_CY_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -ryq|--run-cy-quant)
+      RUN_ANALYSIS=1;
+      RUN_CY_QUANT_ON=1;
       SHOW_HELP=0;
       shift
     ;;
@@ -565,20 +598,20 @@ for i in "$@"
       RUN_HV6B_ON=1;
       RUN_HV7_ON=1;
       RUN_HV8_ON=1;
-      RUN_POLY1=1;
-      RUN_POLY2=1;
-      RUN_POLY3=1;
-      RUN_POLY4=1;
-      RUN_POLY5=1;
-      RUN_POLY6=1;
-      RUN_POLY7=1;
-      RUN_POLY8=1;
-      RUN_POLY9=1;
-      RUN_POLY10=1;
-      RUN_POLY11=1;
-      RUN_POLY12=1;
-      RUN_POLY13=1;
-      RUN_POLY14=1;
+      RUN_POLY1_ON=1;
+      RUN_POLY2_ON=1;
+      RUN_POLY3_ON=1;
+      RUN_POLY4_ON=1;
+      RUN_POLY5_ON=1;
+      RUN_POLY6_ON=1;
+      RUN_POLY7_ON=1;
+      RUN_POLY8_ON=1;
+      RUN_POLY9_ON=1;
+      RUN_POLY10_ON=1;
+      RUN_POLY11_ON=1;
+      RUN_POLY12_ON=1;
+      RUN_POLY13_ON=1;
+      RUN_POLY14_ON=1;
       RUN_TTV_ON=1;
       RUN_HBOV1_ON=1;
       RUN_HBOVNOT1_ON=1;
@@ -587,6 +620,7 @@ for i in "$@"
       RUN_VARV_ON=1;
       RUN_MITO_ON=1;
       RUN_CY_ON=1;
+      RUN_CY_QUANT_ON=1;
       RUN_DE_NOVO_ASSEMBLY=1;
       SHOW_HELP=0;
       shift
@@ -622,6 +656,8 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                                                                "
   echo "    -h,    --help            Show this help message and exit,     "
   echo "    -v,    --version         Show the version and some information,  "
+  echo "    -f,    --force           Force running and overwrite of files,  "
+  echo "    -gmt,  --get-max-threads Get the number of maximum machine threads, "
   echo "                                                                  "
   echo "    -i,    --install         Installation of all the tools,       "
   echo "                                                                  "
@@ -640,7 +676,7 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                                                                  "
   echo "    -rava, --run-all-v-alig  Run all viral align/sort/consensus seqs,    "
   echo "                                                                 "
-  echo "    -rb,   --run-b19         Run B19   align and consensus seq,    "
+  echo "    -rb19, --run-b19         Run B19   align and consensus seq,    "
   echo "    -rh1,  --run-hv1         Run HV1   align and consensus seq,    "
   echo "    -rh2,  --run-hv2         Run HV2   align and consensus seq,    "
   echo "    -rh3,  --run-hv3         Run HV3   align and consensus seq,    "
@@ -678,8 +714,10 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -rsr <ID>, --run-specific <ID/PATTERN>                        "
   echo "                             Run specific reference align/consensus, "
   echo "                                                                 "
-  echo "    -rmt,  --run-mito        Run Mito  align and consensus seq,   "
-  echo "    -rcy,  --run-y-chromo    Run CY    align and consensus seq,    "
+  echo "    -rmt,  --run-mito        Run Mito align and consensus seq,   "
+  echo "                                                                 "
+  echo "    -rya,  --run-cy-align    Run CY align and consensus seq,    "
+  echo "    -ryq,  --run-cy-quant    Estimate the quantity of CY DNA,    "
   echo "                                                                  "
   echo "    -rda,  --run-de-novo     Run de-novo assembly,               "
   echo "                                                                 "
@@ -688,9 +726,10 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                                                                "
   echo -e "\e[93m    Example: ./TRACESPipe.sh --run-meta --run-b19 --run-mito \e[0m"
   echo "                                                                "
+  echo "    Add the file meta_info.txt at ../meta_data/ folder. Example:      "
   echo "    meta_info.txt -> 'organ:reads_forward.fa.gz:reads_reverse.fa.gz'  "
-  echo "    The reads and meta_info.txt must be in the src/ folder.     "
-  echo "                                                                "
+  echo "    The reads must be in the ../input_data/ folder.                   "
+  echo "                                                                      "
   exit 1
   fi
 #
@@ -711,6 +750,14 @@ if [ "$SHOW_VERSION" -eq "1" ];
   echo "           IEETA/DETI,                 ";
   echo " University of Aveiro, Portugal.       ";
   echo "                                       ";
+  fi
+#
+#
+# ==============================================================================
+#
+if [[ "$GET_THREADS" -eq "1" ]];
+  then
+  ./TRACES_get_max_threads.sh
   fi
 #
 # ==============================================================================
@@ -786,7 +833,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
   #
   CHECK_META_INFO;
   #
-  mapfile -t READS < meta_info.txt
+  mapfile -t READS < ../meta_data/meta_info.txt
   #
   for read in "${READS[@]}" # 
     do
@@ -798,8 +845,8 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     rm -f FW_READS.fq.gz RV_READS.fq.gz
     echo -e "\e[34m[TRACES]\e[32m Copping an instance of the files ...\e[0m";
-    cp $SPL_Forward FW_READS.fq.gz;
-    cp $SPL_Reverse RV_READS.fq.gz;
+    cp ../input_data/$SPL_Forward FW_READS.fq.gz;
+    cp ../input_data/$SPL_Reverse RV_READS.fq.gz;
     echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
     #
     # ==========================================================================
@@ -896,7 +943,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       CHECK_DB;
       #	
       echo -e "\e[34m[TRACES]\e[32m Running NON viral metagenomic analysis with FALCON ...\e[0m";
-      ./TRACES_metagenomics.sh $ORGAN_T DB.fa 10000 
+      ./TRACES_metagenomics.sh $ORGAN_T DB.fa 12000 
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
       fi
     #
@@ -905,7 +952,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     if [[ "$RUN_SPECIFIC" -eq "1" ]];
       then
-      echo -e "\e[34m[TRACES]\e[32m Aliggning reads to specific ref(s) with pattern \"$SPECIFIC_ID\" using bowtie2 ...\e[0m";
+      echo -e "\e[34m[TRACES]\e[32m Aliggning reads to specific viral ref(s) with pattern \"$SPECIFIC_ID\" using bowtie2 ...\e[0m";
       #
       echo "Extracting sequence with pattern \"$SPECIFIC_ID\" from VDB.fa ..."
       #
@@ -1101,15 +1148,32 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       fi
     #
     # ========================================================================== 
-    # CY VERYFICATION
+    # CY VERYFICATION ALIGN/CONSENSUS
     #
     if [[ "$RUN_CY_ON" -eq "1" ]];
       then
       #
       CHECK_CY_DNA;
       #
-      echo -e "\e[34m[TRACES]\e[32m Searching for Y chromosome halotypes ...\e[0m";
-      ./TRACES_cy_markers.sh $ORGAN_T
+      echo -e "\e[34m[TRACES]\e[32m Aliggning reads to Y-chromosome ref with bowtie2 ...\e[0m";
+      ./TRACES_cy_align_reads.sh cy.fa $ORGAN_T
+      echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
+      #
+      echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+      ./TRACES_cy_consensus.sh cy.fa cy_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+      echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
+      fi
+    #
+    # ==========================================================================
+    # CY QUANTITY ESTIMATION
+    #
+    if [[ "$RUN_CY_QUANT_ON" -eq "1" ]];
+      then
+      #
+      CHECK_CY_DNA;
+      #
+      echo -e "\e[34m[TRACES]\e[32m Estimating the quantity of Y-chromosome ...\e[0m";
+      ./TRACES_estimate_cy_quantity.sh $ORGAN_T
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
       fi
     #
@@ -1133,58 +1197,80 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
   # ============================================================================
   #
   # RESULTS WITH REPORTS AND IMAGES
-  mkdir -p TRACES_results;
-  rm -f TRACES_results/*
-  mv *.pdf TRACES_results/
-  mv *.svg TRACES_results/
-  mv REPORT_META_VIRAL_*.txt TRACES_results/
+  mkdir -p ../output_data/TRACES_results;
+  #rm -f ../output_data/TRACES_results/*
+  mv *.pdf ../output_data/TRACES_results/
+  mv *.svg ../output_data/TRACES_results/
+  mv REPORT_META_VIRAL_*.txt ../output_data/TRACES_results/
+  #
+  # ============================================================================
+  # Y-CHROMOSOME SEQUENCES
+  #
+  # CONSENSUS CY FILES
+  mkdir -p ../output_data/TRACES_cy_consensus;
+  #rm -f ../output_data/TRACES_cy_consensus/*
+  mv cy-consensus-*.fa ../output_data/TRACES_cy_consensus/
+  #
+  # ALIGNMENT CY FILES
+  mkdir -p ../output_data/TRACES_cy_alignments;
+  #rm -f ../output_data/TRACES_cy_alignments/*
+  cp cy.fa ../output_data/TRACES_cy_alignments/
+  cp cy.fa.fai ../output_data/TRACES_cy_alignments/
+  mv cy_aligned_sorted-*.bam ../output_data/TRACES_cy_alignments/
+  mv cy_aligned_sorted-*.bam.bai ../output_data/TRACES_cy_alignments/
+  #
+  # BED CY FILES
+  mkdir -p ../output_data/TRACES_cy_bed;
+  #rm -f ../output_data/TRACES_cy_bed/*
+  mv cy-calls-*.bed ../output_data/TRACES_cy_bed/
   #
   # ============================================================================ 
   # MITOCHONDRIAL SEQUENCES
   #
   # CONSENSUS MITO FILES
-  mkdir -p TRACES_mtdna_consensus;
-  #rm -f TRACES_consensus/*
-  mv mt-consensus-*.fa TRACES_mtdna_consensus/
+  mkdir -p ../output_data/TRACES_mtdna_consensus;
+  #rm -f ../output_data/TRACES_mtdna_consensus/*
+  mv mt-consensus-*.fa ../output_data/TRACES_mtdna_consensus/
   #
   # ALIGNMENT MITO FILES
-  mkdir -p TRACES_mtdna_alignments;
-  #rm -f TRACES_mtdna_alignments/*
-  cp mtDNA.fa TRACES_mtdna_alignments/
-  cp mtDNA.fa.fai TRACES_mtdna_alignments/
-  mv mt_aligned_sorted-*.bam TRACES_mtdna_alignments/
-  mv mt_aligned_sorted-*.bam.bai TRACES_mtdna_alignments/
+  mkdir -p ../output_data/TRACES_mtdna_alignments;
+  #rm -f ../output_data/TRACES_mtdna_alignments/*
+  cp mtDNA.fa ../output_data/TRACES_mtdna_alignments/
+  cp mtDNA.fa.fai ../output_data/TRACES_mtdna_alignments/
+  mv mt_aligned_sorted-*.bam ../output_data/TRACES_mtdna_alignments/
+  mv mt_aligned_sorted-*.bam.bai ../output_data/TRACES_mtdna_alignments/
   #
   # BED MITO FILES
-  mkdir -p TRACES_mtdna_bed;
-  #rm -f TRACES_mtdna_bed/*
-  mv mt-calls-*.bed TRACES_mdna_bed/
+  mkdir -p ../output_data/TRACES_mtdna_bed;
+  #rm -f ../output_data/TRACES_mtdna_bed/*
+  mv mt-calls-*.bed ../output_data/TRACES_mdna_bed/
   #
   # ============================================================================
   # VIRAL SEQUENCES 
   #
   # CONSENSUS VIRAL FILES
-  mkdir -p TRACES_viral_consensus;
-  #rm -f TRACES_viral_consensus/*
-  mv *-consensus-*.fa TRACES_viral_consensus/
+  mkdir -p ../output_data/TRACES_viral_consensus;
+  #rm -f ../output_data/TRACES_viral_consensus/*
+  mv *-consensus-*.fa ../output_data/TRACES_viral_consensus/
   #
   # ALIGNMENT VIRAL FILES
-  mkdir -p TRACES_viral_alignments;
-  #rm -f TRACES_viral_alignments/*
-  cp *.fa TRACES_viral_alignments/
-  cp *.fa.fai TRACES_viral_alignments/
-  rm -f TRACES_viral_alignments/VDB.fa
-  mv *_aligned_sorted-*.bam TRACES_viral_alignments/
-  mv *_aligned_sorted-*.bam.bai TRACES_viral_alignments/
+  mkdir -p ../output_data/TRACES_viral_alignments;
+  #rm -f ../output_data/TRACES_viral_alignments/*
+  cp *.fa ../output_data/TRACES_viral_alignments/
+  cp *.fa.fai ../output_data/TRACES_viral_alignments/
+  rm -f ../output_data/TRACES_viral_alignments/VDB.fa
+  mv *_aligned_sorted-*.bam ../output_data/TRACES_viral_alignments/
+  mv *_aligned_sorted-*.bam.bai ../output_data/TRACES_viral_alignments/
   #
   # BED VIRAL FILES
-  mkdir -p TRACES_viral_bed;
-  #rm -f TRACES_viral_bed/*
-  mv *-calls-*.bed TRACES_viral_bed/
+  mkdir -p ../output_data/TRACES_viral_bed;
+  #rm -f ../output_data/TRACES_viral_bed/*
+  mv *-calls-*.bed ../output_data/TRACES_viral_bed/
   #
   # BUILD COMPLETE VIRAL META TABLE FOR MULTIPLE ORGANS:
   ./TRACES_get_report_meta.sh
   #
+  # ============================================================================
   fi
 #
 # ==============================================================================

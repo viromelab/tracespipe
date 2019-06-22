@@ -6,5 +6,5 @@ for line in "${ENTRIES[@]}" #
   #
   POSITIONS=`echo $line | awk '{ print $3 }'`;
   # echo "POS:$POSITIONS";
-  cat cy_halotype_data.csv | grep "$POSITIONS";
+  cat ../system_files/cy_halotype_data.csv | grep "$POSITIONS";
   done

@@ -182,7 +182,7 @@ To run TRACES Pipeline, use the following commands in a Linux OS:
 ```
 The output consensus sequence is included at 
 ```
-output_data/TRACES_viral_consensus.
+output_data/TRACES_viral_consensus
 ```
 while the alignments at
 ```
@@ -200,7 +200,7 @@ output_data/TRACES_viral_bed
 ```
 The output consensus sequence is included at
 ```
-output_data/TRACES_mtdna_consensus.
+output_data/TRACES_mtdna_consensus
 ```
 while the alignments at
 ```

@@ -15,6 +15,7 @@ SHOW_HELP=0;
 SHOW_VERSION=0;
 FORCE=0;
 GET_THREADS=0;
+THREADS=0;
 #
 INSTALL=0;
 BUILD_VDB_ALL=0;
@@ -221,6 +222,10 @@ for i in "$@"
     -gmt|--get-max-threads)
       GET_THREADS=1;
       shift
+    ;;
+    -t|--threads)
+      THREADS="$2";
+      shift 2;
     ;;
     -i|--install)
       INSTALL=1;
@@ -658,6 +663,8 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -v,    --version         Show the version and some information,  "
   echo "    -f,    --force           Force running and overwrite of files,  "
   echo "    -gmt,  --get-max-threads Get the number of maximum machine threads, "
+  echo "    -t <THREADS>, --threads <THREADS>                             "
+  echo "                             Number of threads to use, "
   echo "                                                                  "
   echo "    -i,    --install         Installation of all the tools,       "
   echo "                                                                  "
@@ -752,12 +759,22 @@ if [ "$SHOW_VERSION" -eq "1" ];
   echo "                                       ";
   fi
 #
-#
 # ==============================================================================
 #
 if [[ "$GET_THREADS" -eq "1" ]];
   then
   ./TRACES_get_max_threads.sh
+  exit 1;
+  fi
+#
+# ==============================================================================
+#
+if [[ "$THREADS" -eq "0" ]];
+  then
+  THREADS=`./TRACES_get_max_threads.sh |awk '{print $8;}'`;
+  echo "Running with $THREADS threads.";
+  else
+  echo "Running with $THREADS threads.";
   fi
 #
 # ==============================================================================

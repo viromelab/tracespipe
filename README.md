@@ -92,7 +92,7 @@ See the next section for more information about the usage.
 ```
 
 ```                                                     
-                                                                
+                                                         
          ████████╗ ██████╗   █████╗   ██████╗ ███████╗ ███████╗   
          ╚══██╔══╝ ██╔══██╗ ██╔══██╗ ██╔════╝ ██╔════╝ ██╔════╝   
             ██║    ██████╔╝ ███████║ ██║      █████╗   ███████╗   
@@ -109,6 +109,11 @@ See the next section for more information about the usage.
                                                                 
     -h,    --help            Show this help message and exit,     
     -v,    --version         Show the version and some information,  
+    -f,    --force           Force running and overwrite of files,  
+                                                                  
+    -gmt,  --get-max-threads Get the number of maximum machine threads, 
+    -t <THREADS>, --threads <THREADS>                             
+                             Number of threads to use, 
                                                                   
     -i,    --install         Installation of all the tools,       
                                                                   
@@ -127,7 +132,7 @@ See the next section for more information about the usage.
                                                                   
     -rava, --run-all-v-alig  Run all viral align/sort/consensus seqs,    
                                                                  
-    -rb,   --run-b19         Run B19   align and consensus seq,    
+    -rb19, --run-b19         Run B19   align and consensus seq,    
     -rh1,  --run-hv1         Run HV1   align and consensus seq,    
     -rh2,  --run-hv2         Run HV2   align and consensus seq,    
     -rh3,  --run-hv3         Run HV3   align and consensus seq,    
@@ -160,10 +165,13 @@ See the next section for more information about the usage.
     -rhpv, --run-hpv         Run HPV   align and consensus seq,    
     -rvar, --run-varv        Run VARV  align and consensus seq,    
                                                                  
-    -rsr,  --run-specific    Run specific REF align/consensus seq, 
+    -rsr <ID>, --run-specific <ID/PATTERN>                        
+                             Run specific reference align/consensus, 
                                                                  
-    -rmt,  --run-mito        Run Mito  align and consensus seq,   
-    -rcy,  --run-y-chromo    Run CY    align and consensus seq,    
+    -rmt,  --run-mito        Run Mito align and consensus seq,   
+                                                                 
+    -rya,  --run-cy-align    Run CY align and consensus seq,    
+    -ryq,  --run-cy-quant    Estimate the quantity of CY DNA,    
                                                                   
     -rda,  --run-de-novo     Run de-novo assembly,               
                                                                  
@@ -172,9 +180,10 @@ See the next section for more information about the usage.
                                                                 
     Example: ./TRACESPipe.sh --run-meta --run-b19 --run-mito 
                                                                 
+    Add the file meta_info.txt at ../meta_data/ folder. Example:      
     meta_info.txt -> 'organ:reads_forward.fa.gz:reads_reverse.fa.gz'  
-    The reads and meta_info.txt must be in the src/ folder.  
- 
+    The reads must be in the ../input_data/ folder.                   
+                                               
 ```
 ## 5. Examples ##
 

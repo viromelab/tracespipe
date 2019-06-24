@@ -69,7 +69,7 @@ Then, add a file exclusively with name <b>meta\_info.txt</b> at folder
 ```
 meta_data/
 ```
-This file needs to specify the organ type (with a single word name) and the files names for the paired end reads. An example of the content of meta\_info.txt is the following:
+This file needs to specify the organ type (with a single word name) and the filenames for the paired end reads. An example of the content of meta\_info.txt is the following:
 ```
 skin:V1_S44_R1_001.fastq.gz:V1_S44_R2_001.fastq.gz
 brain:V2_S29_R1_001.fastq.gz:V2_S29_R2_001.fastq.gz
@@ -78,10 +78,12 @@ colon:V3_S45_R1_001.fastq.gz:V3_S45_R2_001.fastq.gz
 
 ## 3. Running ##
 
-To run TRACES Pipeline, use the following commands in a Linux OS:
+To run TRACES Pipeline, use the following command:
 ```
 ./TRACESPipe.sh <parameters>
 ```
+There are many parameters and configurations that can be used.
+See the next section for more information about the usage.
 
 ## 4. Usage ##
 

@@ -175,7 +175,7 @@ CHECK_TOP () {
 ALIGN_AND_CONSENSUS () {
   #
   V_TAG="$1";
-  echo -e "\e[34m[TRACES]\e[32m Aliggning reads to $V_TAG best reference with bowtie2 ...\e[0m";
+  echo -e "\e[34m[TRACESPipe]\e[32m Aliggning reads to $V_TAG best reference with bowtie2 ...\e[0m";
   CHECK_TOP "$ORGAN_T";
   V_INFO=`./TRACES_get_best_$V_TAG.sh $ORGAN_T`;
   echo "Best match: $V_INFO";
@@ -187,12 +187,12 @@ ALIGN_AND_CONSENSUS () {
     gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-$V_TAG.fa
     echo "Aliggning ..."
     ./TRACES_viral_align_reads.sh $ORGAN_T-$V_TAG.fa $ORGAN_T $V_TAG $THREADS
-    echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
+    echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
     #
-    echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+    echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
     ./TRACES_viral_consensus.sh $ORGAN_T-$V_TAG.fa viral_aligned_sorted-$ORGAN_T-$V_TAG.bam $ORGAN_T $V_TAG
     fi
-  echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
+  echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
   }
 #
 # ==============================================================================
@@ -862,22 +862,22 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     ORGAN_T=`echo $read | tr ':' '\t' | awk '{ print $1 }'`;
     SPL_Forward=`echo $read | tr ':' '\t' | awk '{ print $2 }'`;
     SPL_Reverse=`echo $read | tr ':' '\t' | awk '{ print $3 }'`;
-    echo -e "\e[34m[TRACES]\e[93m Running: Organ=$ORGAN_T Forward=$SPL_Forward Reverse=$SPL_Reverse\e[0m";
+    echo -e "\e[34m[TRACESPipe]\e[93m Running: Organ=$ORGAN_T Forward=$SPL_Forward Reverse=$SPL_Reverse\e[0m";
     #
     rm -f FW_READS.fq.gz RV_READS.fq.gz
-    echo -e "\e[34m[TRACES]\e[32m Copping an instance of the files ...\e[0m";
+    echo -e "\e[34m[TRACESPipe]\e[32m Copping an instance of the files ...\e[0m";
     cp ../input_data/$SPL_Forward FW_READS.fq.gz;
     cp ../input_data/$SPL_Reverse RV_READS.fq.gz;
-    echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
+    echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
     #
     # ==========================================================================
     # TRIM AND FILTER READS
     #
     CHECK_ADAPTERS;
     #
-    echo -e "\e[34m[TRACES]\e[32m Trimming and filtering with Trimmomatic ...\e[0m";
+    echo -e "\e[34m[TRACESPipe]\e[32m Trimming and filtering with Trimmomatic ...\e[0m";
     ./TRACES_trim_filter_reads.sh $THREADS
-    echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
+    echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
     #
     # THE OUTPUT OF TRIMMING IS:
     # o_fw_pr.fq  o_fw_unpr.fq  o_rv_pr.fq  o_rv_unpr.fq
@@ -890,19 +890,19 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       CHECK_VDB;
       CHECK_PHIX;
       #
-      echo -e "\e[34m[TRACES]\e[32m Removing PhiX from the samples with MAGNET ...\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Removing PhiX from the samples with MAGNET ...\e[0m";
       ./TRACES_remove_phix.sh # IT IS USED ONLY FOR FALCON
       #
       # fastq_pair test_R1.fastq test_R2.fastq: [needs adaptation]
       # IF you want to remove Phix also before assembly
       #
-      echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
-      echo -e "\e[34m[TRACES]\e[32m Running viral metagenomic analysis with FALCON ...\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Running viral metagenomic analysis with FALCON ...\e[0m";
       ./TRACES_metagenomics_viral.sh $ORGAN_T VDB.fa 10000 $THREADS
-      echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
-      echo -e "\e[34m[TRACES]\e[32m Finding the best references ...\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Finding the best references ...\e[0m";
       ./TRACES_get_best_B19.sh $ORGAN_T > REPORT_META_VIRAL_$ORGAN_T.txt
       #
       ./TRACES_get_best_HV1.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
@@ -937,7 +937,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       ./TRACES_get_best_HBOV1.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
       ./TRACES_get_best_HBOVNOT1.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
       ./TRACES_get_best_VARV.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       fi
     #
@@ -949,10 +949,10 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #	      
       CHECK_VDB;
       #
-      echo -e "\e[34m[TRACES]\e[32m Building complexity profiles with gto ...\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Building complexity profiles with gto ...\e[0m";
       cat NP-o_fw_pr.fq NP-o_fw_unpr.fq NP-o_rv_pr.fq NP-o_rv_unpr.fq > P_TRACES_sample_reads.fq
       ./TRACES_profiles.sh GIS-$ORGAN_T VDB.fa P_TRACES_sample_reads.fq $ORGAN_T
-      echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
     #
     # ========================================================================== 
@@ -963,9 +963,9 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       CHECK_DB;
       #	
-      echo -e "\e[34m[TRACES]\e[32m Running NON viral metagenomic analysis with FALCON ...\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Running NON viral metagenomic analysis with FALCON ...\e[0m";
       ./TRACES_metagenomics.sh $ORGAN_T DB.fa 12000 $THREADS 
-      echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
     #
     # ==========================================================================
@@ -973,7 +973,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     if [[ "$RUN_SPECIFIC" -eq "1" ]];
       then
-      echo -e "\e[34m[TRACES]\e[32m Aliggning reads to specific viral ref(s) with pattern \"$SPECIFIC_ID\" using bowtie2 ...\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Aliggning reads to specific viral ref(s) with pattern \"$SPECIFIC_ID\" using bowtie2 ...\e[0m";
       #
       echo "Extracting sequence with pattern \"$SPECIFIC_ID\" from VDB.fa ..."
       #
@@ -982,9 +982,9 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       gto_fasta_extract_read_by_pattern -p "$SPECIFIC_ID" < VDB.fa > SPECIFIC-$SPECIFIC_ID.fa
       echo "Aliggning ..."
       ./TRACES_viral_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID $THREADS
-      echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
-      echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
       ./TRACES_viral_consensus.sh SPECIFIC-$SPECIFIC_ID.fa viral_aligned_sorted-$ORGAN_T-$SPECIFIC_ID.bam $ORGAN_T $SPECIFIC_ID
       fi
     #
@@ -1159,13 +1159,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       CHECK_MT_DNA;
       #
-      echo -e "\e[34m[TRACES]\e[32m Aliggning reads to mitochondrial ref with bowtie2 ...\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Aliggning reads to mitochondrial ref with bowtie2 ...\e[0m";
       ./TRACES_mt_align_reads.sh mtDNA.fa $ORGAN_T $THREADS
-      echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
-      echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
       ./TRACES_mt_consensus.sh mtDNA.fa mt_aligned_sorted-$ORGAN_T.bam $ORGAN_T
-      echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m"
       fi
     #
     # ========================================================================== 
@@ -1176,13 +1176,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       CHECK_CY_DNA;
       #
-      echo -e "\e[34m[TRACES]\e[32m Aliggning reads to Y-chromosome ref with bowtie2 ...\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Aliggning reads to Y-chromosome ref with bowtie2 ...\e[0m";
       ./TRACES_cy_align_reads.sh cy.fa $ORGAN_T $THREADS
-      echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
-      echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
       ./TRACES_cy_consensus.sh cy.fa cy_aligned_sorted-$ORGAN_T.bam $ORGAN_T
-      echo -e "\e[34m[TRACES]\e[32m Done!\e[0m"
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m"
       fi
     #
     # ==========================================================================
@@ -1193,9 +1193,9 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       CHECK_CY_DNA;
       #
-      echo -e "\e[34m[TRACES]\e[32m Estimating the quantity of Y-chromosome ...\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Estimating the quantity of Y-chromosome ...\e[0m";
       ./TRACES_estimate_cy_quantity.sh $ORGAN_T $THREADS
-      echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
     #
     # ==========================================================================
@@ -1203,9 +1203,9 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     if [[ "$RUN_DE_NOVO_ASSEMBLY" -eq "1" ]];
       then
-      echo -e "\e[34m[TRACES]\e[32m Running do-novo DNA assembly with SPAdes ...\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Running do-novo DNA assembly with SPAdes ...\e[0m";
       ./TRACES_assemble_all.sh $ORGAN_T $THREADS
-      echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
     #
     #

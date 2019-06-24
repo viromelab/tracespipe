@@ -82,7 +82,7 @@ To run TRACES Pipeline, use the following command:
 ```
 ./TRACESPipe.sh <parameters>
 ```
-There are many parameters and configurations that can be used.
+There are many parameters and configurations that can be used.<br>
 See the next section for more information about the usage.
 
 ## 4. Usage ##

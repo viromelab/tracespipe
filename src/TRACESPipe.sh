@@ -280,6 +280,14 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift
     ;;
+    -gax|--get-all-aux)
+      GEN_ADAPTERS=1;
+      GET_PHIX=1;
+      GET_MITO=1;
+      GET_CY=1;
+      SHOW_HELP=0;
+      shift
+    ;;
     -gx|--get-extra-vir)
       GET_EXTRA=1;
       SHOW_HELP=0;
@@ -693,6 +701,7 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -gp,   --get-phix        Extracts PhiX genomes (Needs viral DB),  "
   echo "    -gm,   --get-mito        Downloads human Mitochondrial genome,"
   echo "    -gy,   --get-y-chromo    Downloads human Y-chromosome,        "
+  echo "    -gax,  --get-all-aux     Runs -gad -gp -gm -gy,               "
   echo "                                                                  "
   echo "    -rm,   --run-meta        Run viral metagenomic identification,    "
   echo "    -ro,   --run-meta-nv     Run NON-viral metagenomic identification,   "

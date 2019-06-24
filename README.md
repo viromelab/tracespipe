@@ -117,6 +117,9 @@ See the next section for more information about the usage.
                                                                   
     -i,    --install         Installation of all the tools,       
                                                                   
+    -dec,  --decrypt         Decrypt (all files in ../encrypted_data),  
+    -enc,  --encrypt         Encrypt (all files in ../to_encrypt_data),  
+                                                                  
     -vdb,  --build-viral     Build viral database (all sequences), 
     -vdbr, --build-viral-r   Build viral database (references only),  
     -udb,  --build-unviral   Build non viral database (control),  
@@ -126,6 +129,7 @@ See the next section for more information about the usage.
     -gp,   --get-phix        Extracts PhiX genomes (Needs viral DB),  
     -gm,   --get-mito        Downloads human Mitochondrial genome,
     -gy,   --get-y-chromo    Downloads human Y-chromosome,        
+    -gax,  --get-all-aux     Runs -gad -gp -gm -gy,               
                                                                   
     -rm,   --run-meta        Run viral metagenomic identification,    
     -ro,   --run-meta-nv     Run NON-viral metagenomic identification,   
@@ -182,8 +186,8 @@ See the next section for more information about the usage.
                                                                 
     Add the file meta_info.txt at ../meta_data/ folder. Example:      
     meta_info.txt -> 'organ:reads_forward.fa.gz:reads_reverse.fa.gz'  
-    The reads must be in the ../input_data/ folder.                   
-                                               
+    The reads must be in the ../input_data/ folder.  
+    
 ```
 ## 5. Examples ##
 

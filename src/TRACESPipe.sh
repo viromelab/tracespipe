@@ -187,16 +187,16 @@ ALIGN_AND_CONSENSUS () {
     gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-$V_TAG.fa
     echo "Aliggning ..."
     ./TRACES_viral_align_reads.sh $ORGAN_T-$V_TAG.fa $ORGAN_T $V_TAG $THREADS
+    echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+    #
+    echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+    ./TRACES_viral_consensus.sh $ORGAN_T-$V_TAG.fa viral_aligned_sorted-$ORGAN_T-$V_TAG.bam $ORGAN_T $V_TAG
     mkdir -p ../output_data/TRACES_viral_alignments;
     #rm -f ../output_data/TRACES_viral_alignments/*
     cp $ORGAN_T-$V_TAG.fa ../output_data/TRACES_viral_alignments/
     cp $ORGAN_T-$V_TAG.fa.fai ../output_data/TRACES_viral_alignments/
     mv viral_aligned_sorted-$ORGAN_T-$V_TAG.bam ../output_data/TRACES_viral_alignments/
     mv viral_aligned_sorted-$ORGAN_T-$V_TAG.bam.bai ../output_data/TRACES_viral_alignments/
-    echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
-    #
-    echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-    ./TRACES_viral_consensus.sh $ORGAN_T-$V_TAG.fa viral_aligned_sorted-$ORGAN_T-$V_TAG.bam $ORGAN_T $V_TAG
     mkdir -p ../output_data/TRACES_viral_consensus;
     #rm -f ../output_data/TRACES_viral_consensus/*
     mv $V_TAG-consensus-$ORGAN_T.fa ../output_data/TRACES_viral_consensus/
@@ -1014,6 +1014,20 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
       ./TRACES_viral_consensus.sh SPECIFIC-$SPECIFIC_ID.fa viral_aligned_sorted-$ORGAN_T-$SPECIFIC_ID.bam $ORGAN_T $SPECIFIC_ID
+
+# mkdir -p ../output_data/TRACES_viral_alignments;
+# #rm -f ../output_data/TRACES_viral_alignments/*
+# cp $ORGAN_T-$V_TAG.fa ../output_data/TRACES_viral_alignments/
+# cp $ORGAN_T-$V_TAG.fa.fai ../output_data/TRACES_viral_alignments/
+# mv viral_aligned_sorted-$ORGAN_T-$V_TAG.bam ../output_data/TRACES_viral_alignments/
+# mv viral_aligned_sorted-$ORGAN_T-$V_TAG.bam.bai ../output_data/TRACES_viral_alignments/
+# mkdir -p ../output_data/TRACES_viral_consensus;
+# #rm -f ../output_data/TRACES_viral_consensus/*
+# mv $V_TAG-consensus-$ORGAN_T.fa ../output_data/TRACES_viral_consensus/
+# mkdir -p ../output_data/TRACES_viral_bed;
+# #rm -f ../output_data/TRACES_viral_bed/*
+# mv $V_TAG-calls-$ORGAN_T.bed ../output_data/TRACES_viral_bed/
+
       fi
     #
     # ========================================================================== 
@@ -1189,16 +1203,16 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Aliggning reads to mitochondrial ref with bowtie2 ...\e[0m";
       ./TRACES_mt_align_reads.sh mtDNA.fa $ORGAN_T $THREADS
-      mkdir -p ../output_data/TRACES_mtdna_alignments;
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+      #
+      echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+      ./TRACES_mt_consensus.sh mtDNA.fa mt_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+       mkdir -p ../output_data/TRACES_mtdna_alignments;
       #rm -f ../output_data/TRACES_mtdna_alignments/*
       cp mtDNA.fa ../output_data/TRACES_mtdna_alignments/
       cp mtDNA.fa.fai ../output_data/TRACES_mtdna_alignments/
       mv mt_aligned_sorted-$ORGAN_T.bam ../output_data/TRACES_mtdna_alignments/
       mv mt_aligned_sorted-$ORGAN_T.bam.bai ../output_data/TRACES_mtdna_alignments/
-      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
-      #
-      echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-      ./TRACES_mt_consensus.sh mtDNA.fa mt_aligned_sorted-$ORGAN_T.bam $ORGAN_T
       mkdir -p ../output_data/TRACES_mtdna_consensus;
       #rm -f ../output_data/TRACES_mtdna_consensus/*
       mv mt-consensus-$ORGAN_T.fa ../output_data/TRACES_mtdna_consensus/
@@ -1218,16 +1232,16 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Aliggning reads to Y-chromosome ref with bowtie2 ...\e[0m";
       ./TRACES_cy_align_reads.sh cy.fa $ORGAN_T $THREADS
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+      #
+      echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+      ./TRACES_cy_consensus.sh cy.fa cy_aligned_sorted-$ORGAN_T.bam $ORGAN_T
       mkdir -p ../output_data/TRACES_cy_alignments;
       #rm -f ../output_data/TRACES_cy_alignments/*
       cp cy.fa ../output_data/TRACES_cy_alignments/
       cp cy.fa.fai ../output_data/TRACES_cy_alignments/
       mv cy_aligned_sorted-$ORGAN_T.bam ../output_data/TRACES_cy_alignments/
       mv cy_aligned_sorted-$ORGAN_T.bam.bai ../output_data/TRACES_cy_alignments/
-      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
-      #
-      echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-      ./TRACES_cy_consensus.sh cy.fa cy_aligned_sorted-$ORGAN_T.bam $ORGAN_T
       mkdir -p ../output_data/TRACES_cy_consensus;
       #rm -f ../output_data/TRACES_cy_consensus/*
       mv cy-consensus-$ORGAN_T.fa ../output_data/TRACES_cy_consensus/

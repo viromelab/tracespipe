@@ -1,9 +1,20 @@
 #!/bin/bash
 #
-for file in V*fastq.gz
+index_f="../encrypted_data/index.txt";
+for file in ../encrypted_data/*
   do
-  echo "Running $file ...";
-  cryfa -v -k pass.txt $file > $file-cryfed
-  echo "Done!";
+  if [[ "$file" == "$index_f" ]];
+  then
+  echo "Jumping index file ($file)";
+  else 
+  echo "Decrypting $file ...";
+  out_file=$(basename $file);
+  echo "Please, enter the password: ";
+  read -s password
+  echo "$password" > key.txt
+  cryfa -k key.txt -d $file > ../decrypted_data/$out_file.dec
+  rm -f key.txt;
+  fi
   done
+echo "Done!";
 #

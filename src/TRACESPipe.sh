@@ -70,6 +70,9 @@ RUN_HBV_ON=0;
 RUN_HPV_ON=0;
 RUN_VARV_ON=0;
 #
+RUN_DECRYPT=0;
+RUN_ENCRYPT=0;
+#
 RUN_SPECIFIC=0;
 #
 RUN_CY_ON=0;
@@ -600,6 +603,16 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift
     ;;
+    -enc|--encrypt)
+      RUN_ENCRYPT=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -dec|--decrypt)
+      RUN_DECRYPT=1;
+      SHOW_HELP=0;
+      shift
+    ;;
     -all|--run-all)
       INSTALL=1;
       BUILD_VDB_ALL=1;
@@ -691,6 +704,9 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                             Number of threads to use, "
   echo "                                                                  "
   echo "    -i,    --install         Installation of all the tools,       "
+  echo "                                                                  "
+  echo "    -dec,  --decrypt         Decrypt (all files in ../encrypted_data),  "
+  echo "    -enc,  --encrypt         Encrypt (all files in ../to_encrypt_data),  "
   echo "                                                                  "
   echo "    -vdb,  --build-viral     Build viral database (all sequences), "
   echo "    -vdbr, --build-viral-r   Build viral database (references only),  "
@@ -807,6 +823,20 @@ if [[ "$THREADS" -eq "0" ]];
 if [[ "$INSTALL" -eq "1" ]];
   then
   ./TRACES_install.sh
+  fi
+#
+# ==============================================================================
+#
+if [[ "$RUN_ENCRYPT" -eq "1" ]];
+  then
+  ./TRACES_encrypt_data.sh
+  fi
+#
+# ==============================================================================
+#
+if [[ "$RUN_DECRYPT" -eq "1" ]];
+  then
+  ./TRACES_decrypt_data.sh
   fi
 #
 # ==============================================================================

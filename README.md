@@ -65,7 +65,7 @@ To configure TRACESPipe add your FASTQ files gziped at folder
 ```
 input_data/
 ```
-Then, add a file exclusively with name meta\_info.txt at folder
+Then, add a file exclusively with name <b>meta\_info.txt</b> at folder
 ```
 meta_data/
 ```

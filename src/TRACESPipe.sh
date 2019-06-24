@@ -186,7 +186,7 @@ ALIGN_AND_CONSENSUS () {
     CHECK_VDB;
     gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-$V_TAG.fa
     echo "Aliggning ..."
-    ./TRACES_viral_align_reads.sh $ORGAN_T-$V_TAG.fa $ORGAN_T $V_TAG
+    ./TRACES_viral_align_reads.sh $ORGAN_T-$V_TAG.fa $ORGAN_T $V_TAG $THREADS
     echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
     #
     echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
@@ -665,6 +665,7 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -h,    --help            Show this help message and exit,     "
   echo "    -v,    --version         Show the version and some information,  "
   echo "    -f,    --force           Force running and overwrite of files,  "
+  echo "                                                                  "
   echo "    -gmt,  --get-max-threads Get the number of maximum machine threads, "
   echo "    -t <THREADS>, --threads <THREADS>                             "
   echo "                             Number of threads to use, "
@@ -875,7 +876,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     CHECK_ADAPTERS;
     #
     echo -e "\e[34m[TRACES]\e[32m Trimming and filtering with Trimmomatic ...\e[0m";
-    ./TRACES_trim_filter_reads.sh
+    ./TRACES_trim_filter_reads.sh $THREADS
     echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
     #
     # THE OUTPUT OF TRIMMING IS:
@@ -898,7 +899,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACES]\e[32m Running viral metagenomic analysis with FALCON ...\e[0m";
-      ./TRACES_metagenomics_viral.sh $ORGAN_T VDB.fa 10000
+      ./TRACES_metagenomics_viral.sh $ORGAN_T VDB.fa 10000 $THREADS
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACES]\e[32m Finding the best references ...\e[0m";
@@ -963,7 +964,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       CHECK_DB;
       #	
       echo -e "\e[34m[TRACES]\e[32m Running NON viral metagenomic analysis with FALCON ...\e[0m";
-      ./TRACES_metagenomics.sh $ORGAN_T DB.fa 12000 
+      ./TRACES_metagenomics.sh $ORGAN_T DB.fa 12000 $THREADS 
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
       fi
     #
@@ -980,7 +981,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       gto_fasta_extract_read_by_pattern -p "$SPECIFIC_ID" < VDB.fa > SPECIFIC-$SPECIFIC_ID.fa
       echo "Aliggning ..."
-      ./TRACES_viral_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID
+      ./TRACES_viral_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID $THREADS
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
@@ -1159,7 +1160,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       CHECK_MT_DNA;
       #
       echo -e "\e[34m[TRACES]\e[32m Aliggning reads to mitochondrial ref with bowtie2 ...\e[0m";
-      ./TRACES_mt_align_reads.sh mtDNA.fa $ORGAN_T
+      ./TRACES_mt_align_reads.sh mtDNA.fa $ORGAN_T $THREADS
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
@@ -1176,7 +1177,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       CHECK_CY_DNA;
       #
       echo -e "\e[34m[TRACES]\e[32m Aliggning reads to Y-chromosome ref with bowtie2 ...\e[0m";
-      ./TRACES_cy_align_reads.sh cy.fa $ORGAN_T
+      ./TRACES_cy_align_reads.sh cy.fa $ORGAN_T $THREADS
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACES]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
@@ -1193,7 +1194,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       CHECK_CY_DNA;
       #
       echo -e "\e[34m[TRACES]\e[32m Estimating the quantity of Y-chromosome ...\e[0m";
-      ./TRACES_estimate_cy_quantity.sh $ORGAN_T
+      ./TRACES_estimate_cy_quantity.sh $ORGAN_T $THREADS
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
       fi
     #
@@ -1203,7 +1204,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_DE_NOVO_ASSEMBLY" -eq "1" ]];
       then
       echo -e "\e[34m[TRACES]\e[32m Running do-novo DNA assembly with SPAdes ...\e[0m";
-      ./TRACES_assemble_all.sh $ORGAN_T
+      ./TRACES_assemble_all.sh $ORGAN_T $THREADS
       echo -e "\e[34m[TRACES]\e[32m Done!\e[0m";
       fi
     #

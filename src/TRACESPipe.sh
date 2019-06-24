@@ -1218,7 +1218,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       mv mt-consensus-$ORGAN_T.fa ../output_data/TRACES_mtdna_consensus/
       mkdir -p ../output_data/TRACES_mtdna_bed;
       #rm -f ../output_data/TRACES_mtdna_bed/*
-      mv mt-calls-$ORGAN_T.bed ../output_data/TRACES_mdna_bed/
+      mv mt-calls-$ORGAN_T.bed ../output_data/TRACES_mtdna_bed/
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m"
       fi
     #

@@ -222,6 +222,28 @@ and the BED files at
 output_data/TRACES_mtdna_bed
 ```
 
+### 5.3 Encrypt and Decrypt NGS data: ###
+
+TRACESPipe supports secure encryption of genomic data. This allows outsourcing of the sequecing service while maintaing secure transmission and storage of the files.
+
+#### 5.3.1 Encrypt #### 
+
+Place the files from sequencing (e.g. FASTQ gziped files) in the folder <b>to_encrypt_data</b> and, then, run:
+```
+./TRACESPipe.sh --encrypt
+```
+Insert a strong password.<br>
+The encrypted files are in the <b>encrypted_data</b> folder.
+
+#### 5.3.2 Decrypt #### 
+
+Place the encrypted files in the folder <b>encrypted_data</b> and, then, run:
+```
+./TRACESPipe.sh --decrypt
+```
+Insert the password that has been used in encryption.<br>
+The decrypted files are in the <b>decrypted_data</b> folder.
+
 ## 6. Programs ##
 
 TRACES Pipeline uses a combination of the following tools:

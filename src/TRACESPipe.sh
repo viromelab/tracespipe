@@ -187,10 +187,22 @@ ALIGN_AND_CONSENSUS () {
     gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-$V_TAG.fa
     echo "Aliggning ..."
     ./TRACES_viral_align_reads.sh $ORGAN_T-$V_TAG.fa $ORGAN_T $V_TAG $THREADS
+    mkdir -p ../output_data/TRACES_viral_alignments;
+    #rm -f ../output_data/TRACES_viral_alignments/*
+    cp $ORGAN_T-$V_TAG.fa ../output_data/TRACES_viral_alignments/
+    cp $ORGAN_T-$V_TAG.fa.fai ../output_data/TRACES_viral_alignments/
+    mv viral_aligned_sorted-$ORGAN_T-$V_TAG.bam ../output_data/TRACES_viral_alignments/
+    mv viral_aligned_sorted-$ORGAN_T-$V_TAG.bam.bai ../output_data/TRACES_viral_alignments/
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
     #
     echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
     ./TRACES_viral_consensus.sh $ORGAN_T-$V_TAG.fa viral_aligned_sorted-$ORGAN_T-$V_TAG.bam $ORGAN_T $V_TAG
+    mkdir -p ../output_data/TRACES_viral_consensus;
+    #rm -f ../output_data/TRACES_viral_consensus/*
+    mv $V_TAG-consensus-$ORGAN_T.fa ../output_data/TRACES_viral_consensus/
+    mkdir -p ../output_data/TRACES_viral_bed;
+    #rm -f ../output_data/TRACES_viral_bed/*
+    mv $V_TAG-calls-$ORGAN_T.bed ../output_data/TRACES_viral_bed/
     fi
   echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
   }
@@ -891,7 +903,8 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       CHECK_PHIX;
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Removing PhiX from the samples with MAGNET ...\e[0m";
-      ./TRACES_remove_phix.sh # IT IS USED ONLY FOR FALCON
+      ./TRACES_remove_phix.sh $THREADS
+      # IT IS USED ONLY FOR FALCON
       #
       # fastq_pair test_R1.fastq test_R2.fastq: [needs adaptation]
       # IF you want to remove Phix also before assembly
@@ -965,6 +978,12 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #	
       echo -e "\e[34m[TRACESPipe]\e[32m Running NON viral metagenomic analysis with FALCON ...\e[0m";
       ./TRACES_metagenomics.sh $ORGAN_T DB.fa 12000 $THREADS 
+      mkdir -p ../output_data/TRACES_results;
+      #rm -f ../output_data/TRACES_results/*
+      mv NV-$ORGAN_T.svg ../output_data/TRACES_results/
+      mv NV-$ORGAN_T-HEAT.svg ../output_data/TRACES_results/
+      mv REPORT_META_VIRAL_$ORGAN_T.txt ../output_data/TRACES_results/
+      cp top-non-viral-$ORGAN_T.csv  ../output_data/TRACES_results/
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
     #
@@ -1161,10 +1180,22 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Aliggning reads to mitochondrial ref with bowtie2 ...\e[0m";
       ./TRACES_mt_align_reads.sh mtDNA.fa $ORGAN_T $THREADS
+      mkdir -p ../output_data/TRACES_mtdna_alignments;
+      #rm -f ../output_data/TRACES_mtdna_alignments/*
+      cp mtDNA.fa ../output_data/TRACES_mtdna_alignments/
+      cp mtDNA.fa.fai ../output_data/TRACES_mtdna_alignments/
+      mv mt_aligned_sorted-$ORGAN_T.bam ../output_data/TRACES_mtdna_alignments/
+      mv mt_aligned_sorted-$ORGAN_T.bam.bai ../output_data/TRACES_mtdna_alignments/
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
       ./TRACES_mt_consensus.sh mtDNA.fa mt_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+      mkdir -p ../output_data/TRACES_mtdna_consensus;
+      #rm -f ../output_data/TRACES_mtdna_consensus/*
+      mv mt-consensus-$ORGAN_T.fa ../output_data/TRACES_mtdna_consensus/
+      mkdir -p ../output_data/TRACES_mtdna_bed;
+      #rm -f ../output_data/TRACES_mtdna_bed/*
+      mv mt-calls-$ORGAN_T.bed ../output_data/TRACES_mdna_bed/
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m"
       fi
     #
@@ -1178,10 +1209,22 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Aliggning reads to Y-chromosome ref with bowtie2 ...\e[0m";
       ./TRACES_cy_align_reads.sh cy.fa $ORGAN_T $THREADS
+      mkdir -p ../output_data/TRACES_cy_alignments;
+      #rm -f ../output_data/TRACES_cy_alignments/*
+      cp cy.fa ../output_data/TRACES_cy_alignments/
+      cp cy.fa.fai ../output_data/TRACES_cy_alignments/
+      mv cy_aligned_sorted-$ORGAN_T.bam ../output_data/TRACES_cy_alignments/
+      mv cy_aligned_sorted-$ORGAN_T.bam.bai ../output_data/TRACES_cy_alignments/
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
       ./TRACES_cy_consensus.sh cy.fa cy_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+      mkdir -p ../output_data/TRACES_cy_consensus;
+      #rm -f ../output_data/TRACES_cy_consensus/*
+      mv cy-consensus-$ORGAN_T.fa ../output_data/TRACES_cy_consensus/
+      mkdir -p ../output_data/TRACES_cy_bed;
+      #rm -f ../output_data/TRACES_cy_bed/*
+      mv cy-calls-$ORGAN_T.bed ../output_data/TRACES_cy_bed/
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m"
       fi
     #
@@ -1213,80 +1256,8 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     done
     #
   # #
-  # ============================================================================
-  # REDIRECT RESULTS TO SPECIFIC FOLDERS
-  # ============================================================================
-  #
-  # RESULTS WITH REPORTS AND IMAGES
-  mkdir -p ../output_data/TRACES_results;
-  #rm -f ../output_data/TRACES_results/*
-  mv *.pdf ../output_data/TRACES_results/
-  mv *.svg ../output_data/TRACES_results/
-  mv REPORT_META_VIRAL_*.txt ../output_data/TRACES_results/
-  #
-  # ============================================================================
-  # Y-CHROMOSOME SEQUENCES
-  #
-  # CONSENSUS CY FILES
-  mkdir -p ../output_data/TRACES_cy_consensus;
-  #rm -f ../output_data/TRACES_cy_consensus/*
-  mv cy-consensus-*.fa ../output_data/TRACES_cy_consensus/
-  #
-  # ALIGNMENT CY FILES
-  mkdir -p ../output_data/TRACES_cy_alignments;
-  #rm -f ../output_data/TRACES_cy_alignments/*
-  cp cy.fa ../output_data/TRACES_cy_alignments/
-  cp cy.fa.fai ../output_data/TRACES_cy_alignments/
-  mv cy_aligned_sorted-*.bam ../output_data/TRACES_cy_alignments/
-  mv cy_aligned_sorted-*.bam.bai ../output_data/TRACES_cy_alignments/
-  #
-  # BED CY FILES
-  mkdir -p ../output_data/TRACES_cy_bed;
-  #rm -f ../output_data/TRACES_cy_bed/*
-  mv cy-calls-*.bed ../output_data/TRACES_cy_bed/
   #
   # ============================================================================ 
-  # MITOCHONDRIAL SEQUENCES
-  #
-  # CONSENSUS MITO FILES
-  mkdir -p ../output_data/TRACES_mtdna_consensus;
-  #rm -f ../output_data/TRACES_mtdna_consensus/*
-  mv mt-consensus-*.fa ../output_data/TRACES_mtdna_consensus/
-  #
-  # ALIGNMENT MITO FILES
-  mkdir -p ../output_data/TRACES_mtdna_alignments;
-  #rm -f ../output_data/TRACES_mtdna_alignments/*
-  cp mtDNA.fa ../output_data/TRACES_mtdna_alignments/
-  cp mtDNA.fa.fai ../output_data/TRACES_mtdna_alignments/
-  mv mt_aligned_sorted-*.bam ../output_data/TRACES_mtdna_alignments/
-  mv mt_aligned_sorted-*.bam.bai ../output_data/TRACES_mtdna_alignments/
-  #
-  # BED MITO FILES
-  mkdir -p ../output_data/TRACES_mtdna_bed;
-  #rm -f ../output_data/TRACES_mtdna_bed/*
-  mv mt-calls-*.bed ../output_data/TRACES_mdna_bed/
-  #
-  # ============================================================================
-  # VIRAL SEQUENCES 
-  #
-  # CONSENSUS VIRAL FILES
-  mkdir -p ../output_data/TRACES_viral_consensus;
-  #rm -f ../output_data/TRACES_viral_consensus/*
-  mv *-consensus-*.fa ../output_data/TRACES_viral_consensus/
-  #
-  # ALIGNMENT VIRAL FILES
-  mkdir -p ../output_data/TRACES_viral_alignments;
-  #rm -f ../output_data/TRACES_viral_alignments/*
-  cp *.fa ../output_data/TRACES_viral_alignments/
-  cp *.fa.fai ../output_data/TRACES_viral_alignments/
-  rm -f ../output_data/TRACES_viral_alignments/VDB.fa
-  mv *_aligned_sorted-*.bam ../output_data/TRACES_viral_alignments/
-  mv *_aligned_sorted-*.bam.bai ../output_data/TRACES_viral_alignments/
-  #
-  # BED VIRAL FILES
-  mkdir -p ../output_data/TRACES_viral_bed;
-  #rm -f ../output_data/TRACES_viral_bed/*
-  mv *-calls-*.bed ../output_data/TRACES_viral_bed/
   #
   # BUILD COMPLETE VIRAL META TABLE FOR MULTIPLE ORGANS:
   ./TRACES_get_report_meta.sh

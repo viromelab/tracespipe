@@ -955,40 +955,40 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Finding the best references ...\e[0m";
-      ./TRACES_get_best_B19.sh $ORGAN_T > REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_B19.sh $ORGAN_T > ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
       #
-      ./TRACES_get_best_HV1.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HV2.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HV3.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HV4.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HV5.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HV6.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HV6A.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HV6B.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HV7.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HV8.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_HV1.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_HV2.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_HV3.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_HV4.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_HV5.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_HV6.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_HV6A.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_HV6B.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_HV7.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_HV8.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
       #
-      ./TRACES_get_best_POLY1.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY2.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY3.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY4.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY5.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY6.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY7.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY8.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY9.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY10.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY11.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY12.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY13.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY14.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_POLY1.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_POLY2.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_POLY3.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_POLY4.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_POLY5.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_POLY6.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_POLY7.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_POLY8.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_POLY9.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_POLY10.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_POLY11.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_POLY12.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_POLY13.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_POLY14.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
       # 
-      ./TRACES_get_best_HBV.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HPV.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_TTV.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HBOV1.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HBOVNOT1.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_VARV.sh $ORGAN_T >> REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_HBV.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_HPV.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_TTV.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_HBOV1.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_HBOVNOT1.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_VARV.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       fi
@@ -1021,7 +1021,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #rm -f ../output_data/TRACES_results/*
       mv NV-$ORGAN_T.svg ../output_data/TRACES_results/
       mv NV-$ORGAN_T-HEAT.svg ../output_data/TRACES_results/
-      mv REPORT_META_VIRAL_$ORGAN_T.txt ../output_data/TRACES_results/
+      mv REPORT_META_NON_VIRAL_$ORGAN_T.txt ../output_data/TRACES_results/
       cp top-non-viral-$ORGAN_T.csv  ../output_data/TRACES_results/
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi

@@ -17,7 +17,6 @@
 
 ## 1. About ##
 
-
 TRACESPipe is a next-generation sequencing pipeline for identification, assembly, and analysis of viral and human-host genomes at multi-organ level. The identification and assembly of viral genomes rely on cooperation between three modalities:
 <ul>
 <li>compression-based predictors;</li>
@@ -35,7 +34,6 @@ For the human-host variant call identification, the same procedure is followed a
 <br>
 
 The previous image shows the architecture of TRACESPipe, where the green line stands for the mitochondrial human line. This pipeline has been tested in Illumina HiSeq and NovaSeq platforms. The operating system required to run it is Linux. In windows use cygwin (https://www.cygwin.com/) and make sure that it is included in the installation: cmake, make, zcat, unzip, wget, tr, grep (and any dependencies). If you install the complete cygwin packet then all these will be installed. After, all steps will be the same as in Linux.
-
 
 ## 2. Installation and Configuration ##
 
@@ -92,7 +90,7 @@ See the next section for more information about the usage.
 ```
 
 ```                                                     
-                                                         
+                                                            
          ████████╗ ██████╗   █████╗   ██████╗ ███████╗ ███████╗   
          ╚══██╔══╝ ██╔══██╗ ██╔══██╗ ██╔════╝ ██╔════╝ ██╔════╝   
             ██║    ██████╔╝ ███████║ ██║      █████╗   ███████╗   
@@ -106,88 +104,92 @@ See the next section for more information about the usage.
     and analysis of viral and human-host genomes at a multi-organ level.
                                                                 
     Usage: ./TRACESPipe.sh [options]                             
-                                                                
-    -h,    --help            Show this help message and exit,     
-    -v,    --version         Show the version and some information,  
-    -f,    --force           Force running and overwrite of files,  
+                                                                   
+    -h,    --help             Show this help message and exit,     
+    -v,    --version          Show the version and some information,  
+    -f,    --force            Force running and overwrite of files,  
+                                                                   
+    -i,    --install          Installation of all the tools,       
+                                                                   
+    -gmt,  --get-max-threads  Get the number of maximum machine threads, 
+    -t <THREADS>, --threads <THREADS>                              
+                              Number of threads to use,            
+                                                                   
+    -dec,  --decrypt          Decrypt (all files in ../encrypted_data),  
+    -enc,  --encrypt          Encrypt (all files in ../to_encrypt_data),  
+                                                                   
+    -vdb,  --build-viral      Build viral database (all) [Recommended], 
+    -vdbr, --build-viral-r    Build viral database (references only),  
+    -udb,  --build-unviral    Build non viral database (control),  
+                                                                   
+    -aes <ID>, --add-extra-seq <ID>                                
+                              Add extra sequence to the VDB.fa,    
+    -gx,   --get-extra-vir    Downloads/appends (VDB) extra viral seq, 
+                                                                   
+    -gad,  --gen-adapters     Generate FASTA file with adapters,   
+    -gp,   --get-phix         Extracts PhiX genomes (Needs viral DB),  
+    -gm,   --get-mito         Downloads human Mitochondrial genome,
+    -gy,   --get-y-chromo     Downloads human Y-chromosome,        
+    -gax,  --get-all-aux      Runs -gad -gp -gm -gy,               
+                                                                   
+    -rm,   --run-meta         Run viral metagenomic identification,    
+    -ro,   --run-meta-nv      Run NON-viral metagenomic identification,   
                                                                   
-    -gmt,  --get-max-threads Get the number of maximum machine threads, 
-    -t <THREADS>, --threads <THREADS>                             
-                             Number of threads to use, 
-                                                                  
-    -i,    --install         Installation of all the tools,       
-                                                                  
-    -dec,  --decrypt         Decrypt (all files in ../encrypted_data),  
-    -enc,  --encrypt         Encrypt (all files in ../to_encrypt_data),  
-                                                                  
-    -vdb,  --build-viral     Build viral database (all sequences), 
-    -vdbr, --build-viral-r   Build viral database (references only),  
-    -udb,  --build-unviral   Build non viral database (control),  
-                                                                  
-    -gx,   --get-extra-vir   Downloads/appends (VDB) extra viral seq, 
-    -gad,  --gen-adapters    Generate FASTA file with adapters,   
-    -gp,   --get-phix        Extracts PhiX genomes (Needs viral DB),  
-    -gm,   --get-mito        Downloads human Mitochondrial genome,
-    -gy,   --get-y-chromo    Downloads human Y-chromosome,        
-    -gax,  --get-all-aux     Runs -gad -gp -gm -gy,               
-                                                                  
-    -rm,   --run-meta        Run viral metagenomic identification,    
-    -ro,   --run-meta-nv     Run NON-viral metagenomic identification,   
-                                                                  
-    -rava, --run-all-v-alig  Run all viral align/sort/consensus seqs,    
+    -rava, --run-all-v-alig   Run all viral align/sort/consensus seqs,    
                                                                  
-    -rb19, --run-b19         Run B19   align and consensus seq,    
-    -rh1,  --run-hv1         Run HV1   align and consensus seq,    
-    -rh2,  --run-hv2         Run HV2   align and consensus seq,    
-    -rh3,  --run-hv3         Run HV3   align and consensus seq,    
-    -rh4,  --run-hv4         Run HV4   align and consensus seq,    
-    -rh5,  --run-hv5         Run HV5   align and consensus seq,    
-    -rh6,  --run-hv6         Run HV6   align and consensus seq,    
-    -rh6a, --run-hv6a        Run HV6A  align and consensus seq,    
-    -rh6b, --run-hv6b        Run HV6B  align and consensus seq,    
-    -rh7,  --run-hv7         Run HV7   align and consensus seq,    
-    -rh8,  --run-hv8         Run HV8   align and consensus seq,    
-    -rh8,  --run-hv8         Run HV8   align and consensus seq,    
-    -rp1,  --run-poly1       Run Polyoma 1  align and consensus seq,  
-    -rp2,  --run-poly2       Run Polyoma 2  align and consensus seq,  
-    -rp3,  --run-poly3       Run Polyoma 3  align and consensus seq,  
-    -rp4,  --run-poly4       Run Polyoma 4  align and consensus seq,  
-    -rp5,  --run-poly5       Run Polyoma 5  align and consensus seq,  
-    -rp6,  --run-poly6       Run Polyoma 6  align and consensus seq,  
-    -rp7,  --run-poly7       Run Polyoma 7  align and consensus seq,  
-    -rp8,  --run-poly8       Run Polyoma 8  align and consensus seq,  
-    -rp9,  --run-poly9       Run Polyoma 9  align and consensus seq,  
-    -rp10, --run-poly10      Run Polyoma 10 align and consensus seq,  
-    -rp11, --run-poly11      Run Polyoma 11 align and consensus seq,  
-    -rp12, --run-poly12      Run Polyoma 12 align and consensus seq,  
-    -rp13, --run-poly13      Run Polyoma 13 align and consensus seq,  
-    -rp14, --run-poly14      Run Polyoma 14 align and consensus seq,  
-    -rtt,  --run-ttv         Run TTV   align and consensus seq,    
-    -rbv1, --run-hbov1       Run HBoV1 align and consensus seq,    
-    -rbv0, --run-hbovnot1    Run HBoV (2,3,...) align/consensus seq, 
-    -rhbv, --run-hbv         Run HBV   align and consensus seq,    
-    -rhpv, --run-hpv         Run HPV   align and consensus seq,    
-    -rvar, --run-varv        Run VARV  align and consensus seq,    
-                                                                 
+    -rb19, --run-b19          Run B19   align and consensus seq,    
+    -rh1,  --run-hv1          Run HV1   align and consensus seq,    
+    -rh2,  --run-hv2          Run HV2   align and consensus seq,    
+    -rh3,  --run-hv3          Run HV3   align and consensus seq,    
+    -rh4,  --run-hv4          Run HV4   align and consensus seq,    
+    -rh5,  --run-hv5          Run HV5   align and consensus seq,    
+    -rh6,  --run-hv6          Run HV6   align and consensus seq,    
+    -rh6a, --run-hv6a         Run HV6A  align and consensus seq,    
+    -rh6b, --run-hv6b         Run HV6B  align and consensus seq,    
+    -rh7,  --run-hv7          Run HV7   align and consensus seq,    
+    -rh8,  --run-hv8          Run HV8   align and consensus seq,    
+    -rh8,  --run-hv8          Run HV8   align and consensus seq,    
+    -rp1,  --run-poly1        Run Polyoma 1  align and consensus seq,  
+    -rp2,  --run-poly2        Run Polyoma 2  align and consensus seq,  
+    -rp3,  --run-poly3        Run Polyoma 3  align and consensus seq,  
+    -rp4,  --run-poly4        Run Polyoma 4  align and consensus seq,  
+    -rp5,  --run-poly5        Run Polyoma 5  align and consensus seq,  
+    -rp6,  --run-poly6        Run Polyoma 6  align and consensus seq,  
+    -rp7,  --run-poly7        Run Polyoma 7  align and consensus seq,  
+    -rp8,  --run-poly8        Run Polyoma 8  align and consensus seq,  
+    -rp9,  --run-poly9        Run Polyoma 9  align and consensus seq,  
+    -rp10, --run-poly10       Run Polyoma 10 align and consensus seq,  
+    -rp11, --run-poly11       Run Polyoma 11 align and consensus seq,  
+    -rp12, --run-poly12       Run Polyoma 12 align and consensus seq,  
+    -rp13, --run-poly13       Run Polyoma 13 align and consensus seq,  
+    -rp14, --run-poly14       Run Polyoma 14 align and consensus seq,  
+    -rtt,  --run-ttv          Run TTV   align and consensus seq,    
+    -rbv1, --run-hbov1        Run HBoV1 align and consensus seq,    
+    -rbv0, --run-hbovnot1     Run HBoV (2,3,...) align/consensus seq, 
+    -rhbv, --run-hbv          Run HBV   align and consensus seq,    
+    -rhpv, --run-hpv          Run HPV   align and consensus seq,    
+    -rvar, --run-varv         Run VARV  align and consensus seq,    
+                                                                  
     -rsr <ID>, --run-specific <ID/PATTERN>                        
-                             Run specific reference align/consensus, 
+                              Run specific reference align/consensus, 
                                                                  
-    -rmt,  --run-mito        Run Mito align and consensus seq,   
+    -rmt,  --run-mito         Run Mito align and consensus seq,   
                                                                  
-    -rya,  --run-cy-align    Run CY align and consensus seq,    
-    -ryq,  --run-cy-quant    Estimate the quantity of CY DNA,    
+    -rya,  --run-cy-align     Run CY align and consensus seq,    
+    -ryq,  --run-cy-quant     Estimate the quantity of CY DNA,    
                                                                   
-    -rda,  --run-de-novo     Run de-novo assembly,               
+    -rda,  --run-de-novo      Run de-novo assembly,               
                                                                  
-    -ra,   --run-analysis    Run data analysis,                   
-    -all,  --run-all         Run all the options.                 
+    -ra,   --run-analysis     Run data analysis,                   
+    -all,  --run-all          Run all the options.                 
                                                                 
     Example: ./TRACESPipe.sh --run-meta --run-b19 --run-mito 
                                                                 
     Add the file meta_info.txt at ../meta_data/ folder. Example:      
     meta_info.txt -> 'organ:reads_forward.fa.gz:reads_reverse.fa.gz'  
-    The reads must be in the ../input_data/ folder.  
-    
+    The reads must be in the ../input_data/ folder.                   
+    The output results are at ../output_data/ folder.                 
+                                                       
 ```
 ## 5. Examples ##
 

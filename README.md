@@ -70,16 +70,29 @@ tracespipe/
 │   
 ├── output_data/       # where the results will appear using the following subfolders: 
 │   │
-│   ├── TRACES_viral_alignments/
-│   ├── TRACES_mtdna_alignments/
-│   ├── TRACES_specific_alignments/
-│   ├── TRACES_cy_alignments/
+│   ├── TRACES_results/                # where the files regarding the metagenomic 
+│   │                                  # analysis, redundancy and control will appear
+│   │
+│   ├── TRACES_viral_alignments/       # where viral alignments and index will appear
+│   ├── TRACES_mtdna_alignments/       # where mtdna alignments and index will appear
+│   ├── TRACES_specific_alignments/    # where specific alignments and index will appear
+│   ├── TRACES_cy_alignments/          # where cy alignments and index will appear
 │   │
-│   └── x
+│   ├── TRACES_viral_consensus/        # where viral consensus (FASTA) will appear
+│   ├── TRACES_mtdna_consensus/        # where mtdna consensus (FASTA) will appear
+│   ├── TRACES_specific_consensus/     # where specific consensus (FASTA) will appear
+│   ├── TRACES_cy_consensus/           # where cy consensus (FASTA) will appear
+│   │
+│   ├── TRACES_viral_bed/              # where viral BED files will appear
+│   ├── TRACES_mtdna_bed/              # where mtdna BED files will appear
+│   ├── TRACES_specific_bed/           # where specific BED files will appear
+│   ├── TRACES_cy_bed/                 # where cy BED files will appear
+│   │
+│   └── out_spades_full_<ORGAN>        # where the output of de-novo assembly appears
 │   
 ├── to_encrypt_data    # where the NGS files to encrypt must be before encryption
 ├── encrypted_data     # where the encrypted data will appear
-├── decrypted_data     # where the decrypte data will appear
+├── decrypted_data     # where the decrypted data will appear
 │   
 ├── src/               # where the bash code is and where the commands of TRACESPipe must be call
 │   

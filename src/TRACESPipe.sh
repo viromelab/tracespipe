@@ -1044,20 +1044,18 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
       ./TRACES_viral_consensus.sh SPECIFIC-$SPECIFIC_ID.fa viral_aligned_sorted-$ORGAN_T-$SPECIFIC_ID.bam $ORGAN_T $SPECIFIC_ID
-
-# mkdir -p ../output_data/TRACES_viral_alignments;
-# #rm -f ../output_data/TRACES_viral_alignments/*
-# cp $ORGAN_T-$V_TAG.fa ../output_data/TRACES_viral_alignments/
-# cp $ORGAN_T-$V_TAG.fa.fai ../output_data/TRACES_viral_alignments/
-# mv viral_aligned_sorted-$ORGAN_T-$V_TAG.bam ../output_data/TRACES_viral_alignments/
-# mv viral_aligned_sorted-$ORGAN_T-$V_TAG.bam.bai ../output_data/TRACES_viral_alignments/
-# mkdir -p ../output_data/TRACES_viral_consensus;
-# #rm -f ../output_data/TRACES_viral_consensus/*
-# mv $V_TAG-consensus-$ORGAN_T.fa ../output_data/TRACES_viral_consensus/
-# mkdir -p ../output_data/TRACES_viral_bed;
-# #rm -f ../output_data/TRACES_viral_bed/*
-# mv $V_TAG-calls-$ORGAN_T.bed ../output_data/TRACES_viral_bed/
-
+      mkdir -p ../output_data/TRACES_specific_alignments;
+      #rm -f ../output_data/TRACES_specific_alignments/*
+      cp $ORGAN_T-$SPECIFIC_ID.fa ../output_data/TRACES_specific_alignments/
+      cp $ORGAN_T-$SPECIFIC_ID.fa.fai ../output_data/TRACES_specific_alignments/
+      mv viral_aligned_sorted-$ORGAN_T-$SPECIFIC_ID.bam ../output_data/TRACES_specific_alignments/
+      mv viral_aligned_sorted-$ORGAN_T-$SPECIFIC_ID.bam.bai ../output_data/TRACES_specific_alignments/
+      mkdir -p ../output_data/TRACES_specific_consensus;
+      #rm -f ../output_data/TRACES_specific_consensus/*
+      mv $SPECIFIC_ID-consensus-$ORGAN_T.fa ../output_data/TRACES_specific_consensus/
+      mkdir -p ../output_data/TRACES_specific_bed;
+      #rm -f ../output_data/TRACES_specific_bed/*
+      mv $SPECIFIC_ID-calls-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
       fi
     #
     # ========================================================================== 

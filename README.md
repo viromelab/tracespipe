@@ -59,20 +59,31 @@ https://docs.conda.io/projects/conda/en/latest/user-guide/install/linux.html
 
 ### 2.2 Structure ###
 
-In the tracespipe/ folder the following folder structure exists:
-```
-meta_data/        # information about the filenames in input_data/ and the organ names
-input_data/       # where the reads must be places
-output_data/      # where the results will appear using the following subfolders:
-    [+] TRACES_viral_alignments/
-    [+] TRACES_mtdna_alignments/
-    
-to_encrypt_data/  # where the NGS files to encrypt must be before ecnryption
-encrypted_data/   # where the encrypted data will appear
-decrypted_data    # where the decrypte data will appear
-
-src/              # where the bash code is and where the commands of TRACESPipe must be call
-imgs/             # images related with the pipeline
+In the tracespipe/ folder the following structure exists:
+```bash
+tracespipe/
+│   
+├── meta_data/         # information about the filenames in input_data/ and organ names
+│   └── meta_info.txt  # see Configuration section for this file.
+│   
+├── input_data/        # where the NGS reads must be placed (and compressed with gzip)
+│   
+├── output_data/       # where the results will appear using the following subfolders: 
+│   │
+│   ├── TRACES_viral_alignments/
+│   ├── TRACES_mtdna_alignments/
+│   ├── TRACES_specific_alignments/
+│   ├── TRACES_cy_alignments/
+│   │
+│   └── x
+│   
+├── to_encrypt_data    # where the NGS files to encrypt must be before encryption
+├── encrypted_data     # where the encrypted data will appear
+├── decrypted_data     # where the decrypte data will appear
+│   
+├── src/               # where the bash code is and where the commands of TRACESPipe must be call
+│   
+└── imgs/              # images related with the pipeline
 ```
 
 ### 2.3 Configuration ###

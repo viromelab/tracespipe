@@ -27,6 +27,7 @@ GET_PHIX=0;
 GET_MITO=0;
 GET_CY=0;
 GET_EXTRA=0;
+ADD_EXTRA_SPECIFIC=0;
 #
 RUN_ANALYSIS=0;
 #
@@ -171,7 +172,18 @@ CHECK_TOP () {
     exit 1;
     fi
   }
-  
+#
+#
+CHECK_ENRICH () {
+  if [ ! -f ../system_files/ids_enrichment.txt ];
+    then
+    echo -e "\e[31mERROR: ids_enrichment.txt file not found!\e[0m"
+    echo "Please create a file ids_enrichment.txt with the GIS (each one line by line)"
+    echo "and add the file at ../system_files/ folder before the run."
+    echo "For addition information, see the instructions at the web page."
+    exit 1;
+    fi
+  }
 #
 # ==============================================================================
 #
@@ -295,6 +307,12 @@ while [[ $# -gt 0 ]]
       GET_EXTRA=1;
       SHOW_HELP=0;
       shift
+    ;;
+    -aes|--add-extra-seq)
+      ADD_EXTRA_SEQ=1;
+      NEW_SEQ_ID="$2";
+      SHOW_HELP=0;
+      shift 2
     ;;
     -ra|--run-analysis)
       RUN_ANALYSIS=1;
@@ -694,25 +712,28 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo -e "    \e[32mand analysis of viral and human-host genomes at a multi-organ level\e[0m."
   echo "                                                                "
   echo -e "\e[93m    Usage: ./TRACESPipe.sh [options]                             \e[0m"
-  echo "                                                                "
+  echo "                                                                   "
   echo "    -h,    --help             Show this help message and exit,     "
   echo "    -v,    --version          Show the version and some information,  "
   echo "    -f,    --force            Force running and overwrite of files,  "
-  echo "                                                                  "
-  echo "    -gmt,  --get-max-threads  Get the number of maximum machine threads, "
-  echo "    -t <THREADS>, --threads <THREADS>                             "
-  echo "                              Number of threads to use, "
   echo "                                                                   "
   echo "    -i,    --install          Installation of all the tools,       "
+  echo "                                                                   "
+  echo "    -gmt,  --get-max-threads  Get the number of maximum machine threads, "
+  echo "    -t <THREADS>, --threads <THREADS>                              "
+  echo "                              Number of threads to use,            "
   echo "                                                                   "
   echo "    -dec,  --decrypt          Decrypt (all files in ../encrypted_data),  "
   echo "    -enc,  --encrypt          Encrypt (all files in ../to_encrypt_data),  "
   echo "                                                                   "
-  echo "    -vdb,  --build-viral      Build viral database (all sequences), "
+  echo "    -vdb,  --build-viral      Build viral database (all) [Recommended], "
   echo "    -vdbr, --build-viral-r    Build viral database (references only),  "
   echo "    -udb,  --build-unviral    Build non viral database (control),  "
-  echo "                                                                  "
+  echo "                                                                   "
+  echo "    -aes <ID>, --add-extra-seq <ID>                                "
+  echo "                              Add extra sequence to the VDB.fa,    "
   echo "    -gx,   --get-extra-vir    Downloads/appends (VDB) extra viral seq, "
+  echo "                                                                   "
   echo "    -gad,  --gen-adapters     Generate FASTA file with adapters,   "
   echo "    -gp,   --get-phix         Extracts PhiX genomes (Needs viral DB),  "
   echo "    -gm,   --get-mito         Downloads human Mitochondrial genome,"
@@ -896,7 +917,16 @@ if [[ "$GET_CY" -eq "1" ]];
 #
 if [[ "$GET_EXTRA" -eq "1" ]];
   then
+  CHECK_ENRICH;
   ./TRACES_get_enriched_sequences.sh VDB.fa
+  fi
+#
+# ==============================================================================
+#
+if [[ "$ADD_EXTRA_SEQ" -eq "1" ]];
+  then
+  CHECK_VDB;
+  ./TRACES_get_extra_seq.sh VDB.fa $NEW_SEQ_ID
   fi
 #
 # ==============================================================================

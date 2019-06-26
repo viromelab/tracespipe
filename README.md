@@ -136,7 +136,7 @@ See the next section for more information about the usage.
 ```
 
 ```                                                     
-                                                            
+                                                         
          ████████╗ ██████╗   █████╗   ██████╗ ███████╗ ███████╗   
          ╚══██╔══╝ ██╔══██╗ ██╔══██╗ ██╔════╝ ██╔════╝ ██╔════╝   
             ██║    ██████╔╝ ███████║ ██║      █████╗   ███████╗   
@@ -225,7 +225,9 @@ See the next section for more information about the usage.
     -ryq,  --run-cy-quant     Estimate the quantity of CY DNA,    
                                                                   
     -rda,  --run-de-novo      Run de-novo assembly,               
-                                                                 
+                                                                  
+    -vis,  --visual-align     Run Visualization tool for alignments, 
+                                                                  
     -ra,   --run-analysis     Run data analysis,                   
     -all,  --run-all          Run all the options.                 
                                                                 
@@ -234,8 +236,8 @@ See the next section for more information about the usage.
     Add the file meta_info.txt at ../meta_data/ folder. Example:      
     meta_info.txt -> 'organ:reads_forward.fa.gz:reads_reverse.fa.gz'  
     The reads must be in the ../input_data/ folder.                   
-    The output results are at ../output_data/ folder.                 
-                                                       
+    The output results are at ../output_data/ folder.                                                       
+ 
 ```
 ## 5. Examples ##
 

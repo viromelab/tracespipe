@@ -20,6 +20,7 @@ bowtie2 -a --threads $4 -x index-$2-$3-file -1 o_fw_pr.fq -2 o_rv_pr.fq -U o_fw_
 #
 # SORT & BIN
 samtools sort aligned-$2-$3.sam > viral_aligned_sorted-$2-$3.bam
+rm -f aligned-$2-$3.sam
 #
 # INDEX BAM
 samtools index viral_aligned_sorted-$2-$3.bam viral_aligned_sorted-$2-$3.bam.bai

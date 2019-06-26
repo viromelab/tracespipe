@@ -41,8 +41,8 @@ The previous image shows the architecture of TRACESPipe, where the green line st
 
 To install TRACESPipe, run the following commands in a Linux OS:
 ```
-git clone https://github.com/pratas/traces.git
-cd traces/src/
+git clone https://github.com/viromelab/tracespipe.git
+cd tracespipe/src/
 chmod +x TRACES*.sh
 ./TRACESPipe.sh --install
 ```
@@ -72,6 +72,10 @@ This file needs to specify the organ type (with a single word name) and the file
 skin:V1_S44_R1_001.fastq.gz:V1_S44_R2_001.fastq.gz
 brain:V2_S29_R1_001.fastq.gz:V2_S29_R2_001.fastq.gz
 colon:V3_S45_R1_001.fastq.gz:V3_S45_R2_001.fastq.gz
+```
+Then, at the src/ folder run:
+```
+./TRACESPipe.sh --get-all-aux
 ```
 
 ## 3. Running ##

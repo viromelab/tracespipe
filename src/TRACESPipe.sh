@@ -71,6 +71,8 @@ RUN_HBV_ON=0;
 RUN_HPV_ON=0;
 RUN_VARV_ON=0;
 #
+RUN_VISUAL_ALIGN=0;
+#
 RUN_DECRYPT=0;
 RUN_ENCRYPT=0;
 #
@@ -615,6 +617,11 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift
     ;;
+    -vis|--visual-align)
+      RUN_VISUAL_ALIGN=1;
+      SHOW_HELP=0;
+      shift
+    ;;
     -rda|--run-de-novo)
       RUN_ANALYSIS=1;
       RUN_DE_NOVO_ASSEMBLY=1;
@@ -789,7 +796,9 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -ryq,  --run-cy-quant     Estimate the quantity of CY DNA,    "
   echo "                                                                  "
   echo "    -rda,  --run-de-novo      Run de-novo assembly,               "
-  echo "                                                                 "
+  echo "                                                                  "
+  echo "    -vis,  --visual-align     Run Visualization tool for alignments, "
+  echo "                                                                  "
   echo "    -ra,   --run-analysis     Run data analysis,                   "
   echo "    -all,  --run-all          Run all the options.                 "
   echo "                                                                "
@@ -820,7 +829,15 @@ if [ "$SHOW_VERSION" -eq "1" ];
   echo "                             IEETA/DETI,                              ";
   echo "                    University of Aveiro, Portugal.                   ";
   echo "                                                                      ";
-  exit 1;
+  exit 0;
+  fi
+#
+# ==============================================================================
+#
+if [[ "$RUN_VISUAL_ALIGN" -eq "1" ]];
+  then
+  ./TRACES_run_visual_alignment.sh
+  exit 0;
   fi
 #
 # ==============================================================================

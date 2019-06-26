@@ -35,7 +35,7 @@ For the human-host variant call identification, the same procedure is followed a
 
 The previous image shows the architecture of TRACESPipe, where the green line stands for the mitochondrial human line. This pipeline has been tested in Illumina HiSeq and NovaSeq platforms. The operating system required to run it is Linux. In windows use cygwin (https://www.cygwin.com/) and make sure that it is included in the installation: cmake, make, zcat, unzip, wget, tr, grep (and any dependencies). If you install the complete cygwin packet then all these will be installed. After, all steps will be the same as in Linux.
 
-## 2. Installation and Configuration ##
+## 2. Installation, Structure and Configuration ##
 
 ### 2.1 Installation ###
 
@@ -57,7 +57,25 @@ Additional instructions can be found here:
 https://docs.conda.io/projects/conda/en/latest/user-guide/install/linux.html
 ```
 
-### 2.2 Configuration ###
+### 2.2 Structure ###
+
+In the tracespipe/ folder the following folder structure exists:
+```
+meta_data/        # information about the filenames in input_data/ and the organ names
+input_data/       # where the reads must be places
+output_data/      # where the results will appear using the following subfolders:
+    [+] TRACES_viral_alignments/
+    [+] TRACES_mtdna_alignments/
+    
+to_encrypt_data/  # where the NGS files to encrypt must be before ecnryption
+encrypted_data/   # where the encrypted data will appear
+decrypted_data    # where the decrypte data will appear
+
+src/              # where the bash code is and where the commands of TRACESPipe must be call
+imgs/             # images related with the pipeline
+```
+
+### 2.3 Configuration ###
 
 To configure TRACESPipe add your FASTQ files gziped at the folder
 ```

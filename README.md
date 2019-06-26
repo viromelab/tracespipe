@@ -59,11 +59,11 @@ https://docs.conda.io/projects/conda/en/latest/user-guide/install/linux.html
 
 ### 2.2 Configuration ###
 
-To configure TRACESPipe add your FASTQ files gziped at folder
+To configure TRACESPipe add your FASTQ files gziped at the folder
 ```
 input_data/
 ```
-Then, add a file exclusively with name <b>meta\_info.txt</b> at folder
+Then, add a file exclusively with name <b>meta\_info.txt</b> at the folder
 ```
 meta_data/
 ```
@@ -230,7 +230,7 @@ output_data/TRACES_mtdna_bed
 
 ### 5.3 Encrypt and Decrypt NGS data: ###
 
-TRACESPipe supports secure encryption of genomic data. This allows outsourcing of the sequecing service while maintaing secure transmission and storage of the files.
+TRACESPipe supports secure encryption of genomic data. This allows outsourcing of the sequencing service while maintaining secure transmission and storage of the files.
 
 #### 5.3.1 Encrypt #### 
 

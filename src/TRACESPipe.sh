@@ -800,7 +800,7 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    The reads must be in the ../input_data/ folder.                   "
   echo "    The output results are at ../output_data/ folder.                 "
   echo "                                                                "
-  exit 1
+  exit 1;
   fi
 #
 # ==============================================================================
@@ -808,18 +808,19 @@ if [ "$SHOW_HELP" -eq "1" ];
 #
 if [ "$SHOW_VERSION" -eq "1" ];
   then
-  echo "                                       ";
-  echo "           TRACESPipe                  ";
-  echo "                                       ";
-  echo "         Version: 1.0.0                ";
-  echo "                                       ";
-  echo "   Department of Virology and          ";
-  echo " Department of Forensic Medicine,      ";
-  echo " University of Helsinki, Finland.      ";
-  echo "                &                      ";
-  echo "           IEETA/DETI,                 ";
-  echo " University of Aveiro, Portugal.       ";
-  echo "                                       ";
+  echo "                                                                      ";
+  echo "                              TRACESPipe                              ";
+  echo "                                                                      ";
+  echo "                            Version: 1.0.0                            ";
+  echo "                                                                      ";
+  echo "                      Department of Virology and                      ";
+  echo "                   Department of Forensic Medicine,                   ";
+  echo "                   University of Helsinki, Finland.                   ";
+  echo "                                  &                                   ";
+  echo "                             IEETA/DETI,                              ";
+  echo "                    University of Aveiro, Portugal.                   ";
+  echo "                                                                      ";
+  exit 1;
   fi
 #
 # ==============================================================================

@@ -1024,7 +1024,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[TRACESPipe]\e[32m Finding the best references ...\e[0m";
       #
       mkdir -p ../output_data/TRACES_results
-      cp top-$ORGAN_T.txt ../output_data/TRACES_results/
+      cp top-$ORGAN_T.csv ../output_data/TRACES_results/
       #
       ./TRACES_get_best_B19.sh $ORGAN_T > ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
       #

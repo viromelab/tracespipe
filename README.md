@@ -157,17 +157,19 @@ See the next section for more information about the usage.
                                                                    
     -i,    --install          Installation of all the tools,       
                                                                    
-    -gmt,  --get-max-threads  Get the number of maximum machine threads, 
+    -gmt,  --get-max-threads  Get the number of maximum machine threads,
     -t <THREADS>, --threads <THREADS>                              
                               Number of threads to use,            
                                                                    
-    -dec,  --decrypt          Decrypt (all files in ../encrypted_data),  
-    -enc,  --encrypt          Encrypt (all files in ../to_encrypt_data),  
+    -dec,  --decrypt          Decrypt (all files in ../encrypted_data), 
+    -enc,  --encrypt          Encrypt (all files in ../to_encrypt_data),
                                                                    
     -vdb,  --build-viral      Build viral database (all) [Recommended], 
     -vdbr, --build-viral-r    Build viral database (references only),  
     -udb,  --build-unviral    Build non viral database (control),  
                                                                    
+    -afs <FASTA> --add-fasta <FASTA>                               
+                              Add a FASTA sequence to the VDB.fa,  
     -aes <ID>, --add-extra-seq <ID>                                
                               Add extra sequence to the VDB.fa,    
     -gx,   --get-extra-vir    Downloads/appends (VDB) extra viral seq, 
@@ -179,9 +181,9 @@ See the next section for more information about the usage.
     -gax,  --get-all-aux      Runs -gad -gp -gm -gy,               
                                                                    
     -rm,   --run-meta         Run viral metagenomic identification,    
-    -ro,   --run-meta-nv      Run NON-viral metagenomic identification,   
+    -ro,   --run-meta-nv      Run NON-viral metagenomic identification,
                                                                   
-    -rava, --run-all-v-alig   Run all viral align/sort/consensus seqs,    
+    -rava, --run-all-v-alig   Run all viral align/sort/consensus seqs, 
                                                                  
     -rb19, --run-b19          Run B19   align and consensus seq,    
     -rh1,  --run-hv1          Run HV1   align and consensus seq,    
@@ -195,20 +197,20 @@ See the next section for more information about the usage.
     -rh7,  --run-hv7          Run HV7   align and consensus seq,    
     -rh8,  --run-hv8          Run HV8   align and consensus seq,    
     -rh8,  --run-hv8          Run HV8   align and consensus seq,    
-    -rp1,  --run-poly1        Run Polyoma 1  align and consensus seq,  
-    -rp2,  --run-poly2        Run Polyoma 2  align and consensus seq,  
-    -rp3,  --run-poly3        Run Polyoma 3  align and consensus seq,  
-    -rp4,  --run-poly4        Run Polyoma 4  align and consensus seq,  
-    -rp5,  --run-poly5        Run Polyoma 5  align and consensus seq,  
-    -rp6,  --run-poly6        Run Polyoma 6  align and consensus seq,  
-    -rp7,  --run-poly7        Run Polyoma 7  align and consensus seq,  
-    -rp8,  --run-poly8        Run Polyoma 8  align and consensus seq,  
-    -rp9,  --run-poly9        Run Polyoma 9  align and consensus seq,  
-    -rp10, --run-poly10       Run Polyoma 10 align and consensus seq,  
-    -rp11, --run-poly11       Run Polyoma 11 align and consensus seq,  
-    -rp12, --run-poly12       Run Polyoma 12 align and consensus seq,  
-    -rp13, --run-poly13       Run Polyoma 13 align and consensus seq,  
-    -rp14, --run-poly14       Run Polyoma 14 align and consensus seq,  
+    -rp1,  --run-poly1        Run Polyoma 1  align and consensus seq, 
+    -rp2,  --run-poly2        Run Polyoma 2  align and consensus seq, 
+    -rp3,  --run-poly3        Run Polyoma 3  align and consensus seq, 
+    -rp4,  --run-poly4        Run Polyoma 4  align and consensus seq, 
+    -rp5,  --run-poly5        Run Polyoma 5  align and consensus seq, 
+    -rp6,  --run-poly6        Run Polyoma 6  align and consensus seq, 
+    -rp7,  --run-poly7        Run Polyoma 7  align and consensus seq, 
+    -rp8,  --run-poly8        Run Polyoma 8  align and consensus seq, 
+    -rp9,  --run-poly9        Run Polyoma 9  align and consensus seq, 
+    -rp10, --run-poly10       Run Polyoma 10 align and consensus seq, 
+    -rp11, --run-poly11       Run Polyoma 11 align and consensus seq, 
+    -rp12, --run-poly12       Run Polyoma 12 align and consensus seq, 
+    -rp13, --run-poly13       Run Polyoma 13 align and consensus seq, 
+    -rp14, --run-poly14       Run Polyoma 14 align and consensus seq, 
     -rtt,  --run-ttv          Run TTV   align and consensus seq,    
     -rbv1, --run-hbov1        Run HBoV1 align and consensus seq,    
     -rbv0, --run-hbovnot1     Run HBoV (2,3,...) align/consensus seq, 
@@ -236,7 +238,7 @@ See the next section for more information about the usage.
     Add the file meta_info.txt at ../meta_data/ folder. Example:      
     meta_info.txt -> 'organ:reads_forward.fa.gz:reads_reverse.fa.gz'  
     The reads must be in the ../input_data/ folder.                   
-    The output results are at ../output_data/ folder.                                                       
+    The output results are at ../output_data/ folder.  
  
 ```
 ## 5. Examples ##

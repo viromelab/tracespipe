@@ -1022,6 +1022,10 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Finding the best references ...\e[0m";
+      #
+      mkdir -p ../output_data/TRACES_results
+      cp top-$ORGAN_T.txt ../output_data/TRACES_results/
+      #
       ./TRACES_get_best_B19.sh $ORGAN_T > ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
       #
       ./TRACES_get_best_HV1.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
@@ -1113,8 +1117,8 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       ./TRACES_viral_consensus.sh SPECIFIC-$SPECIFIC_ID.fa viral_aligned_sorted-$ORGAN_T-$SPECIFIC_ID.bam $ORGAN_T $SPECIFIC_ID
       mkdir -p ../output_data/TRACES_specific_alignments;
       #rm -f ../output_data/TRACES_specific_alignments/*
-      cp $ORGAN_T-$SPECIFIC_ID.fa ../output_data/TRACES_specific_alignments/
-      cp $ORGAN_T-$SPECIFIC_ID.fa.fai ../output_data/TRACES_specific_alignments/
+      cp SPECIFIC-$SPECIFIC_ID.fa ../output_data/TRACES_specific_alignments/
+      cp SPECIFIC-$SPECIFIC_ID.fa.fai ../output_data/TRACES_specific_alignments/
       mv viral_aligned_sorted-$ORGAN_T-$SPECIFIC_ID.bam ../output_data/TRACES_specific_alignments/
       mv viral_aligned_sorted-$ORGAN_T-$SPECIFIC_ID.bam.bai ../output_data/TRACES_specific_alignments/
       mkdir -p ../output_data/TRACES_specific_consensus;

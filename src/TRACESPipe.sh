@@ -28,6 +28,8 @@ GET_MITO=0;
 GET_CY=0;
 GET_EXTRA=0;
 ADD_EXTRA_SPECIFIC=0;
+ADD_FASTA=0;
+NEW_FASTA="";
 #
 RUN_ANALYSIS=0;
 #
@@ -313,6 +315,12 @@ while [[ $# -gt 0 ]]
     -aes|--add-extra-seq)
       ADD_EXTRA_SEQ=1;
       NEW_SEQ_ID="$2";
+      SHOW_HELP=0;
+      shift 2
+    ;;
+    -afs|--add-fasta)
+      ADD_FASTA=1;
+      NEW_FASTA="$2";
       SHOW_HELP=0;
       shift 2
     ;;
@@ -726,17 +734,19 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                                                                   "
   echo "    -i,    --install          Installation of all the tools,       "
   echo "                                                                   "
-  echo "    -gmt,  --get-max-threads  Get the number of maximum machine threads, "
+  echo "    -gmt,  --get-max-threads  Get the number of maximum machine threads,"
   echo "    -t <THREADS>, --threads <THREADS>                              "
   echo "                              Number of threads to use,            "
   echo "                                                                   "
-  echo "    -dec,  --decrypt          Decrypt (all files in ../encrypted_data),  "
-  echo "    -enc,  --encrypt          Encrypt (all files in ../to_encrypt_data),  "
+  echo "    -dec,  --decrypt          Decrypt (all files in ../encrypted_data), "
+  echo "    -enc,  --encrypt          Encrypt (all files in ../to_encrypt_data),"
   echo "                                                                   "
   echo "    -vdb,  --build-viral      Build viral database (all) [Recommended], "
   echo "    -vdbr, --build-viral-r    Build viral database (references only),  "
   echo "    -udb,  --build-unviral    Build non viral database (control),  "
   echo "                                                                   "
+  echo "    -afs <FASTA> --add-fasta <FASTA>                               "
+  echo "                              Add a FASTA sequence to the VDB.fa,  "
   echo "    -aes <ID>, --add-extra-seq <ID>                                "
   echo "                              Add extra sequence to the VDB.fa,    "
   echo "    -gx,   --get-extra-vir    Downloads/appends (VDB) extra viral seq, "
@@ -748,9 +758,9 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -gax,  --get-all-aux      Runs -gad -gp -gm -gy,               "
   echo "                                                                   "
   echo "    -rm,   --run-meta         Run viral metagenomic identification,    "
-  echo "    -ro,   --run-meta-nv      Run NON-viral metagenomic identification,   "
+  echo "    -ro,   --run-meta-nv      Run NON-viral metagenomic identification,"
   echo "                                                                  "
-  echo "    -rava, --run-all-v-alig   Run all viral align/sort/consensus seqs,    "
+  echo "    -rava, --run-all-v-alig   Run all viral align/sort/consensus seqs, "
   echo "                                                                 "
   echo "    -rb19, --run-b19          Run B19   align and consensus seq,    "
   echo "    -rh1,  --run-hv1          Run HV1   align and consensus seq,    "
@@ -765,20 +775,20 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -rh8,  --run-hv8          Run HV8   align and consensus seq,    "
   echo "    -rh8,  --run-hv8          Run HV8   align and consensus seq,    "
  
-  echo "    -rp1,  --run-poly1        Run Polyoma 1  align and consensus seq,  "
-  echo "    -rp2,  --run-poly2        Run Polyoma 2  align and consensus seq,  "
-  echo "    -rp3,  --run-poly3        Run Polyoma 3  align and consensus seq,  "
-  echo "    -rp4,  --run-poly4        Run Polyoma 4  align and consensus seq,  "
-  echo "    -rp5,  --run-poly5        Run Polyoma 5  align and consensus seq,  "
-  echo "    -rp6,  --run-poly6        Run Polyoma 6  align and consensus seq,  "
-  echo "    -rp7,  --run-poly7        Run Polyoma 7  align and consensus seq,  "
-  echo "    -rp8,  --run-poly8        Run Polyoma 8  align and consensus seq,  "
-  echo "    -rp9,  --run-poly9        Run Polyoma 9  align and consensus seq,  "
-  echo "    -rp10, --run-poly10       Run Polyoma 10 align and consensus seq,  "
-  echo "    -rp11, --run-poly11       Run Polyoma 11 align and consensus seq,  "
-  echo "    -rp12, --run-poly12       Run Polyoma 12 align and consensus seq,  "
-  echo "    -rp13, --run-poly13       Run Polyoma 13 align and consensus seq,  "
-  echo "    -rp14, --run-poly14       Run Polyoma 14 align and consensus seq,  "
+  echo "    -rp1,  --run-poly1        Run Polyoma 1  align and consensus seq, "
+  echo "    -rp2,  --run-poly2        Run Polyoma 2  align and consensus seq, "
+  echo "    -rp3,  --run-poly3        Run Polyoma 3  align and consensus seq, "
+  echo "    -rp4,  --run-poly4        Run Polyoma 4  align and consensus seq, "
+  echo "    -rp5,  --run-poly5        Run Polyoma 5  align and consensus seq, "
+  echo "    -rp6,  --run-poly6        Run Polyoma 6  align and consensus seq, "
+  echo "    -rp7,  --run-poly7        Run Polyoma 7  align and consensus seq, "
+  echo "    -rp8,  --run-poly8        Run Polyoma 8  align and consensus seq, "
+  echo "    -rp9,  --run-poly9        Run Polyoma 9  align and consensus seq, "
+  echo "    -rp10, --run-poly10       Run Polyoma 10 align and consensus seq, "
+  echo "    -rp11, --run-poly11       Run Polyoma 11 align and consensus seq, "
+  echo "    -rp12, --run-poly12       Run Polyoma 12 align and consensus seq, "
+  echo "    -rp13, --run-poly13       Run Polyoma 13 align and consensus seq, "
+  echo "    -rp14, --run-poly14       Run Polyoma 14 align and consensus seq, "
  
   echo "    -rtt,  --run-ttv          Run TTV   align and consensus seq,    "
   echo "    -rbv1, --run-hbov1        Run HBoV1 align and consensus seq,    "
@@ -929,6 +939,14 @@ if [[ "$GET_MITO" -eq "1" ]];
 if [[ "$GET_CY" -eq "1" ]];
   then
   ./TRACES_get_cy.sh
+  fi
+#
+# ==============================================================================
+#
+if [[ "$ADD_FASTA" -eq "1" ]];
+  then
+  CHECK_VDB;
+  ./TRACES_add_fasta_to_database.sh VDB.fa $NEW_FASTA
   fi
 #
 # ==============================================================================

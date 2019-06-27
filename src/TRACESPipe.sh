@@ -1383,7 +1383,10 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
   #
   # BUILD COMPLETE VIRAL META TABLE FOR MULTIPLE ORGANS:
   #
-  ./TRACES_get_report_meta.sh
+  if [[ "$RUN_META_ON" -eq "1" ]];
+    then
+    ./TRACES_get_report_meta.sh
+    fi
   #
   # ============================================================================
   # CLEAN DATA:

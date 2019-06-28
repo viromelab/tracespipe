@@ -1072,6 +1072,9 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #	      
       CHECK_VDB;
       #
+      mkdir -p ../output_data/TRACES_results
+      mkdir -p ../output_data/TRACES_results/profiles/
+      #
       echo -e "\e[34m[TRACESPipe]\e[32m Building complexity profiles with gto ...\e[0m";
       cat NP-o_fw_pr.fq NP-o_fw_unpr.fq NP-o_rv_pr.fq NP-o_rv_unpr.fq > P_TRACES_sample_reads.fq
       ./TRACES_profiles.sh GIS-$ORGAN_T VDB.fa P_TRACES_sample_reads.fq $ORGAN_T

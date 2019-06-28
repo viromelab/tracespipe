@@ -5,7 +5,7 @@
 # |     THIS PROGRAM COMPUTES COMPLEXITY AND RELATIVE COMPLEXITY PROFILES      |
 # |     =================================================================      |
 # |                                                                            |
-# |                ./ki_profiles.sh ids.txt VDB.fa reads.fq blood              |
+# |             ./TRACES_profiles.sh ids.txt VDB.fa reads.fq blood             |
 # |                                                                            |
 # |                FILES NEEDED TO THE WHOLE COMPUTATION:                      |
 # |                                                                            |
@@ -100,6 +100,8 @@ if [[ "$RUN_COMPARISON" -eq "1" ]];
       set style line 2 lc rgb '#0060ad' lt 1 lw 4 pt 6 ps 0.4 # --- green
       plot "PROFILE_N" using 1:2 with lines ls 1
 EOF
+    cp $4-profile_self-$ids_gen.pdf ../output_data/TRACES_results/profiles/
+    #
     if [[ "$RUN_RELATIVE" -eq "1" ]];  # HERE reads.fq WILL BE NEEDED!
       then
       #
@@ -146,6 +148,7 @@ EOF
         set style line 2 lc rgb '#228B22' lt 1 lw 2 pt 5 ps 0.4 # --- green
         plot "PROFILE_N_REL" using 1:2 with lines ls 2
 EOF
+      cp $4-profile_relative-$ids_gen.pdf ../output_data/TRACES_results/profiles/
       # JOINT PLOT
       paste -d '\t' PROFILE_N A_min > PROFILES_N_AND_N_REL
       #
@@ -172,6 +175,7 @@ EOF
         plot "PROFILES_N_AND_N_REL" using 1:2 with lines ls 1, "PROFILES_N_AND_N_REL" using 1:3 with lines ls 2 
 EOF
       fi
+      cp $4-profiles-$ids_gen.pdf ../output_data/TRACES_results/profiles/
     done
     #
   fi

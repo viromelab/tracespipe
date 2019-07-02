@@ -338,6 +338,15 @@ The output is included at
 ../output_data/TRACES_results/REPORT_META_VIRAL_ALL.txt
 ```
 
+### 5.7 Run NON viral metagenomic composition for all the organs (fungi, archaea, etc): ###
+
+```
+./TRACESPipe.sh --run-meta-nv
+```
+The output is included at
+```
+../output_data/TRACES_results/REPORT_META_NON_VIRAL_<organ_name>.txt
+```
 
 ## 6. Programs ##
 

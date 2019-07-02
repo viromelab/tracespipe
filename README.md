@@ -300,6 +300,45 @@ Place the encrypted files in the folder <b>encrypted_data</b> and, then, run:
 Insert the password that has been used in encryption.<br>
 The decrypted files are in the <b>decrypted_data</b> folder.
 
+### 5.4 Run all viral genome alignments, variation, and consensus sequences: ###
+
+```
+./TRACESPipe.sh --run-meta --run-all-v-alig
+```
+The output consensus sequence is included at
+```
+output_data/TRACES_viral_consensus
+```
+while the alignments at
+```
+output_data/TRACES_viral_alignments
+```
+and the BED files at
+```
+output_data/TRACES_viral_bed
+```
+
+### 5.5 Quantify the presence of y-chromosome: ###
+
+```
+./TRACESPipe.sh --run-cy-quant
+```
+The output quantify is included at
+```
+output_data/TRACES_results/REP_CY_<organ_name>.txt
+```
+
+### 5.6 Full viral metagenomic composition for all the organs: ###
+
+```
+./TRACESPipe.sh --run-meta
+```
+The output is included at
+```
+../output_data/TRACES_results/REPORT_META_VIRAL_ALL.txt
+```
+
+
 ## 6. Programs ##
 
 TRACES Pipeline uses a combination of the following tools:

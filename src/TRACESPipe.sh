@@ -79,6 +79,7 @@ RUN_DECRYPT=0;
 RUN_ENCRYPT=0;
 #
 RUN_SPECIFIC=0;
+RUN_SPECIFIC_SENSITIVE=0;
 #
 RUN_CY_ON=0;
 RUN_CY_QUANT_ON=0;
@@ -374,11 +375,12 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift 2;
     ;;
-    -rm|--run-meta)
+    -rsx|--run-extreme)
       RUN_ANALYSIS=1;
-      RUN_META_ON=1;
+      RUN_SPECIFIC_SENSITIVE=1;
+      SPECIFIC_ID="$2";
       SHOW_HELP=0;
-      shift
+      shift 2;
     ;;
     -ro|--run-meta-nv)
       RUN_ANALYSIS=1;
@@ -799,6 +801,9 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                                                                  "
   echo "    -rsr <ID>, --run-specific <ID/PATTERN>                        "
   echo "                              Run specific reference align/consensus, "
+  echo "    -rsx <ID>, --run-extreme <ID/PATTERN>                            "
+  echo "                              Run specific reference align/consensys"
+  echo "                              using extreme sensitivity,            "
   echo "                                                                 "
   echo "    -rmt,  --run-mito         Run Mito align and consensus seq,   "
   echo "                                                                 "
@@ -1114,6 +1119,38 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       gto_fasta_extract_read_by_pattern -p "$SPECIFIC_ID" < VDB.fa > SPECIFIC-$SPECIFIC_ID.fa
       echo "Aliggning ..."
       ./TRACES_viral_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID $THREADS
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+      #
+      echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
+      ./TRACES_viral_consensus.sh SPECIFIC-$SPECIFIC_ID.fa viral_aligned_sorted-$ORGAN_T-$SPECIFIC_ID.bam $ORGAN_T $SPECIFIC_ID
+      mkdir -p ../output_data/TRACES_specific_alignments;
+      #rm -f ../output_data/TRACES_specific_alignments/*
+      cp SPECIFIC-$SPECIFIC_ID.fa ../output_data/TRACES_specific_alignments/
+      cp SPECIFIC-$SPECIFIC_ID.fa.fai ../output_data/TRACES_specific_alignments/
+      mv viral_aligned_sorted-$ORGAN_T-$SPECIFIC_ID.bam ../output_data/TRACES_specific_alignments/
+      mv viral_aligned_sorted-$ORGAN_T-$SPECIFIC_ID.bam.bai ../output_data/TRACES_specific_alignments/
+      mkdir -p ../output_data/TRACES_specific_consensus;
+      #rm -f ../output_data/TRACES_specific_consensus/*
+      mv $SPECIFIC_ID-consensus-$ORGAN_T.fa ../output_data/TRACES_specific_consensus/
+      mkdir -p ../output_data/TRACES_specific_bed;
+      #rm -f ../output_data/TRACES_specific_bed/*
+      mv $SPECIFIC_ID-calls-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
+      fi
+    #
+    # ==========================================================================
+    # RUN SPECIFIC SPECIFIC ALIGN/CONSENSUS WITH EXTREME HIGH SENSITIVITY
+    #
+    if [[ "$RUN_SPECIFIC_SENSITIVE" -eq "1" ]];
+      then
+      echo -e "\e[34m[TRACESPipe]\e[32m Aliggning reads to specific viral ref(s) with pattern \"$SPECIFIC_ID\" using bowtie2 with EXTREME sensitivity ...\e[0m";
+      #
+      echo "Extracting sequence with pattern \"$SPECIFIC_ID\" from VDB.fa ..."
+      #
+      CHECK_VDB;
+      #
+      gto_fasta_extract_read_by_pattern -p "$SPECIFIC_ID" < VDB.fa > SPECIFIC-$SPECIFIC_ID.fa
+      echo "Aliggning ..."
+      ./TRACES_viral_sensitive_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID $THREADS
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";

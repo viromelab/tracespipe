@@ -137,8 +137,8 @@ See the next section for more information about the usage.
 ./TRACESPipe.sh -h
 ```
 
-```                                                     
-                                                         
+```      
+                                               
          ████████╗ ██████╗   █████╗   ██████╗ ███████╗ ███████╗   
          ╚══██╔══╝ ██╔══██╗ ██╔══██╗ ██╔════╝ ██╔════╝ ██╔════╝   
             ██║    ██████╔╝ ███████║ ██║      █████╗   ███████╗   
@@ -188,17 +188,17 @@ See the next section for more information about the usage.
     -rava, --run-all-v-alig   Run all viral align/sort/consensus seqs, 
                                                                  
     -rb19, --run-b19          Run B19   align and consensus seq,    
-    -rh1,  --run-hv1          Run HV1   align and consensus seq,    
-    -rh2,  --run-hv2          Run HV2   align and consensus seq,    
-    -rh3,  --run-hv3          Run HV3   align and consensus seq,    
-    -rh4,  --run-hv4          Run HV4   align and consensus seq,    
-    -rh5,  --run-hv5          Run HV5   align and consensus seq,    
-    -rh6,  --run-hv6          Run HV6   align and consensus seq,    
-    -rh6a, --run-hv6a         Run HV6A  align and consensus seq,    
-    -rh6b, --run-hv6b         Run HV6B  align and consensus seq,    
-    -rh7,  --run-hv7          Run HV7   align and consensus seq,    
-    -rh8,  --run-hv8          Run HV8   align and consensus seq,    
-    -rh8,  --run-hv8          Run HV8   align and consensus seq,    
+    -rh1,  --run-hv1          Run HHV1   align and consensus seq,    
+    -rh2,  --run-hv2          Run HHV2   align and consensus seq,    
+    -rh3,  --run-hv3          Run HHV3   align and consensus seq,    
+    -rh4,  --run-hv4          Run HHV4   align and consensus seq,    
+    -rh5,  --run-hv5          Run HHV5   align and consensus seq,    
+    -rh6,  --run-hv6          Run HHV6   align and consensus seq,    
+    -rh6a, --run-hv6a         Run HHV6A  align and consensus seq,    
+    -rh6b, --run-hv6b         Run HHV6B  align and consensus seq,    
+    -rh7,  --run-hv7          Run HHV7   align and consensus seq,    
+    -rh8,  --run-hv8          Run HHV8   align and consensus seq,    
+    -rh8,  --run-hv8          Run HHV8   align and consensus seq,    
     -rp1,  --run-poly1        Run Polyoma 1  align and consensus seq, 
     -rp2,  --run-poly2        Run Polyoma 2  align and consensus seq, 
     -rp3,  --run-poly3        Run Polyoma 3  align and consensus seq, 
@@ -222,6 +222,9 @@ See the next section for more information about the usage.
                                                                   
     -rsr <ID>, --run-specific <ID/PATTERN>                        
                               Run specific reference align/consensus, 
+    -rsx <ID>, --run-extreme <ID/PATTERN>                            
+                              Run specific reference align/consensys
+                              using extreme sensitivity,            
                                                                  
     -rmt,  --run-mito         Run Mito align and consensus seq,   
                                                                  
@@ -240,7 +243,7 @@ See the next section for more information about the usage.
     Add the file meta_info.txt at ../meta_data/ folder. Example:      
     meta_info.txt -> 'organ:reads_forward.fa.gz:reads_reverse.fa.gz'  
     The reads must be in the ../input_data/ folder.                   
-    The output results are at ../output_data/ folder.  
+    The output results are at ../output_data/ folder. 
  
 ```
 ## 5. Examples ##
@@ -348,6 +351,26 @@ The output is included at
 The output is included at
 ```
 ../output_data/TRACES_results/REPORT_META_NON_VIRAL_<organ_name>.txt
+```
+
+### 5.8 Run de-novo assembly (all data): ###
+
+```
+./TRACESPipe.sh --run-de-novo
+```
+The output is included at
+```
+../output_data/out_spades_full_<organ_name>
+```
+
+### 5.9 Run specific viral alignment for all organs using extreme sensitivity: ###
+
+```
+./TRACESPipe.sh --run-extreme
+```
+The output is included at
+```
+../output_data/TRACES_specific_alignments
 ```
 
 ## 6. Programs ##

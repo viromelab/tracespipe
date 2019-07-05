@@ -382,6 +382,12 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift 2;
     ;;
+    -rm|--run-meta)
+      RUN_ANALYSIS=1;
+      RUN_META=1;
+      SHOW_HELP=0;
+      shift
+    ;;      
     -ro|--run-meta-nv)
       RUN_ANALYSIS=1;
       RUN_META_NON_VIRAL_ON=1;

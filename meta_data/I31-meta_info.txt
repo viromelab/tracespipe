@@ -1,0 +1,14 @@
+healthyskin:MT18021B_S1_R1_001.fastq.gz:MT18021B_S1_R2_001.fastq.gz
+skin:MT18021C_S2_R1_001.fastq.gz:MT18021C_S2_R2_001.fastq.gz
+bone:MT18021D_S3_R1_001.fastq.gz:MT18021D_S3_R2_001.fastq.gz
+colon:MT18021E_S4_R1_001.fastq.gz:MT18021E_S4_R2_001.fastq.gz
+heart:MT18021F_S5_R1_001.fastq.gz:MT18021F_S5_R2_001.fastq.gz
+liver:MT18021G_S6_R1_001.fastq.gz:MT18021G_S6_R2_001.fastq.gz
+spleen:MT18022B_S7_R1_001.fastq.gz:MT18022B_S7_R2_001.fastq.gz
+kidney:MT18022C_S8_R1_001.fastq.gz:MT18022C_S8_R2_001.fastq.gz
+lung:MT18022D_S9_R1_001.fastq.gz:MT18022D_S9_R2_001.fastq.gz
+plasma:MT18022E_S10_R1_001.fastq.gz:MT18022E_S10_R2_001.fastq.gz
+blood:MT18022F_S11_R1_001.fastq.gz:MT18022F_S11_R2_001.fastq.gz
+marrow:MT18022G_S12_R1_001.fastq.gz:MT18022G_S12_R2_001.fastq.gz
+teeth:MT18023B_S13_R1_001.fastq.gz:MT18023B_S13_R2_001.fastq.gz
+brain:MT18023C_S14_R1_001.fastq.gz:MT18023C_S14_R2_001.fastq.gz

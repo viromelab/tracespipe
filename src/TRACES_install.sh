@@ -45,7 +45,8 @@ if [[ "$INSTALL_PIPELINE" -eq "1" ]];
   conda install -c bioconda bcftools --yes
   conda install -c bioconda bedops --yes
   conda install -c bioconda fastq-pair --yes
-  conda install entrez-direct --yes
+  conda install -c bioconda entrez-direct --yes
+  conda install -c bioconda/label/cf201901 entrez-direct --yes
   #
   Program_installed "trimmomatic";
   Program_installed "cryfa";

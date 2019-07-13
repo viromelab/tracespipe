@@ -37,7 +37,7 @@ The previous image shows the architecture of TRACESPipe, where the green line st
 
 The TRACESPipe includes methods for ancient DNA authentication, namely using the quantification of damage (in the tips of the reads) relative to a reference. Other feature is the quantification of y-chromosome presence through compression-based predictors.
 
-The TRACESPipe includes read trimming and filtering, PhiX removal, and redundancy controls (at the Database level and for each candidate reference genomes) to improve the consistency and quality of the data.
+Additionally, the TRACESPipe includes read trimming and filtering, PhiX removal, and redundancy controls (at the Database level and for each candidate reference genomes) to improve the consistency and quality of the data.
 
 ## 2. Installation, Structure and Configuration ##
 

@@ -373,6 +373,16 @@ The output is included at
 ../output_data/TRACES_specific_alignments
 ```
 
+### 5.10 Evaluate damage of mitochondrial DNA ###
+
+```
+./TRACESPipe.sh --run-mito-dam
+```
+The output is included at
+```
+../output_data/TRACES_mtdna_damage
+```
+
 ## 6. Programs ##
 
 TRACES Pipeline uses a combination of the following tools:

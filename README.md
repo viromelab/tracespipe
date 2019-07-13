@@ -90,7 +90,9 @@ tracespipe/
 │   ├── TRACES_specific_bed/           # where specific BED files will appear
 │   ├── TRACES_cy_bed/                 # where cy BED files will appear
 │   │
-│   └── out_spades_full_<ORGAN>        # where the output of de-novo assembly appears
+│   ├── TRACES_mtdna_damage_<ORGAN>/   # where the mtdna damage estimation files will appear
+│   │
+│   └── out_spades_full_<ORGAN>/       # where the output of de-novo assembly appears
 │   
 ├── to_encrypt_data    # where the NGS files to encrypt must be before encryption
 ├── encrypted_data     # where the encrypted data will appear
@@ -380,7 +382,7 @@ The output is included at
 ```
 The output is included at
 ```
-../output_data/TRACES_mtdna_damage
+../output_data/TRACES_mtdna_damage_<organ_name>
 ```
 
 ## 6. Programs ##

@@ -38,6 +38,7 @@ RUN_PROFILES_ON=0;
 RUN_META_NON_VIRAL_ON=0;
 #
 RUN_MITO_ON=0;
+RUN_MITO_DAMAGE_ON=0;
 #
 RUN_B19_ON=0;
 RUN_HV1_ON=0;
@@ -400,6 +401,12 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift
     ;;
+    -rmtd|--run-mito-dam)
+      RUN_MITO_DAMAGE_ON=1;
+      RUN_MITO_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;      
     -rava|--run-all-v-alig)
       RUN_ANALYSIS=1;
       RUN_B19_ON=1;
@@ -699,6 +706,7 @@ while [[ $# -gt 0 ]]
       RUN_HPV_ON=1;
       RUN_VARV_ON=1;
       RUN_MITO_ON=1;
+      RUN_MITO_DAMAGE_ON=1;
       RUN_CY_ON=1;
       RUN_CY_QUANT_ON=1;
       RUN_DE_NOVO_ASSEMBLY=1;
@@ -812,6 +820,7 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                              using extreme sensitivity,            "
   echo "                                                                 "
   echo "    -rmt,  --run-mito         Run Mito align and consensus seq,   "
+  echo "    -rmtd, --run-mito-dam     Run Mito align, consensus, and damage, "
   echo "                                                                 "
   echo "    -rya,  --run-cy-align     Run CY align and consensus seq,    "
   echo "    -ryq,  --run-cy-quant     Estimate the quantity of CY DNA,    "
@@ -1352,7 +1361,18 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
       ./TRACES_mt_consensus.sh mtDNA.fa mt_aligned_sorted-$ORGAN_T.bam $ORGAN_T
-       mkdir -p ../output_data/TRACES_mtdna_alignments;
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m"
+      #
+      if [[ "$RUN_MITO_DAMAGE_ON" -eq "1" ]];
+        then
+        echo -e "\e[34m[TRACESPipe]\e[32m Estimating the damage of mtDNA using mapDamage2 ...\e[0m";
+        samtools view -bh -F4 mt_aligned_sorted-$ORGAN_T.bam > FIL-mt_aligned_sorted-$ORGAN_T.bam;
+        mapDamage --rescale -i FIL-mt_aligned_sorted-$ORGAN_T.bam -r mtDNA.fa;
+	echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m"
+        fi
+      # 	
+      echo -e "\e[34m[TRACESPipe]\e[32m Storing files ...\e[0m"
+      mkdir -p ../output_data/TRACES_mtdna_alignments;
       #rm -f ../output_data/TRACES_mtdna_alignments/*
       cp mtDNA.fa ../output_data/TRACES_mtdna_alignments/
       cp mtDNA.fa.fai ../output_data/TRACES_mtdna_alignments/

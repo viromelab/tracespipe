@@ -402,6 +402,7 @@ while [[ $# -gt 0 ]]
       shift
     ;;
     -rmtd|--run-mito-dam)
+      RUN_ANALYSIS=1;
       RUN_MITO_DAMAGE_ON=1;
       RUN_MITO_ON=1;
       SHOW_HELP=0;
@@ -1367,7 +1368,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         then
         echo -e "\e[34m[TRACESPipe]\e[32m Estimating the damage of mtDNA using mapDamage2 ...\e[0m";
         samtools view -bh -F4 mt_aligned_sorted-$ORGAN_T.bam > FIL-mt_aligned_sorted-$ORGAN_T.bam;
-        mapDamage --rescale -i FIL-mt_aligned_sorted-$ORGAN_T.bam -r mtDNA.fa;
+        mapDamage --rescale -d ../output_data/TRACES_mtdna_damage_$ORGAN_T -i FIL-mt_aligned_sorted-$ORGAN_T.bam -r mtDNA.fa;
 	echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m"
         fi
       # 	

@@ -29,3 +29,7 @@ cat TMP_FILE_X_KI.xki >> $LABEL-consensus-$Organ.fa
 # create bed file
 zcat calls.norm.flt-indels.vcf.gz |vcf2bed --snvs > $LABEL-calls-$Organ.bed
 #
+############## N usage
+#zcat calls.norm.flt-indels.vcf.gz | grep "\./\." | awk '{OFS="\t"; if ($0 !~ /\#/); print $1, $2-1, $2}' > xxx.bed
+#bedtools maskfasta -fi test.fa -bed test.bed -fo test.fa.out
+##############

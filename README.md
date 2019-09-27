@@ -94,7 +94,7 @@ tracespipe/
 │   │
 │   ├── TRACES_mtdna_damage_<ORGAN>/   # where the mtdna damage estimation files will appear
 │   │
-│   └── out_spades_full_<ORGAN>/       # where the output of de-novo assembly appears
+│   └── TRACES_denovo_<ORGAN>/         # where the output of de-novo assembly appears
 │   
 ├── to_encrypt_data    # where the NGS files to encrypt must be before encryption
 ├── encrypted_data     # where the encrypted data will appear
@@ -364,7 +364,7 @@ The output is included at
 ```
 The output is included at
 ```
-../output_data/out_spades_full_<organ_name>
+../output_data/TRACES_denovo_<organ_name>
 ```
 
 ### 5.9 Run specific viral alignment for all organs using extreme sensitivity: ###

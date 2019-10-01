@@ -224,6 +224,7 @@ ALIGN_AND_CONSENSUS () {
     mkdir -p ../output_data/TRACES_viral_bed;
     #rm -f ../output_data/TRACES_viral_bed/*
     mv $V_TAG-calls-$ORGAN_T.bed ../output_data/TRACES_viral_bed/
+    mv $V_TAG-coverage-$ORGAN_T.bed ../output_data/TRACES_viral_bed/
     fi
   echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
   }
@@ -1385,6 +1386,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       mkdir -p ../output_data/TRACES_mtdna_bed;
       #rm -f ../output_data/TRACES_mtdna_bed/*
       mv mt-calls-$ORGAN_T.bed ../output_data/TRACES_mtdna_bed/
+      mv mt-coverage-$ORGAN_T.bed ../output_data/TRACES_mtdna_bed/
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m"
       fi
     #
@@ -1414,6 +1416,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       mkdir -p ../output_data/TRACES_cy_bed;
       #rm -f ../output_data/TRACES_cy_bed/*
       mv cy-calls-$ORGAN_T.bed ../output_data/TRACES_cy_bed/
+      mv cy-coverage-$ORGAN_T.bed ../output_data/TRACES_cy_bed/
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m"
       fi
     #

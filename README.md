@@ -87,10 +87,10 @@ tracespipe/
 │   ├── TRACES_specific_consensus/     # where specific consensus (FASTA) will appear
 │   ├── TRACES_cy_consensus/           # where cy consensus (FASTA) will appear
 │   │
-│   ├── TRACES_viral_bed/              # where viral BED files will appear
-│   ├── TRACES_mtdna_bed/              # where mtdna BED files will appear
+│   ├── TRACES_viral_bed/              # where viral BED files will appear (SNPs and Coverage)
+│   ├── TRACES_mtdna_bed/              # where mtdna BED files will appear (SNPs and Coverage)
 │   ├── TRACES_specific_bed/           # where specific BED files will appear
-│   ├── TRACES_cy_bed/                 # where cy BED files will appear
+│   ├── TRACES_cy_bed/                 # where cy BED files will appear (SNPs and Coverage)
 │   │
 │   ├── TRACES_mtdna_damage_<ORGAN>/   # where the mtdna damage estimation files will appear
 │   │

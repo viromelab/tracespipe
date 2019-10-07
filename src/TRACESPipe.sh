@@ -73,6 +73,9 @@ RUN_HBOVNOT1_ON=0;
 RUN_HBV_ON=0;
 RUN_HPV_ON=0;
 RUN_VARV_ON=0;
+RUN_SV40_ON=0;
+RUN_CUTA_ON=0;
+RUN_HERV_ON=0;
 #
 RUN_VISUAL_ALIGN=0;
 #
@@ -365,6 +368,9 @@ while [[ $# -gt 0 ]]
       RUN_HBV_ON=1;
       RUN_HPV_ON=1;
       RUN_VARV_ON=1;
+      RUN_SV40_ON=1;
+      RUN_CUTA_ON=1;
+      RUN_HERV_ON=1;
       RUN_CY_ON=1;
       RUN_CY_QUANT_ON=1;
       RUN_MITO_ON=1;
@@ -444,6 +450,9 @@ while [[ $# -gt 0 ]]
       RUN_HBV_ON=1;
       RUN_HPV_ON=1;
       RUN_VARV_ON=1;
+      RUN_SV40_ON=1;
+      RUN_CUTA_ON=1;
+      RUN_HERV_ON=1;
       shift
     ;;
     -rb19|--run-b19)
@@ -632,6 +641,24 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift
     ;;
+    -rsv40|--run-sv40)
+      RUN_ANALYSIS=1;
+      RUN_SV40_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rcuta|--run-cuta)
+      RUN_ANALYSIS=1;
+      RUN_CUTA_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -rherv|--run-herv)
+      RUN_ANALYSIS=1;
+      RUN_HERV_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
     -rya|--run-y-align)
       RUN_ANALYSIS=1;
       RUN_CY_ON=1;
@@ -709,6 +736,9 @@ while [[ $# -gt 0 ]]
       RUN_HBV_ON=1;
       RUN_HPV_ON=1;
       RUN_VARV_ON=1;
+      RUN_SV40_ON=1;
+      RUN_CUTA_ON=1;
+      RUN_HERV_ON=1;
       RUN_MITO_ON=1;
       RUN_MITO_DAMAGE_ON=1;
       RUN_CY_ON=1;
@@ -748,74 +778,77 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                                                                "
   echo -e "\e[93m    Usage: ./TRACESPipe.sh [options]                             \e[0m"
   echo "                                                                   "
-  echo "    -h,    --help             Show this help message and exit,     "
-  echo "    -v,    --version          Show the version and some information,  "
-  echo "    -f,    --force            Force running and overwrite of files,  "
+  echo "    -h,     --help            Show this help message and exit,     "
+  echo "    -v,     --version         Show the version and some information,  "
+  echo "    -f,     --force           Force running and overwrite of files,  "
   echo "                                                                   "
-  echo "    -i,    --install          Installation of all the tools,       "
+  echo "    -i,     --install         Installation of all the tools,       "
   echo "                                                                   "
-  echo "    -gmt,  --get-max-threads  Get the number of maximum machine threads,"
+  echo "    -gmt,   --get-max-threads Get the number of maximum machine threads,"
   echo "    -t <THREADS>, --threads <THREADS>                              "
   echo "                              Number of threads to use,            "
   echo "                                                                   "
-  echo "    -dec,  --decrypt          Decrypt (all files in ../encrypted_data), "
-  echo "    -enc,  --encrypt          Encrypt (all files in ../to_encrypt_data),"
+  echo "    -dec,   --decrypt         Decrypt (all files in ../encrypted_data), "
+  echo "    -enc,   --encrypt         Encrypt (all files in ../to_encrypt_data),"
   echo "                                                                   "
-  echo "    -vdb,  --build-viral      Build viral database (all) [Recommended], "
-  echo "    -vdbr, --build-viral-r    Build viral database (references only),  "
-  echo "    -udb,  --build-unviral    Build non viral database (control),  "
+  echo "    -vdb,   --build-viral     Build viral database (all) [Recommended], "
+  echo "    -vdbr,  --build-viral-r   Build viral database (references only),  "
+  echo "    -udb,   --build-unviral   Build non viral database (control),  "
   echo "                                                                   "
   echo "    -afs <FASTA> --add-fasta <FASTA>                               "
   echo "                              Add a FASTA sequence to the VDB.fa,  "
   echo "    -aes <ID>, --add-extra-seq <ID>                                "
   echo "                              Add extra sequence to the VDB.fa,    "
-  echo "    -gx,   --get-extra-vir    Downloads/appends (VDB) extra viral seq, "
+  echo "    -gx,    --get-extra-vir   Downloads/appends (VDB) extra viral seq, "
   echo "                                                                   "
-  echo "    -gad,  --gen-adapters     Generate FASTA file with adapters,   "
-  echo "    -gp,   --get-phix         Extracts PhiX genomes (Needs viral DB),  "
-  echo "    -gm,   --get-mito         Downloads human Mitochondrial genome,"
-  echo "    -gy,   --get-y-chromo     Downloads human Y-chromosome,        "
-  echo "    -gax,  --get-all-aux      Runs -gad -gp -gm -gy,               "
+  echo "    -gad,   --gen-adapters    Generate FASTA file with adapters,   "
+  echo "    -gp,    --get-phix        Extracts PhiX genomes (Needs viral DB),  "
+  echo "    -gm,    --get-mito        Downloads human Mitochondrial genome,"
+  echo "    -gy,    --get-y-chromo    Downloads human Y-chromosome,        "
+  echo "    -gax,   --get-all-aux     Runs -gad -gp -gm -gy,               "
   echo "                                                                   "
-  echo "    -rm,   --run-meta         Run viral metagenomic identification,    "
-  echo "    -ro,   --run-meta-nv      Run NON-viral metagenomic identification,"
+  echo "    -rm,    --run-meta        Run viral metagenomic identification,    "
+  echo "    -ro,    --run-meta-nv     Run NON-viral metagenomic identification,"
   echo "                                                                  "
-  echo "    -rava, --run-all-v-alig   Run all viral align/sort/consensus seqs, "
+  echo "    -rava,  --run-all-v-alig  Run all viral align/sort/consensus seqs, "
   echo "                                                                 "
-  echo "    -rb19, --run-b19          Run B19   align and consensus seq,    "
-  echo "    -rh1,  --run-hv1          Run HHV1   align and consensus seq,    "
-  echo "    -rh2,  --run-hv2          Run HHV2   align and consensus seq,    "
-  echo "    -rh3,  --run-hv3          Run HHV3   align and consensus seq,    "
-  echo "    -rh4,  --run-hv4          Run HHV4   align and consensus seq,    "
-  echo "    -rh5,  --run-hv5          Run HHV5   align and consensus seq,    "
-  echo "    -rh6,  --run-hv6          Run HHV6   align and consensus seq,    "
-  echo "    -rh6a, --run-hv6a         Run HHV6A  align and consensus seq,    "
-  echo "    -rh6b, --run-hv6b         Run HHV6B  align and consensus seq,    "
-  echo "    -rh7,  --run-hv7          Run HHV7   align and consensus seq,    "
-  echo "    -rh8,  --run-hv8          Run HHV8   align and consensus seq,    "
-  echo "    -rh8,  --run-hv8          Run HHV8   align and consensus seq,    "
+  echo "    -rb19,  --run-b19         Run B19   align and consensus seq,    "
+  echo "    -rh1,   --run-hv1         Run HHV1   align and consensus seq,    "
+  echo "    -rh2,   --run-hv2         Run HHV2   align and consensus seq,    "
+  echo "    -rh3,   --run-hv3         Run HHV3   align and consensus seq,    "
+  echo "    -rh4,   --run-hv4         Run HHV4   align and consensus seq,    "
+  echo "    -rh5,   --run-hv5         Run HHV5   align and consensus seq,    "
+  echo "    -rh6,   --run-hv6         Run HHV6   align and consensus seq,    "
+  echo "    -rh6a,  --run-hv6a        Run HHV6A  align and consensus seq,    "
+  echo "    -rh6b,  --run-hv6b        Run HHV6B  align and consensus seq,    "
+  echo "    -rh7,   --run-hv7         Run HHV7   align and consensus seq,    "
+  echo "    -rh8,   --run-hv8         Run HHV8   align and consensus seq,    "
+  echo "    -rh8,   --run-hv8         Run HHV8   align and consensus seq,    "
  
-  echo "    -rp1,  --run-poly1        Run Polyoma 1  align and consensus seq, "
-  echo "    -rp2,  --run-poly2        Run Polyoma 2  align and consensus seq, "
-  echo "    -rp3,  --run-poly3        Run Polyoma 3  align and consensus seq, "
-  echo "    -rp4,  --run-poly4        Run Polyoma 4  align and consensus seq, "
-  echo "    -rp5,  --run-poly5        Run Polyoma 5  align and consensus seq, "
-  echo "    -rp6,  --run-poly6        Run Polyoma 6  align and consensus seq, "
-  echo "    -rp7,  --run-poly7        Run Polyoma 7  align and consensus seq, "
-  echo "    -rp8,  --run-poly8        Run Polyoma 8  align and consensus seq, "
-  echo "    -rp9,  --run-poly9        Run Polyoma 9  align and consensus seq, "
-  echo "    -rp10, --run-poly10       Run Polyoma 10 align and consensus seq, "
-  echo "    -rp11, --run-poly11       Run Polyoma 11 align and consensus seq, "
-  echo "    -rp12, --run-poly12       Run Polyoma 12 align and consensus seq, "
-  echo "    -rp13, --run-poly13       Run Polyoma 13 align and consensus seq, "
-  echo "    -rp14, --run-poly14       Run Polyoma 14 align and consensus seq, "
+  echo "    -rp1,   --run-poly1       Run Polyoma 1  align and consensus seq, "
+  echo "    -rp2,   --run-poly2       Run Polyoma 2  align and consensus seq, "
+  echo "    -rp3,   --run-poly3       Run Polyoma 3  align and consensus seq, "
+  echo "    -rp4,   --run-poly4       Run Polyoma 4  align and consensus seq, "
+  echo "    -rp5,   --run-poly5       Run Polyoma 5  align and consensus seq, "
+  echo "    -rp6,   --run-poly6       Run Polyoma 6  align and consensus seq, "
+  echo "    -rp7,   --run-poly7       Run Polyoma 7  align and consensus seq, "
+  echo "    -rp8,   --run-poly8       Run Polyoma 8  align and consensus seq, "
+  echo "    -rp9,   --run-poly9       Run Polyoma 9  align and consensus seq, "
+  echo "    -rp10,  --run-poly10      Run Polyoma 10 align and consensus seq, "
+  echo "    -rp11,  --run-poly11      Run Polyoma 11 align and consensus seq, "
+  echo "    -rp12,  --run-poly12      Run Polyoma 12 align and consensus seq, "
+  echo "    -rp13,  --run-poly13      Run Polyoma 13 align and consensus seq, "
+  echo "    -rp14,  --run-poly14      Run Polyoma 14 align and consensus seq, "
  
-  echo "    -rtt,  --run-ttv          Run TTV   align and consensus seq,    "
-  echo "    -rbv1, --run-hbov1        Run HBoV1 align and consensus seq,    "
-  echo "    -rbv0, --run-hbovnot1     Run HBoV (2,3,...) align/consensus seq, "
-  echo "    -rhbv, --run-hbv          Run HBV   align and consensus seq,    "
-  echo "    -rhpv, --run-hpv          Run HPV   align and consensus seq,    "
-  echo "    -rvar, --run-varv         Run VARV  align and consensus seq,    "
+  echo "    -rtt,   --run-ttv         Run TTV   align and consensus seq,    "
+  echo "    -rbv1,  --run-hbov1       Run HBoV1 align and consensus seq,    "
+  echo "    -rbv0,  --run-hbovnot1    Run HBoV (2,3,...) align/consensus seq, "
+  echo "    -rhbv,  --run-hbv         Run HBV   align and consensus seq,    "
+  echo "    -rhpv,  --run-hpv         Run HPV   align and consensus seq,    "
+  echo "    -rvar,  --run-varv        Run VARV  align and consensus seq,    "
+  echo "    -rsv40, --run-sv40        Run Simian 40 align and consensus seq,  "
+  echo "    -rcuta, --run-cuta        Run Cutavirys align and consensus seq,  "
+  echo "    -rherv, --run-herv        Run H Endo Retro align and consensus seq,  "
   echo "                                                                  "
   echo "    -rsr <ID>, --run-specific <ID/PATTERN>                        "
   echo "                              Run specific reference align/consensus, "
@@ -823,18 +856,18 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                              Run specific reference align/consensys"
   echo "                              using extreme sensitivity,            "
   echo "                                                                 "
-  echo "    -rmt,  --run-mito         Run Mito align and consensus seq,   "
-  echo "    -rmtd, --run-mito-dam     Run Mito align, consensus, and damage, "
+  echo "    -rmt,   --run-mito        Run Mito align and consensus seq,   "
+  echo "    -rmtd,  --run-mito-dam    Run Mito align, consensus, and damage, "
   echo "                                                                 "
-  echo "    -rya,  --run-cy-align     Run CY align and consensus seq,    "
-  echo "    -ryq,  --run-cy-quant     Estimate the quantity of CY DNA,    "
+  echo "    -rya,   --run-cy-align    Run CY align and consensus seq,    "
+  echo "    -ryq,   --run-cy-quant    Estimate the quantity of CY DNA,    "
   echo "                                                                  "
-  echo "    -rda,  --run-de-novo      Run de-novo assembly,               "
+  echo "    -rda,   --run-de-novo     Run de-novo assembly,               "
   echo "                                                                  "
-  echo "    -vis,  --visual-align     Run Visualization tool for alignments, "
+  echo "    -vis,   --visual-align    Run Visualization tool for alignments, "
   echo "                                                                  "
-  echo "    -ra,   --run-analysis     Run data analysis,                   "
-  echo "    -all,  --run-all          Run all the options.                 "
+  echo "    -ra,    --run-analysis    Run data analysis,                   "
+  echo "    -all,   --run-all         Run all the options.                 "
   echo "                                                                "
   echo -e "\e[93m    Example: ./TRACESPipe.sh --run-meta --run-b19 --run-mito \e[0m"
   echo "                                                                "
@@ -1084,6 +1117,9 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       ./TRACES_get_best_HBOV1.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
       ./TRACES_get_best_HBOVNOT1.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
       ./TRACES_get_best_VARV.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_SV40.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_CUTA.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      ./TRACES_get_best_HERV.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       fi

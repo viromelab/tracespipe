@@ -876,6 +876,8 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    The reads must be in the ../input_data/ folder.                   "
   echo "    The output results are at ../output_data/ folder.                 "
   echo "                                                                "
+  echo -e "\e[32m    Contact: projectraces@gmail.com                  \e[0m"
+  echo "                                                                "
   exit 1;
   fi
 #

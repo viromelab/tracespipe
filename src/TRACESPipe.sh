@@ -774,7 +774,7 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                             P I P E L I N E                            "
   echo "                                                                "
   echo -e "    \e[32mA Next-generation sequencing pipeline for identification, assembly,\e[0m" 
-  echo -e "    \e[32mand analysis of viral and human-host genomes at a multi-organ level\e[0m."
+  echo -e "    \e[32mand analysis of viral and human-host genomes at multi-organ level\e[0m."
   echo "                                                                "
   echo -e "\e[93m    Usage: ./TRACESPipe.sh [options]                             \e[0m"
   echo "                                                                   "

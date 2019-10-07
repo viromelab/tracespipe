@@ -898,6 +898,8 @@ if [ "$SHOW_VERSION" -eq "1" ];
   echo "                             IEETA/DETI,                              ";
   echo "                    University of Aveiro, Portugal.                   ";
   echo "                                                                      ";
+  echo "                        projectraces@gmail.com                        ";
+  echo "                                                                      ";
   exit 0;
   fi
 #

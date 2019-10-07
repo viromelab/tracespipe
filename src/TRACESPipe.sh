@@ -1386,6 +1386,21 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       then
       ALIGN_AND_CONSENSUS "VARV";
       fi
+    #
+    if [[ "$RUN_SV40_ON" -eq "1" ]];
+      then
+      ALIGN_AND_CONSENSUS "SV40";
+      fi
+    #
+    if [[ "$RUN_CUTA_ON" -eq "1" ]];
+      then
+      ALIGN_AND_CONSENSUS "CUTA";
+      fi
+    #
+    if [[ "$RUN_HERV_ON" -eq "1" ]];
+      then
+      ALIGN_AND_CONSENSUS "HERV";
+      fi
     # 
     # ==========================================================================
     # MITOCHONDRIAL GENOME ALIGN AND CONSENSUS

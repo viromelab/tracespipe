@@ -148,6 +148,17 @@ CHECK_ADAPTERS () {
   }
 #
 #
+CHECK_ADAPTERS_AR () {
+  if [ ! -f adapters_ar.fa ];
+    then
+    echo -e "\e[31mERROR: adapter sequences (adapters_ar.fa) not found!\e[0m"
+    echo "TIP: before this, include valid adapters for AdapterRemoval"
+    echo "For addition information, see the instructions at the web page."
+    exit 1;
+    fi
+  }
+#
+#
 CHECK_MT_DNA () {
   if [ ! -f mtDNA.fa ];
     then
@@ -1443,7 +1454,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_MITO_DAMAGE_ON" -eq "1" ]];
       then
       #	
-      CHECK_ADAPTERS;
+      CHECK_ADAPTERS_AR;
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Trimming, filtering, and collapsing with AdapterRemoval ...\e[0m";
       AdapterRemoval --threads $THREADS --file1 FW_READS.fq.gz --file2 RV_READS.fq.gz --outputcollapsed reads.fq --trimns --trimqualities --minlength 30 --collapse --adapter-list adapters_ar.fa

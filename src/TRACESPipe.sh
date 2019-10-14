@@ -1049,17 +1049,41 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     cp ../input_data/$SPL_Reverse RV_READS.fq.gz;
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
     #
-    # ==========================================================================
-    # TRIM AND FILTER READS
-    #
-    CHECK_ADAPTERS;
-    #
-    echo -e "\e[34m[TRACESPipe]\e[32m Trimming and filtering with Trimmomatic ...\e[0m";
-    ./TRACES_trim_filter_reads.sh $THREADS
-    echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
-    #
-    # THE OUTPUT OF TRIMMING IS:
-    # o_fw_pr.fq  o_fw_unpr.fq  o_rv_pr.fq  o_rv_unpr.fq
+    if [[ "$RUN_MITO_DAMAGE_ON" -eq "0" ]];
+      then	    
+      # ========================================================================
+      # TRIM AND FILTER READS TRIMMOMATIC
+      #
+      CHECK_ADAPTERS;
+      #
+      echo -e "\e[34m[TRACESPipe]\e[32m Trimming and filtering with Trimmomatic ...\e[0m";
+      ./TRACES_trim_filter_reads.sh $THREADS
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+      #
+      # THE OUTPUT OF TRIMMING IS:
+      # o_fw_pr.fq  o_fw_unpr.fq  o_rv_pr.fq  o_rv_unpr.fq
+      #
+      else
+      # ========================================================================
+      # TRIM AND FILTER READS ADAPTERREMOVAL
+      #
+      CHECK_ADAPTERS;
+      #
+      echo -e "\e[34m[TRACESPipe]\e[32m Trimming, filtering, and collapsing with AdapterRemoval ...\e[0m";
+      AdapterRemoval --threads $THREADS --file1 FW_READS.fq.gz --file2 RV_READS.fq.gz --outputcollapsed reads.fq --trimns --trimqualities --minlength 35 --collapse --adapter-list adapters_ar.fa
+      echo -e "\e[34m[TRACESPipe]\e[32m Aliggning data using bwa ...\e[0m";
+      bwa index mtDNA.fa
+      bwa mem -t 8 -I 0 -O 2 -N 0.02 -L 1024 -E 7 mtDNA.fa o_fw_pr.fq reads.fq > x.sam
+      echo -e "\e[34m[TRACESPipe]\e[32m Adapting data with samtools ...\e[0m";
+      samtools view -bSh x.sam > x.bam
+      samtools view -bh -F4 x.bam > mt_aligned_sorted-$ORGAN_T.bam
+      echo -e "\e[34m[TRACESPipe]\e[32m Estimating the damage of mtDNA using mapDamage2 ...\e[0m";
+      rm -fr ../output_data/TRACES_mtdna_damage_$ORGAN_T
+      samtools view -bh -F4 mt_aligned_sorted-$ORGAN_T.bam > FIL-mt_aligned_sorted-$ORGAN_T.bam;
+      mapDamage --rescale -d ../output_data/TRACES_mtdna_damage_$ORGAN_T -i FIL-mt_aligned_sorted-$ORGAN_T.bam -r mtDNA.fa;
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m"
+      #
+      fi
     #
     # ========================================================================== 
     # METAGENOMICS USING ONLY A VIRAL DATABASE
@@ -1422,15 +1446,6 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       ./TRACES_mt_consensus.sh mtDNA.fa mt_aligned_sorted-$ORGAN_T.bam $ORGAN_T
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m"
       #
-      if [[ "$RUN_MITO_DAMAGE_ON" -eq "1" ]];
-        then
-        echo -e "\e[34m[TRACESPipe]\e[32m Estimating the damage of mtDNA using mapDamage2 ...\e[0m";
-	rm -fr ../output_data/TRACES_mtdna_damage_$ORGAN_T
-        samtools view -bh -F4 mt_aligned_sorted-$ORGAN_T.bam > FIL-mt_aligned_sorted-$ORGAN_T.bam;
-        mapDamage --rescale -d ../output_data/TRACES_mtdna_damage_$ORGAN_T -i FIL-mt_aligned_sorted-$ORGAN_T.bam -r mtDNA.fa;
-	echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m"
-        fi
-      # 	
       echo -e "\e[34m[TRACESPipe]\e[32m Storing files ...\e[0m"
       mkdir -p ../output_data/TRACES_mtdna_alignments;
       #rm -f ../output_data/TRACES_mtdna_alignments/*

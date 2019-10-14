@@ -413,7 +413,6 @@ while [[ $# -gt 0 ]]
     -rmtd|--run-mito-dam)
       RUN_ANALYSIS=1;
       RUN_MITO_DAMAGE_ON=1;
-      RUN_MITO_ON=1;
       SHOW_HELP=0;
       shift
     ;;      
@@ -857,7 +856,7 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                              using extreme sensitivity,            "
   echo "                                                                 "
   echo "    -rmt,   --run-mito        Run Mito align and consensus seq,   "
-  echo "    -rmtd,  --run-mito-dam    Run Mito align, consensus, and damage, "
+  echo "    -rmtd,  --run-mito-dam    Run Mito damage only,               "
   echo "                                                                 "
   echo "    -rya,   --run-cy-align    Run CY align and consensus seq,    "
   echo "    -ryq,   --run-cy-quant    Estimate the quantity of CY DNA,    "
@@ -1049,41 +1048,17 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     cp ../input_data/$SPL_Reverse RV_READS.fq.gz;
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
     #
-    if [[ "$RUN_MITO_DAMAGE_ON" -eq "0" ]];
-      then	    
-      # ========================================================================
-      # TRIM AND FILTER READS TRIMMOMATIC
-      #
-      CHECK_ADAPTERS;
-      #
-      echo -e "\e[34m[TRACESPipe]\e[32m Trimming and filtering with Trimmomatic ...\e[0m";
-      ./TRACES_trim_filter_reads.sh $THREADS
-      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
-      #
-      # THE OUTPUT OF TRIMMING IS:
-      # o_fw_pr.fq  o_fw_unpr.fq  o_rv_pr.fq  o_rv_unpr.fq
-      #
-      else
-      # ========================================================================
-      # TRIM AND FILTER READS ADAPTERREMOVAL
-      #
-      CHECK_ADAPTERS;
-      #
-      echo -e "\e[34m[TRACESPipe]\e[32m Trimming, filtering, and collapsing with AdapterRemoval ...\e[0m";
-      AdapterRemoval --threads $THREADS --file1 FW_READS.fq.gz --file2 RV_READS.fq.gz --outputcollapsed reads.fq --trimns --trimqualities --minlength 35 --collapse --adapter-list adapters_ar.fa
-      echo -e "\e[34m[TRACESPipe]\e[32m Aliggning data using bwa ...\e[0m";
-      bwa index mtDNA.fa
-      bwa mem -t 8 -I 0 -O 2 -N 0.02 -L 1024 -E 7 mtDNA.fa o_fw_pr.fq reads.fq > x.sam
-      echo -e "\e[34m[TRACESPipe]\e[32m Adapting data with samtools ...\e[0m";
-      samtools view -bSh x.sam > x.bam
-      samtools view -bh -F4 x.bam > mt_aligned_sorted-$ORGAN_T.bam
-      echo -e "\e[34m[TRACESPipe]\e[32m Estimating the damage of mtDNA using mapDamage2 ...\e[0m";
-      rm -fr ../output_data/TRACES_mtdna_damage_$ORGAN_T
-      samtools view -bh -F4 mt_aligned_sorted-$ORGAN_T.bam > FIL-mt_aligned_sorted-$ORGAN_T.bam;
-      mapDamage --rescale -d ../output_data/TRACES_mtdna_damage_$ORGAN_T -i FIL-mt_aligned_sorted-$ORGAN_T.bam -r mtDNA.fa;
-      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m"
-      #
-      fi
+    # ========================================================================
+    # TRIM AND FILTER READS TRIMMOMATIC
+    #
+    CHECK_ADAPTERS;
+    #
+    echo -e "\e[34m[TRACESPipe]\e[32m Trimming and filtering with Trimmomatic ...\e[0m";
+    ./TRACES_trim_filter_reads.sh $THREADS
+    echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+    #
+    # THE OUTPUT OF TRIMMING IS:
+    # o_fw_pr.fq  o_fw_unpr.fq  o_rv_pr.fq  o_rv_unpr.fq
     #
     # ========================================================================== 
     # METAGENOMICS USING ONLY A VIRAL DATABASE
@@ -1461,6 +1436,29 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       mv mt-calls-$ORGAN_T.bed ../output_data/TRACES_mtdna_bed/
       mv mt-coverage-$ORGAN_T.bed ../output_data/TRACES_mtdna_bed/
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m"
+      fi
+    # ========================================================================
+    # TRIM AND FILTER READS ADAPTERREMOVAL
+    #
+    if [[ "$RUN_MITO_DAMAGE_ON" -eq "1" ]];
+      then
+      #	
+      CHECK_ADAPTERS;
+      #
+      echo -e "\e[34m[TRACESPipe]\e[32m Trimming, filtering, and collapsing with AdapterRemoval ...\e[0m";
+      AdapterRemoval --threads $THREADS --file1 FW_READS.fq.gz --file2 RV_READS.fq.gz --outputcollapsed reads.fq --trimns --trimqualities --minlength 30 --collapse --adapter-list adapters_ar.fa
+      echo -e "\e[34m[TRACESPipe]\e[32m Aliggning data using bwa ...\e[0m";
+      bwa index mtDNA.fa
+      bwa mem -t $THREADS -I 0 -O 2 -N 0.02 -L 1024 -E 7 mtDNA.fa reads.fq > mt-$ORGAN_T.sam
+      echo -e "\e[34m[TRACESPipe]\e[32m Adapting data with samtools ...\e[0m";
+      samtools view -bSh mt-$ORGAN_T.sam > mt-$ORGAN_T.bam
+      samtools view -bh -F4 mt-$ORGAN_T.bam > FIL-mt-$ORGAN_T.bam;
+      echo -e "\e[34m[TRACESPipe]\e[32m Estimating the damage of mtDNA using mapDamage2 ...\e[0m";
+      rm -fr ../output_data/TRACES_mtdna_damage_$ORGAN_T
+      #mapDamage --rescale -d ../output_data/TRACES_mtdna_damage_$ORGAN_T -i FIL-$ORGAN_T.bam -r mtDNA.fa;
+      mapDamage -d ../output_data/TRACES_mtdna_damage_$ORGAN_T -i FIL-mt-$ORGAN_T.bam -r mtDNA.fa;
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m"
+      #
       fi
     #
     # ========================================================================== 

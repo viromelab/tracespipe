@@ -48,7 +48,8 @@ if [[ "$INSTALL_PIPELINE" -eq "1" ]];
   conda install -c bioconda fastq-pair --yes
   conda install -c bioconda entrez-direct --yes
   conda install -c bioconda/label/cf201901 entrez-direct --yes
-  conda install -c bioconda mapdamage2 --yes
+  #conda install -c bioconda mapdamage2 --yes
+  conda install -c bioconda mapdamage2=2.1.1=pyr36_1
   conda install -c bioconda tabix --yes
   #
   Program_installed "trimmomatic";

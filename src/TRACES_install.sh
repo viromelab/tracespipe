@@ -51,6 +51,8 @@ if [[ "$INSTALL_PIPELINE" -eq "1" ]];
   #conda install -c bioconda mapdamage2 --yes
   conda install -c bioconda mapdamage2=2.1.1=pyr36_1
   conda install -c bioconda tabix --yes
+  conda install -c bioconda adapterremoval --yes
+  conda install -c bioconda bwa --yes
   #
   Program_installed "trimmomatic";
   Program_installed "cryfa";
@@ -68,6 +70,8 @@ if [[ "$INSTALL_PIPELINE" -eq "1" ]];
   Program_installed "efetch";
   Program_installed "mapDamage";
   Program_installed "tabix";
+  Program_installed "AdapterRemoval";
+  Program_installed "bwa";
   fi
 #
 # ==============================================================================

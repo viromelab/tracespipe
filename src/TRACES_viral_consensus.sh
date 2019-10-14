@@ -37,6 +37,6 @@ cat TMP_FILE_X_KI.xki >> $LABEL-consensus-$Organ.fa
 rm -f TMP_FILE_X_KI.xki;
 #
 #
-rm -f calls.vcf.gz calls.vcf.gz.csi calls.norm.bcf calls.norm.flt-indels.bcf calls.norm.flt-indels.vcf.gz calls.norm.vcf.gz zero_coverage.bed;
+rm -f calls.vcf.gz calls.vcf.gz.csi calls.norm.bcf calls.norm.flt-indels.bcf calls.norm.flt-indels.vcf.gz calls.norm.flt-indels.vcf.gz.csi calls.norm.vcf.gz zero_coverage.bed;
 #
 #

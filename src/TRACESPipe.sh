@@ -1447,6 +1447,9 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #rm -f ../output_data/TRACES_mtdna_bed/*
       mv mt-calls-$ORGAN_T.bed ../output_data/TRACES_mtdna_bed/
       mv mt-coverage-$ORGAN_T.bed ../output_data/TRACES_mtdna_bed/
+      mv mt-zero-coverage-$ORGAN_T.bed ../output_data/TRACES_mtdna_bed/
+      mkdir -p ../output_data/TRACES_mtdna_statistics;
+      ./TRACES_overall_mtdna.sh $ORGAN_T
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m"
       fi
     # ========================================================================

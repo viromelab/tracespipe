@@ -7,12 +7,16 @@ Reference=$1;     # EXAMPLE: mtDNA.fa
 Alignments=$2;    # EXAMPLE: mt_aligned_sorted-heart.bam
 Organ=$3;         # Example: heart
 #
+echo "Using Reference   : $Reference";
+echo "Using Alignments  : $Alignments";
+echo "Using Organ       : $Organ";
+#
 # MASK LOW COVERAGE (<1) TO N
 bedtools genomecov -ibam $Alignments -bga > mt-coverage-$Organ.bed
-awk '$4 < 1' mt-coverage-$Organ.bed > zero_coverage.bed # CHANGE VALUE TO CHANGE MINIMUM OF DEPTH COVERAGE
+awk '$4 < 1' mt-coverage-$Organ.bed > zero_coverage-$Organ.bed # CHANGE VALUE TO CHANGE MINIMUM OF DEPTH COVERAGE
 #bedtools maskfasta -fi $Reference -bed zero_coverage.bed -fo MASKED-$LABEL-consensus-$Organ.fa;
 #
-# CALLS W CONSENSUS
+# CALLS 
 samtools faidx $Reference # -P 9.9e-1
 bcftools mpileup -Ou -f $Reference $Alignments | bcftools call --ploidy 1 -P 9.9e-1 -mv -Oz -o calls.vcf.gz
 bcftools index calls.vcf.gz
@@ -28,7 +32,7 @@ zcat calls.norm.flt-indels.vcf.gz |vcf2bed --snvs > mt-calls-$Organ.bed
 #
 # CONSENSUS
 tabix calls.norm.flt-indels.vcf.gz
-bcftools consensus -m zero_coverage.bed -f $Reference calls.norm.flt-indels.vcf.gz > mt-consensus-$Organ.fa
+bcftools consensus -m zero_coverage-$Organ.bed -f $Reference calls.norm.flt-indels.vcf.gz > mt-consensus-$Organ.fa
 #
 # Give new header name for the consensus sequence
 tail -n +2 mt-consensus-$Organ.fa > TMP_FILE_X_KI.xki

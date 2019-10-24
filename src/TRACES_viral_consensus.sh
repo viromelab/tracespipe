@@ -12,6 +12,9 @@ echo "Using Alignments  : $Alignments";
 echo "Using Organ       : $Organ";
 echo "Using Viral Label : $Label";
 #
+# https://wikis.utexas.edu/display/bioiteam/Removing+duplicates+from+alignment+output
+# Carefull with this filtering... [ambiguity]
+#
 # MASK LOW COVERAGE (<1) TO N
 bedtools genomecov -ibam $Alignments -bga > $Label-coverage-$Organ.bed
 awk '$4 < 1' $Label-coverage-$Organ.bed > $Label-zero-coverage-$Organ.bed 

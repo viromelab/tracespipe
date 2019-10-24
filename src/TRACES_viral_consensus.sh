@@ -14,7 +14,7 @@ echo "Using Viral Label : $Label";
 #
 # MASK LOW COVERAGE (<1) TO N
 bedtools genomecov -ibam $Alignments -bga > $Label-coverage-$Organ.bed
-awk '$4 < 1' $Label-coverage-$Organ.bed > $Label-$Organ-zero_coverage.bed 
+awk '$4 < 1' $Label-coverage-$Organ.bed > $Label-zero-coverage-$Organ.bed 
 #bedtools maskfasta -fi $Reference -bed $Label-$Organ-zero_coverage.bed -fo MASKED-$Label-consensus-$Organ.fa;
 #
 # CALLS 
@@ -33,11 +33,11 @@ zcat $Label-$Organ-calls.norm.flt-indels.vcf.gz |vcf2bed --snvs > $Label-calls-$
 #
 # CONSENSUS
 tabix $Label-$Organ-calls.norm.flt-indels.vcf.gz
-bcftools consensus -m $Label-$Organ-zero_coverage.bed -f $Reference $Label-$Organ-calls.norm.flt-indels.vcf.gz > $Label-consensus-$Organ.fa
+bcftools consensus -m $Label-zero-coverage-$Organ.bed -f $Reference $Label-$Organ-calls.norm.flt-indels.vcf.gz > $Label-consensus-$Organ.fa
 #
 # Give new header name for the consensus sequence
 tail -n +2 $Label-consensus-$Organ.fa > $Label-$Organ-TMP_FILE.xki
-echo "> $Organ $Label consensus" > $LABEL-consensus-$Organ.fa
+echo "> $Organ $Label consensus" > $Label-consensus-$Organ.fa
 cat $Label-$Organ-TMP_FILE.xki >> $Label-consensus-$Organ.fa
 rm -f $Label-$Organ-TMP_FILE.xki;
 #

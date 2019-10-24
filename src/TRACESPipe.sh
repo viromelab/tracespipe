@@ -239,6 +239,7 @@ ALIGN_AND_CONSENSUS () {
     #rm -f ../output_data/TRACES_viral_bed/*
     mv $V_TAG-calls-$ORGAN_T.bed ../output_data/TRACES_viral_bed/
     mv $V_TAG-coverage-$ORGAN_T.bed ../output_data/TRACES_viral_bed/
+    mv $V_TAG-zero-coverage-$ORGAN_T.bed ../output_data/TRACES_viral_bed/
     mkdir -p ../output_data/TRACES_viral_statistics;
     ./TRACES_overall_virus.sh $V_TAG $ORGAN_T
     fi

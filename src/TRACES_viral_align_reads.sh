@@ -25,3 +25,5 @@ rm -f aligned-$2-$3.sam
 # INDEX BAM
 samtools index -@ $4 viral_aligned_sorted-$2-$3.bam viral_aligned_sorted-$2-$3.bam.bai
 #
+rm -f *.bt2
+#

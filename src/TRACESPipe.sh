@@ -1503,6 +1503,9 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #rm -f ../output_data/TRACES_cy_bed/*
       mv cy-calls-$ORGAN_T.bed ../output_data/TRACES_cy_bed/
       mv cy-coverage-$ORGAN_T.bed ../output_data/TRACES_cy_bed/
+      mv cy-zero-coverage-$ORGAN_T.bed ../output_data/TRACES_cy_bed/
+      mkdir -p ../output_data/TRACES_cy_statistics;
+      ./TRACES_overall_cy.sh $ORGAN_T
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m"
       fi
     #

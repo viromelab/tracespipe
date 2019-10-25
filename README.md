@@ -101,13 +101,13 @@ tracespipe/
 │   │
 │   └── TRACES_denovo_<ORGAN>/         # where the output of de-novo assembly appears
 │   
-├── to_encrypt_data    # where the NGS files to encrypt must be before encryption
-├── encrypted_data     # where the encrypted data will appear
-├── decrypted_data     # where the decrypted data will appear
+├── to_encrypt_data/    # where the NGS files to encrypt must be before encryption
+├── encrypted_data/     # where the encrypted data will appear
+├── decrypted_data/     # where the decrypted data will appear
 │   
-├── src/               # where the bash code is and where the commands of TRACESPipe must be call
+├── src/                # where the bash code is and where the commands must be call
 │   
-└── imgs/              # images related with the pipeline
+└── imgs/               # images related with the pipeline
 ```
 
 ### 2.3 Configuration ###

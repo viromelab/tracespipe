@@ -92,6 +92,11 @@ tracespipe/
 │   ├── TRACES_specific_bed/           # where specific BED files will appear
 │   ├── TRACES_cy_bed/                 # where cy BED files will appear (SNPs and Coverage)
 │   │
+│   ├── TRACES_viral_statistics/       # where viral statistics appear (depth/wide coverage)
+│   ├── TRACES_mtdna_statistics/       # where mtdna statistics appear (depth/wide coverage)
+│   ├── TRACES_specific_statistics/    # where specific statistics appear (depth/wide coverage)
+│   ├── TRACES_cy_statistics/          # where cy statistics appear (depth/wide coverage)
+│   │
 │   ├── TRACES_mtdna_damage_<ORGAN>/   # where the mtdna damage estimation files will appear
 │   │
 │   └── TRACES_denovo_<ORGAN>/         # where the output of de-novo assembly appears

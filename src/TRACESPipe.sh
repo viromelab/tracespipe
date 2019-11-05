@@ -105,6 +105,19 @@ CHECK_META_INFO () {
   }
 #
 #
+CHECK_GZIP_FILES () {
+  FILE_GZ1=`file ../input_data/$1 | grep gzip | wc -l`;
+  FILE_GZ2=`file ../input_data/$2 | grep gzip | wc -l`;
+  if [[ "$FILE_GZ1" != "1" ]] || [[ "$FILE_GZ2" != "1" ]];
+    then
+    echo -e "\e[31mERROR: the input reads are not gzipped!\e[0m"
+    echo "Please compress the reads (input_data) with gzip."
+    echo "For addition information, see the instructions at the web page."
+    exit 1;
+    fi
+  }
+#
+#
 CHECK_VDB () {
   if [ ! -f VDB.fa ];
     then
@@ -1052,6 +1065,9 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     ORGAN_T=`echo $read | tr ':' '\t' | awk '{ print $1 }'`;
     SPL_Forward=`echo $read | tr ':' '\t' | awk '{ print $2 }'`;
     SPL_Reverse=`echo $read | tr ':' '\t' | awk '{ print $3 }'`;
+    #
+    CHECK_GZIP_FILES $SPL_Forward $SPL_Reverse;
+    #
     echo -e "\e[34m[TRACESPipe]\e[93m Running: Organ=$ORGAN_T Forward=$SPL_Forward Reverse=$SPL_Reverse\e[0m";
     #
     rm -f FW_READS.fq.gz RV_READS.fq.gz
@@ -1064,6 +1080,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     # TRIM AND FILTER READS TRIMMOMATIC
     #
     CHECK_ADAPTERS;
+    touch o_fw_pr.fq o_fw_unpr.fq o_rv_pr.fq o_rv_unpr.fq;
     #
     echo -e "\e[34m[TRACESPipe]\e[32m Trimming and filtering with Trimmomatic ...\e[0m";
     ./TRACES_trim_filter_reads.sh $THREADS
@@ -1081,7 +1098,12 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       CHECK_PHIX;
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Removing PhiX from the samples with MAGNET ...\e[0m";
-      ./TRACES_remove_phix.sh $THREADS
+      #./TRACES_remove_phix.sh $THREADS TODO: REMOVE FROM THE DB PHIX OR CORRECT MAGNET AT READ LEVEL
+      cp o_fw_pr.fq NP-o_fw_pr.fq;
+      cp o_fw_unpr.fq NP-o_fw_unpr.fq;
+      cp o_rv_pr.fq NP-o_rv_pr.fq;
+      cp o_rv_unpr.fq NP-o_rv_unpr.fq;      
+
       # IT IS USED ONLY FOR FALCON
       #
       # fastq_pair test_R1.fastq test_R2.fastq: [needs adaptation]

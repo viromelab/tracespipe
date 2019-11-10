@@ -99,7 +99,9 @@ tracespipe/
 │   │
 │   ├── TRACES_mtdna_damage_<ORGAN>/   # where the mtdna damage estimation files will appear
 │   │
-│   └── TRACES_denovo_<ORGAN>/         # where the output of de-novo assembly appears
+│   ├── TRACES_denovo_<ORGAN>/         # where the output of de-novo assembly appears
+│   │
+│   └── TRACES_hybrid_<ORGAN>/         # where the hybrid data appears
 │   
 ├── to_encrypt_data/    # where the NGS files to encrypt must be before encryption
 ├── encrypted_data/     # where the encrypted data will appear
@@ -405,6 +407,7 @@ TRACES Pipeline uses a combination of the following tools:
 | &#x1F49A;&nbsp; MAGNET | [[https://github.com/cobilab/magnet]](https://github.com/cobilab/magnet) | [![Article](https://img.shields.io/static/v1.svg?label=View&message=Article&color=green)](https://www.eurasip.org/Proceedings/Eusipco/Eusipco2018/papers/1570439333.pdf) |
 | &#x1F49A;&nbsp; FALCON-meta | [[https://github.com/cobilab/falcon]](https://github.com/cobilab/falcon) | [![Article](https://img.shields.io/static/v1.svg?label=View&message=Article&color=green)](https://www.mdpi.com/2073-4425/9/9/445) |
 | &#x1F49A;&nbsp; Bowtie2 | [[http://bowtie-bio.sourceforge.net/bowtie2]](http://bowtie-bio.sourceforge.net/bowtie2) | [![Article](https://img.shields.io/static/v1.svg?label=View&message=Article&color=green)]( https://www.nature.com/articles/nmeth.1923) |
+| &#x1F49A;&nbsp; Bwa | [[http://bio-bwa.sourceforge.net/]](http://bio-bwa.sourceforge.net/) | [![Article](https://img.shields.io/static/v1.svg?label=View&message=Article&color=green)](https://academic.oup.com/bioinformatics/article/26/5/589/211735) |
 | &#x1F49A;&nbsp; metaSPAdes | [[http://cab.spbu.ru/software/meta-spades/]](http://cab.spbu.ru/software/meta-spades/) | [![Article](https://img.shields.io/static/v1.svg?label=View&message=Article&color=green)](https://www.liebertpub.com/doi/full/10.1089/cmb.2012.0021) | 
 | &#x1F49A;&nbsp; Samtools | [[http://samtools.sourceforge.net/]](http://samtools.sourceforge.net/) | [![Article](https://img.shields.io/static/v1.svg?label=View&message=Article&color=green)](https://academic.oup.com/bioinformatics/article/25/16/2078/204688) | 
 | &#x1F49A;&nbsp; Bcftools | [[http://www.htslib.org/doc/bcftools.html]](http://www.htslib.org/doc/bcftools.html) | [![Article](https://img.shields.io/static/v1.svg?label=View&message=Article&color=green)](https://academic.oup.com/bioinformatics/article/27/21/2987/217423) |

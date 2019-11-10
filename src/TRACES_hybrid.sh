@@ -1,5 +1,7 @@
 #!/bin/bash
 #
+# $1 -> REF ;	$2 -> SCAFFOLDS ;	$3 -> THREADS
+#
 REF="POLY.fa";
 SCAFFOLDS="scaffolds.fasta";
 THREADS="8";

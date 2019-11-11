@@ -718,6 +718,12 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift
     ;;
+    -rhyb|--run-hybrid)
+      RUN_ANALYSIS=1;
+      RUN_HYBRID=1;
+      SHOW_HELP=0;
+      shift
+    ;;
     -enc|--encrypt)
       RUN_ENCRYPT=1;
       SHOW_HELP=0;

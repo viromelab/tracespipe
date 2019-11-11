@@ -90,6 +90,7 @@ RUN_CY_QUANT_ON=0;
 #
 RUN_DE_NOVO_ASSEMBLY=0;
 #
+RUN_HYBRID=0;
 #
 # ==============================================================================
 # CHECK IF FILES EXIST
@@ -400,6 +401,7 @@ while [[ $# -gt 0 ]]
       RUN_CY_QUANT_ON=1;
       RUN_MITO_ON=1;
       RUN_DE_NOVO_ASSEMBLY=1;
+      RUN_HYBRID=1;
       SHOW_HELP=0;
       shift
     ;;
@@ -768,6 +770,7 @@ while [[ $# -gt 0 ]]
       RUN_CY_ON=1;
       RUN_CY_QUANT_ON=1;
       RUN_DE_NOVO_ASSEMBLY=1;
+      RUN_HYBRID=1;
       SHOW_HELP=0;
       shift
     ;;
@@ -888,6 +891,8 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                                                                  "
   echo "    -rda,   --run-de-novo     Run de-novo assembly,               "
   echo "                                                                  "
+  echo "    -rhyb,  --run-hybrid      Run hybrid assembly (align/de-novo), "
+  echo "                                                                  "
   echo "    -vis,   --visual-align    Run Visualization tool for alignments, "
   echo "                                                                  "
   echo "    -ra,    --run-analysis    Run data analysis,                   "
@@ -897,7 +902,7 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                                                                "
   echo "    Add the file meta_info.txt at ../meta_data/ folder. Example:      "
   echo "    meta_info.txt -> 'organ:reads_forward.fa.gz:reads_reverse.fa.gz'  "
-  echo "    The reads must be in the ../input_data/ folder.                   "
+  echo "    The reads must be GZIPed in the ../input_data/ folder.            "
   echo "    The output results are at ../output_data/ folder.                 "
   echo "                                                                "
   echo -e "\e[32m    Contact: projectraces@gmail.com                  \e[0m"
@@ -913,7 +918,7 @@ if [ "$SHOW_VERSION" -eq "1" ];
   echo "                                                                      ";
   echo "                              TRACESPipe                              ";
   echo "                                                                      ";
-  echo "                            Version: 1.0.0                            ";
+  echo "                            Version: 1.0.1                            ";
   echo "                                                                      ";
   echo "                      Department of Virology and                      ";
   echo "                   Department of Forensic Medicine,                   ";
@@ -1556,6 +1561,53 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     #
     # ==========================================================================
+    # HYBRID ASSEMBLY
+    #
+    if [[ "$RUN_HYBRID" -eq "1" ]];
+      then
+      echo -e "\e[34m[TRACESPipe]\e[32m Running HYBRID assembly ...\e[0m";
+      mkdir -p ../output_results/TRACES_hybrid_$ORGAN_T/
+      SCAFFOLDS="../output_results/TRACES_denovo_$ORGAN_T";
+      ./TRACES_hybrid.sh "B19" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "HV1" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "HV2" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "HV3" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "HV4" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "HV5" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "HV6" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "HV6A" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "HV6B" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "HV7" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "HV8" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "POLY1" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "POLY2" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "POLY2" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "POLY3" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "POLY4" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "POLY5" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "POLY6" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "POLY7" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "POLY8" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "POLY9" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "POLY10" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "POLY11" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "POLY12" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "POLY13" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "POLY14" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "TTV" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "HBOV1" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "HBOVNOT1" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "HBV" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "HPV" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "VARV" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "SV40" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "CUTA" $SCAFFOLDS $THREADS $ORGAN_T
+      ./TRACES_hybrid.sh "HERV" $SCAFFOLDS $THREADS $ORGAN_T
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+      fi
+    #
+    # ==========================================================================
+    #
     done
     #
   # #

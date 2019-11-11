@@ -219,6 +219,16 @@ CHECK_ENRICH () {
     fi
   }
 #
+#
+CHECK_E_FILE () {
+  if [ ! -f $1 ];
+    then
+    echo -e "\e[31mERROR: $1 file not found!\e[0m"
+    echo "For addition information, see the instructions at the web page."
+    exit 1;
+    fi
+  }
+#
 # ==============================================================================
 #
 ALIGN_AND_CONSENSUS () {
@@ -1103,7 +1113,8 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       CHECK_PHIX;
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Removing PhiX from the samples with MAGNET ...\e[0m";
-      #./TRACES_remove_phix.sh $THREADS TODO: REMOVE FROM THE DB PHIX OR CORRECT MAGNET AT READ LEVEL
+      #./TRACES_remove_phix.sh $THREADS 
+      # TODO: REMOVE FROM THE DB PHIX OR CORRECT MAGNET AT READ LEVEL
       cp o_fw_pr.fq NP-o_fw_pr.fq;
       cp o_fw_unpr.fq NP-o_fw_unpr.fq;
       cp o_rv_pr.fq NP-o_rv_pr.fq;
@@ -1568,6 +1579,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[TRACESPipe]\e[32m Running HYBRID assembly ...\e[0m";
       mkdir -p ../output_results/TRACES_hybrid_$ORGAN_T/
       SCAFFOLDS="../output_results/TRACES_denovo_$ORGAN_T";
+      #TODO: ARRAY WITH NAMES & THRESHOLD FOR VALUES < t (FLEXIBILITY & PERFORMANCE)
       ./TRACES_hybrid.sh "B19" $SCAFFOLDS $THREADS $ORGAN_T
       ./TRACES_hybrid.sh "HV1" $SCAFFOLDS $THREADS $ORGAN_T
       ./TRACES_hybrid.sh "HV2" $SCAFFOLDS $THREADS $ORGAN_T

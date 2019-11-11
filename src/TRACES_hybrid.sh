@@ -9,7 +9,7 @@ ORGAN="$4";
 if [ ! -f "$REF.fa" ];
   then
   echo -e "\e[31mERROR: $REF reference file not found!\e[0m"
-  echo "TIP: before this, run: ./TRACESPipe.sh --run-meta"
+  echo "TIP: before this, run: ./TRACESPipe.sh --run-meta --run-v-align"
   echo "For addition information, see the instructions at the web page."
   exit 1;
   fi

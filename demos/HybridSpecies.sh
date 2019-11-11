@@ -8,14 +8,15 @@ gto_fasta_mutate -e 0.05 < VARV.fa > VARV_m1.fa
 #
 echo ">mutant1" > HEADER1;
 echo ">mutant2" > HEADER2;
+echo ">mutant3" > HEADER3;
 gto_fasta_extract_by_read -i 100 -e 200 < VARV_m1.fa | gto_fasta_to_seq > SAMPLE_VARV_m1.seq
 gto_fasta_extract_by_read -i 100 -e 500 < VARV_m1.fa | gto_fasta_to_seq > SAMPLE_VARV_m1_2.seq
 gto_fasta_extract_by_read -i 1 -e 3000 < B19_m1.fa | gto_fasta_to_seq > SAMPLE_B19_m1.seq
 gto_fasta_extract_by_read -i 1 -e 1000 < B19_m5.fa | gto_fasta_to_seq > SAMPLE_B19_m5.seq
 #
 cat HEADER1 SAMPLE_B19_m1.seq SAMPLE_VARV_m1.seq > blood.fa
-cat HEADER1 SAMPLE_B19_m5.seq SAMPLE_VARV_m1_2.seq > brain.fa
-cat HEADER1 SAMPLE_B19_m5.seq SAMPLE_VARV_m1_2.seq > bone.fa
+cat HEADER2 SAMPLE_B19_m5.seq SAMPLE_VARV_m1_2.seq > brain.fa
+cat HEADER3 SAMPLE_B19_m5.seq SAMPLE_VARV_m1_2.seq > bone.fa
 #
 art_illumina -ss HS25 -sam -i blood.fa -p -l 150 -f 20 -m 200 -s 10 -o blood
 art_illumina -ss HS25 -sam -i brain.fa -p -l 150 -f 20 -m 200 -s 10 -o brain

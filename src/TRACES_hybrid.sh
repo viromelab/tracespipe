@@ -8,13 +8,14 @@ ORGAN="$4";
 #
 if [ ! -f "$REF.fa" ];
   then
-  echo -e "\e[31mERROR: $REF reference file not found!\e[0m"
-  echo "TIP: before this, run: ./TRACESPipe.sh --run-meta --run-v-align"
+  echo -e "\e[31mWARNING: $REF reference file not found!\e[0m"
+  echo "TIP: before this, run: ./TRACESPipe.sh --run-meta --run-all-v-alig"
+  echo "Another reason for this warning may be absence of aligned results."
   echo "For addition information, see the instructions at the web page."
   exit 1;
   fi
 #
-if [ ! -f "$SCAFFOLS" ];
+if [ ! -f "$SCAFFOLDS" ];
   then
   echo -e "\e[31mWARNING: $SCAFFOLDS not found!\e[0m"
   echo "TIP: before this, make sure this runs: ./TRACESPipe.sh --run-de-novo"

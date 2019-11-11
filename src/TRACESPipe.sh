@@ -1583,8 +1583,8 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_HYBRID" -eq "1" ]];
       then
       echo -e "\e[34m[TRACESPipe]\e[32m Running HYBRID assembly ...\e[0m";
-      mkdir -p ../output_results/TRACES_hybrid_$ORGAN_T/
-      SCAFFOLDS="../output_results/TRACES_denovo_$ORGAN_T";
+      mkdir -p ../output_data/TRACES_hybrid_$ORGAN_T/
+      SCAFFOLDS="../output_data/TRACES_denovo_$ORGAN_T/scaffolds.fasta";
       #TODO: ARRAY WITH NAMES & THRESHOLD FOR VALUES < t (FLEXIBILITY & PERFORMANCE)
       ./TRACES_hybrid.sh "B19" $SCAFFOLDS $THREADS $ORGAN_T
       ./TRACES_hybrid.sh "HV1" $SCAFFOLDS $THREADS $ORGAN_T

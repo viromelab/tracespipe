@@ -15,6 +15,7 @@ gto_fasta_extract_by_read -i 1 -e 1000 < B19_m5.fa | gto_fasta_to_seq > SAMPLE_B
 #
 cat HEADER1 SAMPLE_B19_m1.seq SAMPLE_VARV_m1.seq > blood.fa
 cat HEADER1 SAMPLE_B19_m5.seq SAMPLE_VARV_m1_2.seq > brain.fa
+cat HEADER1 SAMPLE_B19_m5.seq SAMPLE_VARV_m1_2.seq > bone.fa
 #
 art_illumina -ss HS25 -sam -i blood.fa -p -l 150 -f 20 -m 200 -s 10 -o blood
 art_illumina -ss HS25 -sam -i brain.fa -p -l 150 -f 20 -m 200 -s 10 -o brain

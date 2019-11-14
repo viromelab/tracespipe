@@ -79,6 +79,8 @@ RUN_HERV_ON=0;
 #
 RUN_VISUAL_ALIGN=0;
 #
+RUN_COVERAGE_TABLE=0;
+#
 RUN_DECRYPT=0;
 RUN_ENCRYPT=0;
 #
@@ -712,6 +714,11 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift
     ;;
+    -covt|--coverage-table)
+      RUN_COVERAGE_TABLE=1;
+      SHOW_HELP=0;
+      shift
+    ;;
     -rda|--run-de-novo)
       RUN_ANALYSIS=1;
       RUN_DE_NOVO_ASSEMBLY=1;
@@ -910,6 +917,7 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -rhyb,  --run-hybrid      Run hybrid assembly (align/de-novo), "
   echo "                                                                  "
   echo "    -vis,   --visual-align    Run Visualization tool for alignments, "
+  echo "    -covt,  --coverage-table  Run coverage table,                  "
   echo "                                                                  "
   echo "    -ra,    --run-analysis    Run data analysis,                   "
   echo "    -all,   --run-all         Run all the options.                 "
@@ -953,6 +961,14 @@ if [ "$SHOW_VERSION" -eq "1" ];
 if [[ "$RUN_VISUAL_ALIGN" -eq "1" ]];
   then
   ./TRACES_run_visual_alignment.sh
+  exit 0;
+  fi
+#
+# ==============================================================================
+#
+if [[ "$RUN_COVERAGE_TABLE" -eq "1" ]];
+  then
+  ./TRACES_coverage_table.sh
   exit 0;
   fi
 #

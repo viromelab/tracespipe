@@ -37,7 +37,7 @@ for virus in "${VIRUSES[@]}" #
       D_coverage="0";
       fi
     #
-    LC_NUMERIC="en_US.UTF-8" printf "%2.1f;%2.0f;" "$D_coverage" "$H_coverage";
+    LC_NUMERIC="en_US.UTF-8" printf "%2.1f;%2.1f;" "$D_coverage" "$H_coverage";
     ((y++));
     done
   printf "\n";

@@ -1,0 +1,47 @@
+#!/bin/bash
+#
+declare -a VIRUSES=('B19' 'HV1' 'HV2' 'HV3' 'HV4' 'HV5' 'HV6' 'HV6A' 'HV6B' 'HV7' 'HV8' 'POLY1' 'POLY2' 'POLY2' 'POLY3' 'POLY4' 'POLY5' 'POLY6' 'POLY7' 'POLY8' 'POLY9' 'POLY10' 'POLY11' 'POLY12' 'POLY13' 'POLY14' 'TTV' 'HBOV1' 'HBOVNOT1' 'HBV' 'HPV' 'VARV' 'SV40' 'CUTA' 'HERV');
+declare -a ORGANS=('blood' 'bone' 'brain' 'hair' 'heart' 'kidney' 'liver' 'lung' 'marrow' 'skin' 'teeth' );
+#
+x=0;
+printf "; blood;;bone;;brain;;hair;;heart;;kidney;;liver;;lung;;marrow;;skin;;teeth\n";
+printf "; D;H;D;H;D;H;D;H;D;H;D;H;D;H;D;H;D;H;D;H;D;H\n";
+for virus in "${VIRUSES[@]}" #
+  do
+  y=0;
+  printf "%s;" "$virus";
+  for organ in "${ORGANS[@]}" #
+    do
+    #
+    if [ ! -f ../output_data/TRACES_viral_statistics/$virus-total-depth-coverage-$organ.txt ];
+      then
+      D_coverage="0";
+      else
+      D_coverage=`cat ../output_data/TRACES_viral_statistics/$virus-total-depth-coverage-$organ.txt | awk '{ print $3;}'`;
+      fi
+    #
+    if [ ! -f ../output_data/TRACES_viral_statistics/$virus-total-horizontal-coverage-$organ.txt ];
+      then
+      H_coverage="0";
+      else
+      H_coverage=`cat ../output_data/TRACES_viral_statistics/$virus-total-horizontal-coverage-$organ.txt | awk '{ print $3;}'`;
+      fi
+    #
+    if [[ "$H_coverage" == "" ]];
+      then
+      H_coverage="0";
+      fi
+    #
+    if [[ "$D_coverage" == "" ]];
+      then
+      D_coverage="0";
+      fi
+    #
+    LC_NUMERIC="en_US.UTF-8" printf "%2.1f;%2.0f;" "$D_coverage" "$H_coverage";
+    ((y++));
+    done
+  printf "\n";
+  ((x++));
+  done
+#
+

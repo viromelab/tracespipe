@@ -80,6 +80,7 @@ RUN_HERV_ON=0;
 RUN_VISUAL_ALIGN=0;
 #
 RUN_COVERAGE_TABLE=0;
+RUN_COVERAGE_TABLE_CSV=0;
 #
 RUN_DECRYPT=0;
 RUN_ENCRYPT=0;
@@ -714,8 +715,13 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift
     ;;
-    -covt|--coverage-table)
+    -covl|--coverage-latex)
       RUN_COVERAGE_TABLE=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -covc|--coverage-csv)
+      RUN_COVERAGE_TABLE_CSV=1;
       SHOW_HELP=0;
       shift
     ;;
@@ -917,7 +923,8 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -rhyb,  --run-hybrid      Run hybrid assembly (align/de-novo), "
   echo "                                                                  "
   echo "    -vis,   --visual-align    Run Visualization tool for alignments, "
-  echo "    -covt,  --coverage-table  Run coverage table,                  "
+  echo "    -covl,  --coverage-latex  Run coverage table in Latex format,   "
+  echo "    -covc,  --coverage-csv    Run coverage table in CSV format,    "
   echo "                                                                  "
   echo "    -ra,    --run-analysis    Run data analysis,                   "
   echo "    -all,   --run-all         Run all the options.                 "
@@ -969,6 +976,14 @@ if [[ "$RUN_VISUAL_ALIGN" -eq "1" ]];
 if [[ "$RUN_COVERAGE_TABLE" -eq "1" ]];
   then
   ./TRACES_coverage_table.sh
+  exit 0;
+  fi
+#
+# ==============================================================================
+#
+if [[ "$RUN_COVERAGE_TABLE_CSV" -eq "1" ]];
+  then
+  ./TRACES_coverage_table_csv.sh
   exit 0;
   fi
 #

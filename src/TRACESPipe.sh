@@ -725,6 +725,11 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift
     ;;
+    -rpro|--run-profiles)
+      RUN_PROFILES_ON=1;
+      SHOW_HELP=0;
+      shift
+    ;;
     -rda|--run-de-novo)
       RUN_ANALYSIS=1;
       RUN_DE_NOVO_ASSEMBLY=1;
@@ -925,6 +930,7 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -vis,   --visual-align    Run Visualization tool for alignments, "
   echo "    -covl,  --coverage-latex  Run coverage table in Latex format,   "
   echo "    -covc,  --coverage-csv    Run coverage table in CSV format,    "
+  echo "    -rpro,  --run-profiles    Run profiles of complexity,         "
   echo "                                                                  "
   echo "    -ra,    --run-analysis    Run data analysis,                   "
   echo "    -all,   --run-all         Run all the options.                 "

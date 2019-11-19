@@ -1,1 +1,0 @@
-bone:V75_S26_R1_001.fastq.gz:V75_S26_R2_001.fastq.gz

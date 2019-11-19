@@ -1,1 +1,0 @@
-#place your input fastq files in this folder in gzip format

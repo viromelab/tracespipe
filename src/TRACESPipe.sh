@@ -81,6 +81,8 @@ RUN_VISUAL_ALIGN=0;
 #
 RUN_COVERAGE_TABLE=0;
 RUN_COVERAGE_TABLE_CSV=0;
+RUN_COVERAGE_PROFILE=0;
+COVERAGE_NAME="";
 #
 RUN_DECRYPT=0;
 RUN_ENCRYPT=0;
@@ -422,6 +424,12 @@ while [[ $# -gt 0 ]]
       RUN_ANALYSIS=1;
       RUN_SPECIFIC=1;
       SPECIFIC_ID="$2";
+      SHOW_HELP=0;
+      shift 2;
+    ;;
+    -covp|--coverage-profile)
+      RUN_COVERAGE_PROFILE=1;
+      COVERAGE_NAME="$2";
       SHOW_HELP=0;
       shift 2;
     ;;
@@ -930,7 +938,8 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -vis,   --visual-align    Run Visualization tool for alignments, "
   echo "    -covl,  --coverage-latex  Run coverage table in Latex format,   "
   echo "    -covc,  --coverage-csv    Run coverage table in CSV format,    "
-  echo "    -rpro,  --run-profiles    Run profiles of complexity,         "
+  echo "    -covp,  --coverage-profile <BED_NAME_FILE>                      "
+  echo "                              Run coverage profile for specific BED file, "
   echo "                                                                  "
   echo "    -ra,    --run-analysis    Run data analysis,                   "
   echo "    -all,   --run-all         Run all the options.                 "
@@ -990,6 +999,39 @@ if [[ "$RUN_COVERAGE_TABLE" -eq "1" ]];
 if [[ "$RUN_COVERAGE_TABLE_CSV" -eq "1" ]];
   then
   ./TRACES_coverage_table_csv.sh
+  exit 0;
+  fi
+#
+# ==============================================================================
+#
+if [[ "$RUN_COVERAGE_PROFILE" -eq "1" ]];
+  then
+  CHECK_E_FILE $COVERAGE_NAME
+  ./TRACES_project_coordinates.sh $COVERAGE_NAME > x.projectd.profile;
+gnuplot << EOF
+    reset
+    set terminal pdfcairo enhanced color font 'Verdana,12'
+    set output "$COVERAGE_NAME.pdf"
+    set style line 101 lc rgb '#000000' lt 1 lw 4
+    set border 3 front ls 101
+    set tics nomirror out scale 0.75
+    set format '%g'
+    set size ratio 0.2
+    set key outside horiz center top
+    set yrange [:]
+    set xrange [:]
+    set xtics auto
+    set grid
+    set ylabel "Depth"
+    set xlabel "Position"
+    set border linewidth 1.5
+    set style line 1 lc rgb '#0060ad' lt 1 lw 2 pt 5 ps 0.4 # --- blue
+    set style line 2 lc rgb '#0060ad' lt 1 lw 2 pt 6 ps 0.4 # --- green
+    set style line 3 lc rgb '#dd181f' lt 1 lw 4 pt 7 ps 0.4 # --- ?
+    set style line 4 lc rgb '#4d1811' lt 1 lw 4 pt 8 ps 0.4 # --- ?
+    set style line 5 lc rgb '#1d121f' lt 1 lw 4 pt 9 ps 0.4 # --- ?
+    plot "x.projectd.profile" using 2 with lines ls 1
+EOF
   exit 0;
   fi
 #

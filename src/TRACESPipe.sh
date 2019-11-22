@@ -40,6 +40,8 @@ RUN_META_NON_VIRAL_ON=0;
 RUN_MITO_ON=0;
 RUN_MITO_DAMAGE_ON=0;
 #
+REMOVE_DUPLICATIONS=0;
+#
 RUN_B19_ON=0;
 RUN_HV1_ON=0;
 RUN_HV2_ON=0;
@@ -250,7 +252,7 @@ ALIGN_AND_CONSENSUS () {
     CHECK_VDB;
     gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-$V_TAG.fa
     echo "Aliggning ..."
-    ./TRACES_viral_align_reads.sh $ORGAN_T-$V_TAG.fa $ORGAN_T $V_TAG $THREADS
+    ./TRACES_viral_align_reads.sh $ORGAN_T-$V_TAG.fa $ORGAN_T $V_TAG $THREADS $REMOVE_DUPLICATIONS
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
     #
     echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
@@ -338,6 +340,11 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift
     ;;
+    -rdup|--remove-dup)
+      REMOVE_DUPLICATIONS=0;
+      SHOW_HELP=0;
+      shift
+    ;;    
     -gm|--get-mito)
       GET_MITO=1;
       SHOW_HELP=0;
@@ -876,6 +883,8 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -gy,    --get-y-chromo    Downloads human Y-chromosome,        "
   echo "    -gax,   --get-all-aux     Runs -gad -gp -gm -gy,               "
   echo "                                                                   "
+  echo "    -rdup,  --remove-dup      Remove duplications (e.g. PCR dup),  "
+  echo "                                                                   "
   echo "    -rm,    --run-meta        Run viral metagenomic identification,    "
   echo "    -ro,    --run-meta-nv     Run NON-viral metagenomic identification,"
   echo "                                                                  "
@@ -1008,6 +1017,7 @@ if [[ "$RUN_COVERAGE_PROFILE" -eq "1" ]];
   then
   CHECK_E_FILE $COVERAGE_NAME
   ./TRACES_project_coordinates.sh $COVERAGE_NAME > x.projectd.profile;
+  #TODO: OPTIONALLY, FILTER CAN BE APPLIED HERE (for larger sequences)!
 gnuplot << EOF
     reset
     set terminal pdfcairo enhanced color font 'Verdana,12'
@@ -1311,7 +1321,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       gto_fasta_extract_read_by_pattern -p "$SPECIFIC_ID" < VDB.fa > SPECIFIC-$SPECIFIC_ID.fa
       echo "Aliggning ..."
-      ./TRACES_viral_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID $THREADS
+      ./TRACES_viral_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID $THREADS $REMOVE_DUPLICATIONS
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
@@ -1343,7 +1353,8 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       gto_fasta_extract_read_by_pattern -p "$SPECIFIC_ID" < VDB.fa > SPECIFIC-$SPECIFIC_ID.fa
       echo "Aliggning ..."
-      ./TRACES_viral_sensitive_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID $THREADS
+      #TODO: MISSING BINARY UPLOAD
+      ./TRACES_viral_sensitive_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID $THREADS $REMOVE_DUPLICATIONS
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
@@ -1549,7 +1560,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       CHECK_MT_DNA;
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Aliggning reads to mitochondrial ref with bowtie2 ...\e[0m";
-      ./TRACES_mt_align_reads.sh mtDNA.fa $ORGAN_T $THREADS
+      ./TRACES_mt_align_reads.sh mtDNA.fa $ORGAN_T $THREADS $REMOVE_DUPLICATIONS
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";

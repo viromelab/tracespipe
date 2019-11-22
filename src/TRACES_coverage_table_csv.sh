@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-declare -a VIRUSES=('B19' 'HV1' 'HV2' 'HV3' 'HV4' 'HV5' 'HV6' 'HV6A' 'HV6B' 'HV7' 'HV8' 'POLY1' 'POLY2' 'POLY3' 'POLY4' 'POLY5' 'POLY6' 'POLY7' 'POLY8' 'POLY9' 'POLY10' 'POLY11' 'POLY12' 'POLY13' 'POLY14' 'TTV' 'HBOV1' 'HBOVNOT1' 'HBV' 'HPV' 'VARV' 'SV40' 'CUTA' 'HERV');
+#declare -a VIRUSES=('B19' 'HV1' 'HV2' 'HV3' 'HV4' 'HV5' 'HV6' 'HV6A' 'HV6B' 'HV7' 'HV8' 'POLY1' 'POLY2' 'POLY3' 'POLY4' 'POLY5' 'POLY6' 'POLY7' 'POLY8' 'POLY9' 'POLY10' 'POLY11' 'POLY12' 'POLY13' 'POLY14' 'TTV' 'HBOV1' 'HBOVNOT1' 'HBV' 'HPV' 'VARV' 'SV40' 'CUTA' 'HERV');
 declare -a ORGANS=( $(cat ../meta_data/meta_info.txt | tr ':' '\t' | awk '{ print $1;}') );
 #
 x=0;
@@ -18,6 +18,7 @@ for organ in "${ORGANS[@]}" #
   done
 printf "\n";
 #
+mapfile -t VIRUSES < viral_names.txt 
 for virus in "${VIRUSES[@]}" #
   do
   y=0;

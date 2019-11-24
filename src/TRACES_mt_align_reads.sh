@@ -23,8 +23,9 @@ rm -f aligned-$2.sam
 #
 if [[ "$4" -eq "1" ]];
   then
+  echo "Removing Duplications ...";
   # SORT BY NAME
-  samtools sort --threads $3 -n -o mt_aligned_sorted-$2.bam mt_aligned_sorted_sorted-$2.bam
+  samtools sort --threads $3 -n mt_aligned_sorted-$2.bam > mt_aligned_sorted_sorted-$2.bam
   #
   # ADD ms AND MC FOR MARKDUP
   samtools fixmate --threads $3 -m mt_aligned_sorted_sorted-$2.bam mt_aligned_sorted_sorted-$2-fixmate.bam
@@ -40,5 +41,7 @@ if [[ "$4" -eq "1" ]];
   #
   fi
 # INDEX BAM
-samtools index --threads $3 mt_aligned_sorted-$2.bam mt_aligned_sorted-$2.bam.bai
+samtools index -@ $3 mt_aligned_sorted-$2.bam mt_aligned_sorted-$2.bam.bai
+#
+rm -f *.bt2
 #

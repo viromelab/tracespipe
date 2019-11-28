@@ -341,7 +341,7 @@ while [[ $# -gt 0 ]]
       shift
     ;;
     -rdup|--remove-dup)
-      REMOVE_DUPLICATIONS=0;
+      REMOVE_DUPLICATIONS=1;
       SHOW_HELP=0;
       shift
     ;;    

@@ -72,7 +72,7 @@ if [[ "$RUN_COMPARISON" -eq "1" ]];
     tac FIL_UB_R.x > FIL_UB_N.x
     awk '{print $1;}' FIL_UB.x   > IDXES
     awk '{print $2;}' FIL_UB.x   > A_D
-    awk '{print $2;}' FIL_UB_R.x > A_R
+    awk '{print $2;}' FIL_UB_N.x > A_R
     #
     gto_min -f A_D -s A_R > A_min
     #
@@ -120,7 +120,7 @@ EOF
       tac FIL_UB_R.x > FIL_UB_N.x
       awk '{print $1;}' FIL_UB.x   > IDXES
       awk '{print $2;}' FIL_UB.x   > A_D
-      awk '{print $2;}' FIL_UB_R.x > A_R
+      awk '{print $2;}' FIL_UB_N.x > A_R
       #
       gto_min -f A_D -s A_R > A_min
       #

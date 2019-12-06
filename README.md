@@ -114,7 +114,7 @@ tracespipe/
 
 ### 2.3 Configuration ###
 
-To configure TRACESPipe add your FASTQ files gziped at the folder
+To configure TRACESPipe add your <b>FASTQ files gziped</b> at the folder
 ```
 input_data/
 ```
@@ -128,7 +128,7 @@ skin:V1_S44_R1_001.fastq.gz:V1_S44_R2_001.fastq.gz
 brain:V2_S29_R1_001.fastq.gz:V2_S29_R2_001.fastq.gz
 colon:V3_S45_R1_001.fastq.gz:V3_S45_R2_001.fastq.gz
 ```
-Then, at the src/ folder run:
+Then, at the <b>src/</b> folder run:
 ```
 ./TRACESPipe.sh --get-all-aux
 ```

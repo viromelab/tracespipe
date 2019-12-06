@@ -23,9 +23,9 @@ TRACESPipe is a next-generation sequencing pipeline for identification, assembly
 <li>sequence alignments;</li>
 <li><i>de-novo</i> assembly.</li>
 </ul>
-The compression-based prediction applies FALCON technology with ultra-fast comparative quantification to find the best reference genome (from a large viral database) containing the highest similarity relative to the sequenced reads. After identification, the reads are aligned according to the best reference by Bowtie2. A consensus sequence is produced with specific filters using Bcftools. Then, <i>de-novo</i> assembly (SPAdes) is involved in building scaffolds. The high coverage scaffolds that overlap totally or partially the consensus sequence are used to validate or either augment the new genome. The final analysis of the assembly is interactively supervised with the IGV with the goal of drafting the final sequence.
+The compression-based prediction applies FALCON-meta technology with ultra-fast comparative quantification to find the best reference genome (from a large viral database) containing the highest similarity relative to the sequenced reads. After identification, the reads are aligned according to the best reference by Bowtie2. A consensus sequence is produced with specific filters using Bcftools. Then, <i>de-novo</i> assembly (metaSPAdes) is involved in building scaffolds. The high coverage scaffolds that overlap totally or partially the consensus sequence (aligned by bwa) are used to validate or either augment the new genome. The final analysis of the assembly is interactively supervised with the IGV with the goal of drafting the final sequence.
 
-For the human-host variant call identification, the same procedure is followed although directly starting within the second point, given the use of the same reference (Cambridge Reference) to all the cases.
+For the human-host variant call identification, the same procedure is followed although directly starting within the second point, given the use of the same reference (revised Cambridge Reference) to all the cases.
 
 <br>
 <p align="center">
@@ -43,13 +43,6 @@ Additionally, the TRACESPipe includes read trimming and filtering, PhiX removal,
 
 ### 2.1 Installation ###
 
-To install TRACESPipe, run the following commands in a Linux OS:
-```
-git clone https://github.com/viromelab/tracespipe.git
-cd tracespipe/src/
-chmod +x TRACES*.sh
-./TRACESPipe.sh --install
-```
 <img src="imgs/conda_logo.png" alt="CONDA" height="14" border="0" /> is needed for installation.<br>
 To install Conda use the following steps:
 ```
@@ -59,6 +52,13 @@ bash Miniconda3-latest-Linux-x86_64.sh
 Additional instructions can be found here:
 ```
 https://docs.conda.io/projects/conda/en/latest/user-guide/install/linux.html
+```
+To install TRACESPipe, run the following commands in a Linux OS:
+```
+git clone https://github.com/viromelab/tracespipe.git
+cd tracespipe/src/
+chmod +x TRACES*.sh
+./TRACESPipe.sh --install
 ```
 
 ### 2.2 Structure ###

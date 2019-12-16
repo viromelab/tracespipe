@@ -885,6 +885,8 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                                                                   "
   echo "    -rdup,  --remove-dup      Remove duplications (e.g. PCR dup),  "
   echo "                                                                   "
+  echo "    -rpro,  --run-profiles    Run complexity and relative profiles, "
+  echo "                                                                   "
   echo "    -rm,    --run-meta        Run viral metagenomic identification,    "
   echo "    -ro,    --run-meta-nv     Run NON-viral metagenomic identification,"
   echo "                                                                  "

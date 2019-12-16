@@ -1042,7 +1042,7 @@ gnuplot << EOF
     set style line 3 lc rgb '#dd181f' lt 1 lw 4 pt 7 ps 0.4 # --- ?
     set style line 4 lc rgb '#4d1811' lt 1 lw 4 pt 8 ps 0.4 # --- ?
     set style line 5 lc rgb '#1d121f' lt 1 lw 4 pt 9 ps 0.4 # --- ?
-    plot "x.projectd.profile" using 2 with lines ls 1
+    plot "x.projectd.profile" using 2 with lines ls 2
 EOF
   exit 0;
   fi

@@ -441,7 +441,7 @@ If you use this pipeline, please cite:
 
 ## 8. Issues ##
 
-For any issue let us know at [issues link](https://github.com/pratas/traces/issues).
+For any issue let us know at [issues link](https://github.com/viromelab/tracespipe/issues).
 
 ## 9. License ##
 

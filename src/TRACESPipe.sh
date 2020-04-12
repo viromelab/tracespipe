@@ -1355,7 +1355,6 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       gto_fasta_extract_read_by_pattern -p "$SPECIFIC_ID" < VDB.fa > SPECIFIC-$SPECIFIC_ID.fa
       echo "Aliggning ..."
-      #TODO: MISSING BINARY UPLOAD
       ./TRACES_viral_sensitive_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID $THREADS $REMOVE_DUPLICATIONS
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #

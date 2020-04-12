@@ -1,3 +1,4 @@
+<br>
 <div align="center">
   
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](LICENSE)
@@ -441,7 +442,7 @@ If you use this pipeline, please cite:
 
 ## 8. Issues ##
 
-For any issue let us know at [issues link](https://github.com/pratas/traces/issues).
+For any issue let us know at [issues link](https://github.com/viromelab/tracespipe/issues).
 
 ## 9. License ##
 

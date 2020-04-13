@@ -390,10 +390,10 @@ The output is included at
 ../output_data/TRACES_denovo_<organ_name>
 ```
 
-### 5.9 Run specific viral alignment for all organs using extreme sensitivity: ###
+### 5.9 Run specific viral alignment (AF037218.1) for all organs using extreme sensitivity: ###
 
 ```
-./TRACESPipe.sh --run-extreme
+./TRACESPipe.sh --run-extreme AF037218.1
 ```
 The output is included at
 ```

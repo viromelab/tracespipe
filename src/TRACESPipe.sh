@@ -1340,6 +1340,10 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       mkdir -p ../output_data/TRACES_specific_bed;
       #rm -f ../output_data/TRACES_specific_bed/*
       mv $SPECIFIC_ID-calls-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
+      mv $SPECIFIC_ID-coverage-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
+      mv $SPECIFIC_ID-zero-coverage-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
+      mkdir -p ../output_data/TRACES_specific_statistics;
+      ./TRACES_overall_specific.sh $SPECIFIC_ID $ORGAN_T
       fi
     #
     # ==========================================================================
@@ -1372,6 +1376,10 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       mkdir -p ../output_data/TRACES_specific_bed;
       #rm -f ../output_data/TRACES_specific_bed/*
       mv $SPECIFIC_ID-calls-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
+      mv $SPECIFIC_ID-coverage-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
+      mv $SPECIFIC_ID-zero-coverage-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
+      mkdir -p ../output_data/TRACES_specific_statistics;
+      ./TRACES_overall_specific.sh $SPECIFIC_ID $ORGAN_T
       fi
     #
     # ========================================================================== 

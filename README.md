@@ -393,7 +393,7 @@ The output is included at
 ### 5.9 Run specific viral alignment (AF037218.1) for all organs using extreme sensitivity without duplications: ###
 
 ```
-./TRACESPipe.sh --no-duplications --run-extreme AF037218.1
+./TRACESPipe.sh --remove-dup --run-extreme AF037218.1
 ```
 The output is included at
 ```

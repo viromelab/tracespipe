@@ -85,6 +85,7 @@ RUN_COVERAGE_TABLE=0;
 RUN_COVERAGE_TABLE_CSV=0;
 RUN_COVERAGE_PROFILE=0;
 COVERAGE_NAME="";
+MAX_COVERAGE_PROFILE=0;
 #
 RUN_DECRYPT=0;
 RUN_ENCRYPT=0;
@@ -431,6 +432,12 @@ while [[ $# -gt 0 ]]
       RUN_ANALYSIS=1;
       RUN_SPECIFIC=1;
       SPECIFIC_ID="$2";
+      SHOW_HELP=0;
+      shift 2;
+    ;;
+    -cmax|--max-coverage)
+      MAX_COVERAGE_PROFILE=1;
+      COVERAGE_MAX="$2";
       SHOW_HELP=0;
       shift 2;
     ;;
@@ -951,6 +958,8 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -covc,  --coverage-csv    Run coverage table in CSV format,    "
   echo "    -covp,  --coverage-profile <BED_NAME_FILE>                      "
   echo "                              Run coverage profile for specific BED file, "
+  echo "    -cmax,  --max-coverage <MAX_COVERAGE>                           "
+  echo "                              Maximum depth coverage (depth normalization), "
   echo "                                                                  "
   echo "    -ra,    --run-analysis    Run data analysis,                   "
   echo "    -all,   --run-all         Run all the options.                 "
@@ -1018,8 +1027,8 @@ if [[ "$RUN_COVERAGE_TABLE_CSV" -eq "1" ]];
 if [[ "$RUN_COVERAGE_PROFILE" -eq "1" ]];
   then
   CHECK_E_FILE $COVERAGE_NAME
-  ./TRACES_project_coordinates.sh $COVERAGE_NAME > x.projectd.profile;
-  #TODO: OPTIONALLY, FILTER CAN BE APPLIED HERE (for larger sequences)!
+  ./TRACES_project_coordinates.sh $COVERAGE_NAME $COVERAGE_MAX > x.projectd.profile;
+  #XXX: OPTIONALLY, LOW-PASS FILTER CAN BE APPLIED HERE (for larger sequences)!
 gnuplot << EOF
     reset
     set terminal pdfcairo enhanced color font 'Verdana,12'

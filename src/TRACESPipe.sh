@@ -87,6 +87,8 @@ RUN_COVERAGE_PROFILE=0;
 COVERAGE_NAME="";
 MAX_COVERAGE_PROFILE=0;
 #
+RUN_CHANGE_MT=0;
+#
 RUN_DECRYPT=0;
 RUN_ENCRYPT=0;
 #
@@ -350,6 +352,12 @@ while [[ $# -gt 0 ]]
       GET_MITO=1;
       SHOW_HELP=0;
       shift
+    ;;
+    -cmt|--change-mito)
+      RUN_CHANGE_MT=1;
+      NEW_MT="$2";
+      SHOW_HELP=0;
+      shift 2
     ;;
     -gy|--get-y-chromo)
       GET_CY=1;
@@ -887,6 +895,10 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -gad,   --gen-adapters    Generate FASTA file with adapters,   "
   echo "    -gp,    --get-phix        Extracts PhiX genomes (Needs viral DB),  "
   echo "    -gm,    --get-mito        Downloads human Mitochondrial genome,"
+  echo "                                                                   "
+  echo "    -cmt <ID>, --change-mito <ID>                                  "
+  echo "                              Set any Mitochondrial genome by ID,  "
+  echo "                                                                   "
   echo "    -gy,    --get-y-chromo    Downloads human Y-chromosome,        "
   echo "    -gax,   --get-all-aux     Runs -gad -gp -gm -gy,               "
   echo "                                                                   "
@@ -956,9 +968,9 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -vis,   --visual-align    Run Visualization tool for alignments, "
   echo "    -covl,  --coverage-latex  Run coverage table in Latex format,   "
   echo "    -covc,  --coverage-csv    Run coverage table in CSV format,    "
-  echo "    -covp,  --coverage-profile <BED_NAME_FILE>                      "
+  echo "    -covp <NAME>, --coverage-profile <BED_NAME_FILE>                      "
   echo "                              Run coverage profile for specific BED file, "
-  echo "    -cmax,  --max-coverage <MAX_COVERAGE>                           "
+  echo "    -cmax <MAX>,  --max-coverage <MAX_COVERAGE>                           "
   echo "                              Maximum depth coverage (depth normalization), "
   echo "                                                                  "
   echo "    -ra,    --run-analysis    Run data analysis,                   "
@@ -1069,9 +1081,9 @@ if [[ "$GET_THREADS" -eq "1" ]];
 if [[ "$THREADS" -eq "0" ]];
   then
   THREADS=`./TRACES_get_max_threads.sh |awk '{print $8;}'`;
-  echo "Running with $THREADS threads.";
+  echo "[TRACESPipe] Running with $THREADS threads.";
   else
-  echo "Running with $THREADS threads.";
+  echo "[TRACESPipe] Running with $THREADS threads.";
   fi
 #
 # ==============================================================================
@@ -1138,6 +1150,13 @@ if [[ "$GET_PHIX" -eq "1" ]];
 if [[ "$GET_MITO" -eq "1" ]];
   then
   ./TRACES_get_mito.sh
+  fi
+#
+# ==============================================================================
+#
+if [[ "$RUN_CHANGE_MT" -eq "1" ]];
+  then
+  ./TRACES_change_mito.sh $NEW_MT
   fi
 #
 # ==============================================================================

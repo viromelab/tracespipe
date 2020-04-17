@@ -1,7 +1,8 @@
 #!/bin/bash
 #
-# INSTALLATION NEEDED!
-# ADD SMALL VDB.fa 
+zcat MINIDB.fa.gz > ../src/VDB.fa
+cd ../src/
+./TRACESPipe.sh --get-all-aux
 #
 gto_fasta_extract_read_by_pattern -p "AY386330.1" < VDB.fa > B19.fa
 gto_fasta_extract_read_by_pattern -p "JN561323.2" < VDB.fa > HV2.fa

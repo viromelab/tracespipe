@@ -1,3 +1,0 @@
-blood:blood1.fq.gz:blood2.fq.gz
-brain:brain1.fq.gz:brain2.fq.gz
-bone:bone1.fq.gz:bone2.fq.gz

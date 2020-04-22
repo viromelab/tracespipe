@@ -7,6 +7,7 @@ ORGAN="$1";
 DB="$2";
 TOP_SIZE="$3";
 THREADS="$4";
+TSIZE="$5";
 #
 RNAMES="NP-o_fw_pr.fq:NP-o_fw_unpr.fq:NP-o_rv_pr.fq:NP-o_rv_unpr.fq";
 #
@@ -24,7 +25,7 @@ FALCON-filter-visual -v -e 1 -F -o $ORGAN.svg $ORGAN.pos
 #
 ## RUN FALCON FOR INTER-GENOMIC SIMILARITY ANALYSIS
 sed -e 's/NC_//g' top-$ORGAN.csv > F-top-$ORGAN.csv
-head -n 40 F-top-$ORGAN.csv | awk '{ if($3 > 1) print $1"\t"$2"\t"$3"\t"$4; }' \
+head -n $TSIZE F-top-$ORGAN.csv | awk '{ if($3 > 1) print $1"\t"$2"\t"$3"\t"$4; }' \
 | awk '{ print $4;}' | tr '|' '\t' | tr '_' '\t' | awk '{ print $1;}' > GIS-$ORGAN;
 idx=0;
 cat GIS-$ORGAN | while read line

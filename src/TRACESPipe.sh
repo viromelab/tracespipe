@@ -102,6 +102,8 @@ RUN_DE_NOVO_ASSEMBLY=0;
 #
 RUN_HYBRID=0;
 #
+TSIZE=10;
+#
 # ==============================================================================
 #
 declare -a VIRUSES=("B19" "HV1" "HV2" "HV3" "HV4" "HV5" "HV6" "HV6A" "HV6B" 
@@ -459,6 +461,11 @@ while [[ $# -gt 0 ]]
       RUN_HYBRID=1;
       SHOW_HELP=0;
       shift
+    ;;
+    -iss|--inter-sim-size)
+      TSIZE="$2";
+      SHOW_HELP=0;
+      shift 2;
     ;;
     -rsr|--run-specific)
       RUN_ANALYSIS=1;
@@ -928,14 +935,17 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                                                                   "
   echo "    -rdup,  --remove-dup      Remove duplications (e.g. PCR dup),  "
   echo "                                                                   "
-  echo "    -rpro,  --run-profiles    Run complexity and relative profiles, "
+  echo "    -iss <SIZE>, --inter-sim-size <SIZE>                                  "
+  echo "                              Inter-genome similarity top size (control), "
+  echo "                                                                   "
+  echo "    -rpro,  --run-profiles    Run complexity and relative profiles (control), "
   echo "                                                                   "
   echo "    -rm,    --run-meta        Run viral metagenomic identification,    "
   echo "    -ro,    --run-meta-nv     Run NON-viral metagenomic identification,"
   echo "                                                                  "
   echo "    -rava,  --run-all-v-alig  Run all viral align/sort/consensus seqs, "
   echo "                                                                 "
-  echo "    -rb19,  --run-b19         Run B19   align and consensus seq,    "
+  echo "    -rb19,  --run-b19         Run B19  align and consensus seq,    "
   echo "    -rh1,   --run-hv1         Run HHV1   align and consensus seq,    "
   echo "    -rh2,   --run-hv2         Run HHV2   align and consensus seq,    "
   echo "    -rh3,   --run-hv3         Run HHV3   align and consensus seq,    "
@@ -1278,7 +1288,9 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Running viral metagenomic analysis with FALCON ...\e[0m";
-      ./TRACES_metagenomics_viral.sh $ORGAN_T VDB.fa 10000 $THREADS
+      ./TRACES_metagenomics_viral.sh $ORGAN_T VDB.fa 10000 $THREADS $TSIZE
+      mv $ORGAN_T.svg ../output_data/TRACES_results/
+      mv $ORGAN_T-HEAT.svg ../output_data/TRACES_results/
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Finding the best references ...\e[0m";
@@ -1321,7 +1333,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       CHECK_DB;
       #	
       echo -e "\e[34m[TRACESPipe]\e[32m Running NON viral metagenomic analysis with FALCON ...\e[0m";
-      ./TRACES_metagenomics.sh $ORGAN_T DB.fa 12000 $THREADS 
+      ./TRACES_metagenomics.sh $ORGAN_T DB.fa 12000 $THREADS $TSIZE
       mkdir -p ../output_data/TRACES_results;
       #rm -f ../output_data/TRACES_results/*
       mv NV-$ORGAN_T.svg ../output_data/TRACES_results/
@@ -1698,23 +1710,35 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     #
     # ==========================================================================
-    # HYBRID ASSEMBLY
+    # HYBRID ASSEMBLY: SCAFFOLDS & REFERENCES
     #
     if [[ "$RUN_HYBRID" -eq "1" ]];
       then
       echo -e "\e[34m[TRACESPipe]\e[32m Running HYBRID assembly ...\e[0m";
       mkdir -p ../output_data/TRACES_hybrid_$ORGAN_T/
-      SCAFFOLDS="../output_data/TRACES_denovo_$ORGAN_T/scaffolds.fasta";
+      SCAFFOLDS_PATH="../output_data/TRACES_denovo_$ORGAN_T/scaffolds.fasta";
+      HYBRID_CON_PATH="../output_data/TRACES_hybrid_consensus_$ORGAN_T";
+      HYBRID_BED_PATH="../output_data/TRACES_hybrid_BED_$ORGAN_T";
+      HYBRID_PATH="../output_data/TRACES_hybrid_$ORGAN_T";
       #
       for virus in "${VIRUSES[@]}"
         do
-        ./TRACES_hybrid.sh "$virus" $SCAFFOLDS $THREADS $ORGAN_T
+        ./TRACES_hybrid.sh $virus $SCAFFOLDS_PATH $THREADS $ORGAN_T
+        ./TRACES_hybrid_consensus.sh $ORGAN_T-$virus.fa $HYBRID_PATH/scaffolds_aligned_sorted_$virus-$ORGAN_T.bam $ORGAN_T $virus;
+        #
+	mkdir -p $HYBRID_CON_PATH/;
+        mv $virus-consensus-$ORGAN_T.fa $HYBRID_CON_PATH
+        mkdir -p $HYBRID_BED_PATH;
+        mv $virus-calls-$ORGAN_T.bed $HYBRID_BED_PATH
+        mv $virus-coverage-$ORGAN_T.bed $HYBRID_BED_PATH
+        mv $virus-zero-coverage-$ORGAN_T.bed $HYBRID_BED_PATH
+        #
         done
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
     #
     # ==========================================================================
-    # HYBRID ASSEMBLY
+    # HYBRID ASSEMBLY: SCAFFOLDS & CONSENSUS
     #
     if [[ "$RUN_HYBRID" -eq "1" ]];
       then
@@ -1729,7 +1753,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
  #     echo -e "\e[34m[TRACESPipe]\e[32m Aliggning reads to Y-chromosome ref with bowtie2 ...\e[0m";
  #     ./TRACES_cy_align_reads.sh cy.fa $ORGAN_T $THREADS
  #     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
-
+     
 
     fi
 

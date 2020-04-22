@@ -81,6 +81,6 @@ echo "liver:liver1.fq.gz:liver2.fq.gz" >> ../meta_data/meta_info.txt
 echo "heart:heart1.fq.gz:heart2.fq.gz" >> ../meta_data/meta_info.txt
 echo "hair:hair1.fq.gz:hair2.fq.gz" >> ../meta_data/meta_info.txt
 #
-./TRACESPipe.sh --run-meta --run-all-v-alig --run-mito --remove-dup --run-de-novo
-./TRACESPipe.sh --coverage-csv > table.csv
+./TRACESPipe.sh --run-meta --run-all-v-alig --run-mito --remove-dup --run-de-novo --run-hybrid
+#./TRACESPipe.sh --coverage-csv > table.csv
 #

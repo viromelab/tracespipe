@@ -1710,43 +1710,6 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         do
         ./TRACES_hybrid.sh "$virus" $SCAFFOLDS $THREADS $ORGAN_T
         done
-#
-#      #TODO: ARRAY WITH NAMES & THRESHOLD FOR VALUES < t (FLEXIBILITY & PERFORMANCE)
-#      ./TRACES_hybrid.sh "B19" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "HV1" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "HV2" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "HV3" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "HV4" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "HV5" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "HV6" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "HV6A" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "HV6B" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "HV7" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "HV8" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "POLY1" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "POLY2" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "POLY2" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "POLY3" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "POLY4" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "POLY5" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "POLY6" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "POLY7" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "POLY8" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "POLY9" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "POLY10" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "POLY11" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "POLY12" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "POLY13" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "POLY14" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "TTV" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "HBOV1" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "HBOVNOT1" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "HBV" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "HPV" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "VARV" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "SV40" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "CUTA" $SCAFFOLDS $THREADS $ORGAN_T
-#      ./TRACES_hybrid.sh "HERV" $SCAFFOLDS $THREADS $ORGAN_T
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
     #

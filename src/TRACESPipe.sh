@@ -103,6 +103,30 @@ RUN_DE_NOVO_ASSEMBLY=0;
 RUN_HYBRID=0;
 #
 # ==============================================================================
+#
+declare -a VIRUSES=("B19" "HV1" "HV2" "HV3" "HV4" "HV5" "HV6" "HV6A" "HV6B" 
+                    "HV7" "HV8" "POLY1" "POLY2" "POLY2" "POLY3" "POLY4" "POLY5" 
+		    "POLY6" "POLY7" "POLY8" "POLY9" "POLY10" "POLY11" "POLY12" 
+		    "POLY13" "POLY14" "HBV" "HPV" "TTV" "HBOV1" "HBOVNOT1" 
+		    "VARV" "SV40" "CUTA" "HERV");
+#
+# ==============================================================================
+# CHECK INTERNAL SYSTEM FILES
+#
+CHECK_FILTERING_SYSTEM_FILES () {
+  for virus in "${VIRUSES[@]}"
+    do
+    if [ ! -f TRACES_get_best_$virus.sh ];
+      then
+      echo -e "\e[31mERROR: TRACES_get_best_$virus.sh file not found!\e[0m"
+      echo "This file may have been deleted acidentally or VIRAL array changed."
+      echo "System is corrupted!"
+      exit 1;
+    fi
+    done
+  }
+#
+# ==============================================================================
 # CHECK IF FILES EXIST
 #
 CHECK_META_INFO () {
@@ -1195,6 +1219,7 @@ if [[ "$ADD_EXTRA_SEQ" -eq "1" ]];
 if [[ "$RUN_ANALYSIS" -eq "1" ]];
   then
   #
+  CHECK_FILTERING_SYSTEM_FILES;
   CHECK_META_INFO;
   #
   mapfile -t READS < ../meta_data/meta_info.txt
@@ -1261,43 +1286,11 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       mkdir -p ../output_data/TRACES_results
       cp top-$ORGAN_T.csv ../output_data/TRACES_results/
       #
-      ./TRACES_get_best_B19.sh $ORGAN_T > ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      #
-      ./TRACES_get_best_HV1.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HV2.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HV3.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HV4.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HV5.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HV6.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HV6A.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HV6B.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HV7.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HV8.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      #
-      ./TRACES_get_best_POLY1.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY2.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY3.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY4.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY5.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY6.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY7.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY8.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY9.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY10.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY11.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY12.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY13.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_POLY14.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      # 
-      ./TRACES_get_best_HBV.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HPV.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_TTV.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HBOV1.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HBOVNOT1.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_VARV.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_SV40.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_CUTA.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-      ./TRACES_get_best_HERV.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      rm -f ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt;
+      for virus in "${VIRUSES[@]}"
+        do
+        ./TRACES_get_best_$virus.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+        done
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       fi
@@ -1712,45 +1705,71 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[TRACESPipe]\e[32m Running HYBRID assembly ...\e[0m";
       mkdir -p ../output_data/TRACES_hybrid_$ORGAN_T/
       SCAFFOLDS="../output_data/TRACES_denovo_$ORGAN_T/scaffolds.fasta";
-      #TODO: ARRAY WITH NAMES & THRESHOLD FOR VALUES < t (FLEXIBILITY & PERFORMANCE)
-      ./TRACES_hybrid.sh "B19" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "HV1" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "HV2" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "HV3" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "HV4" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "HV5" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "HV6" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "HV6A" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "HV6B" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "HV7" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "HV8" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "POLY1" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "POLY2" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "POLY2" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "POLY3" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "POLY4" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "POLY5" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "POLY6" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "POLY7" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "POLY8" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "POLY9" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "POLY10" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "POLY11" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "POLY12" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "POLY13" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "POLY14" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "TTV" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "HBOV1" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "HBOVNOT1" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "HBV" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "HPV" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "VARV" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "SV40" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "CUTA" $SCAFFOLDS $THREADS $ORGAN_T
-      ./TRACES_hybrid.sh "HERV" $SCAFFOLDS $THREADS $ORGAN_T
+      #
+      for virus in "${VIRUSES[@]}"
+        do
+        ./TRACES_hybrid.sh "$virus" $SCAFFOLDS $THREADS $ORGAN_T
+        done
+#
+#      #TODO: ARRAY WITH NAMES & THRESHOLD FOR VALUES < t (FLEXIBILITY & PERFORMANCE)
+#      ./TRACES_hybrid.sh "B19" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "HV1" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "HV2" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "HV3" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "HV4" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "HV5" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "HV6" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "HV6A" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "HV6B" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "HV7" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "HV8" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "POLY1" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "POLY2" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "POLY2" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "POLY3" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "POLY4" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "POLY5" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "POLY6" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "POLY7" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "POLY8" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "POLY9" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "POLY10" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "POLY11" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "POLY12" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "POLY13" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "POLY14" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "TTV" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "HBOV1" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "HBOVNOT1" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "HBV" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "HPV" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "VARV" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "SV40" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "CUTA" $SCAFFOLDS $THREADS $ORGAN_T
+#      ./TRACES_hybrid.sh "HERV" $SCAFFOLDS $THREADS $ORGAN_T
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
     #
+    # ==========================================================================
+    # HYBRID ASSEMBLY
+    #
+    if [[ "$RUN_HYBRID" -eq "1" ]];
+      then
+      echo -e "\e[34m[TRACESPipe]\e[32m Running true HYBRID assembly ...\e[0m";
+      mkdir -p ../output_data/TRACES_true_hybrid_$ORGAN_T/
+      SCAFFOLDS="../output_data/TRACES_denovo_$ORGAN_T/scaffolds.fasta";
+      #gto_fastq_to_mfasta
+      #./TRACES_hybrid.sh "B19" $SCAFFOLDS $THREADS $ORGAN_T
+
+ #     CHECK_CONSENSUS_DNA "../output_data/TRACES_viral_consensus/
+ #     #
+ #     echo -e "\e[34m[TRACESPipe]\e[32m Aliggning reads to Y-chromosome ref with bowtie2 ...\e[0m";
+ #     ./TRACES_cy_align_reads.sh cy.fa $ORGAN_T $THREADS
+ #     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+
+
+    fi
+
     # ==========================================================================
     #
     done

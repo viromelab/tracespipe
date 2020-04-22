@@ -34,4 +34,3 @@ cp $ORGAN-$REF.fa.fai ../output_data/TRACES_hybrid_$ORGAN/
 #
 rm -f scaffolds_aligned_$REF-$ORGAN.sam;
 #
-#

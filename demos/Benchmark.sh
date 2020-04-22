@@ -24,9 +24,9 @@ gto_fasta_mutate -s 0 -e 0.15 < TTV.fa > TTV_7.fa
 gto_fasta_mutate -s 0 -e 0.10 < HPV.fa > HPV_2.fa
 #
 cat mtDNA.fa VARV.fa HV2.fa HV3.fa HV8.fa B19.fa > blood.fa
-cat mtDNA2.fa VARV.fa HV4.fa B19.fa cy.fa > brain.fa
+cat mtDNA2.fa VARV.fa HV4.fa B19.fa > brain.fa
 cat mtDNA.fa B19_2.fa TTV_6.fa > bone.fa
-cat mtDNA.fa B19.fa HV3.fa TTV.fa cy.fa > skin.fa
+cat mtDNA.fa B19.fa HV3.fa TTV.fa > skin.fa
 cat mtDNA5.fa B19_5.fa TTV.fa HV2.fa > teeth.fa
 cat mtDNA.fa HV2.fa TTV_7.fa B19.fa > kidney.fa
 cat mtDNA.fa HV4_2.fa VARV.fa > lung.fa
@@ -81,6 +81,6 @@ echo "liver:liver1.fq.gz:liver2.fq.gz" >> ../meta_data/meta_info.txt
 echo "heart:heart1.fq.gz:heart2.fq.gz" >> ../meta_data/meta_info.txt
 echo "hair:hair1.fq.gz:hair2.fq.gz" >> ../meta_data/meta_info.txt
 #
-./TRACESPipe.sh --run-meta --run-all-v-alig --run-mito --remove-dup
+./TRACESPipe.sh --run-meta --run-all-v-alig --run-mito --remove-dup --run-de-novo
 ./TRACESPipe.sh --coverage-csv > table.csv
 #

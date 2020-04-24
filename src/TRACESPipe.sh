@@ -103,6 +103,11 @@ RUN_DE_NOVO_ASSEMBLY=0;
 #
 RUN_HYBRID=0;
 #
+# ==============================================================================
+#
+# DEFAULT VALUES:
+#
+MINIMAL_SIMILARITY_VALUE=1.0;
 TSIZE=10;
 #
 # ==============================================================================
@@ -277,7 +282,7 @@ ALIGN_AND_CONSENSUS () {
   V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
   V_VAL=`echo "$V_INFO" | awk '{ print $1; }'`;
   echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
-  if [[ "$V_GID" != "-" && "$V_VAL" > "1.0" ]];
+  if [[ "$V_GID" != "-" && "$V_VAL" > "$2" ]];
     then
     echo -e "\e[34m[TRACESPipe]\e[96m Best match: $V_INFO\e[0m";
     echo -e "\e[34m[TRACESPipe]\e[32m Extracting sequence from VDB.fa\e[0m";
@@ -292,7 +297,6 @@ ALIGN_AND_CONSENSUS () {
     ./TRACES_viral_consensus.sh $ORGAN_T-$V_TAG.fa viral_aligned_sorted-$ORGAN_T-$V_TAG.bam $ORGAN_T $V_TAG 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
     #
     mkdir -p ../output_data/TRACES_viral_alignments;
-    #rm -f ../output_data/TRACES_viral_alignments/*
     cp $ORGAN_T-$V_TAG.fa ../output_data/TRACES_viral_alignments/
     cp $ORGAN_T-$V_TAG.fa.fai ../output_data/TRACES_viral_alignments/
     mv viral_aligned_sorted-$ORGAN_T-$V_TAG.bam ../output_data/TRACES_viral_alignments/
@@ -388,6 +392,11 @@ while [[ $# -gt 0 ]]
       GET_MITO=1;
       SHOW_HELP=0;
       shift
+    ;;
+    -mis|--min-similarity)
+      MINIMAL_SIMILARITY_VALUE="$2";
+      SHOW_HELP=0;
+      shift 2
     ;;
     -cmt|--change-mito)
       RUN_CHANGE_MT=1;
@@ -954,6 +963,10 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -rm,    --run-meta        Run viral metagenomic identification,    "
   echo "    -ro,    --run-meta-nv     Run NON-viral metagenomic identification,"
   echo "                                                                  "
+  echo "    -mis <VALUE>, --min-similarity <VALUE>                         "
+  echo "                              Minimum similarity value to consider the"
+  echo "                              sequence for alignment-consensus (filter), "
+  echo "                                                                    "
   echo "    -rava,  --run-all-v-alig  Run all viral align/sort/consensus seqs, "
   echo "                                                                 "
   echo "    -rb19,  --run-b19         Run B19  align and consensus seq,    "
@@ -1443,177 +1456,177 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     if [[ "$RUN_B19_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "B19";
+      ALIGN_AND_CONSENSUS "B19" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_HV1_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "HV1";
+      ALIGN_AND_CONSENSUS "HV1" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_HV2_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "HV2";
+      ALIGN_AND_CONSENSUS "HV2" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_HV3_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "HV3";
+      ALIGN_AND_CONSENSUS "HV3" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_HV4_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "HV4";
+      ALIGN_AND_CONSENSUS "HV4" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_HV5_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "HV5";
+      ALIGN_AND_CONSENSUS "HV5" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_HV6_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "HV6";
+      ALIGN_AND_CONSENSUS "HV6" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_HV6A_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "HV6A";
+      ALIGN_AND_CONSENSUS "HV6A" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_HV6B_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "HV6B";
+      ALIGN_AND_CONSENSUS "HV6B" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_HV7_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "HV7";
+      ALIGN_AND_CONSENSUS "HV7" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_HV8_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "HV8";
+      ALIGN_AND_CONSENSUS "HV8" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_POLY1_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "POLY1";
+      ALIGN_AND_CONSENSUS "POLY1" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_POLY2_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "POLY2";
+      ALIGN_AND_CONSENSUS "POLY2" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_POLY2_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "POLY2";
+      ALIGN_AND_CONSENSUS "POLY2" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_POLY3_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "POLY3";
+      ALIGN_AND_CONSENSUS "POLY3" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_POLY4_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "POLY4";
+      ALIGN_AND_CONSENSUS "POLY4" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_POLY5_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "POLY5";
+      ALIGN_AND_CONSENSUS "POLY5" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_POLY6_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "POLY6";
+      ALIGN_AND_CONSENSUS "POLY6" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_POLY7_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "POLY7";
+      ALIGN_AND_CONSENSUS "POLY7" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_POLY8_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "POLY8";
+      ALIGN_AND_CONSENSUS "POLY8" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_POLY9_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "POLY9";
+      ALIGN_AND_CONSENSUS "POLY9" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_POLY10_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "POLY10";
+      ALIGN_AND_CONSENSUS "POLY10" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_POLY11_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "POLY11";
+      ALIGN_AND_CONSENSUS "POLY11" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_POLY12_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "POLY12";
+      ALIGN_AND_CONSENSUS "POLY12" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_POLY13_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "POLY13";
+      ALIGN_AND_CONSENSUS "POLY13" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_POLY14_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "POLY14";
+      ALIGN_AND_CONSENSUS "POLY14" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_TTV_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "TTV";
+      ALIGN_AND_CONSENSUS "TTV" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_HBOV1_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "HBOV1";
+      ALIGN_AND_CONSENSUS "HBOV1" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_HBOVNOT1_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "HBOVNOT1";
+      ALIGN_AND_CONSENSUS "HBOVNOT1" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_HBV_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "HBV";
+      ALIGN_AND_CONSENSUS "HBV" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_HPV_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "HPV";
+      ALIGN_AND_CONSENSUS "HPV" "$MINIMAL_SIMILARITY_VALUE";
       fi
     # 
     if [[ "$RUN_VARV_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "VARV";
+      ALIGN_AND_CONSENSUS "VARV" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_SV40_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "SV40";
+      ALIGN_AND_CONSENSUS "SV40" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_CUTA_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "CUTA";
+      ALIGN_AND_CONSENSUS "CUTA" "$MINIMAL_SIMILARITY_VALUE";
       fi
     #
     if [[ "$RUN_HERV_ON" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "HERV";
+      ALIGN_AND_CONSENSUS "HERV" "$MINIMAL_SIMILARITY_VALUE";
       fi
     # 
     # ==========================================================================
@@ -1718,6 +1731,8 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Estimating the quantity of Y-chromosome ...\e[0m";
       ./TRACES_estimate_cy_quantity.sh $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+      CY_EST_CALUE=`../output_data/TRACES_results/REP_CY_$ORGAN.txt`;
+      echo -e "\e[34m[TRACESPipe]\e[36m Estimation: $CY_EST_CALUE \e[0m"; 
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
     #

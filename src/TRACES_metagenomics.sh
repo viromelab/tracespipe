@@ -41,7 +41,7 @@ cat GIS-$ORGAN | while read line
   ((idx++));
   done
 #  
-MAX_VALUES=`wc -l ../src/GIS-hair | awk '{ print $1}'`;
+MAX_VALUES=`wc -l ../src/GIS-$ORGAN | awk '{ print $1}'`;
 if [[ "$THREADS" > "$MAX_VALUES" ]] 
   then
   TMP_THREADS=$MAX_VALUES;

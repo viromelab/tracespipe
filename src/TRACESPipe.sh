@@ -271,18 +271,20 @@ CHECK_E_FILE () {
 ALIGN_AND_CONSENSUS () {
   #
   V_TAG="$1";
-  echo -e "\e[34m[TRACESPipe]\e[32m Aligning reads to $V_TAG best reference with bowtie2 ...\e[0m";
+  echo -e "\e[34m[TRACESPipe]\e[32m Assessing $V_TAG best reference ...\e[0m";
   CHECK_TOP "$ORGAN_T";
   V_INFO=`./TRACES_get_best_$V_TAG.sh $ORGAN_T`;
-  echo -e "\e[34m[TRACESPipe]\e[34m Best match: $V_INFO\e[0m";
   V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
-  if [[ "$V_GID" != "-" ]];
+  V_VAL=`echo "$V_INFO" | awk '{ print $1; }'`;
+  echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+  if [[ "$V_GID" != "-" && "$V_VAL" > "1.0" ]];
     then
+    echo -e "\e[34m[TRACESPipe]\e[96m Best match: $V_INFO\e[0m";
     echo -e "\e[34m[TRACESPipe]\e[32m Extracting sequence from VDB.fa\e[0m";
     CHECK_VDB;
     gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-$V_TAG.fa 2>> ../logs/Log-$ORGAN_T.txt;
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
-    echo -e "\e[34m[TRACESPipe]\e[32m Aligning ...\e[0m";
+    echo -e "\e[34m[TRACESPipe]\e[32m Aligning reads to $V_TAG best reference with bowtie2 ...\e[0m";
     ./TRACES_viral_align_reads.sh $ORGAN_T-$V_TAG.fa $ORGAN_T $V_TAG $THREADS $REMOVE_DUPLICATIONS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
     #
@@ -305,8 +307,8 @@ ALIGN_AND_CONSENSUS () {
     mv $V_TAG-zero-coverage-$ORGAN_T.bed ../output_data/TRACES_viral_bed/
     mkdir -p ../output_data/TRACES_viral_statistics;
     ./TRACES_overall_virus.sh $V_TAG $ORGAN_T
+    echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
     fi
-  echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
   }
 #
 # ==============================================================================
@@ -1265,7 +1267,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     CHECK_GZIP_FILES $SPL_Forward $SPL_Reverse;
     #
-    echo -e "\e[34m[TRACESPipe]\e[93m Running: Organ=$ORGAN_T Forward=$SPL_Forward Reverse=$SPL_Reverse\e[0m";
+    echo -e "\e[34m[TRACESPipe]\e[32m Running\e[93m Organ=$ORGAN_T Forward=$SPL_Forward Reverse=$SPL_Reverse\e[0m";
     #
     rm -f FW_READS.fq.gz RV_READS.fq.gz
     echo -e "\e[34m[TRACESPipe]\e[32m Copping an instance of the files ...\e[0m";

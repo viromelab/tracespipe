@@ -25,7 +25,7 @@ FALCON-filter-visual -v -e 1 -F -o NV-$ORGAN.svg $ORGAN.pos
 #
 ## RUN FALCON FOR INTER-GENOMIC SIMILARITY ANALYSIS
 sed -e 's/NC_//g' top-non-$ORGAN.csv > F-top-non-$ORGAN.csv
-head -n $TSIZE F-top-non-viral-$ORGAN.csv | awk '{ if($3 > 1) print $1"\t"$2"\t"$3"\t"$4; }' \
+head -n $TSIZE F-top-non-viral-$ORGAN.csv | awk '{ if($3 > 0.01) print $1"\t"$2"\t"$3"\t"$4; }' \
 | awk '{ print $4;}' | tr '|' '\t' | tr '_' '\t' | awk '{ print $1;}' > GIS-$ORGAN;
 idx=0;
 cat GIS-$ORGAN | while read line

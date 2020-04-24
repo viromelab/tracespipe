@@ -18,6 +18,7 @@ GET_THREADS=0;
 THREADS=0;
 #
 INSTALL=0;
+UPDATE=0;
 BUILD_VDB_ALL=0;
 BUILD_VDB_REF=0;
 BUILD_UDB=0;
@@ -116,11 +117,11 @@ declare -a VIRUSES=("B19" "HV1" "HV2" "HV3" "HV4" "HV5" "HV6" "HV6A" "HV6B"
 # CHECK INTERNAL SYSTEM FILES
 #
 CHECK_FILTERING_SYSTEM_FILES () {
-  for virus in "${VIRUSES[@]}"
+  for VIRUS in "${VIRUSES[@]}"
     do
-    if [ ! -f TRACES_get_best_$virus.sh ];
+    if [ ! -f TRACES_get_best_$VIRUS.sh ];
       then
-      echo -e "\e[31mERROR: TRACES_get_best_$virus.sh file not found!\e[0m"
+      echo -e "\e[31mERROR: TRACES_get_best_$VIRUS.sh file not found!\e[0m"
       echo "This file may have been deleted acidentally or VIRAL array changed."
       echo "System is corrupted!"
       exit 1;
@@ -270,22 +271,24 @@ CHECK_E_FILE () {
 ALIGN_AND_CONSENSUS () {
   #
   V_TAG="$1";
-  echo -e "\e[34m[TRACESPipe]\e[32m Aliggning reads to $V_TAG best reference with bowtie2 ...\e[0m";
+  echo -e "\e[34m[TRACESPipe]\e[32m Aligning reads to $V_TAG best reference with bowtie2 ...\e[0m";
   CHECK_TOP "$ORGAN_T";
   V_INFO=`./TRACES_get_best_$V_TAG.sh $ORGAN_T`;
-  echo "Best match: $V_INFO";
+  echo -e "\e[34m[TRACESPipe]\e[34m Best match: $V_INFO\e[0m";
   V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
   if [[ "$V_GID" != "-" ]];
     then
-    echo "Extracting sequence from VDB.fa ..."
+    echo -e "\e[34m[TRACESPipe]\e[32m Extracting sequence from VDB.fa\e[0m";
     CHECK_VDB;
-    gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-$V_TAG.fa
-    echo "Aliggning ..."
-    ./TRACES_viral_align_reads.sh $ORGAN_T-$V_TAG.fa $ORGAN_T $V_TAG $THREADS $REMOVE_DUPLICATIONS
+    gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-$V_TAG.fa 2>> ../logs/Log-$ORGAN_T.txt;
+    echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+    echo -e "\e[34m[TRACESPipe]\e[32m Aligning ...\e[0m";
+    ./TRACES_viral_align_reads.sh $ORGAN_T-$V_TAG.fa $ORGAN_T $V_TAG $THREADS $REMOVE_DUPLICATIONS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
     #
     echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-    ./TRACES_viral_consensus.sh $ORGAN_T-$V_TAG.fa viral_aligned_sorted-$ORGAN_T-$V_TAG.bam $ORGAN_T $V_TAG
+    ./TRACES_viral_consensus.sh $ORGAN_T-$V_TAG.fa viral_aligned_sorted-$ORGAN_T-$V_TAG.bam $ORGAN_T $V_TAG 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+    #
     mkdir -p ../output_data/TRACES_viral_alignments;
     #rm -f ../output_data/TRACES_viral_alignments/*
     cp $ORGAN_T-$V_TAG.fa ../output_data/TRACES_viral_alignments/
@@ -341,6 +344,11 @@ while [[ $# -gt 0 ]]
     ;;
     -i|--install)
       INSTALL=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -up|--update)
+      UPDATE=1;
       SHOW_HELP=0;
       shift
     ;;
@@ -905,6 +913,7 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -f,     --force           Force running and overwrite of files,  "
   echo "                                                                   "
   echo "    -i,     --install         Installation of all the tools,       "
+  echo "    -up,    --update          Update all the tools in TRACESPipe,  "
   echo "                                                                   "
   echo "    -gmt,   --get-max-threads Get the number of maximum machine threads,"
   echo "    -t <THREADS>, --threads <THREADS>                              "
@@ -1045,6 +1054,12 @@ if [ "$SHOW_VERSION" -eq "1" ];
   fi
 #
 # ==============================================================================
+# MAKE SURE FOLDERS EXIST
+#
+mkdir -p ../logs/
+mkdir -p ../output_data/
+#
+# ==============================================================================
 #
 if [[ "$RUN_VISUAL_ALIGN" -eq "1" ]];
   then
@@ -1115,9 +1130,9 @@ if [[ "$GET_THREADS" -eq "1" ]];
 if [[ "$THREADS" -eq "0" ]];
   then
   THREADS=`./TRACES_get_max_threads.sh |awk '{print $8;}'`;
-  echo "[TRACESPipe] Running with $THREADS threads.";
+  echo -e "\e[34m[TRACESPipe]\e[32m Running with $THREADS threads.\e[0m";
   else
-  echo "[TRACESPipe] Running with $THREADS threads.";
+  echo -e "\e[34m[TRACESPipe]\e[32m Running with $THREADS threads.\e[0m";
   fi
 #
 # ==============================================================================
@@ -1126,6 +1141,13 @@ if [[ "$INSTALL" -eq "1" ]];
   then
   ./TRACES_install.sh
   fi
+#
+# ==============================================================================
+#
+if [[ "$UPDATE" -eq "1" ]];
+  then
+  ./TRACES_update.sh
+  fi 
 #
 # ==============================================================================
 #
@@ -1258,7 +1280,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     touch o_fw_pr.fq o_fw_unpr.fq o_rv_pr.fq o_rv_unpr.fq;
     #
     echo -e "\e[34m[TRACESPipe]\e[32m Trimming and filtering with Trimmomatic ...\e[0m";
-    ./TRACES_trim_filter_reads.sh $THREADS
+    ./TRACES_trim_filter_reads.sh $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
     #
     # THE OUTPUT OF TRIMMING IS:
@@ -1274,12 +1296,11 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Removing PhiX from the samples with MAGNET ...\e[0m";
       #./TRACES_remove_phix.sh $THREADS 
-      # TODO: REMOVE FROM THE DB PHIX OR CORRECT MAGNET AT READ LEVEL
+      # XXX: REMOVE FROM THE DB PHIX OR CORRECT MAGNET AT READ LEVEL
       cp o_fw_pr.fq NP-o_fw_pr.fq;
       cp o_fw_unpr.fq NP-o_fw_unpr.fq;
       cp o_rv_pr.fq NP-o_rv_pr.fq;
       cp o_rv_unpr.fq NP-o_rv_unpr.fq;      
-
       # IT IS USED ONLY FOR FALCON
       #
       # fastq_pair test_R1.fastq test_R2.fastq: [needs adaptation]
@@ -1287,21 +1308,21 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
-      echo -e "\e[34m[TRACESPipe]\e[32m Running viral metagenomic analysis with FALCON ...\e[0m";
-      ./TRACES_metagenomics_viral.sh $ORGAN_T VDB.fa 10000 $THREADS $TSIZE
+      echo -e "\e[34m[TRACESPipe]\e[32m Running viral metagenomic analysis with FALCON-meta ...\e[0m";
+      mkdir -p ../output_data/TRACES_results
+      ./TRACES_metagenomics_viral.sh $ORGAN_T VDB.fa 10000 $THREADS $TSIZE 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       mv $ORGAN_T.svg ../output_data/TRACES_results/
       mv $ORGAN_T-HEAT.svg ../output_data/TRACES_results/
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Finding the best references ...\e[0m";
       #
-      mkdir -p ../output_data/TRACES_results
       cp top-$ORGAN_T.csv ../output_data/TRACES_results/
       #
       rm -f ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt;
-      for virus in "${VIRUSES[@]}"
+      for VIRUS in "${VIRUSES[@]}"
         do
-        ./TRACES_get_best_$virus.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+        ./TRACES_get_best_$VIRUS.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
         done
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
@@ -1320,7 +1341,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Building complexity profiles with gto ...\e[0m";
       cat NP-o_fw_pr.fq NP-o_fw_unpr.fq NP-o_rv_pr.fq NP-o_rv_unpr.fq > P_TRACES_sample_reads.fq
-      ./TRACES_profiles.sh GIS-$ORGAN_T VDB.fa P_TRACES_sample_reads.fq $ORGAN_T
+      ./TRACES_profiles.sh GIS-$ORGAN_T VDB.fa P_TRACES_sample_reads.fq $ORGAN_T 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
     #
@@ -1333,7 +1354,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       CHECK_DB;
       #	
       echo -e "\e[34m[TRACESPipe]\e[32m Running NON viral metagenomic analysis with FALCON ...\e[0m";
-      ./TRACES_metagenomics.sh $ORGAN_T DB.fa 12000 $THREADS $TSIZE
+      ./TRACES_metagenomics.sh $ORGAN_T DB.fa 12000 $THREADS $TSIZE 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       mkdir -p ../output_data/TRACES_results;
       #rm -f ../output_data/TRACES_results/*
       mv NV-$ORGAN_T.svg ../output_data/TRACES_results/
@@ -1356,11 +1377,11 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       gto_fasta_extract_read_by_pattern -p "$SPECIFIC_ID" < VDB.fa > SPECIFIC-$SPECIFIC_ID.fa
       echo "Aliggning ..."
-      ./TRACES_viral_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID $THREADS $REMOVE_DUPLICATIONS
+      ./TRACES_viral_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID $THREADS $REMOVE_DUPLICATIONS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-      ./TRACES_viral_consensus.sh SPECIFIC-$SPECIFIC_ID.fa viral_aligned_sorted-$ORGAN_T-$SPECIFIC_ID.bam $ORGAN_T $SPECIFIC_ID
+      ./TRACES_viral_consensus.sh SPECIFIC-$SPECIFIC_ID.fa viral_aligned_sorted-$ORGAN_T-$SPECIFIC_ID.bam $ORGAN_T $SPECIFIC_ID 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       mkdir -p ../output_data/TRACES_specific_alignments;
       #rm -f ../output_data/TRACES_specific_alignments/*
       cp SPECIFIC-$SPECIFIC_ID.fa ../output_data/TRACES_specific_alignments/
@@ -1392,11 +1413,11 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       gto_fasta_extract_read_by_pattern -p "$SPECIFIC_ID" < VDB.fa > SPECIFIC-$SPECIFIC_ID.fa
       echo "Aliggning ..."
-      ./TRACES_viral_sensitive_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID $THREADS $REMOVE_DUPLICATIONS
+      ./TRACES_viral_sensitive_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID $THREADS $REMOVE_DUPLICATIONS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-      ./TRACES_viral_consensus.sh SPECIFIC-$SPECIFIC_ID.fa viral_aligned_sorted-$ORGAN_T-$SPECIFIC_ID.bam $ORGAN_T $SPECIFIC_ID
+      ./TRACES_viral_consensus.sh SPECIFIC-$SPECIFIC_ID.fa viral_aligned_sorted-$ORGAN_T-$SPECIFIC_ID.bam $ORGAN_T $SPECIFIC_ID 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       mkdir -p ../output_data/TRACES_specific_alignments;
       #rm -f ../output_data/TRACES_specific_alignments/*
       cp SPECIFIC-$SPECIFIC_ID.fa ../output_data/TRACES_specific_alignments/
@@ -1602,11 +1623,11 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       CHECK_MT_DNA;
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Aliggning reads to mitochondrial ref with bowtie2 ...\e[0m";
-      ./TRACES_mt_align_reads.sh mtDNA.fa $ORGAN_T $THREADS $REMOVE_DUPLICATIONS
+      ./TRACES_mt_align_reads.sh mtDNA.fa $ORGAN_T $THREADS $REMOVE_DUPLICATIONS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-      ./TRACES_mt_consensus.sh mtDNA.fa mt_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+      ./TRACES_mt_consensus.sh mtDNA.fa mt_aligned_sorted-$ORGAN_T.bam $ORGAN_T 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m"
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Storing files ...\e[0m"
@@ -1661,11 +1682,11 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       CHECK_CY_DNA;
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Aliggning reads to Y-chromosome ref with bowtie2 ...\e[0m";
-      ./TRACES_cy_align_reads.sh cy.fa $ORGAN_T $THREADS
+      ./TRACES_cy_align_reads.sh cy.fa $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-      ./TRACES_cy_consensus.sh cy.fa cy_aligned_sorted-$ORGAN_T.bam $ORGAN_T
+      ./TRACES_cy_consensus.sh cy.fa cy_aligned_sorted-$ORGAN_T.bam $ORGAN_T 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       mkdir -p ../output_data/TRACES_cy_alignments;
       #rm -f ../output_data/TRACES_cy_alignments/*
       cp cy.fa ../output_data/TRACES_cy_alignments/
@@ -1694,7 +1715,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       CHECK_CY_DNA;
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Estimating the quantity of Y-chromosome ...\e[0m";
-      ./TRACES_estimate_cy_quantity.sh $ORGAN_T $THREADS
+      ./TRACES_estimate_cy_quantity.sh $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
     #
@@ -1704,13 +1725,19 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_DE_NOVO_ASSEMBLY" -eq "1" ]];
       then
       echo -e "\e[34m[TRACESPipe]\e[32m Running do-novo DNA assembly with SPAdes ...\e[0m";
-      ./TRACES_assemble_all.sh $ORGAN_T $THREADS
+      ./TRACES_assemble_all.sh $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
     #
     #
     # ==========================================================================
-    # HYBRID ASSEMBLY: SCAFFOLDS & REFERENCES
+    # HYBRID ASSEMBLY: BETWEEN ALIGNMENTS_CONSENSUS & SCAFFOLDS
+    #
+    # INPUT:
+    # -> ALIGNMENTS_CONSENSUS_FASTA
+    # -> SCAFFOLDS_MULTI-FASTA 
+    # OUTPUT: 
+    # ../output_data/TRACES_hybrid_consensus_<ORGAN>/<VIRUS>-consensus-<ORGAN>.fa
     #
     if [[ "$RUN_HYBRID" -eq "1" ]];
       then
@@ -1718,21 +1745,37 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       mkdir -p ../output_data/TRACES_hybrid_$ORGAN_T/
       SCAFFOLDS_PATH="../output_data/TRACES_denovo_$ORGAN_T/scaffolds.fasta";
       HYBRID_CON_PATH="../output_data/TRACES_hybrid_consensus_$ORGAN_T";
+      HYBRID_ALI_PATH="../output_data/TRACES_hybrid_alignments_$ORGAN_T";
       HYBRID_BED_PATH="../output_data/TRACES_hybrid_BED_$ORGAN_T";
       HYBRID_PATH="../output_data/TRACES_hybrid_$ORGAN_T";
+      CON_PATH="../output_data/TRACES_viral_consensus";
       #
-      for virus in "${VIRUSES[@]}"
+      mkdir -p $HYBRID_CON_PATH;
+      mkdir -p $HYBRID_BED_PATH;
+      mkdir -p $HYBRID_ALI_PATH;
+      #
+      for VIRUS in "${VIRUSES[@]}"
         do
-        ./TRACES_hybrid.sh $virus $SCAFFOLDS_PATH $THREADS $ORGAN_T
-        ./TRACES_hybrid_consensus.sh $ORGAN_T-$virus.fa $HYBRID_PATH/scaffolds_aligned_sorted_$virus-$ORGAN_T.bam $ORGAN_T $virus;
-        #
-	mkdir -p $HYBRID_CON_PATH/;
-        mv $virus-consensus-$ORGAN_T.fa $HYBRID_CON_PATH
-        mkdir -p $HYBRID_BED_PATH;
-        mv $virus-calls-$ORGAN_T.bed $HYBRID_BED_PATH
-        mv $virus-coverage-$ORGAN_T.bed $HYBRID_BED_PATH
-        mv $virus-zero-coverage-$ORGAN_T.bed $HYBRID_BED_PATH
-        #
+	#cp $CON_PATH/$VIRUS-consensus-$ORGAN_T.fa $ORGAN_T-$VIRUS.fa	
+	#
+	if [ -f ../output_data/TRACES_viral_alignments/$ORGAN_T-$VIRUS.fa ];
+          then
+          cp ../output_data/TRACES_viral_alignments/$ORGAN_T-$VIRUS.fa $ORGAN_T-$VIRUS.fa	
+          ./TRACES_hybrid.sh $VIRUS $SCAFFOLDS_PATH $THREADS $ORGAN_T 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+	  ./TRACES_hybrid_consensus.sh $ORGAN_T-$VIRUS.fa $HYBRID_ALI_PATH/scaffolds_aligned_sorted_$VIRUS-$ORGAN_T.bam $ORGAN_T $VIRUS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+          #
+          mv $VIRUS-consensus-$ORGAN_T.fa $HYBRID_CON_PATH
+	  #
+          mv $VIRUS-calls-$ORGAN_T.bed $HYBRID_BED_PATH
+          mv $VIRUS-coverage-$ORGAN_T.bed $HYBRID_BED_PATH
+          mv $VIRUS-zero-coverage-$ORGAN_T.bed $HYBRID_BED_PATH
+          #
+	  mv scaffolds_aligned_sorted_$VIRUS-$ORGAN_T.bam $HYBRID_ALI_PATH
+          mv scaffolds_aligned_sorted_$VIRUS-$ORGAN_T.bam.bai $HYBRID_ALI_PATH
+	  mv $ORGAN_T-$VIRUS.fa $HYBRID_ALI_PATH
+          mv $ORGAN_T-$VIRUS.fa.fai $HYBRID_ALI_PATH
+          #
+          fi
         done
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
@@ -1740,22 +1783,50 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     # ==========================================================================
     # HYBRID ASSEMBLY: SCAFFOLDS & CONSENSUS
     #
-    if [[ "$RUN_HYBRID" -eq "1" ]];
+    # INPUT:
+    # -> ALIGNMENTS_CONSENSUS_FASTA
+    # -> SCAFFOLDS_MULTI-FASTA 
+    # OUTPUT: 
+    # ../output_data/TRACES_hybrid_consensus_<ORGAN>/<VIRUS>-consensus-<ORGAN>.fa
+    #
+    if [[ "$RUN_HYBRID2" -eq "1" ]];
       then
-      echo -e "\e[34m[TRACESPipe]\e[32m Running true HYBRID assembly ...\e[0m";
-      mkdir -p ../output_data/TRACES_true_hybrid_$ORGAN_T/
-      SCAFFOLDS="../output_data/TRACES_denovo_$ORGAN_T/scaffolds.fasta";
-      #gto_fastq_to_mfasta
-      #./TRACES_hybrid.sh "B19" $SCAFFOLDS $THREADS $ORGAN_T
+      echo -e "\e[34m[TRACESPipe]\e[32m Running HYBRID assembly ...\e[0m";
+      mkdir -p ../output_data/TRACES_hybrid_$ORGAN_T/
+      SCAFFOLDS_PATH="../output_data/TRACES_denovo_$ORGAN_T/scaffolds.fasta";
+      HYBRID_CON_PATH="../output_data/TRACES_hybrid_consensus_$ORGAN_T";
+      HYBRID_ALI_PATH="../output_data/TRACES_hybrid_alignments_$ORGAN_T";
+      HYBRID_BED_PATH="../output_data/TRACES_hybrid_BED_$ORGAN_T";
+      HYBRID_PATH="../output_data/TRACES_hybrid_$ORGAN_T";
+      CON_PATH="../output_data/TRACES_viral_consensus";
+      #
+      mkdir -p $HYBRID_CON_PATH;
+      mkdir -p $HYBRID_BED_PATH;
+      mkdir -p $HYBRID_ALI_PATH;
+      #
+      for VIRUS in "${VIRUSES[@]}"
+        do
+        cp $CON_PATH/$VIRUS-consensus-$ORGAN_T.fa ALIG-CON-$ORGAN_T-$VIRUS.fa
+        ./TRACES_hybrid.sh $VIRUS $SCAFFOLDS_PATH $THREADS $ORGAN_T 2>> ../logs/Log-$ORGAN_T.txt;
+        ./TRACES_hybrid_consensus.sh ALIG-CON-$ORGAN_T-$VIRUS.fa $HYBRID_ALI_PATH/scaffolds_aligned_sorted_$VIRUS-$ORGAN_T.bam $ORGAN_T $VIRUS 2>> ../logs/Log-$ORGAN_T.txt;
+        #
+        mv $VIRUS-consensus-$ORGAN_T.fa $HYBRID_CON_PATH
+        #
+        mv $VIRUS-calls-$ORGAN_T.bed $HYBRID_BED_PATH
+        mv $VIRUS-coverage-$ORGAN_T.bed $HYBRID_BED_PATH
+        mv $VIRUS-zero-coverage-$ORGAN_T.bed $HYBRID_BED_PATH
+        #
+        mv scaffolds_aligned_sorted_$VIRUS-$ORGAN_T.bam $HYBRID_ALI_PATH
+        mv scaffolds_aligned_sorted_$VIRUS-$ORGAN_T.bam.bai $HYBRID_ALI_PATH
+        mv ALIG-CON-$ORGAN_T-$VIRUS.fa $HYBRID_ALI_PATH
+        mv ALIG-CON-$ORGAN_T-$VIRUS.fa.fai $HYBRID_ALI_PATH
+        #
+        done
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+      fi
+    #
+    # ==========================================================================
 
- #     CHECK_CONSENSUS_DNA "../output_data/TRACES_viral_consensus/
- #     #
- #     echo -e "\e[34m[TRACESPipe]\e[32m Aliggning reads to Y-chromosome ref with bowtie2 ...\e[0m";
- #     ./TRACES_cy_align_reads.sh cy.fa $ORGAN_T $THREADS
- #     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
-     
-
-    fi
 
     # ==========================================================================
     #

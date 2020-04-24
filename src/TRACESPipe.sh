@@ -284,7 +284,7 @@ ALIGN_AND_CONSENSUS () {
   echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
   if [[ "$V_GID" != "-" && "$V_VAL" > "$2" ]];
     then
-    echo -e "\e[34m[TRACESPipe]\e[96m Best match: $V_INFO\e[0m";
+    echo -e "\e[34m[TRACESPipe]\e[96m Similarity best match: $V_INFO\e[0m";
     echo -e "\e[34m[TRACESPipe]\e[32m Extracting sequence from VDB.fa\e[0m";
     CHECK_VDB;
     gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-$V_TAG.fa 2>> ../logs/Log-$ORGAN_T.txt;
@@ -310,7 +310,13 @@ ALIGN_AND_CONSENSUS () {
     mv $V_TAG-coverage-$ORGAN_T.bed ../output_data/TRACES_viral_bed/
     mv $V_TAG-zero-coverage-$ORGAN_T.bed ../output_data/TRACES_viral_bed/
     mkdir -p ../output_data/TRACES_viral_statistics;
+    echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+    echo -e "\e[34m[TRACESPipe]\e[32m Calculating coverage ...\e[0m";
     ./TRACES_overall_virus.sh $V_TAG $ORGAN_T
+    C_BREADTH=`cat ../output_data/TRACES_viral_statistics/$V_TAG-total-horizontal-coverage-$ORGAN_T.txt`;
+    C_DEPTH=`cat ../output_data/TRACES_viral_statistics/$V_TAG-total-depth-coverage-$ORGAN_T.txt`;
+    echo -e "\e[34m[TRACESPipe]\e[1m Breadth (H) coverage: $C_BREADTH \e[0m";
+    echo -e "\e[34m[TRACESPipe]\e[1m Depth-x (V) coverage: $C_DEPTH \e[0m";
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
     fi
   }
@@ -1755,17 +1761,20 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     # -> ALIGNMENTS_CONSENSUS_FASTA
     # -> SCAFFOLDS_MULTI-FASTA 
     # OUTPUT: 
-    # ../output_data/TRACES_hybrid_consensus_<ORGAN>/<VIRUS>-consensus-<ORGAN>.fa
+    # ../output_data/TRACES_hybrid_consensus/<VIRUS>-consensus-<ORGAN>.fa
     #
     if [[ "$RUN_HYBRID" -eq "1" ]];
       then
       echo -e "\e[34m[TRACESPipe]\e[32m Running HYBRID assembly ...\e[0m";
-      mkdir -p ../output_data/TRACES_hybrid_$ORGAN_T/
+      mkdir -p ../output_data/TRACES_hybrid/
+      mkdir -p ../output_data/TRACES_hybrid_consensus/
+      mkdir -p ../output_data/TRACES_hybrid_alignments/
+      mkdir -p ../output_data/TRACES_hybrid_bed/
       SCAFFOLDS_PATH="../output_data/TRACES_denovo_$ORGAN_T/scaffolds.fasta";
-      HYBRID_CON_PATH="../output_data/TRACES_hybrid_consensus_$ORGAN_T";
-      HYBRID_ALI_PATH="../output_data/TRACES_hybrid_alignments_$ORGAN_T";
-      HYBRID_BED_PATH="../output_data/TRACES_hybrid_BED_$ORGAN_T";
-      HYBRID_PATH="../output_data/TRACES_hybrid_$ORGAN_T";
+      HYBRID_CON_PATH="../output_data/TRACES_hybrid_consensus";
+      HYBRID_ALI_PATH="../output_data/TRACES_hybrid_alignments";
+      HYBRID_BED_PATH="../output_data/TRACES_hybrid_bed";
+      HYBRID_PATH="../output_data/TRACES_hybrid";
       CON_PATH="../output_data/TRACES_viral_consensus";
       #
       mkdir -p $HYBRID_CON_PATH;
@@ -1805,17 +1814,20 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     # -> ALIGNMENTS_CONSENSUS_FASTA
     # -> SCAFFOLDS_MULTI-FASTA 
     # OUTPUT: 
-    # ../output_data/TRACES_hybrid_consensus_<ORGAN>/<VIRUS>-consensus-<ORGAN>.fa
+    # ../output_data/TRACES_hybrid_consensus/<VIRUS>-consensus-<ORGAN>.fa
     #
     if [[ "$RUN_HYBRID2" -eq "1" ]];
       then
       echo -e "\e[34m[TRACESPipe]\e[32m Running HYBRID assembly ...\e[0m";
-      mkdir -p ../output_data/TRACES_hybrid_$ORGAN_T/
+      mkdir -p ../output_data/TRACES_hybrid/
+      mkdir -p ../output_data/TRACES_hybrid_consensus/
+      mkdir -p ../output_data/TRACES_hybrid_alignments/
+      mkdir -p ../output_data/TRACES_hybrid_bed/
       SCAFFOLDS_PATH="../output_data/TRACES_denovo_$ORGAN_T/scaffolds.fasta";
-      HYBRID_CON_PATH="../output_data/TRACES_hybrid_consensus_$ORGAN_T";
-      HYBRID_ALI_PATH="../output_data/TRACES_hybrid_alignments_$ORGAN_T";
-      HYBRID_BED_PATH="../output_data/TRACES_hybrid_BED_$ORGAN_T";
-      HYBRID_PATH="../output_data/TRACES_hybrid_$ORGAN_T";
+      HYBRID_CON_PATH="../output_data/TRACES_hybrid_consensus";
+      HYBRID_ALI_PATH="../output_data/TRACES_hybrid_alignments";
+      HYBRID_BED_PATH="../output_data/TRACES_hybrid_bed";
+      HYBRID_PATH="../output_data/TRACES_hybrid";
       CON_PATH="../output_data/TRACES_viral_consensus";
       #
       mkdir -p $HYBRID_CON_PATH;

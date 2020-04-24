@@ -25,7 +25,7 @@ FALCON-filter-visual -v -e 1 -F -o NV-$ORGAN.svg $ORGAN.pos
 #
 ## RUN FALCON FOR INTER-GENOMIC SIMILARITY ANALYSIS
 sed -e 's/NC_//g' top-non-$ORGAN.csv > F-top-non-$ORGAN.csv
-head -n $TSIZE F-top-non-viral-$ORGAN.csv | awk '{ if($3 > 0.01) print $1"\t"$2"\t"$3"\t"$4; }' \
+head -n $TSIZE F-top-non-viral-$ORGAN.csv | awk '{ if($3 > 0.001) print $1"\t"$2"\t"$3"\t"$4; }' \
 | awk '{ print $4;}' | tr '|' '\t' | tr '_' '\t' | awk '{ print $1;}' > GIS-$ORGAN;
 idx=0;
 cat GIS-$ORGAN | while read line
@@ -40,7 +40,16 @@ cat GIS-$ORGAN | while read line
   gto_fasta_extract_read_by_pattern -p "$line" < $DB > $namex;
   ((idx++));
   done
-FALCON-inter -v -m 6:1:1:0/0 -m 13:20:1:3/10 -m 20:100:1:5/10 -c 30 -n $THREADS -x $ORGAN-MATRIX.csv `cat $ORGAN-FNAMES.fil`
+#  
+MAX_VALUES=`wc -l ../src/GIS-hair | awk '{ print $1}'`;
+if [[ "$THREADS" > "$MAX_VALUES" ]] 
+  then
+  TMP_THREADS=$MAX_VALUES;
+  else
+  TMP_THREADS=$THREADS;
+  fi
+#
+FALCON-inter -v -m 6:1:1:0/0 -m 13:20:1:3/10 -m 20:100:1:5/10 -c 30 -n $TMP_THREADS -x $ORGAN-MATRIX.csv `cat $ORGAN-FNAMES.fil`
 FALCON-inter-visual -v -w 25 -a 8 -x NV-$ORGAN-HEAT.svg $ORGAN-MATRIX.csv
 #
 ## CONVERT SVG OUTPUT TO PDF

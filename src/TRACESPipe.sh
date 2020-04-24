@@ -769,7 +769,7 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift
     ;;
-    -rya|--run-y-align)
+    -rya|--run-cy-align)
       RUN_ANALYSIS=1;
       RUN_CY_ON=1;
       SHOW_HELP=0;
@@ -1267,7 +1267,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     CHECK_GZIP_FILES $SPL_Forward $SPL_Reverse;
     #
-    echo -e "\e[34m[TRACESPipe]\e[32m Running\e[93m Organ=$ORGAN_T Forward=$SPL_Forward Reverse=$SPL_Reverse\e[0m";
+    echo -e "\e[34m[TRACESPipe]\e[93m Organ=$ORGAN_T Forward=$SPL_Forward Reverse=$SPL_Reverse\e[0m";
     #
     rm -f FW_READS.fq.gz RV_READS.fq.gz
     echo -e "\e[34m[TRACESPipe]\e[32m Copping an instance of the files ...\e[0m";
@@ -1371,14 +1371,14 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     if [[ "$RUN_SPECIFIC" -eq "1" ]];
       then
-      echo -e "\e[34m[TRACESPipe]\e[32m Aliggning reads to specific viral ref(s) with pattern \"$SPECIFIC_ID\" using bowtie2 ...\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Aligning reads to specific viral ref(s) with pattern \"$SPECIFIC_ID\" using bowtie2 ...\e[0m";
       #
       echo "Extracting sequence with pattern \"$SPECIFIC_ID\" from VDB.fa ..."
       #
       CHECK_VDB;
       #
       gto_fasta_extract_read_by_pattern -p "$SPECIFIC_ID" < VDB.fa > SPECIFIC-$SPECIFIC_ID.fa
-      echo "Aliggning ..."
+      echo "Aligning ..."
       ./TRACES_viral_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID $THREADS $REMOVE_DUPLICATIONS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
@@ -1407,14 +1407,14 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     if [[ "$RUN_SPECIFIC_SENSITIVE" -eq "1" ]];
       then
-      echo -e "\e[34m[TRACESPipe]\e[32m Aliggning reads to specific viral ref(s) with pattern \"$SPECIFIC_ID\" using bowtie2 with EXTREME sensitivity ...\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Aligning reads to specific viral ref(s) with pattern \"$SPECIFIC_ID\" using bowtie2 with EXTREME sensitivity ...\e[0m";
       #
       echo "Extracting sequence with pattern \"$SPECIFIC_ID\" from VDB.fa ..."
       #
       CHECK_VDB;
       #
       gto_fasta_extract_read_by_pattern -p "$SPECIFIC_ID" < VDB.fa > SPECIFIC-$SPECIFIC_ID.fa
-      echo "Aliggning ..."
+      echo "Aligning ..."
       ./TRACES_viral_sensitive_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID $THREADS $REMOVE_DUPLICATIONS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
@@ -1624,7 +1624,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       CHECK_MT_DNA;
       #
-      echo -e "\e[34m[TRACESPipe]\e[32m Aliggning reads to mitochondrial ref with bowtie2 ...\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Aligning reads to mitochondrial ref with bowtie2 ...\e[0m";
       ./TRACES_mt_align_reads.sh mtDNA.fa $ORGAN_T $THREADS $REMOVE_DUPLICATIONS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
@@ -1661,7 +1661,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Trimming, filtering, and collapsing with AdapterRemoval ...\e[0m";
       AdapterRemoval --threads $THREADS --file1 FW_READS.fq.gz --file2 RV_READS.fq.gz --outputcollapsed reads.fq --trimns --trimqualities --minlength 30 --collapse --adapter-list adapters_ar.fa
-      echo -e "\e[34m[TRACESPipe]\e[32m Aliggning data using bwa ...\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Aligning data using bwa ...\e[0m";
       bwa index mtDNA.fa
       bwa mem -t $THREADS -I 0 -O 2 -N 0.02 -L 1024 -E 7 mtDNA.fa reads.fq > mt-$ORGAN_T.sam
       echo -e "\e[34m[TRACESPipe]\e[32m Adapting data with samtools ...\e[0m";
@@ -1683,7 +1683,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       CHECK_CY_DNA;
       #
-      echo -e "\e[34m[TRACESPipe]\e[32m Aliggning reads to Y-chromosome ref with bowtie2 ...\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Aligning reads to Y-chromosome ref with bowtie2 ...\e[0m";
       ./TRACES_cy_align_reads.sh cy.fa $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #

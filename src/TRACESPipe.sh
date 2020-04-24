@@ -14,6 +14,7 @@
 SHOW_HELP=0;
 SHOW_VERSION=0;
 FORCE=0;
+FLUSH_LOGS=0;
 GET_THREADS=0;
 THREADS=0;
 #
@@ -344,6 +345,10 @@ while [[ $# -gt 0 ]]
     ;;
     -f|-F|--force)
       FORCE=1;
+      shift
+    ;;
+    -flog|--flush-logs)
+      FLUSH_LOGS=1;
       shift
     ;;
     -gmt|--get-max-threads)
@@ -928,7 +933,7 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -h,     --help            Show this help message and exit,     "
   echo "    -v,     --version         Show the version and some information,  "
   echo "    -f,     --force           Force running and overwrite of files,  "
-  echo "                                                                   "
+  echo "    -flog,  --flush-logs      Flush logs (delete logs),              "
   echo "    -i,     --install         Installation of all the tools,       "
   echo "    -up,    --update          Update all the tools in TRACESPipe,  "
   echo "                                                                   "
@@ -1080,6 +1085,16 @@ if [ "$SHOW_VERSION" -eq "1" ];
 mkdir -p ../logs/
 mkdir -p ../output_data/
 #
+# ==============================================================================
+#
+if [[ "$FLUSH_LOGS" -eq "1" ]];
+  then
+  echo -e "\e[34m[TRACESPipe]\e[32m Flushing logs ...\e[0m";
+  rm -f ../logs/Log-stdout-*.txt
+  rm -f ../logs/Log-stderr-*.txt
+  echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+  fi
+#  
 # ==============================================================================
 #
 if [[ "$RUN_VISUAL_ALIGN" -eq "1" ]];
@@ -1392,12 +1407,11 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       then
       echo -e "\e[34m[TRACESPipe]\e[32m Aligning reads to specific viral ref(s) with pattern \"$SPECIFIC_ID\" using bowtie2 ...\e[0m";
       #
-      echo "Extracting sequence with pattern \"$SPECIFIC_ID\" from VDB.fa ..."
-      #
       CHECK_VDB;
       #
+      echo -e "\e[34m[TRACESPipe]\e[32m Extracting sequence with pattern \"$SPECIFIC_ID\" from VDB.fa ...\e[0m";
       gto_fasta_extract_read_by_pattern -p "$SPECIFIC_ID" < VDB.fa > SPECIFIC-$SPECIFIC_ID.fa
-      echo "Aligning ..."
+      echo -e "\e[34m[TRACESPipe]\e[32m Aligning ... \e[0m";
       ./TRACES_viral_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID $THREADS $REMOVE_DUPLICATIONS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
@@ -1418,7 +1432,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       mv $SPECIFIC_ID-coverage-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
       mv $SPECIFIC_ID-zero-coverage-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
       mkdir -p ../output_data/TRACES_specific_statistics;
+      echo -e "\e[34m[TRACESPipe]\e[32m Calculating coverage ...\e[0m";
       ./TRACES_overall_specific.sh $SPECIFIC_ID $ORGAN_T
+      C_BREADTH=`cat ../output_data/TRACES_specific_statistics/$SPECIFIC_ID-total-horizontal-coverage-$ORGAN_T.txt`;
+      C_DEPTH=`cat ../output_data/TRACES_specific_statistics/$SPECIFIC_ID-total-depth-coverage-$ORGAN_T.txt`;
+      echo -e "\e[34m[TRACESPipe]\e[1m Breadth (H) coverage: $C_BREADTH \e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[1m Depth-x (V) coverage: $C_DEPTH \e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
     #
     # ==========================================================================
@@ -1428,12 +1448,11 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       then
       echo -e "\e[34m[TRACESPipe]\e[32m Aligning reads to specific viral ref(s) with pattern \"$SPECIFIC_ID\" using bowtie2 with EXTREME sensitivity ...\e[0m";
       #
-      echo "Extracting sequence with pattern \"$SPECIFIC_ID\" from VDB.fa ..."
-      #
       CHECK_VDB;
       #
+      echo -e "\e[34m[TRACESPipe]\e[32m Extracting sequence with pattern \"$SPECIFIC_ID\" from VDB.fa ...\e[0m";
       gto_fasta_extract_read_by_pattern -p "$SPECIFIC_ID" < VDB.fa > SPECIFIC-$SPECIFIC_ID.fa
-      echo "Aligning ..."
+      echo -e "\e[34m[TRACESPipe]\e[32m Aligning ...\e[0m";
       ./TRACES_viral_sensitive_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID $THREADS $REMOVE_DUPLICATIONS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
@@ -1454,7 +1473,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       mv $SPECIFIC_ID-coverage-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
       mv $SPECIFIC_ID-zero-coverage-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
       mkdir -p ../output_data/TRACES_specific_statistics;
+      echo -e "\e[34m[TRACESPipe]\e[32m Calculating coverage ...\e[0m";
       ./TRACES_overall_specific.sh $SPECIFIC_ID $ORGAN_T
+      C_BREADTH=`cat ../output_data/TRACES_specific_statistics/$SPECIFIC_ID-total-horizontal-coverage-$ORGAN_T.txt`;
+      C_DEPTH=`cat ../output_data/TRACES_specific_statistics/$SPECIFIC_ID-total-depth-coverage-$ORGAN_T.txt`;
+      echo -e "\e[34m[TRACESPipe]\e[1m Breadth (H) coverage: $C_BREADTH \e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[1m Depth-x (V) coverage: $C_DEPTH \e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
     #
     # ========================================================================== 
@@ -1667,7 +1692,12 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       mv mt-coverage-$ORGAN_T.bed ../output_data/TRACES_mtdna_bed/
       mv mt-zero-coverage-$ORGAN_T.bed ../output_data/TRACES_mtdna_bed/
       mkdir -p ../output_data/TRACES_mtdna_statistics;
+      echo -e "\e[34m[TRACESPipe]\e[32m Calculating coverage ...\e[0m";
       ./TRACES_overall_mtdna.sh $ORGAN_T
+      C_BREADTH=`cat ../output_data/TRACES_mtdna_statistics/mt-total-horizontal-coverage-$ORGAN_T.txt`;
+      C_DEPTH=`cat ../output_data/TRACES_mtdna_statistics/mt-total-depth-coverage-$ORGAN_T.txt`;
+      echo -e "\e[34m[TRACESPipe]\e[1m Breadth (H) coverage: $C_BREADTH \e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[1m Depth-x (V) coverage: $C_DEPTH \e[0m";
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m"
       fi
     # ========================================================================
@@ -1679,17 +1709,17 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       CHECK_ADAPTERS_AR;
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Trimming, filtering, and collapsing with AdapterRemoval ...\e[0m";
-      AdapterRemoval --threads $THREADS --file1 FW_READS.fq.gz --file2 RV_READS.fq.gz --outputcollapsed reads.fq --trimns --trimqualities --minlength 30 --collapse --adapter-list adapters_ar.fa
+      AdapterRemoval --threads $THREADS --file1 FW_READS.fq.gz --file2 RV_READS.fq.gz --outputcollapsed reads.fq --trimns --trimqualities --minlength 30 --collapse --adapter-list adapters_ar.fa 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Aligning data using bwa ...\e[0m";
-      bwa index mtDNA.fa
-      bwa mem -t $THREADS -I 0 -O 2 -N 0.02 -L 1024 -E 7 mtDNA.fa reads.fq > mt-$ORGAN_T.sam
+      bwa index mtDNA.fa 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+      bwa mem -t $THREADS -I 0 -O 2 -N 0.02 -L 1024 -E 7 mtDNA.fa reads.fq > mt-$ORGAN_T.sam 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Adapting data with samtools ...\e[0m";
       samtools view -bSh mt-$ORGAN_T.sam > mt-$ORGAN_T.bam
       samtools view -bh -F4 mt-$ORGAN_T.bam > FIL-mt-$ORGAN_T.bam;
       echo -e "\e[34m[TRACESPipe]\e[32m Estimating the damage of mtDNA using mapDamage2 ...\e[0m";
       rm -fr ../output_data/TRACES_mtdna_damage_$ORGAN_T
       #mapDamage --rescale -d ../output_data/TRACES_mtdna_damage_$ORGAN_T -i FIL-$ORGAN_T.bam -r mtDNA.fa;
-      mapDamage -d ../output_data/TRACES_mtdna_damage_$ORGAN_T -i FIL-mt-$ORGAN_T.bam -r mtDNA.fa;
+      mapDamage -d ../output_data/TRACES_mtdna_damage_$ORGAN_T -i FIL-mt-$ORGAN_T.bam -r mtDNA.fa 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m"
       #
       fi
@@ -1807,57 +1837,6 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
     #
-    # ==========================================================================
-    # HYBRID ASSEMBLY: SCAFFOLDS & CONSENSUS
-    #
-    # INPUT:
-    # -> ALIGNMENTS_CONSENSUS_FASTA
-    # -> SCAFFOLDS_MULTI-FASTA 
-    # OUTPUT: 
-    # ../output_data/TRACES_hybrid_consensus/<VIRUS>-consensus-<ORGAN>.fa
-    #
-    if [[ "$RUN_HYBRID2" -eq "1" ]];
-      then
-      echo -e "\e[34m[TRACESPipe]\e[32m Running HYBRID assembly ...\e[0m";
-      mkdir -p ../output_data/TRACES_hybrid/
-      mkdir -p ../output_data/TRACES_hybrid_consensus/
-      mkdir -p ../output_data/TRACES_hybrid_alignments/
-      mkdir -p ../output_data/TRACES_hybrid_bed/
-      SCAFFOLDS_PATH="../output_data/TRACES_denovo_$ORGAN_T/scaffolds.fasta";
-      HYBRID_CON_PATH="../output_data/TRACES_hybrid_consensus";
-      HYBRID_ALI_PATH="../output_data/TRACES_hybrid_alignments";
-      HYBRID_BED_PATH="../output_data/TRACES_hybrid_bed";
-      HYBRID_PATH="../output_data/TRACES_hybrid";
-      CON_PATH="../output_data/TRACES_viral_consensus";
-      #
-      mkdir -p $HYBRID_CON_PATH;
-      mkdir -p $HYBRID_BED_PATH;
-      mkdir -p $HYBRID_ALI_PATH;
-      #
-      for VIRUS in "${VIRUSES[@]}"
-        do
-        cp $CON_PATH/$VIRUS-consensus-$ORGAN_T.fa ALIG-CON-$ORGAN_T-$VIRUS.fa
-        ./TRACES_hybrid.sh $VIRUS $SCAFFOLDS_PATH $THREADS $ORGAN_T 2>> ../logs/Log-$ORGAN_T.txt;
-        ./TRACES_hybrid_consensus.sh ALIG-CON-$ORGAN_T-$VIRUS.fa $HYBRID_ALI_PATH/scaffolds_aligned_sorted_$VIRUS-$ORGAN_T.bam $ORGAN_T $VIRUS 2>> ../logs/Log-$ORGAN_T.txt;
-        #
-        mv $VIRUS-consensus-$ORGAN_T.fa $HYBRID_CON_PATH
-        #
-        mv $VIRUS-calls-$ORGAN_T.bed $HYBRID_BED_PATH
-        mv $VIRUS-coverage-$ORGAN_T.bed $HYBRID_BED_PATH
-        mv $VIRUS-zero-coverage-$ORGAN_T.bed $HYBRID_BED_PATH
-        #
-        mv scaffolds_aligned_sorted_$VIRUS-$ORGAN_T.bam $HYBRID_ALI_PATH
-        mv scaffolds_aligned_sorted_$VIRUS-$ORGAN_T.bam.bai $HYBRID_ALI_PATH
-        mv ALIG-CON-$ORGAN_T-$VIRUS.fa $HYBRID_ALI_PATH
-        mv ALIG-CON-$ORGAN_T-$VIRUS.fa.fai $HYBRID_ALI_PATH
-        #
-        done
-      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
-      fi
-    #
-    # ==========================================================================
-
-
     # ==========================================================================
     #
     done

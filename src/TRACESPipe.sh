@@ -1768,7 +1768,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[TRACESPipe]\e[32m Estimating the quantity of Y-chromosome ...\e[0m";
       ./TRACES_estimate_cy_quantity.sh $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       CY_EST_CALUE=`grep "Dissimilarity" ../output_data/TRACES_results/REP_CY_$ORGAN_T.txt \
-      | awk '{ print "BPS: "$6" ; NRS: "$16" "; }'`;
+      | awk '{ print "BPS: "$6" ; NRC: "$16" "; }'`;
       echo -e "\e[34m[TRACESPipe]\e[36m Estimation: $CY_EST_CALUE \e[0m"; 
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi

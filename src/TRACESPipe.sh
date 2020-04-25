@@ -1416,7 +1416,14 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     if [[ "$VIEW_TOP" -eq "1" ]];
       then
-      head -n $VTOP_SIZE ../output_data/TRACES_results/top-$ORGAN_T.csv
+      CHECK_E_FILE "../output_data/TRACES_results/top-$ORGAN_T.csv";
+      F_TOP_SIZE=`wc -l ../output_data/TRACES_results/top-$ORGAN_T.csv | awk '{ print $1; }'`;
+      if [[ "$F_TOP_SIZE" -eq "0" ]];
+        then
+	echo -e "\e[34m[TRACESPipe]\e[31m Empty top-$ORGAN_T.csv results!\e[0m";
+	else
+        head -n $VTOP_SIZE ../output_data/TRACES_results/top-$ORGAN_T.csv
+        fi
       fi
     #
     # ==========================================================================

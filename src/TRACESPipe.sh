@@ -42,6 +42,8 @@ RUN_META_NON_VIRAL_ON=0;
 RUN_MITO_ON=0;
 RUN_MITO_DAMAGE_ON=0;
 #
+VIEW_TOP=0;
+#
 REMOVE_DUPLICATIONS=0;
 #
 RUN_B19_ON=0;
@@ -388,6 +390,12 @@ while [[ $# -gt 0 ]]
       GEN_ADAPTERS=1;
       SHOW_HELP=0;
       shift
+    ;;
+    -top|--view-top)
+      VIEW_TOP=1;
+      VTOP_SIZE="$2";
+      SHOW_HELP=0;
+      shift 2
     ;;
     -gp|--get-phix)
       GET_PHIX=1;
@@ -975,12 +983,16 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -ro,    --run-meta-nv     Run NON-viral metagenomic identification,"
   echo "                                                                  "
   echo "    -mis <VALUE>, --min-similarity <VALUE>                         "
-  echo "                              Minimum similarity value to consider the"
+  echo "                              Minimum similarity value to consider the "
   echo "                              sequence for alignment-consensus (filter), "
-  echo "                                                                    "
+  echo "                                                                       "
+  echo "    -top <VALUE>, --view-top <VALUE>                                   "
+  echo "                              Display the top <VALUE> with the highest "
+  echo "                              similarity (by descending order),        "
+  echo "                                                                       "
   echo "    -rava,  --run-all-v-alig  Run all viral align/sort/consensus seqs, "
-  echo "                                                                 "
-  echo "    -rb19,  --run-b19         Run B19  align and consensus seq,    "
+  echo "                                                                       "
+  echo "    -rb19,  --run-b19         Run B19  align and consensus seq,        "
   echo "    -rh1,   --run-hv1         Run HHV1   align and consensus seq,    "
   echo "    -rh2,   --run-hv2         Run HHV2   align and consensus seq,    "
   echo "    -rh3,   --run-hv3         Run HHV3   align and consensus seq,    "
@@ -1400,6 +1412,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
     #
+    # ==============================================================================
+    #
+    if [[ "$VIEW_TOP" -eq "1" ]];
+      then
+      head -n $VTOP_SIZE ../output_data/TRACES_results/top-$ORGAN_T.csv
+      fi
+    #
     # ==========================================================================
     # RUN SPECIFIC SPECIFIC ALIGN/CONSENSUS
     #
@@ -1696,8 +1715,8 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       ./TRACES_overall_mtdna.sh $ORGAN_T
       C_BREADTH=`cat ../output_data/TRACES_mtdna_statistics/mt-total-horizontal-coverage-$ORGAN_T.txt`;
       C_DEPTH=`cat ../output_data/TRACES_mtdna_statistics/mt-total-depth-coverage-$ORGAN_T.txt`;
-      echo -e "\e[34m[TRACESPipe]\e[1m Breadth (H) coverage: $C_BREADTH \e[0m";
-      echo -e "\e[34m[TRACESPipe]\e[1m Depth-x (V) coverage: $C_DEPTH \e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[35m Breadth (H) coverage: $C_BREADTH \e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[35m Depth-x (V) coverage: $C_DEPTH \e[0m";
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m"
       fi
     # ========================================================================

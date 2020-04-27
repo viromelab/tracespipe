@@ -53,6 +53,8 @@ if [[ "$INSTALL_PIPELINE" -eq "1" ]];
   conda install -c bioconda tabix --yes
   conda install -c bioconda adapterremoval --yes
   conda install -c bioconda bwa --yes
+  conda install -c bioconda blast --yes
+  #conda install -c anaconda curl
   #
   Program_installed "trimmomatic";
   Program_installed "cryfa";
@@ -72,6 +74,7 @@ if [[ "$INSTALL_PIPELINE" -eq "1" ]];
   Program_installed "tabix";
   Program_installed "AdapterRemoval";
   Program_installed "bwa";
+  Program_installed "blastn";
   fi
 #
 # ==============================================================================

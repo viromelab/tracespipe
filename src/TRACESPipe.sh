@@ -33,6 +33,11 @@ ADD_EXTRA_SPECIFIC=0;
 ADD_FASTA=0;
 NEW_FASTA="";
 #
+CREATE_BLAST_DB=0;
+UPDATE_BLAST_DB=0;
+SEARCH_BLAST_DB=0;
+BLAST_QUERY="";
+#
 RUN_ANALYSIS=0;
 #
 RUN_META_ON=0;
@@ -401,6 +406,22 @@ while [[ $# -gt 0 ]]
       GET_PHIX=1;
       SHOW_HELP=0;
       shift
+    ;;
+    -cbn|--create-blast-db)
+      CREATE_BLAST_DB=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -ubn|--update-blast-db)
+      UPDATE_BLAST_DB=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -sfs|--search-blast-db)
+      SEARCH_BLAST_DB=1;
+      BLAST_QUERY="$2";
+      SHOW_HELP=0;
+      shift 2
     ;;
     -rdup|--remove-dup)
       REMOVE_DUPLICATIONS=1;
@@ -956,7 +977,7 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -vdbr,  --build-viral-r   Build viral database (references only),  "
   echo "    -udb,   --build-unviral   Build non viral database (control),  "
   echo "                                                                   "
-  echo "    -afs <FASTA> --add-fasta <FASTA>                               "
+  echo "    -afs <FASTA>, --add-fasta <FASTA>                               "
   echo "                              Add a FASTA sequence to the VDB.fa,  "
   echo "    -aes <ID>, --add-extra-seq <ID>                                "
   echo "                              Add extra sequence to the VDB.fa,    "
@@ -971,6 +992,11 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                                                                   "
   echo "    -gy,    --get-y-chromo    Downloads human Y-chromosome,        "
   echo "    -gax,   --get-all-aux     Runs -gad -gp -gm -gy,               "
+  echo "                                                                   "
+  echo "    -cbn,   --create-blast-db It creates a nucleotide blast database, "
+  echo "    -ubn,   --update-blast-db It updates a nucleotide blast database, "
+  echo "    -sfs <FASTA>, --search-blast-db <FASTA>                           "
+  echo "                              It blasts the nucleotide (nt) blast DB, "
   echo "                                                                   "
   echo "    -rdup,  --remove-dup      Remove duplications (e.g. PCR dup),  "
   echo "                                                                   "
@@ -1128,6 +1154,30 @@ if [[ "$RUN_COVERAGE_TABLE" -eq "1" ]];
 if [[ "$RUN_COVERAGE_TABLE_CSV" -eq "1" ]];
   then
   ./TRACES_coverage_table_csv.sh
+  exit 0;
+  fi
+#
+# ==============================================================================
+#
+if [[ "$CREATE_BLAST_DB" -eq "1" ]];
+  then
+  ./TRACES_blastn_create_n_db.sh
+  exit 0;
+  fi
+#
+# ==============================================================================
+#
+if [[ "$UPDATE_BLAST_DB" -eq "1" ]];
+  then
+  ./TRACES_blastn_update_n_db.sh
+  exit 0;
+  fi
+#
+# ==============================================================================
+#
+if [[ "$SEARCH_BLAST_DB" -eq "1" ]];
+  then
+  ./TRACES_blastn_n_db.sh $BLAST_QUERY
   exit 0;
   fi
 #

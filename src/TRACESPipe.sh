@@ -36,6 +36,7 @@ NEW_FASTA="";
 CREATE_BLAST_DB=0;
 UPDATE_BLAST_DB=0;
 SEARCH_BLAST_DB=0;
+SEARCH_BLAST_REMOTE_DB=0;
 BLAST_QUERY="";
 #
 RUN_ANALYSIS=0;
@@ -419,6 +420,12 @@ while [[ $# -gt 0 ]]
     ;;
     -sfs|--search-blast-db)
       SEARCH_BLAST_DB=1;
+      BLAST_QUERY="$2";
+      SHOW_HELP=0;
+      shift 2
+    ;;
+    -sfrs|--search-blast-remote-db)
+      SEARCH_BLAST_REMOTE_DB=1;
       BLAST_QUERY="$2";
       SHOW_HELP=0;
       shift 2
@@ -995,8 +1002,13 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                                                                   "
   echo "    -cbn,   --create-blast-db It creates a nucleotide blast database, "
   echo "    -ubn,   --update-blast-db It updates a nucleotide blast database, "
+  echo "                                                                   "
   echo "    -sfs <FASTA>, --search-blast-db <FASTA>                           "
   echo "                              It blasts the nucleotide (nt) blast DB, "
+  echo "                                                                   "
+  echo "    -sfrs <FASTA>, --search-blast-remote-db <FASTA>                   "
+  echo "                              It blasts remotly thenucleotide (nt) blast "
+  echo "                              database (it requires internet connection), "
   echo "                                                                   "
   echo "    -rdup,  --remove-dup      Remove duplications (e.g. PCR dup),  "
   echo "                                                                   "
@@ -1183,10 +1195,22 @@ if [[ "$UPDATE_BLAST_DB" -eq "1" ]];
 #
 if [[ "$SEARCH_BLAST_DB" -eq "1" ]];
   then
-  echo -e "\e[34m[TRACESPipe]\e[32m Searching $BLAST_QUERY in Blast nt database ...\e[0m";
+  echo -e "\e[34m[TRACESPipe]\e[32m Searching $BLAST_QUERY in remote Blast nt database ...\e[0m";
   BLASTS_OUTPUT="../output_data/TRACES_blasts/";
   mkdir -p $BLASTS_OUTPUT;
-  ./TRACES_blastn_n_db.sh $BLAST_QUERY > $BLASTS_OUTPUT 2>> ../logs/Log-stderr-system.txt;
+  ./TRACES_blastn_n_db.sh $BLAST_QUERY > $BLASTS_OUTPUT/x.txt 2>> ../logs/Log-stderr-system.txt;
+  echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+  exit 0;
+  fi
+#
+# ==============================================================================
+#
+if [[ "$SEARCH_BLAST_REMOTE_DB" -eq "1" ]];
+  then
+  echo -e "\e[34m[TRACESPipe]\e[32m Searching $BLAST_QUERY in remote Blast nt database ...\e[0m";
+  BLASTS_OUTPUT="../output_data/TRACES_blasts/";
+  mkdir -p $BLASTS_OUTPUT;
+  blastn -db nt -task blastn-short -query $BLAST_QUERY -remote > $BLASTS_OUTPUT/x.txt 2>> ../logs/Log-stderr-system.txt;
   echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
   exit 0;
   fi

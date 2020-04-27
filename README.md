@@ -106,6 +106,8 @@ tracespipe/
 ├── encrypted_data/     # where the encrypted data will appear
 ├── decrypted_data/     # where the decrypted data will appear
 │   
+├── logs/               # where the logs (stdout and stderr) will appear
+│   
 ├── src/                # where the bash code is and where the commands must be call
 │   
 └── imgs/               # images related with the pipeline

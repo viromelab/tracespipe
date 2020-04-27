@@ -1,6 +1,6 @@
 #!/bin/bash
 # 
-# SEE ALL DBS: update_blastdb.pl --showall
+# TO SEE OTHER DATABASES: update_blastdb.pl --showall
 #
 # INSTALL ======================================================================
 #

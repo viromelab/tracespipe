@@ -1161,7 +1161,10 @@ if [[ "$RUN_COVERAGE_TABLE_CSV" -eq "1" ]];
 #
 if [[ "$CREATE_BLAST_DB" -eq "1" ]];
   then
-  ./TRACES_blastn_create_n_db.sh
+  echo -e "\e[34m[TRACESPipe]\e[32m Creating Blast nt database ...\e[0m";
+  echo -e "\e[34m[TRACESPipe]\e[32m (This may take a while...)\e[0m";
+  ./TRACES_blastn_create_n_db.sh 1>> ../logs/Log-stdout-system.txt 2>> ../logs/Log-stderr-system.txt;
+  echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
   exit 0;
   fi
 #
@@ -1169,7 +1172,10 @@ if [[ "$CREATE_BLAST_DB" -eq "1" ]];
 #
 if [[ "$UPDATE_BLAST_DB" -eq "1" ]];
   then
-  ./TRACES_blastn_update_n_db.sh
+  echo -e "\e[34m[TRACESPipe]\e[32m Updating Blast nt database ...\e[0m";
+  echo -e "\e[34m[TRACESPipe]\e[32m (This may take a while...)\e[0m";
+  ./TRACES_blastn_update_n_db.sh 1>> ../logs/Log-stdout-system.txt 2>> ../logs/Log-stderr-system.txt;
+  echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
   exit 0;
   fi
 #
@@ -1177,7 +1183,9 @@ if [[ "$UPDATE_BLAST_DB" -eq "1" ]];
 #
 if [[ "$SEARCH_BLAST_DB" -eq "1" ]];
   then
+  echo -e "\e[34m[TRACESPipe]\e[32m Searching $BLAST_QUERY in Blast nt database ...\e[0m";
   ./TRACES_blastn_n_db.sh $BLAST_QUERY
+  echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
   exit 0;
   fi
 #

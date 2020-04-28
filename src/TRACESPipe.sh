@@ -1888,7 +1888,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     if [[ "$RUN_DE_NOVO_ASSEMBLY" -eq "1" ]];
       then
-      echo -e "\e[34m[TRACESPipe]\e[32m Running do-novo DNA assembly with SPAdes ...\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Running do-novo DNA assembly with metaSPAdes ...\e[0m";
       ./TRACES_assemble_all.sh $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
@@ -1906,11 +1906,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     if [[ "$RUN_HYBRID" -eq "1" ]];
       then
       echo -e "\e[34m[TRACESPipe]\e[32m Running HYBRID assembly ...\e[0m";
+      mkdir -p ../output_data/TRACES_viral_consensus/
       mkdir -p ../output_data/TRACES_hybrid/
       mkdir -p ../output_data/TRACES_hybrid_consensus/
       mkdir -p ../output_data/TRACES_hybrid_alignments/
       mkdir -p ../output_data/TRACES_hybrid_bed/
       SCAFFOLDS_PATH="../output_data/TRACES_denovo_$ORGAN_T/scaffolds.fasta";
+      ALIGNM_CON_PATH="../output_data/TRACES_viral_consensus";
       HYBRID_CON_PATH="../output_data/TRACES_hybrid_consensus";
       HYBRID_ALI_PATH="../output_data/TRACES_hybrid_alignments";
       HYBRID_BED_PATH="../output_data/TRACES_hybrid_bed";
@@ -1942,6 +1944,34 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
 	  mv $ORGAN_T-$VIRUS.fa $HYBRID_ALI_PATH
           mv $ORGAN_T-$VIRUS.fa.fai $HYBRID_ALI_PATH
           #
+          # Calculate the "N"% normalized by the size FOR:
+	  #   ->  $HYBRID_CON_PATH/$VIRUS-consensus-$ORGAN_T.fa
+	  #   ->  $ALIGNM_CON_PATH/$VIRUS-consensus-$ORGAN_T.fa
+	  #
+	  CVNAME="$VIRUS-consensus-$ORGAN_T.fa";
+          PC_ALIGNM=`gto_info -a < $ALIGNM_CON_PATH/$CVNAME | grep "78 : " | cut -f2`;
+	  if [[ "$PC_ALIGNM" == "" ]];
+	    then
+	    PC_ALIGNM=0;
+            fi
+	  PC_HYBRID=`gto_info -a < $HYBRID_CON_PATH/$CVNAME | grep "78 : " | cut -f2`;
+	  if [[ "$PC_HYBRID" == "" ]];
+            then
+            PC_HYBRID=0;
+            fi
+	  #  
+	  cp $ALIGNM_CON_PATH/$CVNAME ALG-$ORGAN_T-$VIRUS.fa
+          cp $HYBRID_CON_PATH/$CVNAME HYB-$ORGAN_T-$VIRUS.fa
+          if [[ "$PC_ALIGNM" < "$PC_HYBRID" ]]
+	    then
+            echo "% of \"N\" -> ALIGNMENTS CONSENSUS ($PC_ALIGNM) < HYBRID CONSENSUS ($PC_HYBRID)" 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+            ./TRACES_hybrid_R2.sh ALG-$ORGAN_T-$VIRUS.fa HYB-$ORGAN_T-$VIRUS.fa $VIRUS $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+	    #
+	    else
+            echo "% of \"N\" -> ALIGNMENTS CONSENSUS ($PC_ALIGNM) > HYBRID CONSENSUS ($PC_HYBRID)" 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+            ./TRACES_hybrid_R2.sh HYB-$ORGAN_T-$VIRUS.fa ALG-$ORGAN_T-$VIRUS.fa $VIRUS $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+	    #
+	    fi	    
           fi
         done
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";

@@ -13,13 +13,13 @@
 rm -f index-$2-$3-file*
 #
 # BUILD THE INDEX
-bowtie2-build $1 index-$2-$3-file 2>> ../logs/Log-$2.txt;
+bowtie2-build $1 index-$2-$3-file # 2>> ../logs/Log-$2.txt;
 #
 # ALIGN
-bowtie2 -a --threads $4 -x index-$2-$3-file -1 o_fw_pr.fq -2 o_rv_pr.fq -U o_fw_unpr.fq,o_rv_unpr.fq > aligned-$2-$3.sam 2>> ../logs/Log-$2.txt;
+bowtie2 -a --threads $4 -x index-$2-$3-file -1 o_fw_pr.fq -2 o_rv_pr.fq -U o_fw_unpr.fq,o_rv_unpr.fq > aligned-$2-$3.sam #2>> ../logs/Log-$2.txt;
 #
 # SORT & BIN
-samtools sort --threads $4 aligned-$2-$3.sam > viral_aligned_sorted-$2-$3.bam 2>> ../logs/Log-$2.txt;
+samtools sort --threads $4 aligned-$2-$3.sam > viral_aligned_sorted-$2-$3.bam #2>> ../logs/Log-$2.txt;
 rm -f aligned-$2-$3.sam
 #
 if [[ "$5" -eq "1" ]];
@@ -44,6 +44,8 @@ if [[ "$5" -eq "1" ]];
 #
 # INDEX BAM
 samtools index -@ $4 viral_aligned_sorted-$2-$3.bam viral_aligned_sorted-$2-$3.bam.bai
+#
+samtools flagstat -@ $4 viral_aligned_sorted-$2-$3.bam > ../output_data/TRACES_viral_statistics/Alignments-viral-$2-$3.txt
 #
 rm -f *.bt2
 #

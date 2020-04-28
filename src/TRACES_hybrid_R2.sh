@@ -4,7 +4,7 @@ VIRUS="$3";
 ORGAN="$4";
 THREADS="$5";
 #
-if [ ! -f "$1" || ! -f "$2" ];
+if [ ! -f "$1" ] || [ ! -f "$2" ];
   then
   echo -e "\e[38;5;208mWARNING: $1 or $2 consensus file not found!\e[0m"
   echo "TIP: before this, run: ./TRACESPipe.sh --run-meta --run-all-v-alig --run-de-novo"
@@ -12,10 +12,6 @@ if [ ! -f "$1" || ! -f "$2" ];
   echo "For addition information, see the instructions at the web page."
   exit 1;
   fi
-#
-mkdir -p ../output_data/TRACES_hybrid_R2_alignments/
-mkdir -p ../output_data/TRACES_hybrid_R2_consensus/
-mkdir -p ../output_data/TRACES_hybrid_R2_bed/
 #
 bwa index $1
 bwa mem -t $THREADS -I 0 -O 2 -N 0.02 -L 1024 -E 7 $1 $2 > scaffolds_aligned_$VIRUS-$ORGAN.sam 
@@ -31,7 +27,7 @@ bcftools mpileup -Ou -f $1 scaffolds_aligned_sorted_$VIRUS-$ORGAN.bam \
 bcftools index $VIRUS-$ORGAN-calls.vcf.gz
 bcftools norm -f $1 $VIRUS-$ORGAN-calls.vcf.gz -Oz -o $VIRUS-$ORGAN-calls.norm.vcf.gz
 zcat $VIRUS-$ORGAN-calls.norm.vcf.gz |vcf2bed --snvs > $VIRUS-calls-$ORGAN.bed
-tabix $VIRUS-$ORGAN-calls.norm.vcf.gz
+tabix -f $VIRUS-$ORGAN-calls.norm.vcf.gz
 bcftools consensus -f $1 $VIRUS-$ORGAN-calls.norm.vcf.gz > $VIRUS-consensus-$ORGAN.fa
 #
 # Give new header name for the consensus sequence
@@ -39,7 +35,6 @@ tail -n +2 $VIRUS-consensus-$ORGAN.fa > $VIRUS-$ORGAN-TMP2_FILE.xki
 echo ">Hybrid Round2 $VIRUS (organ=$ORGAN) consensus" > $VIRUS-consensus-$ORGAN.fa
 cat $VIRUS-$ORGAN-TMP2_FILE.xki >> $VIRUS-consensus-$ORGAN.fa
 rm -f $VIRUS-$ORGAN-TMP2_FILE.xki;
-#
 #
 cp $VIRUS-consensus-$ORGAN.fa ../output_data/TRACES_hybrid_R2_consensus/
 cp $VIRUS-coverage-$ORGAN.bed ../output_data/TRACES_hybrid_R2_bed/

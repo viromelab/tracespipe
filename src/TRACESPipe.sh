@@ -1922,6 +1922,9 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       mkdir -p $HYBRID_CON_PATH;
       mkdir -p $HYBRID_BED_PATH;
       mkdir -p $HYBRID_ALI_PATH;
+      mkdir -p ../output_data/TRACES_hybrid_R2_alignments/
+      mkdir -p ../output_data/TRACES_hybrid_R2_consensus/
+      mkdir -p ../output_data/TRACES_hybrid_R2_bed/
       #
       for VIRUS in "${VIRUSES[@]}"
         do
@@ -1944,8 +1947,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
 	  mv $ORGAN_T-$VIRUS.fa $HYBRID_ALI_PATH
           mv $ORGAN_T-$VIRUS.fa.fai $HYBRID_ALI_PATH
           #
-	  echo -e "\e[34m[TRACESPipe]\e[32m Entering in second round (R2) of HYBRID assembly ...\e[0m";
-	  #
+	  # ---------------------------------------------------
           # Calculate the "N"% normalized by the size FOR:
 	  #   ->  $HYBRID_CON_PATH/$VIRUS-consensus-$ORGAN_T.fa
 	  #   ->  $ALIGNM_CON_PATH/$VIRUS-consensus-$ORGAN_T.fa
@@ -1974,6 +1976,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
             ./TRACES_hybrid_R2.sh HYB-$ORGAN_T-$VIRUS.fa ALG-$ORGAN_T-$VIRUS.fa $VIRUS $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
 	    #
 	    fi	    
+	  rm -f ALG-$ORGAN_T-$VIRUS.fa HYB-$ORGAN_T-$VIRUS.fa
           fi
         done
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";

@@ -35,7 +35,7 @@ bcftools filter --IndelGap 5 $Label-$Organ-calls.norm.vcf.gz -Oz -o $Label-$Orga
 zcat $Label-$Organ-calls.norm.flt-indels.vcf.gz |vcf2bed --snvs > $Label-calls-$Organ.bed
 #
 # CONSENSUS
-tabix $Label-$Organ-calls.norm.flt-indels.vcf.gz
+tabix -f $Label-$Organ-calls.norm.flt-indels.vcf.gz
 bcftools consensus -m $Label-zero-coverage-$Organ.bed -f $Reference $Label-$Organ-calls.norm.flt-indels.vcf.gz > $Label-consensus-$Organ.fa
 #
 # Give new header name for the consensus sequence

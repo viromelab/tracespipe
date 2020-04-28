@@ -25,7 +25,7 @@ Program_installed () {
 # ================================= GET UTILS ==================================
 if [[ "$GET_UTILS" -eq "1" ]];
   then
-  sudo apt-get install librsvg2-bin cmake git python3-pip
+  sudo apt-get install librsvg2-bin cmake git python3-pip curl
   pip3 install conda
   fi
 #

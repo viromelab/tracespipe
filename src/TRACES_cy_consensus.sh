@@ -30,12 +30,12 @@ bcftools filter --IndelGap 5 calls-cy-$Organ.norm.vcf.gz -Oz -o calls-cy-$Organ.
 zcat calls-cy-$Organ.norm.flt-indels.vcf.gz |vcf2bed --snvs > cy-calls-$Organ.bed
 #
 # CONSENSUS
-tabix calls-cy-$Organ.norm.flt-indels.vcf.gz
+tabix -f calls-cy-$Organ.norm.flt-indels.vcf.gz
 bcftools consensus -m cy-zero-coverage-$Organ.bed -f $Reference calls-cy-$Organ.norm.flt-indels.vcf.gz > cy-consensus-$Organ.fa
 #
 # Give new header name for the consensus sequence
 tail -n +2 cy-consensus-$Organ.fa > CY_TMP_FILE_$Organ.xki
-echo "> $Organ CY consensus" > cy-consensus-$Organ.fa
+echo ">CY consensus $Organ" > cy-consensus-$Organ.fa
 cat CY_TMP_FILE_$Organ.xki >> cy-consensus-$Organ.fa
 rm -f CY_TMP_FILE_$Organ.xki;
 #

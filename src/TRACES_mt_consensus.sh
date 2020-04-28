@@ -31,7 +31,7 @@ bcftools filter --IndelGap 5 calls.norm.vcf.gz -Oz -o calls.norm.flt-indels.vcf.
 zcat calls.norm.flt-indels.vcf.gz |vcf2bed --snvs > mt-calls-$Organ.bed
 #
 # CONSENSUS
-tabix calls.norm.flt-indels.vcf.gz
+tabix -f calls.norm.flt-indels.vcf.gz
 bcftools consensus -m mt-zero-coverage-$Organ.bed -f $Reference calls.norm.flt-indels.vcf.gz > mt-consensus-$Organ.fa
 #
 # Give new header name for the consensus sequence

@@ -13,6 +13,10 @@ if [ ! -f "$1" || ! -f "$2" ];
   exit 1;
   fi
 #
+mkdir -p ../output_data/TRACES_hybrid_R2_alignments/
+mkdir -p ../output_data/TRACES_hybrid_R2_consensus/
+mkdir -p ../output_data/TRACES_hybrid_R2_bed/
+#
 bwa index $1
 bwa mem -t $THREADS -I 0 -O 2 -N 0.02 -L 1024 -E 7 $1 $2 > scaffolds_aligned_$VIRUS-$ORGAN.sam 
 samtools sort scaffolds_aligned_$VIRUS-$ORGAN.sam > scaffolds_aligned_sorted_$VIRUS-$ORGAN.bam

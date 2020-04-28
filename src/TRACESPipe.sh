@@ -1944,6 +1944,8 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
 	  mv $ORGAN_T-$VIRUS.fa $HYBRID_ALI_PATH
           mv $ORGAN_T-$VIRUS.fa.fai $HYBRID_ALI_PATH
           #
+	  echo -e "\e[34m[TRACESPipe]\e[32m Entering in second round (R2) of HYBRID assembly ...\e[0m";
+	  #
           # Calculate the "N"% normalized by the size FOR:
 	  #   ->  $HYBRID_CON_PATH/$VIRUS-consensus-$ORGAN_T.fa
 	  #   ->  $ALIGNM_CON_PATH/$VIRUS-consensus-$ORGAN_T.fa

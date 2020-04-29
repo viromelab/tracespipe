@@ -77,30 +77,36 @@ tracespipe/
 │   │                                  # analysis, redundancy and control will appear
 │   │
 │   ├── TRACES_viral_alignments/       # where viral alignments and index will appear
-│   ├── TRACES_mtdna_alignments/       # where mtdna alignments and index will appear
-│   ├── TRACES_specific_alignments/    # where specific alignments and index will appear
-│   ├── TRACES_cy_alignments/          # where cy alignments and index will appear
-│   │
 │   ├── TRACES_viral_consensus/        # where viral consensus (FASTA) will appear
-│   ├── TRACES_mtdna_consensus/        # where mtdna consensus (FASTA) will appear
-│   ├── TRACES_specific_consensus/     # where specific consensus (FASTA) will appear
-│   ├── TRACES_cy_consensus/           # where cy consensus (FASTA) will appear
-│   │
 │   ├── TRACES_viral_bed/              # where viral BED files will appear (SNPs and Coverage)
-│   ├── TRACES_mtdna_bed/              # where mtdna BED files will appear (SNPs and Coverage)
-│   ├── TRACES_specific_bed/           # where specific BED files will appear
-│   ├── TRACES_cy_bed/                 # where cy BED files will appear (SNPs and Coverage)
-│   │
 │   ├── TRACES_viral_statistics/       # where viral statistics appear (depth/wide coverage)
+│   │
+│   ├── TRACES_mtdna_alignments/       # where mtdna alignments and index will appear
+│   ├── TRACES_mtdna_consensus/        # where mtdna consensus (FASTA) will appear
+│   ├── TRACES_mtdna_bed/              # where mtdna BED files will appear (SNPs and Coverage)
 │   ├── TRACES_mtdna_statistics/       # where mtdna statistics appear (depth/wide coverage)
-│   ├── TRACES_specific_statistics/    # where specific statistics appear (depth/wide coverage)
+│   │
+│   ├── TRACES_cy_alignments/          # where cy alignments and index will appear
+│   ├── TRACES_cy_consensus/           # where cy consensus (FASTA) will appear
+│   ├── TRACES_cy_bed/                 # where cy BED files will appear (SNPs and Coverage)
 │   ├── TRACES_cy_statistics/          # where cy statistics appear (depth/wide coverage)
+│   │
+│   ├── TRACES_specific_alignments/    # where specific alignments and index will appear
+│   ├── TRACES_specific_consensus/     # where specific consensus (FASTA) will appear
+│   ├── TRACES_specific_bed/           # where specific BED files will appear
+│   ├── TRACES_specific_statistics/    # where specific statistics appear (depth/wide coverage)
 │   │
 │   ├── TRACES_mtdna_damage_<ORGAN>/   # where the mtdna damage estimation files will appear
 │   │
 │   ├── TRACES_denovo_<ORGAN>/         # where the output of de-novo assembly appears
 │   │
-│   ├── TRACES_hybrid_<ORGAN>/         # where the hybrid data appears
+│   ├── TRACES_hybrid_alignments/      # where the hybrid data appears
+│   ├── TRACES_hybrid_consensus/       # where the hybrid data appears
+│   ├── TRACES_hybrid_bed/             # where the hybrid data appears
+│   │
+│   ├── TRACES_hybrid_R2_alignments/   # where the hybrid data appears
+│   ├── TRACES_hybrid_R2_consensus/    # where the hybrid data appears
+│   ├── TRACES_hybrid_R2_bed/          # where the hybrid data appears
 │   │
 │   └── TRACES_blasts/                 # where the specific blasted results appears
 │   
@@ -108,7 +114,7 @@ tracespipe/
 ├── encrypted_data/     # where the encrypted data will appear
 ├── decrypted_data/     # where the decrypted data will appear
 │   
-├── logs/               # where the logs (stdout and stderr) will appear
+├── logs/               # where the logs (stdout, stderr, and system) will appear
 │   
 ├── src/                # where the bash code is and where the commands must be call
 │   
@@ -170,8 +176,9 @@ See the next section for more information about the usage.
     -h,     --help            Show this help message and exit,     
     -v,     --version         Show the version and some information,  
     -f,     --force           Force running and overwrite of files,  
-                                                                   
+    -flog,  --flush-logs      Flush logs (delete logs),              
     -i,     --install         Installation of all the tools,       
+    -up,    --update          Update all the tools in TRACESPipe,  
                                                                    
     -gmt,   --get-max-threads Get the number of maximum machine threads,
     -t <THREADS>, --threads <THREADS>                              
@@ -184,7 +191,7 @@ See the next section for more information about the usage.
     -vdbr,  --build-viral-r   Build viral database (references only),  
     -udb,   --build-unviral   Build non viral database (control),  
                                                                    
-    -afs <FASTA> --add-fasta <FASTA>                               
+    -afs <FASTA>, --add-fasta <FASTA>                               
                               Add a FASTA sequence to the VDB.fa,  
     -aes <ID>, --add-extra-seq <ID>                                
                               Add extra sequence to the VDB.fa,    
@@ -193,17 +200,45 @@ See the next section for more information about the usage.
     -gad,   --gen-adapters    Generate FASTA file with adapters,   
     -gp,    --get-phix        Extracts PhiX genomes (Needs viral DB),  
     -gm,    --get-mito        Downloads human Mitochondrial genome,
+                                                                   
+    -cmt <ID>, --change-mito <ID>                                  
+                              Set any Mitochondrial genome by ID,  
+                                                                   
     -gy,    --get-y-chromo    Downloads human Y-chromosome,        
     -gax,   --get-all-aux     Runs -gad -gp -gm -gy,               
                                                                    
+    -cbn,   --create-blast-db It creates a nucleotide blast database, 
+    -ubn,   --update-blast-db It updates a nucleotide blast database, 
+                                                                   
+    -sfs <FASTA>, --search-blast-db <FASTA>                           
+                              It blasts the nucleotide (nt) blast DB, 
+                                                                   
+    -sfrs <FASTA>, --search-blast-remote-db <FASTA>                   
+                              It blasts remotly thenucleotide (nt) blast 
+                              database (it requires internet connection), 
+                                                                   
     -rdup,  --remove-dup      Remove duplications (e.g. PCR dup),  
+    -vhs,   --very-sensitive  Aligns with very high sensitivity (slower),  
+                                                                   
+    -iss <SIZE>, --inter-sim-size <SIZE>                                  
+                              Inter-genome similarity top size (control), 
+                                                                   
+    -rpro,  --run-profiles    Run complexity and relative profiles (control), 
                                                                    
     -rm,    --run-meta        Run viral metagenomic identification,    
     -ro,    --run-meta-nv     Run NON-viral metagenomic identification,
                                                                   
+    -mis <VALUE>, --min-similarity <VALUE>                         
+                              Minimum similarity value to consider the 
+                              sequence for alignment-consensus (filter), 
+                                                                       
+    -top <VALUE>, --view-top <VALUE>                                   
+                              Display the top <VALUE> with the highest 
+                              similarity (by descending order),        
+                                                                       
     -rava,  --run-all-v-alig  Run all viral align/sort/consensus seqs, 
-                                                                 
-    -rb19,  --run-b19         Run B19   align and consensus seq,    
+                                                                       
+    -rb19,  --run-b19         Run B19  align and consensus seq,        
     -rh1,   --run-hv1         Run HHV1   align and consensus seq,    
     -rh2,   --run-hv2         Run HHV2   align and consensus seq,    
     -rh3,   --run-hv3         Run HHV3   align and consensus seq,    
@@ -258,8 +293,10 @@ See the next section for more information about the usage.
     -vis,   --visual-align    Run Visualization tool for alignments, 
     -covl,  --coverage-latex  Run coverage table in Latex format,   
     -covc,  --coverage-csv    Run coverage table in CSV format,    
-    -covp,  --coverage-profile <BED_NAME_FILE>                      
+    -covp <NAME>, --coverage-profile <BED_NAME_FILE>                      
                               Run coverage profile for specific BED file, 
+    -cmax <MAX>,  --max-coverage <MAX_COVERAGE>                           
+                              Maximum depth coverage (depth normalization), 
                                                                   
     -ra,    --run-analysis    Run data analysis,                   
     -all,   --run-all         Run all the options.                 
@@ -271,7 +308,7 @@ See the next section for more information about the usage.
     The reads must be GZIPed in the ../input_data/ folder.            
     The output results are at ../output_data/ folder.                 
                                                                 
-    Contact: projectraces@gmail.com   
+    Contact: projectraces@gmail.com 
 
 ```
 

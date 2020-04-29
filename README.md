@@ -424,9 +424,11 @@ The output is included at
 ```
 ./TRACESPipe.sh --run-de-novo
 ```
-The output is included at
+The outputs are included at
 ```
-../output_data/TRACES_denovo_<organ_name>
+../output_data/TRACES_denovo_alignments
+../output_data/TRACES_denovo_consensus
+../output_data/TRACES_denovo_bed
 ```
 
 ### 5.9 Run specific viral alignment (AF037218.1) for all organs using extreme sensitivity without duplications: ###
@@ -451,6 +453,16 @@ cat ../output_data/TRACES_specific_statistics
 The output is included at
 ```
 ../output_data/TRACES_mtdna_damage_<organ_name>
+```
+
+### 5.11 Remote blastn search over nucleotide NCBI database ###
+
+```
+./TRACESPipe.sh --search-blast-remote-db AF037218.1
+```
+The output is included at 
+```
+../output_data/TRACES_blastn
 ```
 
 ## 6. Programs ##

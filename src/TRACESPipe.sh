@@ -1262,6 +1262,7 @@ if [[ "$GET_THREADS" -eq "1" ]];
   then
   ./TRACES_get_max_threads.sh
   exit 1;
+  fi
 #
 # ==============================================================================
 #
@@ -1275,7 +1276,7 @@ if [[ "$THREADS" -eq "0" ]];
 #
 # ==============================================================================
 #
-if [[ "$HIGH_SENSITIVE" -eq "1" ]];
+if [[ "$HIGH_SENSITIVITY" -eq "1" ]];
   then
   echo -e "\e[34m[TRACESPipe]\e[32m Running with High sensitivity.\e[0m";
   fi

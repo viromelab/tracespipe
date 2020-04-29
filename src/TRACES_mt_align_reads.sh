@@ -9,13 +9,19 @@
 # $2 -> ORGAN
 # $3 -> NUMBER OF THREADS
 # $4 -> REMOVE DUPLICATIONS
+# $5 -> HIGH_SENSITIVITY = 1 ?
 #
 # INDEX
 rm -f index_file*
 bowtie2-build $1 index_file
 #
 # ALIGN
-bowtie2 -a --threads $3 --very-sensitive -x index_file -1 o_fw_pr.fq -2 o_rv_pr.fq -U o_fw_unpr.fq,o_rv_unpr.fq > aligned-$2.sam
+if [[ "$5" == "1" ]];
+  then
+  bowtie2 -a --threads $3 --very-sensitive -x index_file -1 o_fw_pr.fq -2 o_rv_pr.fq -U o_fw_unpr.fq,o_rv_unpr.fq > aligned-$2.sam
+  else
+  bowtie2 -a --threads $3 -x index_file -1 o_fw_pr.fq -2 o_rv_pr.fq -U o_fw_unpr.fq,o_rv_unpr.fq > aligned-$2.sam
+  fi
 #
 # SORT & BIN
 samtools sort --threads $3 aligned-$2.sam > mt_aligned_sorted-$2.bam

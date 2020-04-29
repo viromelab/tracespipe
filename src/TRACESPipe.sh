@@ -51,6 +51,7 @@ RUN_MITO_DAMAGE_ON=0;
 VIEW_TOP=0;
 #
 REMOVE_DUPLICATIONS=0;
+HIGH_SENSITIVITY=0;
 #
 RUN_B19_ON=0;
 RUN_HV1_ON=0;
@@ -299,7 +300,7 @@ ALIGN_AND_CONSENSUS () {
     gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-$V_TAG.fa 2>> ../logs/Log-$ORGAN_T.txt;
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
     echo -e "\e[34m[TRACESPipe]\e[32m Aligning reads to $V_TAG best reference with bowtie2 ...\e[0m";
-    ./TRACES_viral_align_reads.sh $ORGAN_T-$V_TAG.fa $ORGAN_T $V_TAG $THREADS $REMOVE_DUPLICATIONS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+    ./TRACES_viral_align_reads.sh $ORGAN_T-$V_TAG.fa $ORGAN_T $V_TAG $THREADS $REMOVE_DUPLICATIONS $HIGH_SENSITIVITY 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
     #
     echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
@@ -434,7 +435,12 @@ while [[ $# -gt 0 ]]
       REMOVE_DUPLICATIONS=1;
       SHOW_HELP=0;
       shift
-    ;;    
+    ;;
+    -vhs|--very-sensitive)
+      HIGH_SENSITIVITY=1;
+      SHOW_HELP=0;
+      shift
+    ;;
     -gm|--get-mito)
       GET_MITO=1;
       SHOW_HELP=0;
@@ -1011,6 +1017,7 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                              database (it requires internet connection), "
   echo "                                                                   "
   echo "    -rdup,  --remove-dup      Remove duplications (e.g. PCR dup),  "
+  echo "    -vhs,   --very-sensitive  Aligns with very high sensitivity (slower),  "
   echo "                                                                   "
   echo "    -iss <SIZE>, --inter-sim-size <SIZE>                                  "
   echo "                              Inter-genome similarity top size (control), "
@@ -1779,7 +1786,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       CHECK_MT_DNA;
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Aligning reads to mitochondrial ref with bowtie2 ...\e[0m";
-      ./TRACES_mt_align_reads.sh mtDNA.fa $ORGAN_T $THREADS $REMOVE_DUPLICATIONS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+      ./TRACES_mt_align_reads.sh mtDNA.fa $ORGAN_T $THREADS $REMOVE_DUPLICATIONS $HIGH_SENSITIVITY 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
@@ -1843,7 +1850,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       CHECK_CY_DNA;
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Aligning reads to Y-chromosome ref with bowtie2 ...\e[0m";
-      ./TRACES_cy_align_reads.sh cy.fa $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+      ./TRACES_cy_align_reads.sh cy.fa $ORGAN_T $THREADS $HIGH_SENSITIVITY 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";

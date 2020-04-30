@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-echo "Downloading Reference Human Y chromosome (cy.fa) from NCBI ..."
+echo -e "\e[34m[TRACESPipe]\e[32m Download Reference Human Y chromosome (cy.fa) from NCBI ...\e[0m";
 #
 efetch -db nucleotide -format fasta -id "NC_000024.10" > cy.fa
 #
@@ -9,4 +9,4 @@ efetch -db nucleotide -format fasta -id "NC_000024.10" > cy.fa
 #gunzip -f hs_ref_GRCh38.p12_chrY.fa.gz
 #mv hs_ref_GRCh38.p12_chrY.fa cy.fa
 #
-echo "Done!";
+echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";

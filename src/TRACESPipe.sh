@@ -42,6 +42,7 @@ BLAST_QUERY="";
 RUN_ANALYSIS=0;
 #
 RUN_META_ON=0;
+RUN_BEST_OF_BESTS=0;
 RUN_PROFILES_ON=0;
 RUN_META_NON_VIRAL_ON=0;
 #
@@ -433,6 +434,11 @@ while [[ $# -gt 0 ]]
     ;;
     -rdup|--remove-dup)
       REMOVE_DUPLICATIONS=1;
+      SHOW_HELP=0;
+      shift
+    ;;
+    -gbb|--best-of-bests)
+      RUN_BEST_OF_BESTS=1;
       SHOW_HELP=0;
       shift
     ;;
@@ -1019,6 +1025,9 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -rdup,  --remove-dup      Remove duplications (e.g. PCR dup),  "
   echo "    -vhs,   --very-sensitive  Aligns with very high sensitivity (slower),  "
   echo "                                                                   "
+  echo "    -gbb,   --best-of-bests   Identifies the best of bests references "
+  echo "                              between multiple organs [similar reference], "
+  echo "                                                                   "
   echo "    -iss <SIZE>, --inter-sim-size <SIZE>                                  "
   echo "                              Inter-genome similarity top size (control), "
   echo "                                                                   "
@@ -1402,6 +1411,101 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
   #
   mapfile -t READS < ../meta_data/meta_info.txt
   #
+  # ============================================================================
+  # 
+  if [[ "$RUN_BEST_OF_BESTS" -eq "1" ]];
+    then
+    #
+    echo -e "\e[34m[TRACESPipe]\e[93m Running best of bests ...\e[0m";
+    #
+    for read in "${READS[@]}" #
+      do
+      #
+      ORGAN_T=`echo $read | tr ':' '\t' | awk '{ print $1 }'`;
+      SPL_Forward=`echo $read | tr ':' '\t' | awk '{ print $2 }'`;
+      SPL_Reverse=`echo $read | tr ':' '\t' | awk '{ print $3 }'`;
+      #
+      CHECK_GZIP_FILES $SPL_Forward $SPL_Reverse;
+      #
+      echo -e "\e[34m[TRACESPipe]\e[93m Running organ=$ORGAN_T\e[0m";
+      #
+      rm -f FW_READS.fq.gz RV_READS.fq.gz
+      echo -e "\e[34m[TRACESPipe]\e[32m Copping an instance of the files ...\e[0m";
+      cp ../input_data/$SPL_Forward FW_READS.fq.gz;
+      cp ../input_data/$SPL_Reverse RV_READS.fq.gz;
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+      #
+      # ========================================================================
+      # TRIM AND FILTER READS TRIMMOMATIC
+      #
+      CHECK_ADAPTERS;
+      touch o_fw_pr.fq o_fw_unpr.fq o_rv_pr.fq o_rv_unpr.fq;
+      #
+      echo -e "\e[34m[TRACESPipe]\e[32m Trimming and filtering with Trimmomatic ...\e[0m";
+      ./TRACES_trim_filter_reads.sh $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+      #
+      # THE OUTPUT OF TRIMMING IS:
+      # o_fw_pr.fq  o_fw_unpr.fq  o_rv_pr.fq  o_rv_unpr.fq
+      #
+      if [[ "$RUN_META_ON" -eq "1" ]];
+        then
+	#
+        CHECK_VDB;
+        CHECK_PHIX;
+        #
+        mv o_fw_pr.fq NP-o_fw_pr.fq;
+        mv o_fw_unpr.fq NP-o_fw_unpr.fq;
+        mv o_rv_pr.fq NP-o_rv_pr.fq;
+        mv o_rv_unpr.fq NP-o_rv_unpr.fq;
+        #
+        echo -e "\e[34m[TRACESPipe]\e[32m Running viral metagenomic analysis with FALCON-meta ...\e[0m";
+        mkdir -p ../output_data/TRACES_results
+        ./TRACES_metagenomics_viral.sh $ORGAN_T VDB.fa 10000 $THREADS $TSIZE 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+        mv $ORGAN_T.svg ../output_data/TRACES_results/
+        mv $ORGAN_T-HEAT.svg ../output_data/TRACES_results/
+        echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+        #
+        echo -e "\e[34m[TRACESPipe]\e[32m Finding the best references ...\e[0m";
+        #
+        cp top-$ORGAN_T.csv ../output_data/TRACES_results/
+        #
+        rm -f ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt;
+        for VIRUS in "${VIRUSES[@]}"
+          do
+          ./TRACES_get_best_$VIRUS.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+          done
+        echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+        #
+        fi
+      #	
+      done
+    #
+    for VIRUS in "${VIRUSES[@]}"
+      do
+      #
+      rm -f F_STRINGS;
+      for read in "${READS[@]}" # 
+        do
+        ORGAN_T=`echo $read | tr ':' '\t' | awk '{ print $1 }'`;
+        cat ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt | awk '{ print $2;}' >> F_STRINGS;
+        done
+      #
+      BEST_OF_BESTS=`grep -v "-" F_STRINGS | awk '{++a[$0]}END{for(i in a)if(a[i]>max){max=a[i];k=i}print k}'`;
+      #
+      rm -f ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt;
+      for read in "${READS[@]}" #
+        do
+        ORGAN_T=`echo $read | tr ':' '\t' | awk '{ print $1 }'`;
+        echo "Best $BEST_OF_BESTS" >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+        done
+      #
+      done
+      #
+    fi
+  #  
+  # ============================================================================
+  #
   for read in "${READS[@]}" # 
     do
     #
@@ -1435,7 +1539,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     # ========================================================================== 
     # METAGENOMICS USING ONLY A VIRAL DATABASE
     #
-    if [[ "$RUN_META_ON" -eq "1" ]];
+    if [[ "$RUN_META_ON" -eq "1" && "$RUN_BEST_OF_BESTS" -ne "1" ]];
       then
       CHECK_VDB;
       CHECK_PHIX;

@@ -1300,7 +1300,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       mv $SPECIFIC_ID-coverage-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
       mv $SPECIFIC_ID-zero-coverage-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
       mkdir -p ../output_data/TRACES_specific_statistics;
-      echo -e "\e[34m[TRACESPipe]\e[32m Calculating coverage ...\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Calculating coverage for alignment-based assembly ...\e[0m";
       ./TRACES_overall_specific.sh $SPECIFIC_ID $ORGAN_T
       C_BREADTH=`cat ../output_data/TRACES_specific_statistics/$SPECIFIC_ID-total-horizontal-coverage-$ORGAN_T.txt`;
       C_DEPTH=`cat ../output_data/TRACES_specific_statistics/$SPECIFIC_ID-total-depth-coverage-$ORGAN_T.txt`;
@@ -1341,7 +1341,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       mv $SPECIFIC_ID-coverage-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
       mv $SPECIFIC_ID-zero-coverage-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
       mkdir -p ../output_data/TRACES_specific_statistics;
-      echo -e "\e[34m[TRACESPipe]\e[32m Calculating coverage ...\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Calculating coverage for alignment-based assembly ...\e[0m";
       ./TRACES_overall_specific.sh $SPECIFIC_ID $ORGAN_T
       C_BREADTH=`cat ../output_data/TRACES_specific_statistics/$SPECIFIC_ID-total-horizontal-coverage-$ORGAN_T.txt`;
       C_DEPTH=`cat ../output_data/TRACES_specific_statistics/$SPECIFIC_ID-total-depth-coverage-$ORGAN_T.txt`;
@@ -1395,7 +1395,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       mv mt-coverage-$ORGAN_T.bed ../output_data/TRACES_mtdna_bed/
       mv mt-zero-coverage-$ORGAN_T.bed ../output_data/TRACES_mtdna_bed/
       mkdir -p ../output_data/TRACES_mtdna_statistics;
-      echo -e "\e[34m[TRACESPipe]\e[32m Calculating coverage ...\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Calculating coverage for alignment-based assembly ...\e[0m";
       ./TRACES_overall_mtdna.sh $ORGAN_T
       C_BREADTH=`cat ../output_data/TRACES_mtdna_statistics/mt-total-horizontal-coverage-$ORGAN_T.txt`;
       C_DEPTH=`cat ../output_data/TRACES_mtdna_statistics/mt-total-depth-coverage-$ORGAN_T.txt`;

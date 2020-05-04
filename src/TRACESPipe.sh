@@ -251,57 +251,65 @@ CHECK_E_FILE () {
 #
 ALIGN_AND_CONSENSUS () {
   #
+  ORGAN="$8";
+  HIGH="$7";
+  DUPL="$6";
+  THREADS="$5";
   V_TAG="$1";
-  ID_TAG="$4";
+  IDX_TAG="$4";
+  #
+  V_GID="X";
+  #
   echo -e "\e[34m[TRACESPipe]\e[32m Assessing $V_TAG best reference ...\e[0m";
-  CHECK_TOP "$ORGAN_T";
   #
-  if [[ "$3" == "1" ]]; # IF 1 -> BEST OF BESTS IS ON
-    then
-    V_INFO=`sed "${ID_TAG}q;d" ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt`;
-    V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
-    V_VAL=`echo "$V_INFO" | awk '{ print $1; }'`;
-    else
-    V_INFO=`./TRACES_get_best_$V_TAG.sh $ORGAN_T`;
-    V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
-    V_VAL=`echo "$V_INFO" | awk '{ print $1; }'`;
-    fi
-  #  
+  CHECK_TOP "$ORGAN";
+  #
+  V_INFO=`./TRACES_get_best_$V_TAG.sh $ORGAN`;
+  V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
+  V_VAL=`echo "$V_INFO" | awk '{ print $1; }'`;
+  # 
   echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+  #echo -e "\e[34m[TRACESPipe]\e[32m V_GID:$V_GID;V_VAL:$V_VAL!\e[0m";
   #
-  if [[ "$V_GID" != "-" && "$V_GID" != "" && "$V_VAL" > "$2" ]];
+  if [[ "$V_GID" != "-" ]] && [[ "$V_VAL" > "$2" ]];
     then
+    #
+    if [[ "$3" -eq "1" ]]
+      then	    
+      V_GID=`sed "${IDX_TAG}q;d" ../output_data/TRACES_results/REPORT_META_VIRAL_BESTS_$ORGAN.txt | awk '{ print $2; }'`;
+      fi
+    #
     echo -e "\e[34m[TRACESPipe]\e[96m Similarity best match: $V_INFO\e[0m";
     echo -e "\e[34m[TRACESPipe]\e[32m Extracting sequence from VDB.fa\e[0m";
     CHECK_VDB;
-    gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN_T-$V_TAG.fa 2>> ../logs/Log-$ORGAN_T.txt;
+    gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN-$V_TAG.fa 2>> ../logs/Log-$ORGAN.txt;
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
     echo -e "\e[34m[TRACESPipe]\e[32m Aligning reads to $V_TAG best reference with bowtie2 ...\e[0m";
-    ./TRACES_viral_align_reads.sh $ORGAN_T-$V_TAG.fa $ORGAN_T $V_TAG $THREADS $REMOVE_DUPLICATIONS $HIGH_SENSITIVITY 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+    ./TRACES_viral_align_reads.sh $ORGAN-$V_TAG.fa $ORGAN $V_TAG $THREADS $DUPL $HIGH 1>> ../logs/Log-stdout-$ORGAN.txt 2>> ../logs/Log-stderr-$ORGAN.txt;
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
     #
     echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-    ./TRACES_viral_consensus.sh $ORGAN_T-$V_TAG.fa viral_aligned_sorted-$ORGAN_T-$V_TAG.bam $ORGAN_T $V_TAG 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+    ./TRACES_viral_consensus.sh $ORGAN-$V_TAG.fa viral_aligned_sorted-$ORGAN-$V_TAG.bam $ORGAN $V_TAG 1>> ../logs/Log-stdout-$ORGAN.txt 2>> ../logs/Log-stderr-$ORGAN.txt;
     #
     mkdir -p ../output_data/TRACES_viral_alignments;
-    cp $ORGAN_T-$V_TAG.fa ../output_data/TRACES_viral_alignments/
-    cp $ORGAN_T-$V_TAG.fa.fai ../output_data/TRACES_viral_alignments/
-    mv viral_aligned_sorted-$ORGAN_T-$V_TAG.bam ../output_data/TRACES_viral_alignments/
-    mv viral_aligned_sorted-$ORGAN_T-$V_TAG.bam.bai ../output_data/TRACES_viral_alignments/
+    cp $ORGAN-$V_TAG.fa ../output_data/TRACES_viral_alignments/
+    cp $ORGAN-$V_TAG.fa.fai ../output_data/TRACES_viral_alignments/
+    mv viral_aligned_sorted-$ORGAN-$V_TAG.bam ../output_data/TRACES_viral_alignments/
+    mv viral_aligned_sorted-$ORGAN-$V_TAG.bam.bai ../output_data/TRACES_viral_alignments/
     mkdir -p ../output_data/TRACES_viral_consensus;
     #rm -f ../output_data/TRACES_viral_consensus/*
-    mv $V_TAG-consensus-$ORGAN_T.fa ../output_data/TRACES_viral_consensus/
+    mv $V_TAG-consensus-$ORGAN.fa ../output_data/TRACES_viral_consensus/
     mkdir -p ../output_data/TRACES_viral_bed;
     #rm -f ../output_data/TRACES_viral_bed/*
-    mv $V_TAG-calls-$ORGAN_T.bed ../output_data/TRACES_viral_bed/
-    mv $V_TAG-coverage-$ORGAN_T.bed ../output_data/TRACES_viral_bed/
-    mv $V_TAG-zero-coverage-$ORGAN_T.bed ../output_data/TRACES_viral_bed/
+    mv $V_TAG-calls-$ORGAN.bed ../output_data/TRACES_viral_bed/
+    mv $V_TAG-coverage-$ORGAN.bed ../output_data/TRACES_viral_bed/
+    mv $V_TAG-zero-coverage-$ORGAN.bed ../output_data/TRACES_viral_bed/
     mkdir -p ../output_data/TRACES_viral_statistics;
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
     echo -e "\e[34m[TRACESPipe]\e[32m Calculating coverage ...\e[0m";
-    ./TRACES_overall_virus.sh $V_TAG $ORGAN_T
-    C_BREADTH=`cat ../output_data/TRACES_viral_statistics/$V_TAG-total-horizontal-coverage-$ORGAN_T.txt`;
-    C_DEPTH=`cat ../output_data/TRACES_viral_statistics/$V_TAG-total-depth-coverage-$ORGAN_T.txt`;
+    ./TRACES_overall_virus.sh $V_TAG $ORGAN
+    C_BREADTH=`cat ../output_data/TRACES_viral_statistics/$V_TAG-total-horizontal-coverage-$ORGAN.txt`;
+    C_DEPTH=`cat ../output_data/TRACES_viral_statistics/$V_TAG-total-depth-coverage-$ORGAN.txt`;
     echo -e "\e[34m[TRACESPipe]\e[1m Breadth (H) coverage: $C_BREADTH \e[0m";
     echo -e "\e[34m[TRACESPipe]\e[1m Depth-x (V) coverage: $C_DEPTH \e[0m";
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
@@ -1124,22 +1132,27 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       do
       #
       rm -f V_F_STRINGS;
-      for read in "${READS[@]}" # 
+      for read in "${READS[@]}";  
         do
         ORGAN_T=`echo $read | tr ':' '\t' | awk '{ print $1 }'`;
         sed "${IDX}q;d" ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt | awk '{ print $2;}' >> V_F_STRINGS;
-	((++IDX));
         done
+      ((++IDX));
       #
       BEST_OF_BESTS=`grep -v "-" V_F_STRINGS | awk '{++a[$0]}END{for(i in a)if(a[i]>max){max=a[i];k=i}print k}'`;
-      printf "Best\t$BEST_OF_BESTS\n" >> TMP_VIRAL_GENERAL.txt;  
+      if [[ -z "$BEST_OF_BESTS" ]];
+        then
+        printf "%s\t%s\n" "-" "-" >> TMP_VIRAL_GENERAL.txt;
+        else
+        printf "Best\t$BEST_OF_BESTS\n" >> TMP_VIRAL_GENERAL.txt;
+      fi
       #
       done
     #
-    for read in "${READS[@]}" #
+    for read in "${READS[@]}";
       do
       ORGAN_T=`echo $read | tr ':' '\t' | awk '{ print $1 }'`;
-      cp TMP_VIRAL_GENERAL.txt ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      cp TMP_VIRAL_GENERAL.txt ../output_data/TRACES_results/REPORT_META_VIRAL_BESTS_$ORGAN_T.txt
       done
     #
     fi
@@ -1358,7 +1371,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       IDX=1;
       for VIRUS in "${VIRUSES[@]}"
         do
-        ALIGN_AND_CONSENSUS "$VIRUS" "$MINIMAL_SIMILARITY_VALUE" "$RUN_BEST_OF_BESTS" "$IDX";
+        ALIGN_AND_CONSENSUS "$VIRUS" "$MINIMAL_SIMILARITY_VALUE" "$RUN_BEST_OF_BESTS" "$IDX" "$THREADS" "$REMOVE_DUPLICATIONS" "$HIGH_SENSITIVITY" "$ORGAN_T"
 	((++IDX));
 	done
       fi

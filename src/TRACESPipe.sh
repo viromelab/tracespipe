@@ -54,42 +54,7 @@ VIEW_TOP=0;
 REMOVE_DUPLICATIONS=0;
 HIGH_SENSITIVITY=0;
 #
-RUN_B19_ON=0;
-RUN_HV1_ON=0;
-RUN_HV2_ON=0;
-RUN_HV3_ON=0;
-RUN_HV4_ON=0;
-RUN_HV5_ON=0;
-RUN_HV6_ON=0;
-RUN_HV6A_ON=0;
-RUN_HV6B_ON=0;
-RUN_HV7_ON=0;
-RUN_HV8_ON=0;
-#
-RUN_POLY1_ON=0;
-RUN_POLY2_ON=0;
-RUN_POLY3_ON=0;
-RUN_POLY4_ON=0;
-RUN_POLY5_ON=0;
-RUN_POLY6_ON=0;
-RUN_POLY7_ON=0;
-RUN_POLY8_ON=0;
-RUN_POLY9_ON=0;
-RUN_POLY10_ON=0;
-RUN_POLY11_ON=0;
-RUN_POLY12_ON=0;
-RUN_POLY13_ON=0;
-RUN_POLY14_ON=0;
-#
-RUN_TTV_ON=0;
-RUN_HBOV1_ON=0;
-RUN_HBOVNOT1_ON=0;
-RUN_HBV_ON=0;
-RUN_HPV_ON=0;
-RUN_VARV_ON=0;
-RUN_SV40_ON=0;
-RUN_CUTA_ON=0;
-RUN_HERV_ON=0;
+RUN_ALL_VIRAL=0;
 #
 RUN_VISUAL_ALIGN=0;
 #
@@ -124,7 +89,7 @@ TSIZE=10;
 # ==============================================================================
 #
 declare -a VIRUSES=("B19" "HV1" "HV2" "HV3" "HV4" "HV5" "HV6" "HV6A" "HV6B" 
-                    "HV7" "HV8" "POLY1" "POLY2" "POLY2" "POLY3" "POLY4" "POLY5" 
+                    "HV7" "HV8" "POLY1" "POLY2" "POLY3" "POLY4" "POLY5" 
 		    "POLY6" "POLY7" "POLY8" "POLY9" "POLY10" "POLY11" "POLY12" 
 		    "POLY13" "POLY14" "HBV" "HPV" "TTV" "HBOV1" "HBOVNOT1" 
 		    "VARV" "SV40" "CUTA" "HERV");
@@ -287,13 +252,24 @@ CHECK_E_FILE () {
 ALIGN_AND_CONSENSUS () {
   #
   V_TAG="$1";
+  ID_TAG="$4";
   echo -e "\e[34m[TRACESPipe]\e[32m Assessing $V_TAG best reference ...\e[0m";
   CHECK_TOP "$ORGAN_T";
-  V_INFO=`./TRACES_get_best_$V_TAG.sh $ORGAN_T`;
-  V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
-  V_VAL=`echo "$V_INFO" | awk '{ print $1; }'`;
+  #
+  if [[ "$3" == "1" ]]; # IF 1 -> BEST OF BESTS IS ON
+    then
+    V_INFO=`sed "${ID_TAG}q;d" ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt`;
+    V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
+    V_VAL=`echo "$V_INFO" | awk '{ print $1; }'`;
+    else
+    V_INFO=`./TRACES_get_best_$V_TAG.sh $ORGAN_T`;
+    V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
+    V_VAL=`echo "$V_INFO" | awk '{ print $1; }'`;
+    fi
+  #  
   echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
-  if [[ "$V_GID" != "-" && "$V_VAL" > "$2" ]];
+  #
+  if [[ "$V_GID" != "-" && "$V_GID" != "" && "$V_VAL" > "$2" ]];
     then
     echo -e "\e[34m[TRACESPipe]\e[96m Similarity best match: $V_INFO\e[0m";
     echo -e "\e[34m[TRACESPipe]\e[32m Extracting sequence from VDB.fa\e[0m";
@@ -498,40 +474,8 @@ while [[ $# -gt 0 ]]
       RUN_META_ON=1;
       RUN_PROFILES_ON=1;
       RUN_META_NON_VIRAL_ON=1;
-      RUN_B19_ON=1;
-      RUN_HV1_ON=1;
-      RUN_HV2_ON=1;
-      RUN_HV3_ON=1;
-      RUN_HV4_ON=1;
-      RUN_HV5_ON=1;
-      RUN_HV6_ON=1;
-      RUN_HV6A_ON=1;
-      RUN_HV6B_ON=1;
-      RUN_HV7_ON=1;
-      RUN_HV8_ON=1;
-      RUN_POLY1_ON=1;
-      RUN_POLY2_ON=1;
-      RUN_POLY3_ON=1;
-      RUN_POLY4_ON=1;
-      RUN_POLY5_ON=1;
-      RUN_POLY6_ON=1;
-      RUN_POLY7_ON=1;
-      RUN_POLY8_ON=1;
-      RUN_POLY9_ON=1;
-      RUN_POLY10_ON=1;
-      RUN_POLY11_ON=1;
-      RUN_POLY12_ON=1;
-      RUN_POLY13_ON=1;
-      RUN_POLY14_ON=1;
-      RUN_TTV_ON_ON=1;
-      RUN_HBOV1_ON=1;
-      RUN_HBOVNOT1_ON=1;
-      RUN_HBV_ON=1;
-      RUN_HPV_ON=1;
-      RUN_VARV_ON=1;
-      RUN_SV40_ON=1;
-      RUN_CUTA_ON=1;
       RUN_HERV_ON=1;
+      RUN_ALL_VIRAL=1;
       RUN_CY_ON=1;
       RUN_CY_QUANT_ON=1;
       RUN_MITO_ON=1;
@@ -597,244 +541,7 @@ while [[ $# -gt 0 ]]
     ;;      
     -rava|--run-all-v-alig)
       RUN_ANALYSIS=1;
-      RUN_B19_ON=1;
-      RUN_HV1_ON=1;
-      RUN_HV2_ON=1;
-      RUN_HV3_ON=1;
-      RUN_HV4_ON=1;
-      RUN_HV5_ON=1;
-      RUN_HV6_ON=1;
-      RUN_HV6A_ON=1;
-      RUN_HV6B_ON=1;
-      RUN_HV7_ON=1;
-      RUN_HV8_ON=1;
-      RUN_POLY1_ON=1;
-      RUN_POLY2_ON=1;
-      RUN_POLY3_ON=1;
-      RUN_POLY4_ON=1;
-      RUN_POLY5_ON=1;
-      RUN_POLY6_ON=1;
-      RUN_POLY7_ON=1;
-      RUN_POLY8_ON=1;
-      RUN_POLY9_ON=1;
-      RUN_POLY10_ON=1;
-      RUN_POLY11_ON=1;
-      RUN_POLY12_ON=1;
-      RUN_POLY13_ON=1;
-      RUN_POLY14_ON=1;
-      RUN_TTV_ON=1;
-      RUN_HBOV1_ON=1;
-      RUN_HBOVNOT1_ON=1;
-      RUN_HBV_ON=1;
-      RUN_HPV_ON=1;
-      RUN_VARV_ON=1;
-      RUN_SV40_ON=1;
-      RUN_CUTA_ON=1;
-      RUN_HERV_ON=1;
-      shift
-    ;;
-    -rb19|--run-b19)
-      RUN_ANALYSIS=1;
-      RUN_B19_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rh1|--run-hv1)
-      RUN_ANALYSIS=1;
-      RUN_HV1_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rh2|--run-hv2)
-      RUN_ANALYSIS=1;
-      RUN_HV2_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rh3|--run-hv3)
-      RUN_ANALYSIS=1;
-      RUN_HV3_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rh4|--run-hv4)
-      RUN_ANALYSIS=1;
-      RUN_HV4_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rh5|--run-hv5)
-      RUN_ANALYSIS=1;
-      RUN_HV5_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rh6|--run-hv6)
-      RUN_ANALYSIS=1;
-      RUN_HV6_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rh6a|--run-hv6a)
-      RUN_ANALYSIS=1;
-      RUN_HV6A_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rh6b|--run-hv6b)
-      RUN_ANALYSIS=1;
-      RUN_HV6B_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rh7|--run-hv7)
-      RUN_ANALYSIS=1;
-      RUN_HV7_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rh8|--run-hv8)
-      RUN_ANALYSIS=1;
-      RUN_HV8_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rp1|--run-poly1)
-      RUN_ANALYSIS=1;
-      RUN_POLY1_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rp2|--run-poly2)
-      RUN_ANALYSIS=1;
-      RUN_POLY2_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rp3|--run-poly3)
-      RUN_ANALYSIS=1;
-      RUN_POLY3_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rp4|--run-poly4)
-      RUN_ANALYSIS=1;
-      RUN_POLY4_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rp5|--run-poly5)
-      RUN_ANALYSIS=1;
-      RUN_POLY5_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rp6|--run-poly6)
-      RUN_ANALYSIS=1;
-      RUN_POLY6_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rp7|--run-poly7)
-      RUN_ANALYSIS=1;
-      RUN_POLY7_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rp8|--run-poly8)
-      RUN_ANALYSIS=1;
-      RUN_POLY8_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rp9|--run-poly9)
-      RUN_ANALYSIS=1;
-      RUN_POLY9_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rp10|--run-poly10)
-      RUN_ANALYSIS=1;
-      RUN_POLY10_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rp11|--run-poly11)
-      RUN_ANALYSIS=1;
-      RUN_POLY11_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rp12|--run-poly12)
-      RUN_ANALYSIS=1;
-      RUN_POLY12_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rp13|--run-poly13)
-      RUN_ANALYSIS=1;
-      RUN_POLY13_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rp14|--run-poly14)
-      RUN_ANALYSIS=1;
-      RUN_POLY14_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rtt|--run-ttv)
-      RUN_ANALYSIS=1;
-      RUN_TTV_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rbv1|--run-hbov1)
-      RUN_ANALYSIS=1;
-      RUN_HBOV1_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rbv0|--run-hbovnot1)
-      RUN_ANALYSIS=1;
-      RUN_HBOVNOT1_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rhbv|--run-hbv)
-      RUN_ANALYSIS=1;
-      RUN_HBV_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rhpv|--run-hpv)
-      RUN_ANALYSIS=1;
-      RUN_HPV_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rvar|--run-varv)
-      RUN_ANALYSIS=1;
-      RUN_VARV_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rsv40|--run-sv40)
-      RUN_ANALYSIS=1;
-      RUN_SV40_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rcuta|--run-cuta)
-      RUN_ANALYSIS=1;
-      RUN_CUTA_ON=1;
-      SHOW_HELP=0;
-      shift
-    ;;
-    -rherv|--run-herv)
-      RUN_ANALYSIS=1;
-      RUN_HERV_ON=1;
-      SHOW_HELP=0;
+      RUN_ALL_VIRAL=1;
       shift
     ;;
     -rya|--run-cy-align)
@@ -904,42 +611,9 @@ while [[ $# -gt 0 ]]
       RUN_META_ON=1;
       RUN_PROFILES_ON=1;
       RUN_META_NON_VIRAL_ON=1;
-      RUN_B19_ON=1;
-      RUN_HV1_ON=1;
-      RUN_HV2_ON=1;
-      RUN_HV3_ON=1;
-      RUN_HV4_ON=1;
-      RUN_HV5_ON=1;
-      RUN_HV6_ON=1;
-      RUN_HV6A_ON=1;
-      RUN_HV6B_ON=1;
-      RUN_HV7_ON=1;
-      RUN_HV8_ON=1;
-      RUN_POLY1_ON=1;
-      RUN_POLY2_ON=1;
-      RUN_POLY3_ON=1;
-      RUN_POLY4_ON=1;
-      RUN_POLY5_ON=1;
-      RUN_POLY6_ON=1;
-      RUN_POLY7_ON=1;
-      RUN_POLY8_ON=1;
-      RUN_POLY9_ON=1;
-      RUN_POLY10_ON=1;
-      RUN_POLY11_ON=1;
-      RUN_POLY12_ON=1;
-      RUN_POLY13_ON=1;
-      RUN_POLY14_ON=1;
-      RUN_TTV_ON=1;
-      RUN_HBOV1_ON=1;
-      RUN_HBOVNOT1_ON=1;
-      RUN_HBV_ON=1;
-      RUN_HPV_ON=1;
-      RUN_VARV_ON=1;
-      RUN_SV40_ON=1;
-      RUN_CUTA_ON=1;
-      RUN_HERV_ON=1;
       RUN_MITO_ON=1;
       RUN_MITO_DAMAGE_ON=1;
+      RUN_ALL_VIRAL=1;
       RUN_CY_ON=1;
       RUN_CY_QUANT_ON=1;
       RUN_DE_NOVO_ASSEMBLY=1;
@@ -1044,46 +718,9 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                              Display the top <VALUE> with the highest "
   echo "                              similarity (by descending order),        "
   echo "                                                                       "
-  echo "    -rava,  --run-all-v-alig  Run all viral align/sort/consensus seqs, "
+  echo "    -rava,  --run-all-v-alig  Run all viral align/sort/consensus seqs "
+  echo "                              from a specific list,                    "
   echo "                                                                       "
-  echo "    -rb19,  --run-b19         Run B19  align and consensus seq,        "
-  echo "    -rh1,   --run-hv1         Run HHV1   align and consensus seq,    "
-  echo "    -rh2,   --run-hv2         Run HHV2   align and consensus seq,    "
-  echo "    -rh3,   --run-hv3         Run HHV3   align and consensus seq,    "
-  echo "    -rh4,   --run-hv4         Run HHV4   align and consensus seq,    "
-  echo "    -rh5,   --run-hv5         Run HHV5   align and consensus seq,    "
-  echo "    -rh6,   --run-hv6         Run HHV6   align and consensus seq,    "
-  echo "    -rh6a,  --run-hv6a        Run HHV6A  align and consensus seq,    "
-  echo "    -rh6b,  --run-hv6b        Run HHV6B  align and consensus seq,    "
-  echo "    -rh7,   --run-hv7         Run HHV7   align and consensus seq,    "
-  echo "    -rh8,   --run-hv8         Run HHV8   align and consensus seq,    "
-  echo "    -rh8,   --run-hv8         Run HHV8   align and consensus seq,    "
- 
-  echo "    -rp1,   --run-poly1       Run Polyoma 1  align and consensus seq, "
-  echo "    -rp2,   --run-poly2       Run Polyoma 2  align and consensus seq, "
-  echo "    -rp3,   --run-poly3       Run Polyoma 3  align and consensus seq, "
-  echo "    -rp4,   --run-poly4       Run Polyoma 4  align and consensus seq, "
-  echo "    -rp5,   --run-poly5       Run Polyoma 5  align and consensus seq, "
-  echo "    -rp6,   --run-poly6       Run Polyoma 6  align and consensus seq, "
-  echo "    -rp7,   --run-poly7       Run Polyoma 7  align and consensus seq, "
-  echo "    -rp8,   --run-poly8       Run Polyoma 8  align and consensus seq, "
-  echo "    -rp9,   --run-poly9       Run Polyoma 9  align and consensus seq, "
-  echo "    -rp10,  --run-poly10      Run Polyoma 10 align and consensus seq, "
-  echo "    -rp11,  --run-poly11      Run Polyoma 11 align and consensus seq, "
-  echo "    -rp12,  --run-poly12      Run Polyoma 12 align and consensus seq, "
-  echo "    -rp13,  --run-poly13      Run Polyoma 13 align and consensus seq, "
-  echo "    -rp14,  --run-poly14      Run Polyoma 14 align and consensus seq, "
- 
-  echo "    -rtt,   --run-ttv         Run TTV   align and consensus seq,    "
-  echo "    -rbv1,  --run-hbov1       Run HBoV1 align and consensus seq,    "
-  echo "    -rbv0,  --run-hbovnot1    Run HBoV (2,3,...) align/consensus seq, "
-  echo "    -rhbv,  --run-hbv         Run HBV   align and consensus seq,    "
-  echo "    -rhpv,  --run-hpv         Run HPV   align and consensus seq,    "
-  echo "    -rvar,  --run-varv        Run VARV  align and consensus seq,    "
-  echo "    -rsv40, --run-sv40        Run Simian 40 align and consensus seq,  "
-  echo "    -rcuta, --run-cuta        Run Cutavirys align and consensus seq,  "
-  echo "    -rherv, --run-herv        Run H Endo Retro align and consensus seq,  "
-  echo "                                                                  "
   echo "    -rsr <ID>, --run-specific <ID/PATTERN>                        "
   echo "                              Run specific reference align/consensus, "
   echo "    -rsx <ID>, --run-extreme <ID/PATTERN>                            "
@@ -1416,7 +1053,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
   if [[ "$RUN_BEST_OF_BESTS" -eq "1" ]];
     then
     #
-    echo -e "\e[34m[TRACESPipe]\e[93m Running best of bests ...\e[0m";
+    echo -e "\e[34m[TRACESPipe]\e[36m Running best of bests ...\e[0m";
     #
     for read in "${READS[@]}" #
       do
@@ -1481,27 +1118,30 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #	
       done
     #
+    IDX=1;
+    rm -f TMP_VIRAL_GENERAL.txt;
     for VIRUS in "${VIRUSES[@]}"
       do
       #
-      rm -f F_STRINGS;
+      rm -f V_F_STRINGS;
       for read in "${READS[@]}" # 
         do
         ORGAN_T=`echo $read | tr ':' '\t' | awk '{ print $1 }'`;
-        cat ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt | awk '{ print $2;}' >> F_STRINGS;
+        sed "${IDX}q;d" ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt | awk '{ print $2;}' >> V_F_STRINGS;
+	((++IDX));
         done
       #
-      BEST_OF_BESTS=`grep -v "-" F_STRINGS | awk '{++a[$0]}END{for(i in a)if(a[i]>max){max=a[i];k=i}print k}'`;
-      #
-      rm -f ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt;
-      for read in "${READS[@]}" #
-        do
-        ORGAN_T=`echo $read | tr ':' '\t' | awk '{ print $1 }'`;
-        echo "Best $BEST_OF_BESTS" >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
-        done
+      BEST_OF_BESTS=`grep -v "-" V_F_STRINGS | awk '{++a[$0]}END{for(i in a)if(a[i]>max){max=a[i];k=i}print k}'`;
+      printf "Best\t$BEST_OF_BESTS\n" >> TMP_VIRAL_GENERAL.txt;  
       #
       done
-      #
+    #
+    for read in "${READS[@]}" #
+      do
+      ORGAN_T=`echo $read | tr ':' '\t' | awk '{ print $1 }'`;
+      cp TMP_VIRAL_GENERAL.txt ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+      done
+    #
     fi
   #  
   # ============================================================================
@@ -1713,179 +1353,14 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     # ========================================================================== 
     # DETAILED VIRAL ALIGN/CONSENSUS
     #
-    if [[ "$RUN_B19_ON" -eq "1" ]];
+    if [[ "$RUN_ALL_VIRAL" -eq "1" ]];
       then
-      ALIGN_AND_CONSENSUS "B19" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_HV1_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "HV1" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_HV2_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "HV2" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_HV3_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "HV3" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_HV4_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "HV4" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_HV5_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "HV5" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_HV6_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "HV6" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_HV6A_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "HV6A" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_HV6B_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "HV6B" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_HV7_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "HV7" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_HV8_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "HV8" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_POLY1_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "POLY1" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_POLY2_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "POLY2" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_POLY2_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "POLY2" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_POLY3_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "POLY3" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_POLY4_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "POLY4" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_POLY5_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "POLY5" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_POLY6_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "POLY6" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_POLY7_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "POLY7" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_POLY8_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "POLY8" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_POLY9_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "POLY9" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_POLY10_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "POLY10" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_POLY11_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "POLY11" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_POLY12_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "POLY12" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_POLY13_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "POLY13" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_POLY14_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "POLY14" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_TTV_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "TTV" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_HBOV1_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "HBOV1" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_HBOVNOT1_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "HBOVNOT1" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_HBV_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "HBV" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_HPV_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "HPV" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    # 
-    if [[ "$RUN_VARV_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "VARV" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_SV40_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "SV40" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_CUTA_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "CUTA" "$MINIMAL_SIMILARITY_VALUE";
-      fi
-    #
-    if [[ "$RUN_HERV_ON" -eq "1" ]];
-      then
-      ALIGN_AND_CONSENSUS "HERV" "$MINIMAL_SIMILARITY_VALUE";
+      IDX=1;
+      for VIRUS in "${VIRUSES[@]}"
+        do
+        ALIGN_AND_CONSENSUS "$VIRUS" "$MINIMAL_SIMILARITY_VALUE" "$RUN_BEST_OF_BESTS" "$IDX";
+	((++IDX));
+	done
       fi
     # 
     # ==========================================================================

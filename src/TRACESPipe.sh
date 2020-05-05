@@ -276,7 +276,9 @@ ALIGN_AND_CONSENSUS () {
     #
     if [[ "$3" -eq "1" ]]
       then	    
+      echo -e "\e[34m[TRACESPipe]\e[96m Best reference: $V_GID\e[0m";
       V_GID=`sed "${IDX_TAG}q;d" ../output_data/TRACES_results/REPORT_META_VIRAL_BESTS_$ORGAN.txt | awk '{ print $2; }'`;
+      echo -e "\e[34m[TRACESPipe]\e[96m Using best of bests reference: $V_GID\e[0m";
       fi
     #
     echo -e "\e[34m[TRACESPipe]\e[96m Similarity best match: $V_INFO\e[0m";

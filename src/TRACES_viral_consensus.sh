@@ -12,6 +12,8 @@ echo "Using Alignments  : $Alignments";
 echo "Using Organ       : $Organ";
 echo "Using Viral Label : $Label";
 #
+rm -f $Label-$Organ-calls.vcf.gz $Label-$Organ-calls.vcf.gz.csi $Label-$Organ-calls.norm.bcf $Label-$Organ-calls.norm.flt-indels.bcf $Label-$Organ-calls.norm.flt-indels.vcf.gz $Label-$Organ-calls.norm.flt-indels.vcf.gz.csi $Label-$Organ-calls.norm.vcf.gz;
+#
 # https://wikis.utexas.edu/display/bioiteam/Removing+duplicates+from+alignment+output
 # Carefull with this filtering... [ambiguity]
 #
@@ -40,7 +42,7 @@ bcftools consensus -m $Label-zero-coverage-$Organ.bed -f $Reference $Label-$Orga
 #
 # Give new header name for the consensus sequence
 tail -n +2 $Label-consensus-$Organ.fa > $Label-$Organ-TMP_FILE.xki
-echo "> $Organ $Label consensus" > $Label-consensus-$Organ.fa
+echo ">$Label consensus ($Organ)" > $Label-consensus-$Organ.fa
 cat $Label-$Organ-TMP_FILE.xki >> $Label-consensus-$Organ.fa
 rm -f $Label-$Organ-TMP_FILE.xki;
 #

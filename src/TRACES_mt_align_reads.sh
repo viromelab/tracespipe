@@ -12,7 +12,7 @@
 # $5 -> HIGH_SENSITIVITY = 1 ?
 #
 # INDEX
-rm -f index_file*
+rm -f index_file* mt_aligned_sorted-$2.bam.bai
 bowtie2-build $1 index_file
 #
 # ALIGN
@@ -48,6 +48,8 @@ if [[ "$4" -eq "1" ]];
   fi
 # INDEX BAM
 samtools index -@ $3 mt_aligned_sorted-$2.bam mt_aligned_sorted-$2.bam.bai
+#
+samtools flagstat -@ $3 mt_aligned_sorted-$2.bam > ../output_data/TRACES_mtdna_statistics/Alignments-mt-$2.txt
 #
 rm -f *.bt2
 #

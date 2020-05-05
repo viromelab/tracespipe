@@ -9,14 +9,15 @@
 # $2 -> ORGAN
 # $3 -> VIRAL INITIALS
 # $4 -> NUMBER OF THREADS
-# $5 -> HIGH_SENSITIVITY
+# $5 -> DUPLICATIONS
+# $6 -> HIGH_SENSITIVITY
 #
 # BUILD THE INDEX
-rm -f index-$2-$3-file*
+rm -f index-$2-$3-file* viral_aligned_sorted-$2-$3.bam.bai
 bowtie2-build $1 index-$2-$3-file 
 #
 # ALIGN
-if [[ "$5" == "1" ]];
+if [[ "$6" == "1" ]];
   then
   bowtie2 -a --threads $4 --very-sensitive -x index-$2-$3-file -1 o_fw_pr.fq -2 o_rv_pr.fq -U o_fw_unpr.fq,o_rv_unpr.fq > aligned-$2-$3.sam
   else

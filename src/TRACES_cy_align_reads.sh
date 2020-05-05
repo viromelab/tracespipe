@@ -10,7 +10,7 @@
 # $3 -> NUMBER OF THREADS
 # $4 -> HIGH_SENSITIVITY = 1 ?
 #
-rm -f cy_index_file*
+rm -f cy_index_file* cy_aligned_sorted-$2.bam.bai
 bowtie2-build $1 cy_index_file
 #
 if [[ "$4" == "1" ]];

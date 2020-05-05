@@ -11,7 +11,9 @@ echo "Using Reference   : $Reference";
 echo "Using Alignments  : $Alignments";
 echo "Using Organ       : $Organ";
 #
+rm -f calls.vcf.gz calls.vcf.gz.csi calls.norm.bcf calls.norm.flt-indels.bcf calls.norm.flt-indels.vcf.gz calls.norm.vcf.gz;
 # MASK LOW COVERAGE (<1) TO N
+#
 bedtools genomecov -ibam $Alignments -bga > mt-coverage-$Organ.bed
 awk '$4 < 1' mt-coverage-$Organ.bed > mt-zero-coverage-$Organ.bed # CHANGE VALUE TO CHANGE MINIMUM OF DEPTH COVERAGE
 #bedtools maskfasta -fi $Reference -bed zero_coverage.bed -fo MASKED-$LABEL-consensus-$Organ.fa;
@@ -36,7 +38,7 @@ bcftools consensus -m mt-zero-coverage-$Organ.bed -f $Reference calls.norm.flt-i
 #
 # Give new header name for the consensus sequence
 tail -n +2 mt-consensus-$Organ.fa > MT_TMP_FILE_$Organ.xki
-echo "> $Organ Mitochondrial DNA consensus" > mt-consensus-$Organ.fa
+echo ">Mitochondrial DNA consensus ($Organ)" > mt-consensus-$Organ.fa
 cat MT_TMP_FILE_$Organ.xki >> mt-consensus-$Organ.fa
 rm -f MT_TMP_$Organ.xki;
 #

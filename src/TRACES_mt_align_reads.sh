@@ -12,7 +12,7 @@
 # $5 -> HIGH_SENSITIVITY = 1 ?
 #
 # INDEX
-rm -f index_file* mt_aligned_sorted-$2.bam.bai
+rm -f index_file* mt_aligned_sorted-$2.bam mt_aligned_sorted-$2.bam.bai mt_aligned_sorted-$2.bam
 bowtie2-build $1 index_file
 #
 # ALIGN

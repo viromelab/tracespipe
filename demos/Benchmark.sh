@@ -4,6 +4,7 @@
 # conda install -c 'bioconda' art
 #
 RUN_ALL=1;
+RUN_TRACES=1;
 zcat MINIDB.fa.gz > ../src/VDB.fa
 cd ../src/
 #
@@ -35,63 +36,63 @@ then
   #
   cat mtDNA.fa VARV.fa HV2.fa HV3.fa HV8.fa B19.fa > blood.fa
   #
-  cp mtDNA.fa mtDNA-blood.fa;
-  cp VARV.fa  VARV-blood.fa;
-  cp HV2.fa   HV2-blood.fa;
-  cp HV3.fa   HV3-blood.fa;
-  cp HV8.fa   HV8-blood.fa;
-  cp B19.fa   B19-blood.fa;
+  cp mtDNA.fa B-mtDNA-blood.fa;
+  cp VARV.fa  B-VARV-blood.fa;
+  cp HV2.fa   B-HV2-blood.fa;
+  cp HV3.fa   B-HV3-blood.fa;
+  cp HV8.fa   B-HV8-blood.fa;
+  cp B19.fa   B-B19-blood.fa;
   #
   cat mtDNA1.fa VARV.fa HV4.fa B19.fa > brain.fa
-  cp mtDNA1.fa mtDNA-brain.fa;
-  cp VARV.fa   VARV-brain.fa;
-  cp HV4.fa    HV4-brain.fa;
-  cp B19.fa    B19-brain.fa;
+  cp mtDNA1.fa B-mtDNA-brain.fa;
+  cp VARV.fa   B-VARV-brain.fa;
+  cp HV4.fa    B-HV4-brain.fa;
+  cp B19.fa    B-B19-brain.fa;
   #
   cat mtDNA.fa B19_2.fa TTV_6.fa > bone.fa
-  cp mtDNA.fa mtDNA-bone.fa;
-  cp B19_2.fa B19-bone.fa;
-  cp TTV_6.fa TTV-bone.fa;
+  cp mtDNA.fa B-mtDNA-bone.fa;
+  cp B19_2.fa B-B19-bone.fa;
+  cp TTV_6.fa B-TTV-bone.fa;
   #
   cat mtDNA.fa B19.fa HV3.fa TTV.fa > skin.fa
-  cp mtDNA.fa mtDNA-skin.fa;
-  cp B19.fa B19-skin.fa;
-  cp HV3.fa HV3-skin.fa;
-  cp TTV.fa TTV-skin.fa;
+  cp mtDNA.fa B-mtDNA-skin.fa;
+  cp B19.fa B-B19-skin.fa;
+  cp HV3.fa B-HV3-skin.fa;
+  cp TTV.fa B-TTV-skin.fa;
   #
   cat mtDNA5.fa B19_5.fa TTV.fa HV2.fa > teeth.fa
-  cp mtDNA5.fa mtDNA-teeth.fa;
-  cp B19_5.fa B19-teeth.fa;
-  cp TTV.fa TTV-teeth.fa;
-  cp HV2.fa HV2-teeth.fa;
+  cp mtDNA5.fa B-mtDNA-teeth.fa;
+  cp B19_5.fa B-B19-teeth.fa;
+  cp TTV.fa B-TTV-teeth.fa;
+  cp HV2.fa B-HV2-teeth.fa;
   #
   cat mtDNA1.fa HV2.fa TTV_7.fa B19.fa > kidney.fa
-  cp mtDNA1.fa mtDNA-kidney.fa;
-  cp HV2.fa HV2-kidney.fa;
-  cp TTV_7.fa TTV-kidney.fa;
-  cp B19.fa B19-kidney.fa;
+  cp mtDNA1.fa B-mtDNA-kidney.fa;
+  cp HV2.fa B-HV2-kidney.fa;
+  cp TTV_7.fa B-TTV-kidney.fa;
+  cp B19.fa B-B19-kidney.fa;
   #
   cat mtDNA.fa HV4_2.fa VARV.fa > lung.fa
-  cp mtDNA.fa mtDNA-lung.fa;
-  cp HV4_2.fa HV4-lung.fa;
-  cp VARV.fa VARV-lung.fa;
+  cp mtDNA.fa B-mtDNA-lung.fa;
+  cp HV4_2.fa B-HV4-lung.fa;
+  cp VARV.fa B-VARV-lung.fa;
   #
   cat mtDNA2.fa HPV.fa VARV.fa HV4_2.fa > liver.fa
-  cp mtDNA2.fa mtDNA-liver.fa;
-  cp HPV.fa HPV-liver.fa;
-  cp VARV.fa VARV-liver.fa;
-  cp HV4_2.fa HV4-liver.fa;
+  cp mtDNA2.fa B-mtDNA-liver.fa;
+  cp HPV.fa B-HPV-liver.fa;
+  cp VARV.fa B-VARV-liver.fa;
+  cp HV4_2.fa B-HV4-liver.fa;
   #
   cat mtDNA.fa HPV_2.fa B19_20.fa VARV_5.fa > heart.fa
-  cp mtDNA.fa mtDNA-heart.fa;
-  cp HPV_2.fa HPV-heart.fa;
-  cp B19_20.fa B19-heart.fa;
-  cp VARV_5.fa VARV-heart.fa;
+  cp mtDNA.fa B-mtDNA-heart.fa;
+  cp HPV_2.fa B-HPV-heart.fa;
+  cp B19_20.fa B-B19-heart.fa;
+  cp VARV_5.fa B-VARV-heart.fa;
   #
   cat mtDNA.fa HPV_2.fa HV4.fa > hair.fa
-  cp mtDNA.fa mtDNA-hair.fa;
-  cp HPV_2.fa HPV-hair.fa;
-  cp HV4.fa HV4-hair.fa;
+  cp mtDNA.fa B-mtDNA-hair.fa;
+  cp HPV_2.fa B-HPV-hair.fa;
+  cp HV4.fa B-HV4-hair.fa;
   #
   art_illumina -rs 0 -ss HS25 -sam -i blood.fa -p -l 150 -f 40 -m 200 -s 10 -o blood
   art_illumina -rs 0 -ss HS25 -sam -i brain.fa -p -l 150 -f 10 -m 200 -s 10 -o brain
@@ -101,7 +102,7 @@ then
   art_illumina -rs 0 -ss HS25 -sam -i kidney.fa -p -l 150 -f 20 -m 200 -s 10 -o kidney
   art_illumina -rs 0 -ss HS25 -sam -i lung.fa -p -l 150 -f 10 -m 200 -s 10 -o lung
   art_illumina -rs 0 -ss HS25 -sam -i liver.fa -p -l 150 -f 20 -m 200 -s 10 -o liver
-  art_illumina -rs 0 -ss HS25 -sam -i heart.fa -p -l 150 -f 20 -m 200 -s 10 -o heart
+  art_illumina -rs 0 -ss HS25 -sam -i heart.fa -p -l 150 -f 40 -m 200 -s 10 -o heart
   art_illumina -rs 0 -ss HS25 -sam -i hair.fa -p -l 150 -f 5 -m 200 -s 10 -o hair
   #
   cp blood*.fq ../input_data
@@ -140,13 +141,15 @@ then
   echo "heart:heart1.fq.gz:heart2.fq.gz" >> ../meta_data/meta_info.txt
   echo "hair:hair1.fq.gz:hair2.fq.gz" >> ../meta_data/meta_info.txt
   #
-  # ============================================================================
-  #
-  ./TRACESPipe.sh --run-meta --inter-sim-size 5 --run-all-v-alig --run-mito --remove-dup --run-de-novo --run-hybrid --min-similarity 1 --view-top 10 --very-sensitive
-  #
-  # ============================================================================
-  #
 fi
+# ============================================================================
+if [[ "$RUN_TRACES" -eq "1" ]];
+  then
+  ./TRACESPipe.sh --run-meta --inter-sim-size 2 --run-all-v-alig --run-mito --remove-dup --run-de-novo --run-hybrid --min-similarity 2 --view-top 6 --best-of-bests --very-sensitive
+  #./TRACESPipe.sh --run-mito --remove-dup --very-sensitive
+fi
+#
+# ============================================================================
 #
 # EVALUATION:
 #
@@ -160,12 +163,12 @@ for organ in "${ORGANS[@]}"
   printf "$organ\n";	  
   for virus in "${VIRUSES[@]}"
     do	  
-    if [ -f $virus-$organ.fa ];
+    if [ -f B-$virus-$organ.fa ];
       then
       #echo "Diff -> $virus | $organ :";
       printf "$virus\t";	  
       cp $D_PATH/$virus-consensus-$organ.fa G_A.fa;
-      cp $virus-$organ.fa G_B.fa
+      cp B-$virus-$organ.fa G_B.fa
       dnadiff G_A.fa G_B.fa ;
       IDEN=`cat out.report | grep "AvgIdentity " | head -n 1 | awk '{ print $2;}'`; 
       SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;
@@ -176,7 +179,7 @@ for organ in "${ORGANS[@]}"
   #echo "Diff -> mtDNA | $organ :";
   printf "mtDNA\t";	  
   cp ../output_data/TRACES_mtdna_consensus/mt-consensus-$organ.fa G_A.fa;
-  cp mtDNA-$organ.fa G_B.fa
+  cp B-mtDNA-$organ.fa G_B.fa
   dnadiff G_A.fa G_B.fa ;
   IDEN=`cat out.report | grep "AvgIdentity " | head -n 1 | awk '{ print $2;}'`;
   SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;

@@ -1278,6 +1278,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       if [[ "$F_TOP_SIZE" -eq "0" ]];
         then
 	echo -e "\e[34m[TRACESPipe]\e[31m Empty top-$ORGAN_T.csv results!\e[0m";
+	echo -e "\e[34m[TRACESPipe]\e[32m Possibly computer ran out of RAM!\e[0m";
 	else
         head -n $VTOP_SIZE ../output_data/TRACES_results/top-$ORGAN_T.csv
         fi

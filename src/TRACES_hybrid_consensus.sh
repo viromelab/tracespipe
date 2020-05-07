@@ -12,8 +12,7 @@ echo "Using Alignments  : $Alignments";
 echo "Using Organ       : $Organ";
 echo "Using Viral Label : $Label";
 #
-# https://wikis.utexas.edu/display/bioiteam/Removing+duplicates+from+alignment+output
-# Carefull with this filtering... [ambiguity]
+rm -f $Label-$Organ-calls.vcf.gz $Label-$Organ-calls.vcf.gz.csi $Label-$Organ-calls.norm.bcf $Label-$Organ-calls.norm.vcf.gz $Label-$Organ-calls.norm.vcf.gz.csi;
 #
 # MASK LOW COVERAGE (<1) TO N
 bedtools genomecov -ibam $Alignments -bga > $Label-coverage-$Organ.bed
@@ -37,9 +36,8 @@ zcat $Label-$Organ-calls.norm.vcf.gz |vcf2bed --snvs > $Label-calls-$Organ.bed
 # CONSENSUS
 #tabix -f $Label-$Organ-calls.norm.flt-indels.vcf.gz
 tabix -f $Label-$Organ-calls.norm.vcf.gz
-#bcftools consensus -m $Label-zero-coverage-$Organ.bed -f $Reference $Label-$Organ-calls.norm.flt-indels.vcf.gz > $Label-consensus-$Organ.fa
 #bcftools consensus -m $Label-zero-coverage-$Organ.bed -f $Reference $Label-$Organ-calls.norm.vcf.gz > $Label-consensus-$Organ.fa
-bcftools consensus -f $Reference $Label-$Organ-calls.norm.vcf.gz > $Label-consensus-$Organ.fa
+bcftools consensus -m $Label-zero-coverage-$Organ.bed -f $Reference $Label-$Organ-calls.norm.vcf.gz > $Label-consensus-$Organ.fa
 #
 # Give new header name for the consensus sequence
 tail -n +2 $Label-consensus-$Organ.fa > $Label-$Organ-TMP_FILE.xki
@@ -48,7 +46,6 @@ cat $Label-$Organ-TMP_FILE.xki >> $Label-consensus-$Organ.fa
 rm -f $Label-$Organ-TMP_FILE.xki;
 #
 #
-#rm -f $Label-$Organ-calls.vcf.gz $Label-$Organ-calls.vcf.gz.csi $Label-$Organ-calls.norm.bcf $Label-$Organ-calls.norm.flt-indels.bcf $Label-$Organ-calls.norm.flt-indels.vcf.gz $Label-$Organ-calls.norm.flt-indels.vcf.gz.csi $Label-$Organ-calls.norm.vcf.gz;
 rm -f $Label-$Organ-calls.vcf.gz $Label-$Organ-calls.vcf.gz.csi $Label-$Organ-calls.norm.bcf $Label-$Organ-calls.norm.vcf.gz.csi $Label-$Organ-calls.norm.vcf.gz;
 #
 #

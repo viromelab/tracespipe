@@ -156,8 +156,9 @@ fi
 declare -a ORGANS=("blood" "bone" "brain" "hair" "heart" "kidney" "liver" "lung" "skin" "teeth");
 declare -a VIRUSES=("B19" "HV2" "HV3" "HV4" "HV8" "HPV" "TTV" "VARV");
 #
-#D_PATH="../output_data/TRACES_hybrid_consensus";
-D_PATH="../output_data/TRACES_hybrid_R2_consensus";
+D_PATH="../output_data/TRACES_hybrid_consensus";
+#D_PATH="../output_data/TRACES_hybrid_R2_consensus";
+#D_PATH="../output_data/TRACES_hybrid_R3_consensus";
 for organ in "${ORGANS[@]}"
   do
   printf "$organ\n";	  

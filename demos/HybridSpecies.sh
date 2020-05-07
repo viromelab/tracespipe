@@ -62,8 +62,9 @@ then
 declare -a ORGANS=("blood" "bone" "brain");
 declare -a VIRUSES=("B19" "VARV");
 #
-#D_PATH="../output_data/TRACES_hybrid_consensus";
-D_PATH="../output_data/TRACES_hybrid_R2_consensus";
+D_PATH="../output_data/TRACES_hybrid_consensus";
+#D_PATH="../output_data/TRACES_hybrid_R2_consensus";
+#D_PATH="../output_data/TRACES_hybrid_R3_consensus";
 #
 printf "Blood\n";
 printf "B19\t";

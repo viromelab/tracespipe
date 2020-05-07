@@ -1577,15 +1577,29 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
           cp $HYBRID_CON_PATH/$CVNAME HYB-$ORGAN_T-$VIRUS.fa
           if [[ "$PC_ALIGNM" < "$PC_HYBRID" ]]
 	    then
+	    # ROUND 2
             echo "% of \"N\" -> ALIGNMENTS CONSENSUS ($PC_ALIGNM) < HYBRID CONSENSUS ($PC_HYBRID)" 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
             ./TRACES_hybrid_R2.sh ALG-$ORGAN_T-$VIRUS.fa HYB-$ORGAN_T-$VIRUS.fa $VIRUS $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+	    # ROUND 3
+	    #
+	    cp ../output_data/TRACES_hybrid_R2_consensus/$VIRUS-consensus-$ORGAN.fa HYB-$ORGAN_T-$VIRUS.fa
+	    cp ../output_data/TRACES_hybrid_consensus/$VIRUS-consensus-$ORGAN.fa ALG-$ORGAN_T-$VIRUS.fa
+            #
+            ./TRACES_hybrid_R3.sh ALG-$ORGAN_T-$VIRUS.fa HYB-$ORGAN_T-$VIRUS.fa $VIRUS $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
 	    #
 	    else
+	    # ROUND 2
             echo "% of \"N\" -> ALIGNMENTS CONSENSUS ($PC_ALIGNM) > HYBRID CONSENSUS ($PC_HYBRID)" 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
             ./TRACES_hybrid_R2.sh HYB-$ORGAN_T-$VIRUS.fa ALG-$ORGAN_T-$VIRUS.fa $VIRUS $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
 	    #
+	    # ROUND 3
+            cp ../output_data/TRACES_hybrid_R2_consensus/$VIRUS-consensus-$ORGAN.fa ALG-$ORGAN_T-$VIRUS.fa
+            cp ../output_data/TRACES_hybrid_consensus/$VIRUS-consensus-$ORGAN.fa HYB-$ORGAN_T-$VIRUS.fa
+            #
+            ./TRACES_hybrid_R3.sh ALG-$ORGAN_T-$VIRUS.fa HYB-$ORGAN_T-$VIRUS.fa $VIRUS $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+            #
 	    fi	    
-	  rm -f ALG-$ORGAN_T-$VIRUS.fa HYB-$ORGAN_T-$VIRUS.fa
+	  #rm -f ALG-$ORGAN_T-$VIRUS.fa HYB-$ORGAN_T-$VIRUS.fa
           fi
         done
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";

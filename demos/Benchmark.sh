@@ -102,7 +102,7 @@ then
   art_illumina -rs 0 -ss HS25 -sam -i kidney.fa -p -l 150 -f 20 -m 200 -s 10 -o kidney
   art_illumina -rs 0 -ss HS25 -sam -i lung.fa -p -l 150 -f 10 -m 200 -s 10 -o lung
   art_illumina -rs 0 -ss HS25 -sam -i liver.fa -p -l 150 -f 20 -m 200 -s 10 -o liver
-  art_illumina -rs 0 -ss HS25 -sam -i heart.fa -p -l 150 -f 40 -m 200 -s 10 -o heart
+  art_illumina -rs 0 -ss HS25 -sam -i heart.fa -p -l 150 -f 20 -m 200 -s 10 -o heart
   art_illumina -rs 0 -ss HS25 -sam -i hair.fa -p -l 150 -f 5 -m 200 -s 10 -o hair
   #
   cp blood*.fq ../input_data

@@ -316,8 +316,9 @@ See the next section for more information about the usage.
 
 The common use of TRACESPipe as command is:
 ```
-./TRACESPipe.sh --run-meta --inter-sim-size 8 --run-all-v-alig --run-mito --remove-dup --run-de-novo --run-hybrid --min-similarity 3 --view-top 10 --best-of-bests --very-sensitive
-'''
+./TRACESPipe.sh --run-meta --inter-sim-size 8 --run-all-v-alig --run-mito --remove-dup 
+--run-de-novo --run-hybrid --min-similarity 3 --view-top 10 --best-of-bests --very-sensitive
+```
 From the run all the output is provided at folder output\_data and it can be human inspected using IGV.
 
 Nevertheless, for specific runs, below some examples are described.

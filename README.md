@@ -314,9 +314,17 @@ See the next section for more information about the usage.
 
 ## 5. Examples ##
 
-### 5.1 Building a Parvovirus consensus sequence (if exists in the FASTQ samples): ###
+The common use of TRACESPipe as command is:
 ```
-./TRACESPipe.sh --run-meta --run-b19
+./TRACESPipe.sh --run-meta --inter-sim-size 8 --run-all-v-alig --run-mito --remove-dup --run-de-novo --run-hybrid --min-similarity 3 --view-top 10 --best-of-bests --very-sensitive
+'''
+From the run all the output is provided at folder output\_data and it can be human inspected using IGV.
+
+Nevertheless, for specific runs, below some examples are described.
+
+### 5.1 Building viral consensus sequences with fixed reference sequence in all organs (if exists in the FASTQ samples): ###
+```
+./TRACESPipe.sh --run-meta --run-all-v-alig --remove-dup --min-similarity 3 --best-of-bests
 ```
 The output consensus sequence is included at 
 ```
@@ -334,7 +342,7 @@ output_data/TRACES_viral_bed
 ### 5.2 Building a mitochondrial consensus sequence (if exists in the FASTQ samples): ###
 
 ```
-./TRACESPipe.sh --run-mito
+./TRACESPipe.sh --run-mito --remove-dup
 ```
 The output consensus sequence is included at
 ```

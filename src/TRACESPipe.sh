@@ -1632,7 +1632,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       # VIRAL DNA
       #
       mkdir -p ../output_data/TRACES_diff
-      printf "$ORGAN_T\n" 1>> ../output_data/TRACES_diff/Viral_Diff.txt;
+      printf "\n$ORGAN_T\n" 1>> ../output_data/TRACES_diff/Viral_Diff.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Running dnadiff between references and reconstructed ...\e[0m";
       for VIRUS in "${VIRUSES[@]}"
         do
@@ -1647,7 +1647,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
             IDEN=`cat out.report | grep "AvgIdentity "  | head -n 1 | awk '{ print $2;}'`;
             ALBA=`cat out.report | grep "AlignedBases " | head -n 1 | awk '{ print $2;}'`;
             SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;
-            printf "$ALBA\t$IDEN\t$SNPS\n" 1>> ../output_data/TRACES_diff/Viral_Diff.txt
+            printf "%s\t%s\t%s\n" "$ALBA" "$IDEN" "$SNPS" 1>> ../output_data/TRACES_diff/Viral_Diff.txt
             rm -f $ORGAN_T-$VIRUS-G_A.fa $ORGAN_T-$VIRUS-G_B.fa ;
             fi
           fi
@@ -1666,7 +1666,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
           IDEN=`cat out.report | grep "AvgIdentity " | head -n 1 | awk '{ print $2;}'`;
           ALBA=`cat out.report | grep "AlignedBases " | head -n 1 | awk '{ print $2;}'`;
           SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;
-          printf "$ALBA\t$IDEN\t$SNPS\n" 1>> ../output_data/TRACES_diff/mtDNA_Diff.txt
+	  printf "%s\t%s\t%s\n" "$ALBA" "$IDEN" "$SNPS" 1>> ../output_data/TRACES_diff/mtDNA_Diff.txt
           rm -f MT-G_A.fa $ORGAN_T-MT-G_B.fa ;
           fi
         fi

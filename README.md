@@ -112,6 +112,8 @@ tracespipe/
 │   ├── TRACES_hybrid_R3_consensus/    # where the third round hybrid data appears
 │   ├── TRACES_hybrid_R3_bed/          # where the third round hybrid data appears
 │   │
+│   ├── TRACES_diff/                   # where the dnadiff results appear (identity & SNPs)
+│   │
 │   └── TRACES_blasts/                 # where the specific blasted results appears
 │   
 ├── to_encrypt_data/    # where the NGS files to encrypt must be before encryption
@@ -269,6 +271,8 @@ See the next section for more information about the usage.
                               Run coverage profile for specific BED file, 
     -cmax <MAX>,  --max-coverage <MAX_COVERAGE>                           
                               Maximum depth coverage (depth normalization), 
+
+    -diff,  --run-diff        Run diff -> reference and hybrid (ident/SNPs), 
                                                                   
     -ra,    --run-analysis    Run data analysis,                   
     -all,   --run-all         Run all the options.                 
@@ -289,7 +293,7 @@ See the next section for more information about the usage.
 The common use of TRACESPipe as command is:
 ```
 ./TRACESPipe.sh --run-meta --inter-sim-size 8 --run-all-v-alig --run-mito --remove-dup 
---run-de-novo --run-hybrid --min-similarity 3 --view-top 10 --best-of-bests --very-sensitive
+--run-de-novo --run-hybrid --min-similarity 3 --view-top 10 --best-of-bests --very-sensitive --run-diff
 ```
 From the run all the output is provided at folder output\_data and it can be human inspected using IGV.
 
@@ -468,6 +472,7 @@ TRACES Pipeline uses a combination of the following tools:
 | &#x1F49A;&nbsp; IGV | [[https://software.broadinstitute.org/software/igv/]](https://software.broadinstitute.org/software/igv/) | [![Article](https://img.shields.io/static/v1.svg?label=View&message=Article&color=green)](https://www.nature.com/articles/nbt.1754) |
 | &#x1F49A;&nbsp; mapDamage2 | [[https://ginolhac.github.io/mapDamage/]](https://ginolhac.github.io/mapDamage/) | [![Article](https://img.shields.io/static/v1.svg?label=View&message=Article&color=green)](https://academic.oup.com/bioinformatics/article/29/13/1682/184965) |
 | &#x1F49A;&nbsp; Blastn | [[https://blast.ncbi.nlm.nih.gov/]](https://blast.ncbi.nlm.nih.gov) | [![Article](https://img.shields.io/static/v1.svg?label=View&message=Article&color=green)](https://www.liebertpub.com/doi/abs/10.1089/10665270050081478) |
+| &#x1F49A;&nbsp; mummer4 | [[https://mummer4.github.io/]](https://mummer4.github.io/) | [![Article](https://img.shields.io/static/v1.svg?label=View&message=Article&color=green)](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005944) |
 
 
 ## 7. Citation ##

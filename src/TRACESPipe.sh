@@ -1656,7 +1656,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         then
         if [ -f ../output_data/TRACES_mtdna_consensus/mt-consensus-$ORGAN_T.fa ];
           then
-          printf "mtDNA\t" 1>> ../output_data/TRACES_diff/mtDNA_Diff.txt;
+          printf "$ORGAN_T\t" 1>> ../output_data/TRACES_diff/mtDNA_Diff.txt;
           cp ../output_data/TRACES_mtdna_alignments/mtDNA.fa MT-G_A.fa;
           cp ../output_data/TRACES_mtdna_consensus/mt-consensus-$ORGAN_T.fa $ORGAN_T-MT-G_B.fa;
           dnadiff MT-G_A.fa $ORGAN_T-MT-G_B.fa 2>> ../logs/Log-stderr-$ORGAN_T.txt;

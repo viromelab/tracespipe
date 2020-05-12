@@ -104,9 +104,13 @@ tracespipe/
 │   ├── TRACES_hybrid_consensus/       # where the hybrid data appears
 │   ├── TRACES_hybrid_bed/             # where the hybrid data appears
 │   │
-│   ├── TRACES_hybrid_R2_alignments/   # where the hybrid data appears
-│   ├── TRACES_hybrid_R2_consensus/    # where the hybrid data appears
-│   ├── TRACES_hybrid_R2_bed/          # where the hybrid data appears
+│   ├── TRACES_hybrid_R2_alignments/   # where the second round hybrid data appears
+│   ├── TRACES_hybrid_R2_consensus/    # where the second round hybrid data appears
+│   ├── TRACES_hybrid_R2_bed/          # where the second round hybrid data appears
+│   │
+│   ├── TRACES_hybrid_R3_alignments/   # where the third round hybrid data appears
+│   ├── TRACES_hybrid_R3_consensus/    # where the third round hybrid data appears
+│   ├── TRACES_hybrid_R3_bed/          # where the third round hybrid data appears
 │   │
 │   └── TRACES_blasts/                 # where the specific blasted results appears
 │   
@@ -220,6 +224,9 @@ See the next section for more information about the usage.
     -rdup,  --remove-dup      Remove duplications (e.g. PCR dup),  
     -vhs,   --very-sensitive  Aligns with very high sensitivity (slower),  
                                                                    
+    -gbb,   --best-of-bests   Identifies the best of bests references 
+                              between multiple organs [similar reference], 
+                                                                   
     -iss <SIZE>, --inter-sim-size <SIZE>                                  
                               Inter-genome similarity top size (control), 
                                                                    
@@ -236,44 +243,9 @@ See the next section for more information about the usage.
                               Display the top <VALUE> with the highest 
                               similarity (by descending order),        
                                                                        
-    -rava,  --run-all-v-alig  Run all viral align/sort/consensus seqs, 
+    -rava,  --run-all-v-alig  Run all viral align/sort/consensus seqs 
+                              from a specific list,                    
                                                                        
-    -rb19,  --run-b19         Run B19  align and consensus seq,        
-    -rh1,   --run-hv1         Run HHV1   align and consensus seq,    
-    -rh2,   --run-hv2         Run HHV2   align and consensus seq,    
-    -rh3,   --run-hv3         Run HHV3   align and consensus seq,    
-    -rh4,   --run-hv4         Run HHV4   align and consensus seq,    
-    -rh5,   --run-hv5         Run HHV5   align and consensus seq,    
-    -rh6,   --run-hv6         Run HHV6   align and consensus seq,    
-    -rh6a,  --run-hv6a        Run HHV6A  align and consensus seq,    
-    -rh6b,  --run-hv6b        Run HHV6B  align and consensus seq,    
-    -rh7,   --run-hv7         Run HHV7   align and consensus seq,    
-    -rh8,   --run-hv8         Run HHV8   align and consensus seq,    
-    -rh8,   --run-hv8         Run HHV8   align and consensus seq,    
-    -rp1,   --run-poly1       Run Polyoma 1  align and consensus seq, 
-    -rp2,   --run-poly2       Run Polyoma 2  align and consensus seq, 
-    -rp3,   --run-poly3       Run Polyoma 3  align and consensus seq, 
-    -rp4,   --run-poly4       Run Polyoma 4  align and consensus seq, 
-    -rp5,   --run-poly5       Run Polyoma 5  align and consensus seq, 
-    -rp6,   --run-poly6       Run Polyoma 6  align and consensus seq, 
-    -rp7,   --run-poly7       Run Polyoma 7  align and consensus seq, 
-    -rp8,   --run-poly8       Run Polyoma 8  align and consensus seq, 
-    -rp9,   --run-poly9       Run Polyoma 9  align and consensus seq, 
-    -rp10,  --run-poly10      Run Polyoma 10 align and consensus seq, 
-    -rp11,  --run-poly11      Run Polyoma 11 align and consensus seq, 
-    -rp12,  --run-poly12      Run Polyoma 12 align and consensus seq, 
-    -rp13,  --run-poly13      Run Polyoma 13 align and consensus seq, 
-    -rp14,  --run-poly14      Run Polyoma 14 align and consensus seq, 
-    -rtt,   --run-ttv         Run TTV   align and consensus seq,    
-    -rbv1,  --run-hbov1       Run HBoV1 align and consensus seq,    
-    -rbv0,  --run-hbovnot1    Run HBoV (2,3,...) align/consensus seq, 
-    -rhbv,  --run-hbv         Run HBV   align and consensus seq,    
-    -rhpv,  --run-hpv         Run HPV   align and consensus seq,    
-    -rvar,  --run-varv        Run VARV  align and consensus seq,    
-    -rsv40, --run-sv40        Run Simian 40 align and consensus seq,  
-    -rcuta, --run-cuta        Run Cutavirys align and consensus seq,  
-    -rherv, --run-herv        Run H Endo Retro align and consensus seq,  
-                                                                  
     -rsr <ID>, --run-specific <ID/PATTERN>                        
                               Run specific reference align/consensus, 
     -rsx <ID>, --run-extreme <ID/PATTERN>                            
@@ -308,7 +280,7 @@ See the next section for more information about the usage.
     The reads must be GZIPed in the ../input_data/ folder.            
     The output results are at ../output_data/ folder.                 
                                                                 
-    Contact: projectraces@gmail.com 
+    Contact: projectraces@gmail.com                                                         
 
 ```
 

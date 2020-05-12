@@ -1631,7 +1631,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       # VIRAL DNA
       #
       mkdir -p ../output_data/TRACES_diff
-      printf "$ORGAN_T\n" 1>> ../output_data/TRACES_diff/Viral_Diff.txt;
+      printf "\n$ORGAN_T\n" 1>> ../output_data/TRACES_diff/Viral_Diff.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Running dnadiff between references and reconstructed ...\e[0m";
       for VIRUS in "${VIRUSES[@]}"
         do

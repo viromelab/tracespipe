@@ -78,6 +78,7 @@ RUN_CY_QUANT_ON=0;
 RUN_DE_NOVO_ASSEMBLY=0;
 #
 RUN_HYBRID=0;
+RUN_DIFF=0;
 #
 # ==============================================================================
 #
@@ -598,6 +599,11 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift
     ;;
+    -diff|--run-diff)
+      RUN_DIFF=1;
+      SHOW_HELP=0;
+      shift
+    ;;
     -enc|--encrypt)
       RUN_ENCRYPT=1;
       SHOW_HELP=0;
@@ -628,6 +634,7 @@ while [[ $# -gt 0 ]]
       RUN_CY_QUANT_ON=1;
       RUN_DE_NOVO_ASSEMBLY=1;
       RUN_HYBRID=1;
+      RUN_DIFF=1;
       SHOW_HELP=0;
       shift
     ;;
@@ -755,6 +762,8 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -cmax <MAX>,  --max-coverage <MAX_COVERAGE>                           "
   echo "                              Maximum depth coverage (depth normalization), "
   echo "                                                                  "
+  echo "    -diff,  --run-diff        Run diff -> reference and hybrid (ident/SNPs), "
+  echo "                                                                  "
   echo "    -ra,    --run-analysis    Run data analysis,                   "
   echo "    -all,   --run-all         Run all the options.                 "
   echo "                                                                "
@@ -797,6 +806,14 @@ if [ "$SHOW_VERSION" -eq "1" ];
 #
 mkdir -p ../logs/
 mkdir -p ../output_data/
+#
+# DELETE OLD RUN FILES
+#
+if [[ "$RUN_DIFF" -eq "1" ]];
+  then
+  rm -f ../output_data/TRACES_diff/Viral_Diff.txt
+  rm -f ../output_data/TRACES_diff/mtDNA_Diff.txt
+  fi
 #
 # ==============================================================================
 #
@@ -1602,6 +1619,53 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
 	  #rm -f ALG-$ORGAN_T-$VIRUS.fa HYB-$ORGAN_T-$VIRUS.fa
           fi
         done
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+      fi
+    #
+    # ==========================================================================
+    #
+    if [[ "$RUN_DIFF" -eq "1" ]];
+      then
+      #
+      # VIRAL DNA
+      #
+      mkdir -p ../output_data/TRACES_diff
+      printf "$ORGAN_T\n" 1>> ../output_data/TRACES_diff/Viral_Diff.txt;
+      echo -e "\e[34m[TRACESPipe]\e[32m Running dnadiff between references and reconstructed ...\e[0m";
+      for VIRUS in "${VIRUSES[@]}"
+        do
+	if [ -f ../output_data/TRACES_viral_alignments/$ORGAN_T-$VIRUS.fa ];
+          then
+	  if [ -f ../output_data/TRACES_hybrid_consensus/$VIRUS-consensus-$ORGAN_T.fa ];
+            then
+	    printf "$VIRUS\t" 1>> ../output_data/TRACES_diff/Viral_Diff.txt;
+            cp ../output_data/TRACES_viral_alignments/$ORGAN_T-$VIRUS.fa $ORGAN_T-$VIRUS-G_A.fa;
+            cp ../output_data/TRACES_hybrid_consensus/$VIRUS-consensus-$ORGAN_T.fa $ORGAN_T-$VIRUS-G_B.fa
+            dnadiff $ORGAN_T-$VIRUS-G_A.fa $ORGAN_T-$VIRUS-G_B.fa 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+            IDEN=`cat out.report | grep "AvgIdentity " | head -n 1 | awk '{ print $2;}'`;
+            SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;
+            printf "$IDEN\t$SNPS\n" 1>> ../output_data/TRACES_diff/Viral_Diff.txt
+            rm -f $ORGAN_T-$VIRUS-G_A.fa $ORGAN_T-$VIRUS-G_B.fa ; 
+	    fi
+          fi
+	done
+      #
+      # MT DNA
+      #
+      if [ -f ../output_data/TRACES_mtdna_alignments/mtDNA.fa ];
+        then
+        if [ -f ../output_data/TRACES_mtdna_consensus/mt-consensus-$ORGAN_T.fa ];
+          then
+          printf "mtDNA\t" 1>> ../output_data/TRACES_diff/mtDNA_Diff.txt;
+          cp ../output_data/TRACES_mtdna_alignments/mtDNA.fa MT-G_A.fa;
+          cp ../output_data/TRACES_mtdna_consensus/mt-consensus-$ORGAN_T.fa $ORGAN_T-MT-G_B.fa;
+          dnadiff MT-G_A.fa $ORGAN_T-MT-G_B.fa 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+          IDEN=`cat out.report | grep "AvgIdentity " | head -n 1 | awk '{ print $2;}'`;
+          SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;
+          printf "$IDEN\t$SNPS\n" 1>> ../output_data/TRACES_diff/mtDNA_Diff.txt
+          rm -f MT-G_A.fa $ORGAN_T-MT-G_B.fa ;
+          fi
+        fi
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
     #

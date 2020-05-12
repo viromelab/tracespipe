@@ -1632,25 +1632,26 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       # VIRAL DNA
       #
       mkdir -p ../output_data/TRACES_diff
-      printf "\n$ORGAN_T\n" 1>> ../output_data/TRACES_diff/Viral_Diff.txt;
+      printf "$ORGAN_T\n" 1>> ../output_data/TRACES_diff/Viral_Diff.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Running dnadiff between references and reconstructed ...\e[0m";
       for VIRUS in "${VIRUSES[@]}"
         do
-	if [ -f ../output_data/TRACES_viral_alignments/$ORGAN_T-$VIRUS.fa ];
+        if [ -f ../output_data/TRACES_viral_alignments/$ORGAN_T-$VIRUS.fa ];
           then
-	  if [ -f ../output_data/TRACES_hybrid_consensus/$VIRUS-consensus-$ORGAN_T.fa ];
+          if [ -f ../output_data/TRACES_hybrid_consensus/$VIRUS-consensus-$ORGAN_T.fa ];
             then
-	    printf "$VIRUS\t" 1>> ../output_data/TRACES_diff/Viral_Diff.txt;
+            printf "$VIRUS\t" 1>> ../output_data/TRACES_diff/Viral_Diff.txt;
             cp ../output_data/TRACES_viral_alignments/$ORGAN_T-$VIRUS.fa $ORGAN_T-$VIRUS-G_A.fa;
             cp ../output_data/TRACES_hybrid_consensus/$VIRUS-consensus-$ORGAN_T.fa $ORGAN_T-$VIRUS-G_B.fa
             dnadiff $ORGAN_T-$VIRUS-G_A.fa $ORGAN_T-$VIRUS-G_B.fa 2>> ../logs/Log-stderr-$ORGAN_T.txt;
-            IDEN=`cat out.report | grep "AvgIdentity " | head -n 1 | awk '{ print $2;}'`;
+            IDEN=`cat out.report | grep "AvgIdentity "  | head -n 1 | awk '{ print $2;}'`;
+            ALBA=`cat out.report | grep "AlignedBases " | head -n 1 | awk '{ print $2;}'`;
             SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;
-            printf "$IDEN\t$SNPS\n" 1>> ../output_data/TRACES_diff/Viral_Diff.txt
-            rm -f $ORGAN_T-$VIRUS-G_A.fa $ORGAN_T-$VIRUS-G_B.fa ; 
-	    fi
+            printf "$ALBA\t$IDEN\t$SNPS\n" 1>> ../output_data/TRACES_diff/Viral_Diff.txt
+            rm -f $ORGAN_T-$VIRUS-G_A.fa $ORGAN_T-$VIRUS-G_B.fa ;
+            fi
           fi
-	done
+        done
       #
       # MT DNA
       #
@@ -1663,8 +1664,9 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
           cp ../output_data/TRACES_mtdna_consensus/mt-consensus-$ORGAN_T.fa $ORGAN_T-MT-G_B.fa;
           dnadiff MT-G_A.fa $ORGAN_T-MT-G_B.fa 2>> ../logs/Log-stderr-$ORGAN_T.txt;
           IDEN=`cat out.report | grep "AvgIdentity " | head -n 1 | awk '{ print $2;}'`;
+          ALBA=`cat out.report | grep "AlignedBases " | head -n 1 | awk '{ print $2;}'`;
           SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;
-          printf "$IDEN\t$SNPS\n" 1>> ../output_data/TRACES_diff/mtDNA_Diff.txt
+          printf "$ALBA\t$IDEN\t$SNPS\n" 1>> ../output_data/TRACES_diff/mtDNA_Diff.txt
           rm -f MT-G_A.fa $ORGAN_T-MT-G_B.fa ;
           fi
         fi

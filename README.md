@@ -277,8 +277,8 @@ See the next section for more information about the usage.
     -ra,    --run-analysis    Run data analysis,                   
     -all,   --run-all         Run all the options.                 
                                                                 
-    Example: ./TRACESPipe.sh --run-meta --run-b19 --run-mito 
-                                                                
+    Ex: ./TRACESPipe.sh --run-mito --remove-dup --run-de-novo --run-hybrid \ 
+        --min-similarity 1.5 --best-of-bests --very-sensitive --run-diff                                                                
     Add the file meta_info.txt at ../meta_data/ folder. Example:      
     meta_info.txt -> 'organ:reads_forward.fa.gz:reads_reverse.fa.gz'  
     The reads must be GZIPed in the ../input_data/ folder.            

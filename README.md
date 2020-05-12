@@ -278,7 +278,8 @@ See the next section for more information about the usage.
     -all,   --run-all         Run all the options.                 
                                                                 
     Ex: ./TRACESPipe.sh --run-mito --remove-dup --run-de-novo --run-hybrid \ 
-        --min-similarity 1.5 --best-of-bests --very-sensitive --run-diff                                                                
+        --min-similarity 1.5 --best-of-bests --very-sensitive --run-diff
+
     Add the file meta_info.txt at ../meta_data/ folder. Example:      
     meta_info.txt -> 'organ:reads_forward.fa.gz:reads_reverse.fa.gz'  
     The reads must be GZIPed in the ../input_data/ folder.            

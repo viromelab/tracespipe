@@ -601,6 +601,7 @@ while [[ $# -gt 0 ]]
     ;;
     -diff|--run-diff)
       RUN_DIFF=1;
+      RUN_ANALYSIS=1;
       SHOW_HELP=0;
       shift
     ;;

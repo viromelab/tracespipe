@@ -14,9 +14,9 @@ if [ ! -f "$1" ] || [ ! -f "$2" ];
   fi
 #
 #
-#rm -f $1.* 
+rm -f $1.* 
 bwa index $1
-bwa mem -t $THREADS -I 0 -O 2 -N 0.02 -L 1024 -E 7 $1 $2 > hybrid_aligned_$VIRUS-$ORGAN.sam 
+bwa mem -t $THREADS $1 $2 > hybrid_aligned_$VIRUS-$ORGAN.sam 
 samtools sort hybrid_aligned_$VIRUS-$ORGAN.sam > hybrid_aligned_sorted_$VIRUS-$ORGAN.bam
 samtools index hybrid_aligned_sorted_$VIRUS-$ORGAN.bam hybrid_aligned_sorted_$VIRUS-$ORGAN.bam.bai
 rm -f hybrid_aligned_$VIRUS-$ORGAN.sam;
@@ -34,20 +34,20 @@ bcftools consensus -f $1 $VIRUS-$ORGAN-calls.norm.vcf.gz > $VIRUS-consensus-$ORG
 #
 # Give new header name for the consensus sequence
 tail -n +2 $VIRUS-consensus-$ORGAN.fa > $VIRUS-$ORGAN-TMP2_FILE.xki
-echo ">Hybrid Round3 $VIRUS (organ=$ORGAN) consensus" > $VIRUS-consensus-$ORGAN.fa
+echo ">Hybrid Round4 $VIRUS (organ=$ORGAN) consensus" > $VIRUS-consensus-$ORGAN.fa
 cat $VIRUS-$ORGAN-TMP2_FILE.xki >> $VIRUS-consensus-$ORGAN.fa
 rm -f $VIRUS-$ORGAN-TMP2_FILE.xki;
 #
-mkdir -p ../output_data/TRACES_hybrid_R3_alignments/
-mkdir -p ../output_data/TRACES_hybrid_R3_consensus/
-mkdir -p ../output_data/TRACES_hybrid_R3_bed/
+mkdir -p ../output_data/TRACES_hybrid_R4_alignments/
+mkdir -p ../output_data/TRACES_hybrid_R4_consensus/
+mkdir -p ../output_data/TRACES_hybrid_R4_bed/
 #
-mv $VIRUS-consensus-$ORGAN.fa ../output_data/TRACES_hybrid_R3_consensus/
-mv $VIRUS-coverage-$ORGAN.bed ../output_data/TRACES_hybrid_R3_bed/
-mv $VIRUS-zero-coverage-$ORGAN.bed ../output_data/TRACES_hybrid_R3_bed/
-mv hybrid_aligned_sorted_$VIRUS-$ORGAN.bam ../output_data/TRACES_hybrid_R3_alignments/
-mv hybrid_aligned_sorted_$VIRUS-$ORGAN.bam.bai ../output_data/TRACES_hybrid_R3_alignments/
-mv $1 ../output_data/TRACES_hybrid_R3_alignments/
+mv $VIRUS-consensus-$ORGAN.fa ../output_data/TRACES_hybrid_R4_consensus/
+mv $VIRUS-coverage-$ORGAN.bed ../output_data/TRACES_hybrid_R4_bed/
+mv $VIRUS-zero-coverage-$ORGAN.bed ../output_data/TRACES_hybrid_R4_bed/
+mv hybrid_aligned_sorted_$VIRUS-$ORGAN.bam ../output_data/TRACES_hybrid_R4_alignments/
+mv hybrid_aligned_sorted_$VIRUS-$ORGAN.bam.bai ../output_data/TRACES_hybrid_R4_alignments/
+mv $1 ../output_data/TRACES_hybrid_R4_alignments/
 #
 rm -f $VIRUS-$ORGAN-calls.vcf.gz $VIRUS-$ORGAN-calls.vcf.gz.csi $VIRUS-$ORGAN-calls.norm.bcf $VIRUS-$ORGAN-calls.norm.vcf.gz.csi $VIRUS-$ORGAN-calls.norm.vcf.gz;
 #

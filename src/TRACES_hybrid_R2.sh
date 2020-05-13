@@ -16,7 +16,8 @@ if [ ! -f "$1" ] || [ ! -f "$2" ];
 #
 #rm -f $1.* 
 bwa index $1
-bwa mem -t $THREADS -I 0 -O 2 -N 0.02 -L 1024 -E 7 $1 $2 > hybrid_aligned_$VIRUS-$ORGAN.sam 
+bwa mem -t $THREADS -I 0 -O 2 -N 0.03 -L 1024 -E 7 $1 $2 > hybrid_aligned_$VIRUS-$ORGAN.sam 
+#bwa mem -t $THREADS $1 $2 > hybrid_aligned_$VIRUS-$ORGAN.sam 
 samtools sort hybrid_aligned_$VIRUS-$ORGAN.sam > hybrid_aligned_sorted_$VIRUS-$ORGAN.bam
 samtools index hybrid_aligned_sorted_$VIRUS-$ORGAN.bam hybrid_aligned_sorted_$VIRUS-$ORGAN.bam.bai
 rm -f hybrid_aligned_$VIRUS-$ORGAN.sam;
@@ -30,7 +31,7 @@ bcftools index $VIRUS-$ORGAN-calls.vcf.gz
 bcftools norm -f $1 $VIRUS-$ORGAN-calls.vcf.gz -Oz -o $VIRUS-$ORGAN-calls.norm.vcf.gz
 zcat $VIRUS-$ORGAN-calls.norm.vcf.gz |vcf2bed --snvs > $VIRUS-calls-$ORGAN.bed
 tabix -f $VIRUS-$ORGAN-calls.norm.vcf.gz
-bcftools consensus -f $1 $VIRUS-$ORGAN-calls.norm.vcf.gz > $VIRUS-consensus-$ORGAN.fa
+bcftools consensus -m $VIRUS-zero-coverage-$ORGAN.bed -f $1 $VIRUS-$ORGAN-calls.norm.vcf.gz > $VIRUS-consensus-$ORGAN.fa
 #
 # Give new header name for the consensus sequence
 tail -n +2 $VIRUS-consensus-$ORGAN.fa > $VIRUS-$ORGAN-TMP2_FILE.xki

@@ -20,7 +20,7 @@ awk '$4 < 1' $Label-coverage-$Organ.bed > $Label-zero-coverage-$Organ.bed
 #
 # CALLS 
 samtools faidx $Reference # -P 9.9e-1                                      # here!
-bcftools mpileup -Ou -f $Reference $Alignments | bcftools call --ploidy 1 -P 9.9e-1 -mv -Oz -o $Label-$Organ-calls.vcf.gz
+bcftools mpileup -Ou -f $Reference $Alignments | bcftools call --ploidy 1 -M -mv -Oz -o $Label-$Organ-calls.vcf.gz
 bcftools index $Label-$Organ-calls.vcf.gz
 #
 # normalize indels
@@ -34,9 +34,7 @@ bcftools norm -f $Reference $Label-$Organ-calls.vcf.gz -Oz -o $Label-$Organ-call
 zcat $Label-$Organ-calls.norm.vcf.gz |vcf2bed --snvs > $Label-calls-$Organ.bed
 #
 # CONSENSUS
-#tabix -f $Label-$Organ-calls.norm.flt-indels.vcf.gz
 tabix -f $Label-$Organ-calls.norm.vcf.gz
-#bcftools consensus -m $Label-zero-coverage-$Organ.bed -f $Reference $Label-$Organ-calls.norm.vcf.gz > $Label-consensus-$Organ.fa
 bcftools consensus -m $Label-zero-coverage-$Organ.bed -f $Reference $Label-$Organ-calls.norm.vcf.gz > $Label-consensus-$Organ.fa
 #
 # Give new header name for the consensus sequence

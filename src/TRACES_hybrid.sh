@@ -24,7 +24,7 @@ if [ ! -f "$SCAFFOLDS" ];
 #
 #
 bwa index $ORGAN-$REF.fa
-bwa mem -t $THREADS -I 0 -O 2 -N 0.02 -L 1024 -E 7 $ORGAN-$REF.fa $SCAFFOLDS > scaffolds_aligned_$REF-$ORGAN.sam 
+bwa mem -t $THREADS $ORGAN-$REF.fa $SCAFFOLDS > scaffolds_aligned_$REF-$ORGAN.sam 
 samtools sort scaffolds_aligned_$REF-$ORGAN.sam > scaffolds_aligned_sorted_$REF-$ORGAN.bam
 samtools index scaffolds_aligned_sorted_$REF-$ORGAN.bam scaffolds_aligned_sorted_$REF-$ORGAN.bam.bai
 cp scaffolds_aligned_sorted_$REF-$ORGAN.bam ../output_data/TRACES_hybrid_alignments/

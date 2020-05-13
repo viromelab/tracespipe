@@ -1556,10 +1556,11 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       for VIRUS in "${VIRUSES[@]}"
         do
-	#cp $CON_PATH/$VIRUS-consensus-$ORGAN_T.fa $ORGAN_T-$VIRUS.fa	
 	#
 	if [ -f ../output_data/TRACES_viral_alignments/$ORGAN_T-$VIRUS.fa ];
           then
+          echo -e "\e[34m[TRACESPipe]\e[32m Hybrid $VIRUS\e[0m";
+          echo -e "\e[34m[TRACESPipe]\e[32m Round 1\e[0m";
           cp ../output_data/TRACES_viral_alignments/$ORGAN_T-$VIRUS.fa $ORGAN_T-$VIRUS.fa	
           ./TRACES_hybrid.sh $VIRUS $SCAFFOLDS_PATH $THREADS $ORGAN_T 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
 	  ./TRACES_hybrid_consensus.sh $ORGAN_T-$VIRUS.fa $HYBRID_ALI_PATH/scaffolds_aligned_sorted_$VIRUS-$ORGAN_T.bam $ORGAN_T $VIRUS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
@@ -1575,50 +1576,91 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
 	  mv $ORGAN_T-$VIRUS.fa $HYBRID_ALI_PATH
           mv $ORGAN_T-$VIRUS.fa.fai $HYBRID_ALI_PATH
           #
-	  # ---------------------------------------------------
-          # Calculate the "N"% normalized by the size FOR:
-	  #   ->  $HYBRID_CON_PATH/$VIRUS-consensus-$ORGAN_T.fa
-	  #   ->  $ALIGNM_CON_PATH/$VIRUS-consensus-$ORGAN_T.fa
+          echo -e "\e[34m[TRACESPipe]\e[32m Round 2\e[0m";
+          cp ../output_data/TRACES_hybrid_consensus/$VIRUS-consensus-$ORGAN.fa R2-$ORGAN_T-$VIRUS.fa
+          ./TRACES_hybrid_R2.sh R2-$ORGAN_T-$VIRUS.fa $SCAFFOLDS_PATH $VIRUS $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+          #
+          # ROUND 3 and 4
 	  #
-	  CVNAME="$VIRUS-consensus-$ORGAN_T.fa";
-          PC_ALIGNM=`gto_info -a < $ALIGNM_CON_PATH/$CVNAME | grep "78 : " | cut -f2`;
-	  if [[ "$PC_ALIGNM" == "" ]];
-	    then
-	    PC_ALIGNM=0;
+          echo -e "\e[34m[TRACESPipe]\e[32m Round 3\e[0m";
+	  mkdir -p ../output_data/TRACES_hybrid_R3_alignments/
+          mkdir -p ../output_data/TRACES_hybrid_R3_consensus/
+          mkdir -p ../output_data/TRACES_hybrid_R3_bed/
+          mkdir -p ../output_data/TRACES_hybrid_R4_alignments/
+          mkdir -p ../output_data/TRACES_hybrid_R4_consensus/
+          mkdir -p ../output_data/TRACES_hybrid_R4_bed/
+          #
+	  FALCON -F -t 500 -x top-$VIRUS-$ORGAN_T.txt ../output_data/TRACES_hybrid_R2_consensus/$VIRUS-consensus-$ORGAN_T.fa ../output_data/TRACES_denovo_$ORGAN_T/scaffolds.fasta 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+	  cp top-$VIRUS-$ORGAN_T.txt ../output_data/TRACES_hybrid_R3_consensus/
+	  TOP_NLINES_SCAFFOLDS=`wc -l top-$VIRUS-$ORGAN_T.txt`;
+	  if [[ "$TOP_NLINES_SCAFFOLDS" > "0" ]];
+	    then 
+	    FIL_NAME=`cat top-$VIRUS-$ORGAN_T.txt | head -n 1 | awk '{ print $4;}'`; 
+	    gto_fasta_extract_read_by_pattern -p "$FIL_NAME" < ../output_data/TRACES_denovo_$ORGAN_T/scaffolds.fasta > $VIRUS-$ORGAN_T-SCAFFOLD.fa 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+	    cp $VIRUS-$ORGAN_T-SCAFFOLD.fa ../output_data/TRACES_hybrid_R3_consensus/$VIRUS-consensus-$ORGAN_T.fa
+	    #
+            echo -e "\e[34m[TRACESPipe]\e[32m Round 4\e[0m";
+            ./TRACES_hybrid_R4.sh $VIRUS-$ORGAN_T-SCAFFOLD.fa ../output_data/TRACES_hybrid_consensus/$VIRUS-consensus-$ORGAN.fa $VIRUS $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
             fi
-	  PC_HYBRID=`gto_info -a < $HYBRID_CON_PATH/$CVNAME | grep "78 : " | cut -f2`;
-	  if [[ "$PC_HYBRID" == "" ]];
-            then
-            PC_HYBRID=0;
-            fi
-	  #  
-	  cp $ALIGNM_CON_PATH/$CVNAME ALG-$ORGAN_T-$VIRUS.fa
-          cp $HYBRID_CON_PATH/$CVNAME HYB-$ORGAN_T-$VIRUS.fa
-          if [[ "$PC_ALIGNM" < "$PC_HYBRID" ]]
-	    then
-	    # ROUND 2
-            echo "% of \"N\" -> ALIGNMENTS CONSENSUS ($PC_ALIGNM) < HYBRID CONSENSUS ($PC_HYBRID)" 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
-            ./TRACES_hybrid_R2.sh ALG-$ORGAN_T-$VIRUS.fa HYB-$ORGAN_T-$VIRUS.fa $VIRUS $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
-	    # ROUND 3
-	    #
-	    cp ../output_data/TRACES_hybrid_R2_consensus/$VIRUS-consensus-$ORGAN.fa HYB-$ORGAN_T-$VIRUS.fa
-	    cp ../output_data/TRACES_hybrid_consensus/$VIRUS-consensus-$ORGAN.fa ALG-$ORGAN_T-$VIRUS.fa
+          #
+	  PC_R0=`gto_fasta_to_seq < ../output_data/TRACES_viral_consensus/$VIRUS-consensus-$ORGAN_T.fa | tr -d "N" | gto_info | grep "Number of symbols" | awk '{ print $5; }'`;
+          if [[ "$PC_R0" == "" ]]; then PC_R0=0; fi
+
+	  PC_R1=`gto_fasta_to_seq < ../output_data/TRACES_hybrid_consensus/$VIRUS-consensus-$ORGAN_T.fa | tr -d "N" | gto_info | grep "Number of symbols" | awk '{ print $5; }'`;
+          if [[ "$PC_R1" == "" ]]; then PC_R1=0; fi
+
+	  PC_R2=`gto_fasta_to_seq < ../output_data/TRACES_hybrid_R2_consensus/$VIRUS-consensus-$ORGAN_T.fa | tr -d "N" | gto_info | grep "Number of symbols" | awk '{ print $5; }'`;
+          if [[ "$PC_R2" == "" ]]; then PC_R2=0; fi
+
+	  PC_R3=`gto_fasta_to_seq < ../output_data/TRACES_hybrid_R3_consensus/$VIRUS-consensus-$ORGAN_T.fa | tr -d "N" | gto_info | grep "Number of symbols" | awk '{ print $5; }'`;
+          if [[ "$PC_R3" == "" ]]; then PC_R3=0; fi
+
+	  PC_R4=`gto_fasta_to_seq < ../output_data/TRACES_hybrid_R4_consensus/$VIRUS-consensus-$ORGAN_T.fa | tr -d "N" | gto_info | grep "Number of symbols" | awk '{ print $5; }'`;
+          if [[ "$PC_R4" == "" ]]; then PC_R4=0; fi
+	  #
+	  echo -e "\e[34m[TRACESPipe]\e[32m Bases: {$PC_R0, $PC_R1, $PC_R2, $PC_R3, $PC_R4}\e[0m";
+          N_SIZES=("$PC_R0" "$PC_R1" "$PC_R2" "$PC_R3" "$PC_R4")
+	  MAX=0;
+	  MAX_POSITION=0;
+	  IDX_POSITION=0;
+	  for i in "${N_SIZES[@]}"; 
+	    do 
+	    if [[ "$i" -gt "$MAX" ]];
+	      then
+	      MAX=$i;
+	      MAX_POSITION=$IDX_POSITION;
+	      fi
+	    ((++IDX_POSITION));
+            done
+	  OUT_R5_PATH="../output_data/TRACES_hybrid_R5_consensus/"
+	  mkdir -p $OUT_R5_PATH;
+	  echo -e "\e[34m[TRACESPipe]\e[32m Highest index value: $MAX_POSITION\e[0m";
+          case "$MAX_POSITION" in
+            0)
+	    echo -e "\e[34m[TRACESPipe]\e[32m Choosing round 0 ...\e[0m";
+            cp ../output_data/TRACES_viral_consensus/$VIRUS-consensus-$ORGAN_T.fa $OUT_R5_PATH
+            ;;
+            1)
+	    echo -e "\e[34m[TRACESPipe]\e[32m Choosing round 1 ...\e[0m";
+            cp ../output_data/TRACES_hybrid_consensus/$VIRUS-consensus-$ORGAN_T.fa $OUT_R5_PATH
+            ;;
+            2)
+	    echo -e "\e[34m[TRACESPipe]\e[32m Choosing round 2 ...\e[0m";
+	    cp ../output_data/TRACES_hybrid_R2_consensus/$VIRUS-consensus-$ORGAN_T.fa $OUT_R5_PATH
+            ;;
+            3)
+	    echo -e "\e[34m[TRACESPipe]\e[32m Choosing round 3 ...\e[0m";
+	    cp ../output_data/TRACES_hybrid_R3_consensus/$VIRUS-consensus-$ORGAN_T.fa $OUT_R5_PATH
+            ;;
+            4)
+	    echo -e "\e[34m[TRACESPipe]\e[32m Choosing round 4 ...\e[0m";
+	    cp ../output_data/TRACES_hybrid_R4_consensus/$VIRUS-consensus-$ORGAN_T.fa $OUT_R5_PATH
+            ;;
+            *)
+	    echo "ERROR: unknown switch round!"
+	    exit;
+            esac
             #
-            ./TRACES_hybrid_R3.sh ALG-$ORGAN_T-$VIRUS.fa HYB-$ORGAN_T-$VIRUS.fa $VIRUS $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
-	    #
-	    else
-	    # ROUND 2
-            echo "% of \"N\" -> ALIGNMENTS CONSENSUS ($PC_ALIGNM) > HYBRID CONSENSUS ($PC_HYBRID)" 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
-            ./TRACES_hybrid_R2.sh HYB-$ORGAN_T-$VIRUS.fa ALG-$ORGAN_T-$VIRUS.fa $VIRUS $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
-	    #
-	    # ROUND 3
-            cp ../output_data/TRACES_hybrid_R2_consensus/$VIRUS-consensus-$ORGAN.fa ALG-$ORGAN_T-$VIRUS.fa
-            cp ../output_data/TRACES_hybrid_consensus/$VIRUS-consensus-$ORGAN.fa HYB-$ORGAN_T-$VIRUS.fa
-            #
-            ./TRACES_hybrid_R3.sh ALG-$ORGAN_T-$VIRUS.fa HYB-$ORGAN_T-$VIRUS.fa $VIRUS $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
-            #
-	    fi	    
-	  #rm -f ALG-$ORGAN_T-$VIRUS.fa HYB-$ORGAN_T-$VIRUS.fa
           fi
         done
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";

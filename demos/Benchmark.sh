@@ -1,15 +1,19 @@
 #!/bin/bash
 #
+# INSTALLATION DEPENDENCIES:
+#
 # sudo apt-get install libopenblas-base
 # conda install -c 'bioconda' art
+# conda install -c 'bioconda' mummer4
 #
 RUN_ALL=1;
 RUN_TRACES=1;
+#
 zcat MINIDB.fa.gz > ../src/VDB.fa
 cd ../src/
 #
 if [[ "$RUN_ALL" -eq "1" ]];
-then
+  then
   ./TRACESPipe.sh --get-all-aux
   #
   gto_fasta_extract_read_by_pattern -p "AY386330.1" < VDB.fa > B19.fa
@@ -145,8 +149,7 @@ fi
 # ============================================================================
 if [[ "$RUN_TRACES" -eq "1" ]];
   then
-  ./TRACESPipe.sh --run-meta --inter-sim-size 2 --run-all-v-alig --run-mito --remove-dup --run-de-novo --run-hybrid --min-similarity 2 --view-top 6 --best-of-bests --very-sensitive
-  #./TRACESPipe.sh --run-mito --remove-dup --very-sensitive
+  ./TRACESPipe.sh --run-meta --inter-sim-size 5 --run-all-v-alig --run-mito --remove-dup --run-de-novo --run-hybrid --min-similarity 2 --view-top 5 --best-of-bests --very-sensitive
 fi
 #
 # ============================================================================
@@ -156,9 +159,7 @@ fi
 declare -a ORGANS=("blood" "bone" "brain" "hair" "heart" "kidney" "liver" "lung" "skin" "teeth");
 declare -a VIRUSES=("B19" "HV2" "HV3" "HV4" "HV8" "HPV" "TTV" "VARV");
 #
-D_PATH="../output_data/TRACES_hybrid_consensus";
-#D_PATH="../output_data/TRACES_hybrid_R2_consensus";
-#D_PATH="../output_data/TRACES_hybrid_R3_consensus";
+D_PATH="../output_data/TRACES_hybrid_R5_consensus";
 for organ in "${ORGANS[@]}"
   do
   printf "$organ\n";	  
@@ -172,8 +173,9 @@ for organ in "${ORGANS[@]}"
       cp B-$virus-$organ.fa G_B.fa
       dnadiff G_A.fa G_B.fa ;
       IDEN=`cat out.report | grep "AvgIdentity " | head -n 1 | awk '{ print $2;}'`; 
+      ALBA=`cat out.report | grep "AlignedBases " | head -n 1 | awk '{ print $2;}'`;
       SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;
-      printf "$IDEN\t$SNPS\n";
+      printf "%s\t%s\t%s\n" "$ALBA" "$IDEN" "$SNPS";
       rm -f G_A.fa G_B.fa ;
       fi
     done
@@ -183,8 +185,9 @@ for organ in "${ORGANS[@]}"
   cp B-mtDNA-$organ.fa G_B.fa
   dnadiff G_A.fa G_B.fa ;
   IDEN=`cat out.report | grep "AvgIdentity " | head -n 1 | awk '{ print $2;}'`;
+  ALBA=`cat out.report | grep "AlignedBases " | head -n 1 | awk '{ print $2;}'`;
   SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;
-  printf "$IDEN\t$SNPS\n\n";
+  printf "%s\t%s\t%s\n\n" "$ALBA" "$IDEN" "$SNPS";
   rm -f G_A.fa G_B.fa ;
   done
 #

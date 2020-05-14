@@ -11,7 +11,8 @@
 <br>
 <p align="center">
 <img src="imgs/logo.png" alt="TRACES Pipeline" height="200" border="0" /><br>
-<i>A next-generation sequencing pipeline for identification, assembly,<br> and analysis of viral and human-host genomes at multi-organ level.</i>
+<i>A hybrid pipeline for reconstruction & analysis<br> 
+of viral and host genomes at multi-organ level.</i>
 <br><br>
 
 ## 1. About ##

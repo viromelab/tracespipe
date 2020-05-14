@@ -59,6 +59,7 @@ git clone https://github.com/viromelab/tracespipe.git
 cd tracespipe/src/
 chmod +x TRACES*.sh
 ./TRACESPipe.sh --install
+./TRACESPipe.sh --get-all-aux
 ```
 
 ### 2.2 Structure ###

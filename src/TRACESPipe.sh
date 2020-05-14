@@ -3,10 +3,10 @@
 ##################################################################################
 # ============================================================================== #
 # =                                                                            = #
-# =                              T R A C E S P i p e                           = #
+# =                             T R A C E S P i p e                            = #
 # =                                                                            = #
-# =     A Next-Generation Sequencing pipeline for identification, assembly,    = #
-# =     and analysis of viral and human-host genomes at multi-organ level.     = #
+# =          A Next-Generation Sequencing pipeline for reconstruction          = #
+# =        and analysis of viral and host genomes at multi-organ level.        = #
 # =                                                                            = #
 # ============================================================================== #
 ##################################################################################
@@ -665,8 +665,8 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                                                                  "
   echo "                             P I P E L I N E                            "
   echo "                                                                "
-  echo -e "    \e[32mA Next-generation sequencing pipeline for identification, assembly,\e[0m" 
-  echo -e "    \e[32mand analysis of viral and human-host genomes at multi-organ level\e[0m."
+  echo -e "    \e[32m      |  A hybrid pipeline for reconstruction & analysis  | \e[0m" 
+  echo -e "    \e[32m      |  of viral and host genomes at multi-organ level.  | \e[0m"
   echo "                                                                "
   echo -e "\e[93m    Usage: ./TRACESPipe.sh [options]                             \e[0m"
   echo "                                                                   "

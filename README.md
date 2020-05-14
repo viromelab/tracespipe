@@ -112,6 +112,13 @@ tracespipe/
 │   ├── TRACES_hybrid_R3_consensus/    # where the third round hybrid data appears
 │   ├── TRACES_hybrid_R3_bed/          # where the third round hybrid data appears
 │   │
+│   ├── TRACES_hybrid_R4_alignments/   # where the fourth round hybrid data appears
+│   ├── TRACES_hybrid_R4_consensus/    # where the fourth round hybrid data appears
+│   ├── TRACES_hybrid_R4_bed/          # where the fourth round hybrid data appears
+│   │
+│   ├── TRACES_hybrid_R5_consensus/    # where the automatic choosen hybrid consensus 
+│   │                                  # appears (diff will be made using this data)
+│   │
 │   ├── TRACES_diff/                   # where the dnadiff results appear (identity & SNPs)
 │   │
 │   └── TRACES_blasts/                 # where the specific blasted results appears
@@ -174,8 +181,8 @@ See the next section for more information about the usage.
                                                                   
                              P I P E L I N E                            
                                                                 
-    A Next-generation sequencing pipeline for identification, assembly,
-    and analysis of viral and human-host genomes at multi-organ level.
+          |  A hybrid pipeline for reconstruction & analysis  | 
+          |  of viral and host genomes at multi-organ level.  | 
                                                                 
     Usage: ./TRACESPipe.sh [options]                             
                                                                    
@@ -271,21 +278,21 @@ See the next section for more information about the usage.
                               Run coverage profile for specific BED file, 
     -cmax <MAX>,  --max-coverage <MAX_COVERAGE>                           
                               Maximum depth coverage (depth normalization), 
-
+                                                                  
     -diff,  --run-diff        Run diff -> reference and hybrid (ident/SNPs), 
                                                                   
     -ra,    --run-analysis    Run data analysis,                   
     -all,   --run-all         Run all the options.                 
                                                                 
     Ex: ./TRACESPipe.sh --run-mito --remove-dup --run-de-novo --run-hybrid \ 
-        --min-similarity 1.5 --best-of-bests --very-sensitive --run-diff
-
+        --min-similarity 1.5 --best-of-bests --very-sensitive --run-diff 
+                                                                
     Add the file meta_info.txt at ../meta_data/ folder. Example:      
     meta_info.txt -> 'organ:reads_forward.fa.gz:reads_reverse.fa.gz'  
     The reads must be GZIPed in the ../input_data/ folder.            
     The output results are at ../output_data/ folder.                 
                                                                 
-    Contact: projectraces@gmail.com                                                         
+    Contact: projectraces@gmail.com
 
 ```
 

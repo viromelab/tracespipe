@@ -52,7 +52,7 @@ then
   #
   # ============================================================================
   #
-  ./TRACESPipe.sh --run-meta --inter-sim-size 5 --run-all-v-alig --run-mito --remove-dup --run-de-novo --run-hybrid --min-similarity 1 --view-top 10 --very-sensitive
+  ./TRACESPipe.sh --flush-logs --run-meta --inter-sim-size 2 --run-all-v-alig --run-mito --remove-dup --run-de-novo --run-hybrid --min-similarity 1.5 --best-of-bests --very-sensitive
   #
   # ============================================================================
   #
@@ -62,62 +62,64 @@ then
 declare -a ORGANS=("blood" "bone" "brain");
 declare -a VIRUSES=("B19" "VARV");
 #
-D_PATH="../output_data/TRACES_hybrid_consensus";
-#D_PATH="../output_data/TRACES_hybrid_R2_consensus";
-#D_PATH="../output_data/TRACES_hybrid_R3_consensus";
+D_PATH="../output_data/TRACES_hybrid_R5_consensus";
 #
-printf "Blood\n";
+printf "\nBood\n";
 printf "B19\t";
 cp $D_PATH/B19-consensus-blood.fa G_A.fa;
 dnadiff G_A.fa Mutant1.fa ;
 IDEN=`cat out.report | grep "AvgIdentity " | head -n 1 | awk '{ print $2;}'`;
+ALBA=`cat out.report | grep "AlignedBases " | head -n 1 | awk '{ print $2;}'`;
 SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;
-printf "$IDEN\t$SNPS\n";
+printf "%s\t%s\t%s\n" "$ALBA" "$IDEN" "$SNPS";
 rm -f G_A.fa
 #
 printf "VARV\t";
 cp $D_PATH/VARV-consensus-blood.fa G_A.fa;
 dnadiff G_A.fa Mutant1.fa ;
 IDEN=`cat out.report | grep "AvgIdentity " | head -n 1 | awk '{ print $2;}'`;
+ALBA=`cat out.report | grep "AlignedBases " | head -n 1 | awk '{ print $2;}'`;
 SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;
-printf "$IDEN\t$SNPS\n";
+printf "%s\t%s\t%s\n" "$ALBA" "$IDEN" "$SNPS";
 rm -f G_A.fa
 #
-printf "Bone\n";
+printf "\nBone\n";
 printf "B19\t";
 cp $D_PATH/B19-consensus-bone.fa G_A.fa;
 dnadiff G_A.fa Mutant2.fa ;
 IDEN=`cat out.report | grep "AvgIdentity " | head -n 1 | awk '{ print $2;}'`;
+ALBA=`cat out.report | grep "AlignedBases " | head -n 1 | awk '{ print $2;}'`;
 SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;
-printf "$IDEN\t$SNPS\n";
+printf "%s\t%s\t%s\n" "$ALBA" "$IDEN" "$SNPS";
 rm -f G_A.fa
 #
 printf "VARV\t";
 cp $D_PATH/VARV-consensus-bone.fa G_A.fa;
 dnadiff G_A.fa Mutant2.fa ;
 IDEN=`cat out.report | grep "AvgIdentity " | head -n 1 | awk '{ print $2;}'`;
+ALBA=`cat out.report | grep "AlignedBases " | head -n 1 | awk '{ print $2;}'`;
 SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;
-printf "$IDEN\t$SNPS\n";
+printf "%s\t%s\t%s\n" "$ALBA" "$IDEN" "$SNPS";
 rm -f G_A.fa
 #
-printf "Brain\n";
+printf "\nBrain\n";
 printf "B19\t";
 cp $D_PATH/B19-consensus-brain.fa G_A.fa;
 dnadiff G_A.fa Mutant3.fa ;
 IDEN=`cat out.report | grep "AvgIdentity " | head -n 1 | awk '{ print $2;}'`;
+ALBA=`cat out.report | grep "AlignedBases " | head -n 1 | awk '{ print $2;}'`;
 SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;
-printf "$IDEN\t$SNPS\n";
+printf "%s\t%s\t%s\n" "$ALBA" "$IDEN" "$SNPS";
 rm -f G_A.fa
 #
 printf "VARV\t";
 cp $D_PATH/VARV-consensus-brain.fa G_A.fa;
 dnadiff G_A.fa Mutant3.fa ;
 IDEN=`cat out.report | grep "AvgIdentity " | head -n 1 | awk '{ print $2;}'`;
+ALBA=`cat out.report | grep "AlignedBases " | head -n 1 | awk '{ print $2;}'`;
 SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;
-printf "$IDEN\t$SNPS\n";
+printf "%s\t%s\t%s\n" "$ALBA" "$IDEN" "$SNPS";
 rm -f G_A.fa
 #
 # ==============================================================================
 #
-
-  

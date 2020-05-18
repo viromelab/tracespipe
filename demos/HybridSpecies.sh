@@ -31,9 +31,9 @@ then
   cat Mutant2.fa > bone.fa
   cat Mutant3.fa > brain.fa
   #
-  art_illumina -ss HS25 -sam -i blood.fa -p -l 150 -f 30 -m 200 -s 10 -o blood
-  art_illumina -ss HS25 -sam -i brain.fa -p -l 150 -f 30 -m 200 -s 10 -o brain
-  art_illumina -ss HS25 -sam -i bone.fa  -p -l 150 -f 20 -m 200 -s 10 -o bone
+  art_illumina -rs 0 -ss HS25 -sam -i blood.fa -p -l 150 -f 30 -m 200 -s 10 -o blood
+  art_illumina -rs 0 -ss HS25 -sam -i brain.fa -p -l 150 -f 30 -m 200 -s 10 -o brain
+  art_illumina -rs 0 -ss HS25 -sam -i bone.fa  -p -l 150 -f 20 -m 200 -s 10 -o bone
   #
   cp blood*.fq ../input_data
   cp brain*.fq ../input_data

@@ -39,6 +39,7 @@ SEARCH_BLAST_DB=0;
 SEARCH_BLAST_REMOTE_DB=0;
 BLAST_QUERY="";
 #
+FLUSH_OUTPUT=0;
 RUN_ANALYSIS=0;
 #
 RUN_META_ON=0;
@@ -270,7 +271,6 @@ ALIGN_AND_CONSENSUS () {
   V_VAL=`echo "$V_INFO" | awk '{ print $1; }'`;
   # 
   echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
-  #echo -e "\e[34m[TRACESPipe]\e[32m V_GID:$V_GID;V_VAL:$V_VAL!\e[0m";
   #
   if [[ "$V_GID" != "-" ]] && [[ "$V_VAL" > "$2" ]];
     then
@@ -346,6 +346,10 @@ while [[ $# -gt 0 ]]
     ;;
     -flog|--flush-logs)
       FLUSH_LOGS=1;
+      shift
+    ;;
+    -fout|--flush-output)
+      FLUSH_OUTPUT=1;
       shift
     ;;
     -gmt|--get-max-threads)
@@ -674,6 +678,7 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -v,     --version         Show the version and some information,  "
   echo "    -f,     --force           Force running and overwrite of files,  "
   echo "    -flog,  --flush-logs      Flush logs (delete logs),              "
+  echo "    -fout,  --flush-output    Flush output data (delete all output_data), "
   echo "    -i,     --install         Installation of all the tools,       "
   echo "    -up,    --update          Update all the tools in TRACESPipe,  "
   echo "                                                                   "
@@ -826,7 +831,16 @@ if [[ "$FLUSH_LOGS" -eq "1" ]];
   rm -f ../logs/Log-stderr-*.txt
   echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
   fi
-#  
+# 
+# ==============================================================================
+#
+if [[ "$FLUSH_OUTPUT" -eq "1" ]];
+  then
+  echo -e "\e[34m[TRACESPipe]\e[32m Flushing output data ...\e[0m";
+  rm -fr ../output_data/*
+  echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+  fi
+#
 # ==============================================================================
 #
 if [[ "$RUN_VISUAL_ALIGN" -eq "1" ]];
@@ -1066,6 +1080,16 @@ if [[ "$ADD_EXTRA_SEQ" -eq "1" ]];
   CHECK_VDB;
   ./TRACES_get_extra_seq.sh VDB.fa $NEW_SEQ_ID
   fi
+#
+#
+# ==============================================================================
+#
+if [[ "$RUN_DIFF" -eq "1" ]];
+   then
+   mkdir -p ../output_data/TRACES_diff
+   printf "Organ\tVirus\tID\tSimilarity\tAligned bases\tidentity\tSNPs\n" > ../output_data/TRACES_diff/Viral_Diff.txt
+   printf "Organ\tID\tSimilarity\tAligned bases\tidentity\tSNPs\tBreadth\tDepth\n" > ../output_data/TRACES_diff/mtDNA_Diff.txt
+   fi
 #
 # ==============================================================================
 #
@@ -1560,7 +1584,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
 	if [ -f ../output_data/TRACES_viral_alignments/$ORGAN_T-$VIRUS.fa ];
           then
           echo -e "\e[34m[TRACESPipe]\e[32m Hybrid $VIRUS\e[0m";
-          echo -e "\e[34m[TRACESPipe]\e[32m Round 1\e[0m";
+          echo -e "\e[34m[TRACESPipe]\e[32m Mode 1\e[0m";
           cp ../output_data/TRACES_viral_alignments/$ORGAN_T-$VIRUS.fa $ORGAN_T-$VIRUS.fa	
           ./TRACES_hybrid.sh $VIRUS $SCAFFOLDS_PATH $THREADS $ORGAN_T 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
 	  ./TRACES_hybrid_consensus.sh $ORGAN_T-$VIRUS.fa $HYBRID_ALI_PATH/scaffolds_aligned_sorted_$VIRUS-$ORGAN_T.bam $ORGAN_T $VIRUS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
@@ -1576,13 +1600,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
 	  mv $ORGAN_T-$VIRUS.fa $HYBRID_ALI_PATH
           mv $ORGAN_T-$VIRUS.fa.fai $HYBRID_ALI_PATH
           #
-          echo -e "\e[34m[TRACESPipe]\e[32m Round 2\e[0m";
+          echo -e "\e[34m[TRACESPipe]\e[32m Mode 2\e[0m";
           cp ../output_data/TRACES_hybrid_consensus/$VIRUS-consensus-$ORGAN.fa R2-$ORGAN_T-$VIRUS.fa
           ./TRACES_hybrid_R2.sh R2-$ORGAN_T-$VIRUS.fa $SCAFFOLDS_PATH $VIRUS $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
           #
           # ROUND 3 and 4
 	  #
-          echo -e "\e[34m[TRACESPipe]\e[32m Round 3\e[0m";
+          echo -e "\e[34m[TRACESPipe]\e[32m Mode 3\e[0m";
 	  mkdir -p ../output_data/TRACES_hybrid_R3_alignments/
           mkdir -p ../output_data/TRACES_hybrid_R3_consensus/
           mkdir -p ../output_data/TRACES_hybrid_R3_bed/
@@ -1599,7 +1623,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
 	    gto_fasta_extract_read_by_pattern -p "$FIL_NAME" < ../output_data/TRACES_denovo_$ORGAN_T/scaffolds.fasta > $VIRUS-$ORGAN_T-SCAFFOLD.fa 2>> ../logs/Log-stderr-$ORGAN_T.txt;
 	    cp $VIRUS-$ORGAN_T-SCAFFOLD.fa ../output_data/TRACES_hybrid_R3_consensus/$VIRUS-consensus-$ORGAN_T.fa
 	    #
-            echo -e "\e[34m[TRACESPipe]\e[32m Round 4\e[0m";
+            echo -e "\e[34m[TRACESPipe]\e[32m Mode 4\e[0m";
             ./TRACES_hybrid_R4.sh $VIRUS-$ORGAN_T-SCAFFOLD.fa ../output_data/TRACES_hybrid_consensus/$VIRUS-consensus-$ORGAN.fa $VIRUS $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
             fi
           #
@@ -1637,23 +1661,23 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
 	  echo -e "\e[34m[TRACESPipe]\e[32m Highest index value: $MAX_POSITION\e[0m";
           case "$MAX_POSITION" in
             0)
-	    echo -e "\e[34m[TRACESPipe]\e[32m Choosing round 0 ...\e[0m";
+	    echo -e "\e[34m[TRACESPipe]\e[32m Choosing mode 0 ...\e[0m";
             cp ../output_data/TRACES_viral_consensus/$VIRUS-consensus-$ORGAN_T.fa $OUT_R5_PATH
             ;;
             1)
-	    echo -e "\e[34m[TRACESPipe]\e[32m Choosing round 1 ...\e[0m";
+	    echo -e "\e[34m[TRACESPipe]\e[32m Choosing mode 1 ...\e[0m";
             cp ../output_data/TRACES_hybrid_consensus/$VIRUS-consensus-$ORGAN_T.fa $OUT_R5_PATH
             ;;
             2)
-	    echo -e "\e[34m[TRACESPipe]\e[32m Choosing round 2 ...\e[0m";
+	    echo -e "\e[34m[TRACESPipe]\e[32m Choosing mode 2 ...\e[0m";
 	    cp ../output_data/TRACES_hybrid_R2_consensus/$VIRUS-consensus-$ORGAN_T.fa $OUT_R5_PATH
             ;;
             3)
-	    echo -e "\e[34m[TRACESPipe]\e[32m Choosing round 3 ...\e[0m";
+	    echo -e "\e[34m[TRACESPipe]\e[32m Choosing mode 3 ...\e[0m";
 	    cp ../output_data/TRACES_hybrid_R3_consensus/$VIRUS-consensus-$ORGAN_T.fa $OUT_R5_PATH
             ;;
             4)
-	    echo -e "\e[34m[TRACESPipe]\e[32m Choosing round 4 ...\e[0m";
+	    echo -e "\e[34m[TRACESPipe]\e[32m Choosing mode 4 ...\e[0m";
 	    cp ../output_data/TRACES_hybrid_R4_consensus/$VIRUS-consensus-$ORGAN_T.fa $OUT_R5_PATH
             ;;
             *)
@@ -1666,6 +1690,13 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
     #
+    # ==========================================================================  
+    # 
+    if [[ "$RUN_MULTIORGAN_CONSENSUS" -eq "1" ]];
+      then
+      ./TRACES_multiorgan_consensus.sh B19 B19.fa B19-multiorgans.fa 8
+      fi
+    #
     # ==========================================================================
     #
     if [[ "$RUN_DIFF" -eq "1" ]];
@@ -1673,26 +1704,39 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       # VIRAL DNA
       #
-      mkdir -p ../output_data/TRACES_diff
-      printf "\n$ORGAN_T\n" 1>> ../output_data/TRACES_diff/Viral_Diff.txt;
+      printf "\n\n" 1>> ../output_data/TRACES_diff/Viral_Diff.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Running dnadiff between references and reconstructed ...\e[0m";
+      IDX_V=1;
       for VIRUS in "${VIRUSES[@]}"
         do
         if [ -f ../output_data/TRACES_viral_alignments/$ORGAN_T-$VIRUS.fa ];
           then
           if [ -f ../output_data/TRACES_hybrid_consensus/$VIRUS-consensus-$ORGAN_T.fa ];
             then
-            printf "$VIRUS\t" 1>> ../output_data/TRACES_diff/Viral_Diff.txt;
             cp ../output_data/TRACES_viral_alignments/$ORGAN_T-$VIRUS.fa $ORGAN_T-$VIRUS-G_A.fa;
             cp ../output_data/TRACES_hybrid_consensus/$VIRUS-consensus-$ORGAN_T.fa $ORGAN_T-$VIRUS-G_B.fa
             dnadiff $ORGAN_T-$VIRUS-G_A.fa $ORGAN_T-$VIRUS-G_B.fa 2>> ../logs/Log-stderr-$ORGAN_T.txt;
-            IDEN=`cat out.report | grep "AvgIdentity "  | head -n 1 | awk '{ print $2;}'`;
+	    IDEN=`cat out.report | grep "AvgIdentity "  | head -n 1 | awk '{ print $2;}'`;
             ALBA=`cat out.report | grep "AlignedBases " | head -n 1 | awk '{ print $2;}'`;
             SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;
-            printf "%s\t%s\t%s\n" "$ALBA" "$IDEN" "$SNPS" 1>> ../output_data/TRACES_diff/Viral_Diff.txt
+	    XBREADTH=`awk '{ print $3;}' ../output_data/TRACES_viral_statistics/$VIRUS-total-horizontal-coverage-$ORGAN_T.txt`;
+            XDEPTH=`awk '{ print $3;}' ../output_data/TRACES_viral_statistics/$VIRUS-total-depth-coverage-$ORGAN_T.txt`;
+            V_INFO=`./TRACES_get_best_$VIRUS.sh $ORGAN_T`;
+            V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
+            V_VAL=`echo "$V_INFO" | awk '{ print $1; }'`;
+            #
+            if [[ "$V_GID" != "-" ]] && [[ "$V_VAL" > "0" ]];
+              then
+              if [[ "$RUN_BEST_OF_BESTS" -eq "1" ]]
+                then
+                V_GID=`sed "${IDX_V}q;d" ../output_data/TRACES_results/REPORT_META_VIRAL_BESTS_$ORGAN_T.txt | awk '{ print $2; }'`;
+                fi
+              fi
+	    printf "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" "$ORGAN_T" "$V_GID" "$V_VAL" "$ALBA" "$IDEN" "$SNPS" "$XBREADTH" "$XDEPTH" 1>> ../output_data/TRACES_diff/Viral_Diff.txt
             rm -f $ORGAN_T-$VIRUS-G_A.fa $ORGAN_T-$VIRUS-G_B.fa ;
             fi
           fi
+	  ((++IDX_V));
         done
       #
       # MT DNA
@@ -1701,14 +1745,15 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         then
         if [ -f ../output_data/TRACES_mtdna_consensus/mt-consensus-$ORGAN_T.fa ];
           then
-          printf "$ORGAN_T\t" 1>> ../output_data/TRACES_diff/mtDNA_Diff.txt;
           cp ../output_data/TRACES_mtdna_alignments/mtDNA.fa MT-G_A.fa;
           cp ../output_data/TRACES_mtdna_consensus/mt-consensus-$ORGAN_T.fa $ORGAN_T-MT-G_B.fa;
           dnadiff MT-G_A.fa $ORGAN_T-MT-G_B.fa 2>> ../logs/Log-stderr-$ORGAN_T.txt;
           IDEN=`cat out.report | grep "AvgIdentity " | head -n 1 | awk '{ print $2;}'`;
           ALBA=`cat out.report | grep "AlignedBases " | head -n 1 | awk '{ print $2;}'`;
           SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;
-	  printf "%s\t%s\t%s\n" "$ALBA" "$IDEN" "$SNPS" 1>> ../output_data/TRACES_diff/mtDNA_Diff.txt
+	  XBREADTH=`awk '{ print $3;}' ../output_data/TRACES_mtdna_statistics/mt-total-horizontal-coverage-$ORGAN_T.txt`;
+          XDEPTH=`awk '{ print $3;}' ../output_data/TRACES_mtdna_statistics/mt-total-depth-coverage-$ORGAN_T.txt`;
+	  printf "%s\tmtDNA\t-\t%s\t%s\t%s\t%s\t%s\n" "$ORGAN_T" "$ALBA" "$IDEN" "$SNPS" "$XBREADTH" "$XDEPTH" 1>> ../output_data/TRACES_diff/mtDNA_Diff.txt
           rm -f MT-G_A.fa $ORGAN_T-MT-G_B.fa ;
           fi
         fi

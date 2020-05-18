@@ -14,9 +14,9 @@ then
   gto_fasta_extract_read_by_pattern -p "AY386330.1" < VDB.fa > B19.fa
   gto_fasta_extract_read_by_pattern -p "X69198.1" < VDB.fa > VARV.fa
   #
-  gto_fasta_mutate -e 0.01 < B19.fa > B19_m1.fa
-  gto_fasta_mutate -e 0.05 < B19.fa > B19_m5.fa
-  gto_fasta_mutate -e 0.01 < VARV.fa > VARV_m1.fa
+  gto_fasta_mutate -s 100 -e 0.01 < B19.fa > B19_m1.fa
+  gto_fasta_mutate -s 100 -e 0.05 < B19.fa > B19_m5.fa
+  gto_fasta_mutate -s 100 -e 0.01 < VARV.fa > VARV_m1.fa
   #
   gto_fasta_extract_by_read -i 1 -e 3000 < VARV_m1.fa | gto_fasta_to_seq > SAMPLE_VARV_m1.seq
   gto_fasta_extract_by_read -i 1 -e 4000 < VARV_m1.fa | gto_fasta_to_seq > SAMPLE_VARV_m2.seq
@@ -52,7 +52,7 @@ then
   #
   # ============================================================================
   #
-  ./TRACESPipe.sh --flush-logs --run-meta --inter-sim-size 2 --run-all-v-alig --run-mito --remove-dup --run-de-novo --run-hybrid --min-similarity 1.5 --best-of-bests --very-sensitive
+  ./TRACESPipe.sh --flush-output --flush-logs --run-meta --inter-sim-size 2 --run-all-v-alig --run-mito --remove-dup --run-de-novo --run-hybrid --min-similarity 1.5 --best-of-bests --very-sensitive
   #
   # ============================================================================
   #

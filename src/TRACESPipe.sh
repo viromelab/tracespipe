@@ -1704,7 +1704,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       # VIRAL DNA
       #
-      printf "\n\n" 1>> ../output_data/TRACES_diff/Viral_Diff.txt;
+      printf "\n" 1>> ../output_data/TRACES_diff/Viral_Diff.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Running dnadiff between references and reconstructed ...\e[0m";
       IDX_V=1;
       for VIRUS in "${VIRUSES[@]}"

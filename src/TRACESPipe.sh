@@ -1732,7 +1732,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
                 V_GID=`sed "${IDX_V}q;d" ../output_data/TRACES_results/REPORT_META_VIRAL_BESTS_$ORGAN_T.txt | awk '{ print $2; }'`;
                 fi
               fi
-	    printf "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" "$ORGAN_T" "$V_GID" "$V_VAL" "$ALBA" "$IDEN" "$SNPS" "$XBREADTH" "$XDEPTH" 1>> ../output_data/TRACES_diff/Viral_Diff.txt
+	    printf "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" "$ORGAN_T" "$VIRUS" "$V_GID" "$V_VAL" "$ALBA" "$IDEN" "$SNPS" "$XBREADTH" "$XDEPTH" 1>> ../output_data/TRACES_diff/Viral_Diff.txt
             rm -f $ORGAN_T-$VIRUS-G_A.fa $ORGAN_T-$VIRUS-G_B.fa ;
             fi
           fi
@@ -1753,7 +1753,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
           SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;
 	  XBREADTH=`awk '{ print $3;}' ../output_data/TRACES_mtdna_statistics/mt-total-horizontal-coverage-$ORGAN_T.txt`;
           XDEPTH=`awk '{ print $3;}' ../output_data/TRACES_mtdna_statistics/mt-total-depth-coverage-$ORGAN_T.txt`;
-	  printf "%s\tmtDNA\t-\t%s\t%s\t%s\t%s\t%s\n" "$ORGAN_T" "$ALBA" "$IDEN" "$SNPS" "$XBREADTH" "$XDEPTH" 1>> ../output_data/TRACES_diff/mtDNA_Diff.txt
+	  printf "%s\tMT\t-\t%s\t%s\t%s\t%s\t%s\n" "$ORGAN_T" "$ALBA" "$IDEN" "$SNPS" "$XBREADTH" "$XDEPTH" 1>> ../output_data/TRACES_diff/mtDNA_Diff.txt
           rm -f MT-G_A.fa $ORGAN_T-MT-G_B.fa ;
           fi
         fi

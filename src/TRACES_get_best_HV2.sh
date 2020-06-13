@@ -4,7 +4,7 @@ ORGAN=$1;
 RESULT=`cat top-$ORGAN.csv \
 | grep -a -e " HHV-2" -e " HHV2" -e " HSV2" -e " HSV-2" -e "erpesvirus_2" -e "erpesvirus 2" \
 | grep -v "African horse" \
-| grep -a -e "human" -e "Human" \
+| grep -a -e "human" -e "Human" -e "omo sapiens" -e "omo_sapiens" \
 | grep -a -e "omplete genome" -e "omplete_genome" \
 | awk '{ if($3 > 0 && $2 > 100000 && $2 < 300000) print $3"\t"$4; }' \
 | head -n 1 \

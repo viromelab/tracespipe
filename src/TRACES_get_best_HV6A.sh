@@ -2,8 +2,9 @@
 ORGAN=$1;
 #
 RESULT=`cat top-$ORGAN.csv \
-| grep -a -e "HHV-6A" -e "HHV6A" -e "herpesvirus_6A" \
-| grep -a -e "complete genome" -e "complete_genome" \
+| grep -a -e " HHV-6A" -e " HHV6A" -e "erpesvirus_6A" -e "erpesvirus 6A" \
+| grep -a -e "human" -e "Human" \
+| grep -a -e "omplete genome" -e "omplete_genome" \
 | awk '{ if($3 > 0 && $2 > 100000 && $2 < 300000) print $3"\t"$4; }' \
 | head -n 1 \
 | awk '{ print $1"\t"$2;}' \

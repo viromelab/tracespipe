@@ -121,6 +121,9 @@ tracespipe/
 │   ├── TRACES_hybrid_R5_consensus/    # where the automatic choosen hybrid consensus 
 │   │                                  # appears (diff will be made using this data)
 │   │
+│   ├── TRACES_multiorgan_alignments/  # where the multi-organ alignments data appears
+│   ├── TRACES_multiorgan_consensus/   # where the multi-organ consensus data appears
+│   │
 │   ├── TRACES_diff/                   # where the dnadiff results appear (identity & SNPs)
 │   │
 │   └── TRACES_blasts/                 # where the specific blasted results appears
@@ -315,6 +318,7 @@ The common use of TRACESPipe as command is:
 --view-top 5 \
 --best-of-bests \
 --very-sensitive \
+--run-multiorgan-consensus \
 --run-diff
 ```
 From the run all the output is provided at folder output\_data and it can be human inspected using IGV.

@@ -33,7 +33,6 @@ samtools index $FIELD-data_aligned_sorted.bam $FIELD-data_aligned_sorted.bam.bai
 bedtools genomecov -ibam $FIELD-data_aligned_sorted.bam -bga > $FIELD-coverage.bed
 awk '$4 < 1' $FIELD-coverage.bed > $FIELD-zero-coverage.bed
 samtools faidx $REFERENCE
-echo "here"
 bcftools mpileup -Ou -f $REFERENCE $FIELD-data_aligned_sorted.bam \
 | bcftools call --ploidy 1 -mv -Oz -o $FIELD-calls.vcf.gz
 bcftools index $FIELD-calls.vcf.gz
@@ -44,8 +43,8 @@ bcftools consensus -f $REFERENCE $FIELD-calls.norm.vcf.gz > $FIELD-consensus.fa
 #
 # Give new header name for the consensus sequence
 tail -n +2 $FIELD-consensus.fa > $FIELD-TMP2_FILE.xki
-echo ">$FIELD Multiorgan Consensus" > $FIELD-consensus.fa
-cat $FIELD-TMP2_FILE.xki >> $FIELD-consensus.fa
+echo ">$FIELD Multiorgan Consensus" > $FIELD-multiorgan-consensus.fa
+cat $FIELD-TMP2_FILE.xki >> $FIELD-multiorgan-consensus.fa
 rm -f $FIELD-TMP2_FILE.xki;
 #
 # ==============================================================================

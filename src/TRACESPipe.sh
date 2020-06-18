@@ -71,7 +71,10 @@ RUN_DECRYPT=0;
 RUN_ENCRYPT=0;
 #
 RUN_SPECIFIC=0;
+RUN_DENOVO_SPECIFIC=0;
 RUN_SPECIFIC_SENSITIVE=0;
+#
+RUN_MULTIORGAN_CONSENSUS=0;
 #
 RUN_CY_ON=0;
 RUN_CY_QUANT_ON=0;
@@ -89,6 +92,7 @@ MINIMAL_SIMILARITY_VALUE=1.0;
 TSIZE=10;
 #
 # ==============================================================================
+# THESE ARE THE CURRENT FLAGGED VIRUSES OR VIRUSES GROUPS:
 #
 declare -a VIRUSES=("B19" "HV1" "HV2" "HV3" "HV4" "HV5" "HV6" "HV6A" "HV6B" 
                     "HV7" "HV8" "POLY1" "POLY2" "POLY3" "POLY4" "POLY5" 
@@ -511,6 +515,13 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift 2;
     ;;
+    -rsd|--run-de-novo-specific)
+      RUN_ANALYSIS=1;
+      RUN_DENOVO_SPECIFIC=1;
+      SPECIFIC_DENOVO_ID="$2";
+      SHOW_HELP=0;
+      shift 2;
+    ;;
     -cmax|--max-coverage)
       MAX_COVERAGE_PROFILE=1;
       COVERAGE_MAX="$2";
@@ -603,6 +614,12 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift
     ;;
+    -rmhc|--run-multiorgan-consensus)
+      RUN_ANALYSIS=1;
+      RUN_MULTIORGAN_CONSENSUS=1;
+      SHOW_HELP=0;
+      shift
+    ;;
     -diff|--run-diff)
       RUN_DIFF=1;
       RUN_ANALYSIS=1;
@@ -639,6 +656,7 @@ while [[ $# -gt 0 ]]
       RUN_CY_QUANT_ON=1;
       RUN_DE_NOVO_ASSEMBLY=1;
       RUN_HYBRID=1;
+      RUN_MULTIORGAN_CONSENSUS=1;
       RUN_DIFF=1;
       SHOW_HELP=0;
       shift
@@ -658,82 +676,82 @@ set -- "${POSITIONAL[@]}" # restore positional parameters
 #
 if [ "$SHOW_HELP" -eq "1" ];
   then
-  echo "                                                                "
-  echo -e "\e[34m                                                         "
-  echo "         ████████╗ ██████╗   █████╗   ██████╗ ███████╗ ███████╗   "
-  echo "         ╚══██╔══╝ ██╔══██╗ ██╔══██╗ ██╔════╝ ██╔════╝ ██╔════╝   "
-  echo "            ██║    ██████╔╝ ███████║ ██║      █████╗   ███████╗   "
-  echo "            ██║    ██╔══██╗ ██╔══██║ ██║      ██╔══╝   ╚════██║   "
-  echo "            ██║    ██║  ██║ ██║  ██║ ╚██████╗ ███████╗ ███████║   "
-  echo "            ╚═╝    ╚═╝  ╚═╝ ╚═╝  ╚═╝  ╚═════╝ ╚══════╝ ╚══════╝   "
-  echo "                                                                  "
-  echo "                             P I P E L I N E                            "
-  echo "                                                                "
+  echo "                                                                       "
+  echo -e "\e[34m                                                              "
+  echo "         ████████╗ ██████╗   █████╗   ██████╗ ███████╗ ███████╗        "
+  echo "         ╚══██╔══╝ ██╔══██╗ ██╔══██╗ ██╔════╝ ██╔════╝ ██╔════╝        "
+  echo "            ██║    ██████╔╝ ███████║ ██║      █████╗   ███████╗        "
+  echo "            ██║    ██╔══██╗ ██╔══██║ ██║      ██╔══╝   ╚════██║        "
+  echo "            ██║    ██║  ██║ ██║  ██║ ╚██████╗ ███████╗ ███████║        "
+  echo "            ╚═╝    ╚═╝  ╚═╝ ╚═╝  ╚═╝  ╚═════╝ ╚══════╝ ╚══════╝        "
+  echo "                                                                       "
+  echo "                             P I P E L I N E                           "
+  echo "                                                                       "
   echo -e "    \e[32m      |  A hybrid pipeline for reconstruction & analysis  | \e[0m" 
   echo -e "    \e[32m      |  of viral and host genomes at multi-organ level.  | \e[0m"
   echo "                                                                "
-  echo -e "\e[93m    Usage: ./TRACESPipe.sh [options]                             \e[0m"
-  echo "                                                                   "
-  echo "    -h,     --help            Show this help message and exit,     "
-  echo "    -v,     --version         Show the version and some information,  "
-  echo "    -f,     --force           Force running and overwrite of files,  "
-  echo "    -flog,  --flush-logs      Flush logs (delete logs),              "
+  echo -e "\e[93m    Usage: ./TRACESPipe.sh [options]                     \e[0m"
+  echo "                                                                       "
+  echo "    -h,     --help            Show this help message and exit,         "
+  echo "    -v,     --version         Show the version and some information,   "
+  echo "    -f,     --force           Force running and overwrite of files,    "
+  echo "    -flog,  --flush-logs      Flush logs (delete logs),                "
   echo "    -fout,  --flush-output    Flush output data (delete all output_data), "
-  echo "    -i,     --install         Installation of all the tools,       "
-  echo "    -up,    --update          Update all the tools in TRACESPipe,  "
-  echo "                                                                   "
+  echo "    -i,     --install         Installation of all the tools,           "
+  echo "    -up,    --update          Update all the tools in TRACESPipe,      "
+  echo "                                                                       "
   echo "    -gmt,   --get-max-threads Get the number of maximum machine threads,"
-  echo "    -t <THREADS>, --threads <THREADS>                              "
-  echo "                              Number of threads to use,            "
-  echo "                                                                   "
+  echo "    -t <THREADS>, --threads <THREADS>                                  "
+  echo "                              Number of threads to use,                "
+  echo "                                                                       "
   echo "    -dec,   --decrypt         Decrypt (all files in ../encrypted_data), "
   echo "    -enc,   --encrypt         Encrypt (all files in ../to_encrypt_data),"
-  echo "                                                                   "
+  echo "                                                                       "
   echo "    -vdb,   --build-viral     Build viral database (all) [Recommended], "
   echo "    -vdbr,  --build-viral-r   Build viral database (references only),  "
-  echo "    -udb,   --build-unviral   Build non viral database (control),  "
-  echo "                                                                   "
-  echo "    -afs <FASTA>, --add-fasta <FASTA>                               "
-  echo "                              Add a FASTA sequence to the VDB.fa,  "
-  echo "    -aes <ID>, --add-extra-seq <ID>                                "
-  echo "                              Add extra sequence to the VDB.fa,    "
+  echo "    -udb,   --build-unviral   Build non viral database (control),      "
+  echo "                                                                       "
+  echo "    -afs <FASTA>, --add-fasta <FASTA>                                  "
+  echo "                              Add a FASTA sequence to the VDB.fa,      "
+  echo "    -aes <ID>, --add-extra-seq <ID>                                    "
+  echo "                              Add extra sequence to the VDB.fa,        "
   echo "    -gx,    --get-extra-vir   Downloads/appends (VDB) extra viral seq, "
-  echo "                                                                   "
-  echo "    -gad,   --gen-adapters    Generate FASTA file with adapters,   "
+  echo "                                                                       "
+  echo "    -gad,   --gen-adapters    Generate FASTA file with adapters,       "
   echo "    -gp,    --get-phix        Extracts PhiX genomes (Needs viral DB),  "
-  echo "    -gm,    --get-mito        Downloads human Mitochondrial genome,"
-  echo "                                                                   "
-  echo "    -cmt <ID>, --change-mito <ID>                                  "
-  echo "                              Set any Mitochondrial genome by ID,  "
-  echo "                                                                   "
-  echo "    -gy,    --get-y-chromo    Downloads human Y-chromosome,        "
-  echo "    -gax,   --get-all-aux     Runs -gad -gp -gm -gy,               "
-  echo "                                                                   "
-  echo "    -cbn,   --create-blast-db It creates a nucleotide blast database, "
-  echo "    -ubn,   --update-blast-db It updates a nucleotide blast database, "
-  echo "                                                                   "
-  echo "    -sfs <FASTA>, --search-blast-db <FASTA>                           "
-  echo "                              It blasts the nucleotide (nt) blast DB, "
-  echo "                                                                   "
-  echo "    -sfrs <FASTA>, --search-blast-remote-db <FASTA>                   "
+  echo "    -gm,    --get-mito        Downloads human Mitochondrial genome,    "
+  echo "                                                                       "
+  echo "    -cmt <ID>, --change-mito <ID>                                      "
+  echo "                              Set any Mitochondrial genome by ID,      "
+  echo "                                                                       "
+  echo "    -gy,    --get-y-chromo    Downloads human Y-chromosome,            "
+  echo "    -gax,   --get-all-aux     Runs -gad -gp -gm -gy,                   "
+  echo "                                                                       "
+  echo "    -cbn,   --create-blast-db It creates a nucleotide blast database,  "
+  echo "    -ubn,   --update-blast-db It updates a nucleotide blast database,  "
+  echo "                                                                       "
+  echo "    -sfs <FASTA>, --search-blast-db <FASTA>                            "
+  echo "                              It blasts the nucleotide (nt) blast DB,  "
+  echo "                                                                       "
+  echo "    -sfrs <FASTA>, --search-blast-remote-db <FASTA>                    "
   echo "                              It blasts remotly thenucleotide (nt) blast "
   echo "                              database (it requires internet connection), "
-  echo "                                                                   "
-  echo "    -rdup,  --remove-dup      Remove duplications (e.g. PCR dup),  "
+  echo "                                                                       "
+  echo "    -rdup,  --remove-dup      Remove duplications (e.g. PCR dup),      "
   echo "    -vhs,   --very-sensitive  Aligns with very high sensitivity (slower),  "
-  echo "                                                                   "
-  echo "    -gbb,   --best-of-bests   Identifies the best of bests references "
+  echo "                                                                       "
+  echo "    -gbb,   --best-of-bests   Identifies the best of bests references  "
   echo "                              between multiple organs [similar reference], "
-  echo "                                                                   "
-  echo "    -iss <SIZE>, --inter-sim-size <SIZE>                                  "
+  echo "                                                                       "
+  echo "    -iss <SIZE>, --inter-sim-size <SIZE>                               "
   echo "                              Inter-genome similarity top size (control), "
-  echo "                                                                   "
+  echo "                                                                       "
   echo "    -rpro,  --run-profiles    Run complexity and relative profiles (control), "
-  echo "                                                                   "
+  echo "                                                                       "
   echo "    -rm,    --run-meta        Run viral metagenomic identification,    "
   echo "    -ro,    --run-meta-nv     Run NON-viral metagenomic identification,"
-  echo "                                                                  "
-  echo "    -mis <VALUE>, --min-similarity <VALUE>                         "
+  echo "                                                                       "
+  echo "    -mis <VALUE>, --min-similarity <VALUE>                             "
   echo "                              Minimum similarity value to consider the "
   echo "                              sequence for alignment-consensus (filter), "
   echo "                                                                       "
@@ -741,48 +759,56 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                              Display the top <VALUE> with the highest "
   echo "                              similarity (by descending order),        "
   echo "                                                                       "
-  echo "    -rava,  --run-all-v-alig  Run all viral align/sort/consensus seqs "
+  echo "    -rava,  --run-all-v-alig  Run all viral align/sort/consensus seqs  "
   echo "                              from a specific list,                    "
   echo "                                                                       "
-  echo "    -rsr <ID>, --run-specific <ID/PATTERN>                        "
-  echo "                              Run specific reference align/consensus, "
-  echo "    -rsx <ID>, --run-extreme <ID/PATTERN>                            "
-  echo "                              Run specific reference align/consensys"
-  echo "                              using extreme sensitivity,            "
-  echo "                                                                 "
-  echo "    -rmt,   --run-mito        Run Mito align and consensus seq,   "
-  echo "    -rmtd,  --run-mito-dam    Run Mito damage only,               "
-  echo "                                                                 "
-  echo "    -rya,   --run-cy-align    Run CY align and consensus seq,    "
-  echo "    -ryq,   --run-cy-quant    Estimate the quantity of CY DNA,    "
-  echo "                                                                  "
-  echo "    -rda,   --run-de-novo     Run de-novo assembly,               "
-  echo "                                                                  "
-  echo "    -rhyb,  --run-hybrid      Run hybrid assembly (align/de-novo), "
-  echo "                                                                  "
-  echo "    -vis,   --visual-align    Run Visualization tool for alignments, "
-  echo "    -covl,  --coverage-latex  Run coverage table in Latex format,   "
-  echo "    -covc,  --coverage-csv    Run coverage table in CSV format,    "
-  echo "    -covp <NAME>, --coverage-profile <BED_NAME_FILE>                      "
+  echo "    -rsd <ID>, --run-de-novo-specific <ID/PATTERN>                     "
+  echo "                              Run specific alignments of the de-novo   "
+  echo "                              to the reference genome,                 "
+  echo "    -rsr <ID>, --run-specific <ID/PATTERN>                             "
+  echo "                              Run specific reference align/consensus,  "
+  echo "                                                                       "
+  echo "    -rsx <ID>, --run-extreme <ID/PATTERN>                              "
+  echo "                              Run specific reference align/consensus   "
+  echo "                              using extreme sensitivity,               "
+  echo "                                                                       "
+  echo "    -rmt,   --run-mito        Run Mito align and consensus seq,        "
+  echo "    -rmtd,  --run-mito-dam    Run Mito damage only,                    "
+  echo "                                                                       "
+  echo "    -rya,   --run-cy-align    Run CY align and consensus seq,          "
+  echo "    -ryq,   --run-cy-quant    Estimate the quantity of CY DNA,         "
+  echo "                                                                       "
+  echo "    -rda,   --run-de-novo     Run de-novo assembly,                    "
+  echo "                                                                       "
+  echo "    -rhyb,  --run-hybrid      Run hybrid assembly (align/de-novo),     "
+  echo "                                                                       "
+  echo "    -rmhc,  --run-multiorgan-consensus                                 "
+  echo "                              Run alignments/consensus between all the "
+  echo "                              reconstructed organ sequences,           "
+  echo "                                                                       "
+  echo "    -vis,   --visual-align    Run Visualization tool for alignments,   "
+  echo "    -covl,  --coverage-latex  Run coverage table in Latex format,      "
+  echo "    -covc,  --coverage-csv    Run coverage table in CSV format,        "
+  echo "    -covp <NAME>, --coverage-profile <BED_NAME_FILE>                   "
   echo "                              Run coverage profile for specific BED file, "
-  echo "    -cmax <MAX>,  --max-coverage <MAX_COVERAGE>                           "
+  echo "    -cmax <MAX>,  --max-coverage <MAX_COVERAGE>                        "
   echo "                              Maximum depth coverage (depth normalization), "
-  echo "                                                                  "
+  echo "                                                                       "
   echo "    -diff,  --run-diff        Run diff -> reference and hybrid (ident/SNPs), "
-  echo "                                                                  "
-  echo "    -ra,    --run-analysis    Run data analysis,                   "
-  echo "    -all,   --run-all         Run all the options.                 "
-  echo "                                                                "
+  echo "                                                                       "
+  echo "    -ra,    --run-analysis    Run data analysis,                       "
+  echo "    -all,   --run-all         Run all the options.                     "
+  echo "                                                                       "
   echo -e "\e[93m    Ex: ./TRACESPipe.sh --run-mito --run-meta --remove-dup --run-de-novo \ "
   echo -e "\e[93m    --run-hybrid --min-similarity 1 --best-of-bests --very-sensitive --run-diff \e[0m"
-  echo "                                                                "
-  echo "    Add the file meta_info.txt at ../meta_data/ folder. Example:      "
-  echo "    meta_info.txt -> 'organ:reads_forward.fa.gz:reads_reverse.fa.gz'  "
-  echo "    The reads must be GZIPed in the ../input_data/ folder.            "
-  echo "    The output results are at ../output_data/ folder.                 "
-  echo "                                                                "
-  echo -e "\e[32m    Contact: projectraces@gmail.com                  \e[0m"
-  echo "                                                                "
+  echo "                                                                       "
+  echo "    Add the file meta_info.txt at ../meta_data/ folder. Example:       "
+  echo "    meta_info.txt -> 'organ:reads_forward.fa.gz:reads_reverse.fa.gz'   "
+  echo "    The reads must be GZIPed in the ../input_data/ folder.             "
+  echo "    The output results are at ../output_data/ folder.                  "
+  echo "                                                                       "
+  echo -e "\e[32m    Contact: projectraces@gmail.com                      \e[0m"
+  echo "                                                                       "
   exit 1;
   fi
 #
@@ -1690,13 +1716,6 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
     #
-    # ==========================================================================  
-    # 
-    if [[ "$RUN_MULTIORGAN_CONSENSUS" -eq "1" ]];
-      then
-      ./TRACES_multiorgan_consensus.sh B19 B19.fa B19-multiorgans.fa 8
-      fi
-    #
     # ==========================================================================
     #
     if [[ "$RUN_DIFF" -eq "1" ]];
@@ -1764,9 +1783,39 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     #
     done
     #
-  # #
+  ###
   #
-  # ============================================================================ 
+  # ==========================================================================
+  #
+  if [[ "$RUN_MULTIORGAN_CONSENSUS" -eq "1" ]];
+    then
+    echo -e "\e[34m[TRACESPipe]\e[32m Running multi-organ consensus ...\e[0m";
+    mkdir -p ../output_data/TRACES_multiorgan_alignments/
+    mkdir -p ../output_data/TRACES_multiorgan_consensus/
+    for VIRUS in "${VIRUSES[@]}"
+      do
+      echo -e "\e[34m[TRACESPipe]\e[32m Running consensus for $VIRUS ...\e[0m";
+      VNAMEX=`ls  ../output_data/TRACES_viral_alignments/*-$VIRUS.fa \
+	      | tr '/' '\t' \
+	      | awk '{ print $4;}' \
+	      | head -n 1`;
+      if [ -f ../output_data/TRACES_viral_alignments/$VNAMEX ];
+        then
+        cp ../output_data/TRACES_viral_alignments/$VNAMEX $VIRUS.fa
+        cat ../output_data/TRACES_hybrid_R5_consensus/$VIRUS-consensus-*.fa > $VIRUS-multiorgans.fa;
+	#
+        ./TRACES_multiorgan_consensus.sh $VIRUS $VIRUS.fa $VIRUS-multiorgans.fa $THREADS
+	#
+        cp $VIRUS.fa ../output_data/TRACES_multiorgan_alignments/$VIRUS.fa
+        cp $VIRUS-data_aligned_sorted.bam.bai ../output_data/TRACES_multiorgan_alignments/
+        cp $VIRUS-data_aligned_sorted.bam ../output_data/TRACES_multiorgan_alignments/
+        cp $VIRUS-multiorgan-consensus.fa ../output_data/TRACES_multiorgan_consensus/
+        fi
+      done
+    echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+    fi
+  #
+  # ==========================================================================
   #
   # BUILD COMPLETE VIRAL META TABLE FOR MULTIPLE ORGANS:
   #

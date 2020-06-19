@@ -1789,20 +1789,62 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
   #
   if [[ "$RUN_MULTIORGAN_CONSENSUS" -eq "1" ]];
     then
-    echo -e "\e[34m[TRACESPipe]\e[32m Running multi-organ consensus ...\e[0m";
+    echo -e "\e[34m[TRACESPipe]\e[32m Running multi-organ (MO) consensus ...\e[0m";
     mkdir -p ../output_data/TRACES_multiorgan_alignments/
     mkdir -p ../output_data/TRACES_multiorgan_consensus/
+    R5PATH="../output_data/TRACES_hybrid_R5_consensus";
     for VIRUS in "${VIRUSES[@]}"
       do
-      echo -e "\e[34m[TRACESPipe]\e[32m Running consensus for $VIRUS ...\e[0m";
-      VNAMEX=`ls  ../output_data/TRACES_viral_alignments/*-$VIRUS.fa \
-	      | tr '/' '\t' \
-	      | awk '{ print $4;}' \
-	      | head -n 1`;
-      if [ -f ../output_data/TRACES_viral_alignments/$VNAMEX ];
+      echo -e "\e[34m[TRACESPipe]\e[32m Running MO consensus for $VIRUS ...\e[0m";
+      #
+      MAX_NB=0;
+      MAX_RF=`ls  $R5PATH/$VIRUS-consensus-*.fa \
+              | tr '/' '\t' \
+              | awk '{ print $4;}' \
+              | head -n 1`;
+      #
+      for read in "${READS[@]}" #
+        do
+        #
+        ORGAN=`echo $read | tr ':' '\t' | awk '{ print $1 }'`;
+	#
+  	NS_V=`gto_fasta_to_seq < $R5PATH/$VIRUS-consensus-$ORGAN.fa \
+	  | tr -d "N" \
+	  | gto_info \
+	  | grep "Number of symbols" \
+	  | awk '{ print $5; }'`;
+	#
+        if [[ "$NS_V" == "" ]]; 
+	  then 
+	  NS_V=0; 
+          fi
+	#
+        if [[ "$NS_V" -gt "$MAX_NB" ]];
+	  then
+          MAX_NB=$NS_V;
+	  MAX_RF=$ORGAN;
+	  fi
+        done
+      #
+      # echo "Best nSym : $MAX_NB";      
+      # echo "Best organ: $MAX_RF";      
+      #
+      if [ -f $R5PATH/$VIRUS-consensus-$MAX_RF.fa ];
         then
-        cp ../output_data/TRACES_viral_alignments/$VNAMEX $VIRUS.fa
-        cat ../output_data/TRACES_hybrid_R5_consensus/$VIRUS-consensus-*.fa > $VIRUS-multiorgans.fa;
+        cp $R5PATH/$VIRUS-consensus-$MAX_RF.fa $VIRUS.fa
+        #
+        rm -f $VIRUS-multiorgans.fa;
+	for read in "${READS[@]}" #
+          do
+          #
+          ORGAN=`echo $read | tr ':' '\t' | awk '{ print $1 }'`;
+          #
+	  if [[ "$ORGAN" != "$MAX_RF" ]];
+	    then
+	    cat $R5PATH/$VIRUS-consensus-$ORGAN.fa >> $VIRUS-multiorgans.fa;
+            fi
+          #
+          done
 	#
         ./TRACES_multiorgan_consensus.sh $VIRUS $VIRUS.fa $VIRUS-multiorgans.fa $THREADS
 	#

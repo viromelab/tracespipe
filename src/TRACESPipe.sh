@@ -1835,60 +1835,68 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[TRACESPipe]\e[32m Running MO consensus for $VIRUS ...\e[0m";
       #
       MAX_NB=0;
-      MAX_RF=`ls  $R5PATH/$VIRUS-consensus-*.fa \
-              | tr '/' '\t' \
-              | awk '{ print $4;}' \
-              | head -n 1`;
+      MAX_RF="organ";
       #
       for read in "${READS[@]}" #
         do
         #
         ORGAN=`echo $read | tr ':' '\t' | awk '{ print $1 }'`;
 	#
-  	NS_V=`gto_fasta_to_seq < $R5PATH/$VIRUS-consensus-$ORGAN.fa \
-	  | tr -d "N" \
-	  | gto_info \
-	  | grep "Number of symbols" \
-	  | awk '{ print $5; }'`;
-	#
-        if [[ "$NS_V" == "" ]]; 
-	  then 
-	  NS_V=0; 
-          fi
-	#
-        if [[ "$NS_V" -gt "$MAX_NB" ]];
-	  then
-          MAX_NB=$NS_V;
-	  MAX_RF=$ORGAN;
+	if [ -f $R5PATH/$VIRUS-consensus-$ORGAN.fa ];
+          then
+          NS_V=`gto_fasta_to_seq < $R5PATH/$VIRUS-consensus-$ORGAN.fa \
+	      | tr -d "N" \
+              | gto_info \
+              | grep "Number of symbols" \
+	      | awk '{ print $5; }'`;
+	  #
+          if [[ "$NS_V" == "" ]]; 
+	    then 
+	    NS_V=0; 
+            fi
+	  #
+          if [[ "$NS_V" -gt "$MAX_NB" ]];
+	    then
+            MAX_NB=$NS_V;
+	    MAX_RF=$ORGAN;
+	    fi
 	  fi
         done
-      #
-      # echo "Best nSym : $MAX_NB";      
-      # echo "Best organ: $MAX_RF";      
       #
       if [ -f $R5PATH/$VIRUS-consensus-$MAX_RF.fa ];
         then
         cp $R5PATH/$VIRUS-consensus-$MAX_RF.fa $VIRUS.fa
         #
-        rm -f $VIRUS-multiorgans.fa;
-	for read in "${READS[@]}" #
-          do
+	NSEQS=`ls  $R5PATH/$VIRUS-consensus-*.fa | wc -l`;
+        if [[ "$NSEQS" -gt "1" ]]
+          then         
           #
-          ORGAN=`echo $read | tr ':' '\t' | awk '{ print $1 }'`;
-          #
-	  if [[ "$ORGAN" != "$MAX_RF" ]];
+          rm -f $VIRUS-multiorgans.fa;
+	  for read in "${READS[@]}" #
+            do
+            #
+            ORGAN=`echo $read | tr ':' '\t' | awk '{ print $1 }'`;
+            #
+            if [[ "$ORGAN" != "$MAX_RF" ]];
+              then
+	      if [ -f $R5PATH/$VIRUS-consensus-$ORGAN.fa ];
+	        then
+                cat $R5PATH/$VIRUS-consensus-$ORGAN.fa >> $VIRUS-multiorgans.fa;
+	        fi
+              fi
+            #
+            done
+	  #
+          if [ -f $VIRUS-multiorgans.fa ];
 	    then
-	    cat $R5PATH/$VIRUS-consensus-$ORGAN.fa >> $VIRUS-multiorgans.fa;
+            ./TRACES_multiorgan_consensus.sh $VIRUS $VIRUS.fa $VIRUS-multiorgans.fa $THREADS
+            cp $VIRUS.fa ../output_data/TRACES_multiorgan_alignments/$VIRUS.fa
+            cp $VIRUS-data_aligned_sorted.bam.bai ../output_data/TRACES_multiorgan_alignments/
+            cp $VIRUS-data_aligned_sorted.bam ../output_data/TRACES_multiorgan_alignments/
+            cp $VIRUS-multiorgan-consensus.fa ../output_data/TRACES_multiorgan_consensus/
             fi
-          #
-          done
-	#
-        ./TRACES_multiorgan_consensus.sh $VIRUS $VIRUS.fa $VIRUS-multiorgans.fa $THREADS
-	#
-        cp $VIRUS.fa ../output_data/TRACES_multiorgan_alignments/$VIRUS.fa
-        cp $VIRUS-data_aligned_sorted.bam.bai ../output_data/TRACES_multiorgan_alignments/
-        cp $VIRUS-data_aligned_sorted.bam ../output_data/TRACES_multiorgan_alignments/
-        cp $VIRUS-multiorgan-consensus.fa ../output_data/TRACES_multiorgan_consensus/
+	  #
+          fi
         fi
       done
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";

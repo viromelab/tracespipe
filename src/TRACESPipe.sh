@@ -1889,7 +1889,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
 	  #
           if [ -f $VIRUS-multiorgans.fa ];
 	    then
-            ./TRACES_multiorgan_consensus.sh $VIRUS $VIRUS.fa $VIRUS-multiorgans.fa $THREADS
+            ./TRACES_multiorgan_consensus.sh $VIRUS $VIRUS.fa $VIRUS-multiorgans.fa $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
             cp $VIRUS.fa ../output_data/TRACES_multiorgan_alignments/$VIRUS.fa
             cp $VIRUS-data_aligned_sorted.bam.bai ../output_data/TRACES_multiorgan_alignments/
             cp $VIRUS-data_aligned_sorted.bam ../output_data/TRACES_multiorgan_alignments/

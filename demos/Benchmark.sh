@@ -149,7 +149,7 @@ fi
 # ============================================================================
 if [[ "$RUN_TRACES" -eq "1" ]];
   then
-  ./TRACESPipe.sh --run-meta --inter-sim-size 5 --run-all-v-alig --run-mito --remove-dup --run-de-novo --run-hybrid --min-similarity 2 --view-top 5 --best-of-bests --very-sensitive
+  ./TRACESPipe.sh --run-meta --inter-sim-size 5 --run-all-v-alig --run-mito --remove-dup --run-de-novo --run-hybrid --min-similarity 2 --view-top 5 --best-of-bests --very-sensitive --run-multiorgan-consensus
 fi
 #
 # ============================================================================

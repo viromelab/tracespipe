@@ -14,7 +14,7 @@ cd ../src/
 #
 if [[ "$RUN_ALL" -eq "1" ]];
   then
-#  ./TRACESPipe.sh --get-all-aux
+  ./TRACESPipe.sh --get-all-aux
   #
   gto_fasta_extract_read_by_pattern -p "AY386330.1" < VDB.fa > B19.fa
   gto_fasta_extract_read_by_pattern -p "JN561323.2" < VDB.fa > HV2.fa
@@ -101,29 +101,95 @@ if [[ "$RUN_ALL" -eq "1" ]];
   art_illumina -rs 0 -ss HS25 -sam -i blood.fa -p -l 150 -f 40 -m 200 -s 10 -o blood
   art_illumina -rs 0 -ss HS25 -sam -i brain.fa -p -l 150 -f 10 -m 200 -s 10 -o brain
   art_illumina -rs 0 -ss HS25 -sam -i bone.fa -p -l 150 -f 30 -m 200 -s 10 -o bone
+  art_illumina -rs 0 -ss HS25 -sam -i skin.fa -p -l 150 -f 25 -m 200 -s 10 -o skin
+  art_illumina -rs 0 -ss HS25 -sam -i teeth.fa -p -l 150 -f 30 -m 200 -s 10 -o teeth
+  art_illumina -rs 0 -ss HS25 -sam -i kidney.fa -p -l 150 -f 20 -m 200 -s 10 -o kidney
+  art_illumina -rs 0 -ss HS25 -sam -i lung.fa -p -l 150 -f 10 -m 200 -s 10 -o lung
+  art_illumina -rs 0 -ss HS25 -sam -i liver.fa -p -l 150 -f 20 -m 200 -s 10 -o liver
+  art_illumina -rs 0 -ss HS25 -sam -i heart.fa -p -l 150 -f 20 -m 200 -s 10 -o heart
+  art_illumina -rs 0 -ss HS25 -sam -i hair.fa -p -l 150 -f 5 -m 200 -s 10 -o hair
   #
   cp blood*.fq ../input_data
   cp brain*.fq ../input_data
   cp bone*.fq ../input_data
+  cp skin*.fq ../input_data
+  cp teeth*.fq ../input_data
+  cp kidney*.fq ../input_data
+  cp lung*.fq ../input_data
+  cp liver*.fq ../input_data
+  cp heart*.fq ../input_data
+  cp hair*.fq ../input_data
   #
   cd ../input_data
   rm -f blood*.fq.gz brain*.fq.gz bone*.fq.gz skin*.fq.gz teeth*.fq.gz kidney*.fq.gz lung*.fq.gz liver*.fq.gz heart*.fq.gz hair*.fq.gz
   gzip -f blood*.fq
   gzip -f brain*.fq
   gzip -f bone*.fq
+  gzip -f skin*.fq
+  gzip -f teeth*.fq
+  gzip -f kidney*.fq
+  gzip -f lung*.fq
+  gzip -f liver*.fq
+  gzip -f heart*.fq
+  gzip -f hair*.fq
   cd ../src
   #
   echo "blood:blood1.fq.gz:blood2.fq.gz" > ../meta_data/meta_info.txt
   echo "brain:brain1.fq.gz:brain2.fq.gz" >> ../meta_data/meta_info.txt
   echo "bone:bone1.fq.gz:bone2.fq.gz" >> ../meta_data/meta_info.txt
+  echo "skin:skin1.fq.gz:skin2.fq.gz" >> ../meta_data/meta_info.txt
+  echo "teeth:teeth1.fq.gz:teeth2.fq.gz" >> ../meta_data/meta_info.txt
+  echo "kidney:kidney1.fq.gz:kidney2.fq.gz" >> ../meta_data/meta_info.txt
+  echo "lung:lung1.fq.gz:lung2.fq.gz" >> ../meta_data/meta_info.txt
+  echo "liver:liver1.fq.gz:liver2.fq.gz" >> ../meta_data/meta_info.txt
+  echo "heart:heart1.fq.gz:heart2.fq.gz" >> ../meta_data/meta_info.txt
+  echo "hair:hair1.fq.gz:hair2.fq.gz" >> ../meta_data/meta_info.txt
   #
 fi
 # ============================================================================
 if [[ "$RUN_TRACES" -eq "1" ]];
   then
-  ./TRACESPipe.sh --run-meta --inter-sim-size 5 --run-all-v-alig --run-mito --remove-dup --run-de-novo --run-hybrid --min-similarity 2 --view-top 5 --best-of-bests --very-sensitive --run-multiorgan-consensus 
-# --run-de-novo-specific AF148805.2
+  ./TRACESPipe.sh --run-meta --inter-sim-size 5 --run-all-v-alig --run-mito --remove-dup --run-de-novo --run-hybrid --min-similarity 2 --view-top 5 --best-of-bests --very-sensitive
 fi
 #
 # ============================================================================
+#
+# EVALUATION:
+#
+declare -a ORGANS=("blood" "bone" "brain" "hair" "heart" "kidney" "liver" "lung" "skin" "teeth");
+declare -a VIRUSES=("B19" "HV2" "HV3" "HV4" "HV8" "HPV" "TTV" "VARV");
+#
+D_PATH="../output_data/TRACES_hybrid_R5_consensus";
+for organ in "${ORGANS[@]}"
+  do
+  printf "$organ\n";	  
+  for virus in "${VIRUSES[@]}"
+    do	  
+    if [ -f B-$virus-$organ.fa ];
+      then
+      #echo "Diff -> $virus | $organ :";
+      printf "$virus\t";	  
+      cp $D_PATH/$virus-consensus-$organ.fa G_A.fa;
+      cp B-$virus-$organ.fa G_B.fa
+      dnadiff G_A.fa G_B.fa ;
+      IDEN=`cat out.report | grep "AvgIdentity " | head -n 1 | awk '{ print $2;}'`; 
+      ALBA=`cat out.report | grep "AlignedBases " | head -n 1 | awk '{ print $2;}'`;
+      SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;
+      printf "%s\t%s\t%s\n" "$ALBA" "$IDEN" "$SNPS";
+      rm -f G_A.fa G_B.fa ;
+      fi
+    done
+  #echo "Diff -> mtDNA | $organ :";
+  printf "mtDNA\t";	  
+  cp ../output_data/TRACES_mtdna_consensus/mt-consensus-$organ.fa G_A.fa;
+  cp B-mtDNA-$organ.fa G_B.fa
+  dnadiff G_A.fa G_B.fa ;
+  IDEN=`cat out.report | grep "AvgIdentity " | head -n 1 | awk '{ print $2;}'`;
+  ALBA=`cat out.report | grep "AlignedBases " | head -n 1 | awk '{ print $2;}'`;
+  SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;
+  printf "%s\t%s\t%s\n\n" "$ALBA" "$IDEN" "$SNPS";
+  rm -f G_A.fa G_B.fa ;
+  done
+#
+# ==============================================================================
 #

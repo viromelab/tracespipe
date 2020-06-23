@@ -1395,43 +1395,6 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       fi
     #
     # ==========================================================================
-    # RUN SPECIFIC ALIGN/CONSENSUS USING DE-NOVO
-    #
-    if [[ "$RUN_DENOVO_SPECIFIC" -eq "1" ]];
-      then
-      echo -e "\e[34m[TRACESPipe]\e[32m Aligning de-novo scaffolds to specific viral ref(s) with pattern \"$SPECIFIC_DENOVO_ID\" using bowtie2 ...\e[0m";
-      #
-      CHECK_VDB;
-      #
-      echo -e "\e[34m[TRACESPipe]\e[32m Extracting sequence with pattern \"$SPECIFIC_DENOVO_ID\" from VDB.fa ...\e[0m";
-      gto_fasta_extract_read_by_pattern -p "$SPECIFIC_DENOVO_ID" < VDB.fa > SPECIFIC-$SPECIFIC_DENOVO_ID.fa
-      echo -e "\e[34m[TRACESPipe]\e[32m Aligning and creating consensus ... \e[0m";
-      SCAFFOLDS_PATH="../output_data/TRACES_denovo_$ORGAN_T/scaffolds.fasta";
-      ./TRACES_denovo_specific.sh SPECIFIC-$SPECIFIC_DENOVO_ID.fa $SCAFFOLDS_PATH $SPECIFIC_DENOVO_ID $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
-      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
-      #
-      mkdir -p ../output_data/TRACES_specific_denovo_alignments;
-      cp SPECIFIC-$SPECIFIC_DENOVO_ID.fa ../output_data/TRACES_specific_denovo_alignments/
-      cp SPECIFIC-$SPECIFIC_DENOVO_ID.fa.fai ../output_data/TRACES_specific_denovo_alignments/
-      mv specific_aligned_sorted-$ORGAN_T-$SPECIFIC_DENOVO_ID.bam ../output_data/TRACES_specific_denovo_alignments/
-      mv specific_aligned_sorted-$ORGAN_T-$SPECIFIC_DENOVO_ID.bam.bai ../output_data/TRACES_specific_denovo_alignments/
-      mkdir -p ../output_data/TRACES_specific_denovo_consensus;
-      mv $SPECIFIC_DENOVO_ID-consensus-$ORGAN_T.fa ../output_data/TRACES_specific_denovo_consensus/
-      mkdir -p ../output_data/TRACES_specific_denovo_bed;
-      mv $SPECIFIC_DENOVO_ID-calls-$ORGAN_T.bed ../output_data/TRACES_specific_denovo_bed/
-      mv $SPECIFIC_DENOVO_ID-coverage-$ORGAN_T.bed ../output_data/TRACES_specific_denovo_bed/
-      mv $SPECIFIC_DENOVO_ID-zero-coverage-$ORGAN_T.bed ../output_data/TRACES_specific_denovo_bed/
-      mkdir -p ../output_data/TRACES_specific_denovo_statistics;
-      echo -e "\e[34m[TRACESPipe]\e[32m Calculating specific coverage ...\e[0m";
-      ./TRACES_overall_specific.sh $SPECIFIC_DENOVO_ID $ORGAN_T
-      C_BREADTH=`cat ../output_data/TRACES_specific_denovo_statistics/$SPECIFIC_DENOVO_ID-total-horizontal-coverage-$ORGAN_T.txt`;
-      C_DEPTH=`cat ../output_data/TRACES_specific_denovo_statistics/$SPECIFIC_DENOVO_ID-total-depth-coverage-$ORGAN_T.txt`;
-      echo -e "\e[34m[TRACESPipe]\e[1m Specific Breadth (H) coverage: $C_BREADTH \e[0m";
-      echo -e "\e[34m[TRACESPipe]\e[1m Specific Depth-x (V) coverage: $C_DEPTH \e[0m";
-      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
-      fi
-    #
-    # ==========================================================================
     # RUN SPECIFIC SPECIFIC ALIGN/CONSENSUS WITH EXTREME HIGH SENSITIVITY
     #
     if [[ "$RUN_SPECIFIC_SENSITIVE" -eq "1" ]];
@@ -1813,6 +1776,36 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
           rm -f MT-G_A.fa $ORGAN_T-MT-G_B.fa ;
           fi
         fi
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+      fi
+    #
+    # ==========================================================================
+    # RUN SPECIFIC ALIGN/CONSENSUS USING DE-NOVO
+    #
+    if [[ "$RUN_DENOVO_SPECIFIC" -eq "1" ]];
+      then
+      echo -e "\e[34m[TRACESPipe]\e[32m Aligning de-novo scaffolds to specific viral ref(s) with pattern \"$SPECIFIC_DENOVO_ID\" using bowtie2 ...\e[0m";
+      #
+      CHECK_VDB;
+      #
+      echo -e "\e[34m[TRACESPipe]\e[32m Extracting sequence with pattern \"$SPECIFIC_DENOVO_ID\" from VDB.fa ...\e[0m";
+      gto_fasta_extract_read_by_pattern -p "$SPECIFIC_DENOVO_ID" < VDB.fa > SPECIFIC-$SPECIFIC_DENOVO_ID.fa
+      echo -e "\e[34m[TRACESPipe]\e[32m Aligning and creating consensus ... \e[0m";
+      SCAFFOLDS_PATH="../output_data/TRACES_denovo_$ORGAN_T/scaffolds.fasta";
+      ./TRACES_denovo_specific.sh SPECIFIC-$SPECIFIC_DENOVO_ID.fa $SCAFFOLDS_PATH $SPECIFIC_DENOVO_ID $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+      #
+      mkdir -p ../output_data/TRACES_specific_denovo_alignments;
+      cp SPECIFIC-$SPECIFIC_DENOVO_ID.fa ../output_data/TRACES_specific_denovo_alignments/
+      cp SPECIFIC-$SPECIFIC_DENOVO_ID.fa.fai ../output_data/TRACES_specific_denovo_alignments/
+      mv specific_aligned_sorted_$SPECIFIC_DENOVO_ID-$ORGAN_T.bam ../output_data/TRACES_specific_denovo_alignments/
+      mv specific_aligned_sorted_$SPECIFIC_DENOVO_ID-$ORGAN_T.bam.bai ../output_data/TRACES_specific_denovo_alignments/
+      mkdir -p ../output_data/TRACES_specific_denovo_consensus;
+      mv $SPECIFIC_DENOVO_ID-consensus-$ORGAN_T.fa ../output_data/TRACES_specific_denovo_consensus/
+      mkdir -p ../output_data/TRACES_specific_denovo_bed;
+      mv $SPECIFIC_DENOVO_ID-calls-$ORGAN_T.bed ../output_data/TRACES_specific_denovo_bed/
+      mv $SPECIFIC_DENOVO_ID-coverage-$ORGAN_T.bed ../output_data/TRACES_specific_denovo_bed/
+      mv $SPECIFIC_DENOVO_ID-zero-coverage-$ORGAN_T.bed ../output_data/TRACES_specific_denovo_bed/
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
     #

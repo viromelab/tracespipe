@@ -1,5 +1,6 @@
 #!/bin/bash
 #
+#
 THREADS=8;
 OUTPUT="../src";
 #
@@ -21,13 +22,15 @@ CHECK_FILE () {
 #
 if [[ "$DOWNLOAD" -eq "1" ]];
   then
-  echo -e "\e[34m[TRACESPipe]\e[36m Downloading species mitogenomes database ...\e[0m";
+  echo -e "\e[34m[TRACESPipe]\e[36m Downloading human mitogenomes database ...\e[0m";
   #
-  rm -f mitochondrion.1.1.genomic.fna.gz mitochondrion.2.1.genomic.fna.gz MTs.fa
+  rm -f alg_tot.fasta alg_pa_tot.fasta alg_tot.fasta alg_pa_tot.fasta
   #
-  wget https://ftp.ncbi.nlm.nih.gov/refseq/release/mitochondrion/mitochondrion.1.1.genomic.fna.gz
-  wget https://ftp.ncbi.nlm.nih.gov/refseq/release/mitochondrion/mitochondrion.2.1.genomic.fna.gz
-  zcat mitochondrion.1.1.genomic.fna.gz mitochondrion.2.1.genomic.fna.gz > SPECIES-MTs.fa
+  wget https://www.hmtdb.uniba.it/download_file?dataset=alg_tot.zip -O alg_tot.zip
+  wget https://www.hmtdb.uniba.it/download_file?dataset=alg_pa_tot.zip -O alg_pa_tot.zip
+  #
+  unzip alg_tot.zip
+  unzip alg_pa_tot.zip
   #
   echo -e "\e[34m[TRACESPipe]\e[36m Done!\e[0m";
   fi
@@ -37,10 +40,11 @@ if [[ "$DOWNLOAD" -eq "1" ]];
 if [[ "$RUN" -eq "1" ]];
   then
   #
-  echo -e "\e[34m[TRACESPipe]\e[36m Running species mitogenome authentication ...\e[0m";
+  echo -e "\e[34m[TRACESPipe]\e[36m Running human mitogenome authentication ...\e[0m";
   #
   CHECK_FILE "../meta_data/meta_info.txt";
-  CHECK_FILE "SPECIES-MTs.fa";
+  CHECK_FILE "alg_tot.fasta";
+  CHECK_FILE "alg_pa_tot.fasta";
   #
   mapfile -t READS < ../meta_data/meta_info.txt
   #
@@ -53,7 +57,8 @@ if [[ "$RUN" -eq "1" ]];
     #
     echo -e "\e[34m[TRACESPipe]\e[36m Running $ORGAN sample ...\e[0m";
     zcat ../input_data/$SPL_Forward ../input_data/$SPL_Reverse > reads_human_auth.fq
-    FALCON -c 30 -l 47 -t 200 -x $OUTPUT/MT-SPECIES-$ORGAN.txt -n $THREADS reads_human_auth.fq SPECIES-MTs.fa
+    FALCON -c 30 -l 47 -t 200 -x $OUTPUT/MT-HEALT-$ORGAN.txt -n $THREADS reads_human_auth.fq alg_tot.fasta
+    FALCON -c 30 -l 47 -t 200 -x $OUTPUT/MT-PATHO-$ORGAN.txt -n $THREADS reads_human_auth.fq alg_pa_tot.fasta
     done
   echo -e "\e[34m[TRACESPipe]\e[36m Done!\e[0m";
   fi

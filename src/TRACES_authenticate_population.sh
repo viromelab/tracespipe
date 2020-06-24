@@ -2,7 +2,7 @@
 #
 #
 THREADS=8;
-OUTPUT="../src";
+OUTPUT="../output_data/TRACES_mtdna_authentication";
 #
 DOWNLOAD=1;
 RUN=1;
@@ -45,6 +45,8 @@ if [[ "$RUN" -eq "1" ]];
   CHECK_FILE "../meta_data/meta_info.txt";
   CHECK_FILE "alg_tot.fasta";
   CHECK_FILE "alg_pa_tot.fasta";
+  #
+  mkdir -p $OUTPUT;
   #
   mapfile -t READS < ../meta_data/meta_info.txt
   #

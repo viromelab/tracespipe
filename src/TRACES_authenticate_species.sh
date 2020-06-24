@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 THREADS=8;
-OUTPUT="../src";
+OUTPUT="../output_data/TRACES_mtdna_authentication";
 #
 DOWNLOAD=1;
 RUN=1;
@@ -41,6 +41,8 @@ if [[ "$RUN" -eq "1" ]];
   #
   CHECK_FILE "../meta_data/meta_info.txt";
   CHECK_FILE "SPECIES-MTs.fa";
+  #
+  mkdir -p $OUTPUT;
   #
   mapfile -t READS < ../meta_data/meta_info.txt
   #

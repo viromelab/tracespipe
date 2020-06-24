@@ -178,80 +178,81 @@ See the next section for more information about the usage.
 ```
 
 ```      
-                                                         
-         ████████╗ ██████╗   █████╗   ██████╗ ███████╗ ███████╗   
-         ╚══██╔══╝ ██╔══██╗ ██╔══██╗ ██╔════╝ ██╔════╝ ██╔════╝   
-            ██║    ██████╔╝ ███████║ ██║      █████╗   ███████╗   
-            ██║    ██╔══██╗ ██╔══██║ ██║      ██╔══╝   ╚════██║   
-            ██║    ██║  ██║ ██║  ██║ ╚██████╗ ███████╗ ███████║   
-            ╚═╝    ╚═╝  ╚═╝ ╚═╝  ╚═╝  ╚═════╝ ╚══════╝ ╚══════╝   
-                                                                  
-                             P I P E L I N E                            
-                                                                
+                                                              
+         ████████╗ ██████╗   █████╗   ██████╗ ███████╗ ███████╗        
+         ╚══██╔══╝ ██╔══██╗ ██╔══██╗ ██╔════╝ ██╔════╝ ██╔════╝        
+            ██║    ██████╔╝ ███████║ ██║      █████╗   ███████╗        
+            ██║    ██╔══██╗ ██╔══██║ ██║      ██╔══╝   ╚════██║        
+            ██║    ██║  ██║ ██║  ██║ ╚██████╗ ███████╗ ███████║        
+            ╚═╝    ╚═╝  ╚═╝ ╚═╝  ╚═╝  ╚═════╝ ╚══════╝ ╚══════╝        
+                                                                       
+                             P I P E L I N E                           
+                                                                       
           |  A hybrid pipeline for reconstruction & analysis  | 
           |  of viral and host genomes at multi-organ level.  | 
                                                                 
-    Usage: ./TRACESPipe.sh [options]                             
-                                                                   
-    -h,     --help            Show this help message and exit,     
-    -v,     --version         Show the version and some information,  
-    -f,     --force           Force running and overwrite of files,  
-    -flog,  --flush-logs      Flush logs (delete logs),              
-    -i,     --install         Installation of all the tools,       
-    -up,    --update          Update all the tools in TRACESPipe,  
-                                                                   
+    Usage: ./TRACESPipe.sh [options]                     
+                                                                       
+    -h,     --help            Show this help message and exit,         
+    -v,     --version         Show the version and some information,   
+    -f,     --force           Force running and overwrite of files,    
+    -flog,  --flush-logs      Flush logs (delete logs),                
+    -fout,  --flush-output    Flush output data (delete all output_data), 
+    -i,     --install         Installation of all the tools,           
+    -up,    --update          Update all the tools in TRACESPipe,      
+                                                                       
     -gmt,   --get-max-threads Get the number of maximum machine threads,
-    -t <THREADS>, --threads <THREADS>                              
-                              Number of threads to use,            
-                                                                   
+    -t <THREADS>, --threads <THREADS>                                  
+                              Number of threads to use,                
+                                                                       
     -dec,   --decrypt         Decrypt (all files in ../encrypted_data), 
     -enc,   --encrypt         Encrypt (all files in ../to_encrypt_data),
-                                                                   
+                                                                       
     -vdb,   --build-viral     Build viral database (all) [Recommended], 
     -vdbr,  --build-viral-r   Build viral database (references only),  
-    -udb,   --build-unviral   Build non viral database (control),  
-                                                                   
-    -afs <FASTA>, --add-fasta <FASTA>                               
-                              Add a FASTA sequence to the VDB.fa,  
-    -aes <ID>, --add-extra-seq <ID>                                
-                              Add extra sequence to the VDB.fa,    
+    -udb,   --build-unviral   Build non viral database (control),      
+                                                                       
+    -afs <FASTA>, --add-fasta <FASTA>                                  
+                              Add a FASTA sequence to the VDB.fa,      
+    -aes <ID>, --add-extra-seq <ID>                                    
+                              Add extra sequence to the VDB.fa,        
     -gx,    --get-extra-vir   Downloads/appends (VDB) extra viral seq, 
-                                                                   
-    -gad,   --gen-adapters    Generate FASTA file with adapters,   
+                                                                       
+    -gad,   --gen-adapters    Generate FASTA file with adapters,       
     -gp,    --get-phix        Extracts PhiX genomes (Needs viral DB),  
-    -gm,    --get-mito        Downloads human Mitochondrial genome,
-                                                                   
-    -cmt <ID>, --change-mito <ID>                                  
-                              Set any Mitochondrial genome by ID,  
-                                                                   
-    -gy,    --get-y-chromo    Downloads human Y-chromosome,        
-    -gax,   --get-all-aux     Runs -gad -gp -gm -gy,               
-                                                                   
-    -cbn,   --create-blast-db It creates a nucleotide blast database, 
-    -ubn,   --update-blast-db It updates a nucleotide blast database, 
-                                                                   
-    -sfs <FASTA>, --search-blast-db <FASTA>                           
-                              It blasts the nucleotide (nt) blast DB, 
-                                                                   
-    -sfrs <FASTA>, --search-blast-remote-db <FASTA>                   
+    -gm,    --get-mito        Downloads human Mitochondrial genome,    
+                                                                       
+    -cmt <ID>, --change-mito <ID>                                      
+                              Set any Mitochondrial genome by ID,      
+                                                                       
+    -gy,    --get-y-chromo    Downloads human Y-chromosome,            
+    -gax,   --get-all-aux     Runs -gad -gp -gm -gy,                   
+                                                                       
+    -cbn,   --create-blast-db It creates a nucleotide blast database,  
+    -ubn,   --update-blast-db It updates a nucleotide blast database,  
+                                                                       
+    -sfs <FASTA>, --search-blast-db <FASTA>                            
+                              It blasts the nucleotide (nt) blast DB,  
+                                                                       
+    -sfrs <FASTA>, --search-blast-remote-db <FASTA>                    
                               It blasts remotly thenucleotide (nt) blast 
                               database (it requires internet connection), 
-                                                                   
-    -rdup,  --remove-dup      Remove duplications (e.g. PCR dup),  
+                                                                       
+    -rdup,  --remove-dup      Remove duplications (e.g. PCR dup),      
     -vhs,   --very-sensitive  Aligns with very high sensitivity (slower),  
-                                                                   
-    -gbb,   --best-of-bests   Identifies the best of bests references 
+                                                                       
+    -gbb,   --best-of-bests   Identifies the best of bests references  
                               between multiple organs [similar reference], 
-                                                                   
-    -iss <SIZE>, --inter-sim-size <SIZE>                                  
+                                                                       
+    -iss <SIZE>, --inter-sim-size <SIZE>                               
                               Inter-genome similarity top size (control), 
-                                                                   
+                                                                       
     -rpro,  --run-profiles    Run complexity and relative profiles (control), 
-                                                                   
+                                                                       
     -rm,    --run-meta        Run viral metagenomic identification,    
     -ro,    --run-meta-nv     Run NON-viral metagenomic identification,
-                                                                  
-    -mis <VALUE>, --min-similarity <VALUE>                         
+                                                                       
+    -mis <VALUE>, --min-similarity <VALUE>                             
                               Minimum similarity value to consider the 
                               sequence for alignment-consensus (filter), 
                                                                        
@@ -259,47 +260,55 @@ See the next section for more information about the usage.
                               Display the top <VALUE> with the highest 
                               similarity (by descending order),        
                                                                        
-    -rava,  --run-all-v-alig  Run all viral align/sort/consensus seqs 
+    -rava,  --run-all-v-alig  Run all viral align/sort/consensus seqs  
                               from a specific list,                    
                                                                        
-    -rsr <ID>, --run-specific <ID/PATTERN>                        
-                              Run specific reference align/consensus, 
-    -rsx <ID>, --run-extreme <ID/PATTERN>                            
-                              Run specific reference align/consensys
-                              using extreme sensitivity,            
-                                                                 
-    -rmt,   --run-mito        Run Mito align and consensus seq,   
-    -rmtd,  --run-mito-dam    Run Mito damage only,               
-                                                                 
-    -rya,   --run-cy-align    Run CY align and consensus seq,    
-    -ryq,   --run-cy-quant    Estimate the quantity of CY DNA,    
-                                                                  
-    -rda,   --run-de-novo     Run de-novo assembly,               
-                                                                  
-    -rhyb,  --run-hybrid      Run hybrid assembly (align/de-novo), 
-                                                                  
-    -vis,   --visual-align    Run Visualization tool for alignments, 
-    -covl,  --coverage-latex  Run coverage table in Latex format,   
-    -covc,  --coverage-csv    Run coverage table in CSV format,    
-    -covp <NAME>, --coverage-profile <BED_NAME_FILE>                      
+    -rsd <ID>, --run-de-novo-specific <ID/PATTERN>                     
+                              Run specific alignments of the de-novo   
+                              to the reference genome,                 
+    -rsr <ID>, --run-specific <ID/PATTERN>                             
+                              Run specific reference align/consensus,  
+                                                                       
+    -rsx <ID>, --run-extreme <ID/PATTERN>                              
+                              Run specific reference align/consensus   
+                              using extreme sensitivity,               
+                                                                       
+    -rmt,   --run-mito        Run Mito align and consensus seq,        
+    -rmtd,  --run-mito-dam    Run Mito damage only,                    
+                                                                       
+    -rya,   --run-cy-align    Run CY align and consensus seq,          
+    -ryq,   --run-cy-quant    Estimate the quantity of CY DNA,         
+                                                                       
+    -rda,   --run-de-novo     Run de-novo assembly,                    
+                                                                       
+    -rhyb,  --run-hybrid      Run hybrid assembly (align/de-novo),     
+                                                                       
+    -rmhc,  --run-multiorgan-consensus                                 
+                              Run alignments/consensus between all the 
+                              reconstructed organ sequences,           
+                                                                       
+    -vis,   --visual-align    Run Visualization tool for alignments,   
+    -covl,  --coverage-latex  Run coverage table in Latex format,      
+    -covc,  --coverage-csv    Run coverage table in CSV format,        
+    -covp <NAME>, --coverage-profile <BED_NAME_FILE>                   
                               Run coverage profile for specific BED file, 
-    -cmax <MAX>,  --max-coverage <MAX_COVERAGE>                           
+    -cmax <MAX>,  --max-coverage <MAX_COVERAGE>                        
                               Maximum depth coverage (depth normalization), 
-                                                                  
+                                                                       
     -diff,  --run-diff        Run diff -> reference and hybrid (ident/SNPs), 
-                                                                  
-    -ra,    --run-analysis    Run data analysis,                   
-    -all,   --run-all         Run all the options.                 
-                                                                
-    Ex: ./TRACESPipe.sh --run-mito --run-meta --remove-dup --run-de-novo \
-    --run-hybrid --min-similarity 1.5 --best-of-bests --very-sensitive --run-diff 
-                                                                
-    Add the file meta_info.txt at ../meta_data/ folder. Example:      
-    meta_info.txt -> 'organ:reads_forward.fa.gz:reads_reverse.fa.gz'  
-    The reads must be GZIPed in the ../input_data/ folder.            
-    The output results are at ../output_data/ folder.                 
-                                                                
-    Contact: projectraces@gmail.com
+                                                                       
+    -ra,    --run-analysis    Run data analysis,                       
+    -all,   --run-all         Run all the options.                     
+                                                                       
+    Ex: ./TRACESPipe.sh --run-mito --run-meta --remove-dup --run-de-novo \ 
+    --run-hybrid --min-similarity 1 --best-of-bests --very-sensitive --run-diff 
+                                                                       
+    Add the file meta_info.txt at ../meta_data/ folder. Example:       
+    meta_info.txt -> 'organ:reads_forward.fa.gz:reads_reverse.fa.gz'   
+    The reads must be GZIPed in the ../input_data/ folder.             
+    The output results are at ../output_data/ folder.                  
+                                                                       
+    Contact: projectraces@gmail.com  
 
 ```
 

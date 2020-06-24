@@ -289,7 +289,7 @@ ALIGN_AND_CONSENSUS () {
     echo -e "\e[34m[TRACESPipe]\e[96m Similarity best match: $V_INFO\e[0m";
     echo -e "\e[34m[TRACESPipe]\e[32m Extracting sequence from VDB.fa\e[0m";
     CHECK_VDB;
-    gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa > $ORGAN-$V_TAG.fa 2>> ../logs/Log-$ORGAN.txt;
+    gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa | awk "/^>/ {n++} n>1 {exit} 1" > $ORGAN-$V_TAG.fa 2>> ../logs/Log-$ORGAN.txt;
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
     echo -e "\e[34m[TRACESPipe]\e[32m Aligning reads to $V_TAG best reference with bowtie2 ...\e[0m";
     ./TRACES_viral_align_reads.sh $ORGAN-$V_TAG.fa $ORGAN $V_TAG $THREADS $DUPL $HIGH 1>> ../logs/Log-stdout-$ORGAN.txt 2>> ../logs/Log-stderr-$ORGAN.txt;
@@ -799,8 +799,9 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -ra,    --run-analysis    Run data analysis,                       "
   echo "    -all,   --run-all         Run all the options.                     "
   echo "                                                                       "
-  echo -e "\e[93m    Ex: ./TRACESPipe.sh --run-mito --run-meta --remove-dup --run-de-novo \ "
-  echo -e "\e[93m    --run-hybrid --min-similarity 1 --best-of-bests --very-sensitive --run-diff \e[0m"
+  echo -e "\e[93m    Ex: ./TRACESPipe.sh --flush-output --flush-logs --run-mito --run-meta \e[0m"
+  echo -e "\e[93m    --remove-dup --run-de-novo --run-hybrid --min-similarity 1 --run-diff \e[0m" 
+  echo -e "\e[93m    --very-sensitive --best-of-bests --run-multiorgan-consensus \e[0m"
   echo "                                                                       "
   echo "    Add the file meta_info.txt at ../meta_data/ folder. Example:       "
   echo "    meta_info.txt -> 'organ:reads_forward.fa.gz:reads_reverse.fa.gz'   "
@@ -1363,7 +1364,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       CHECK_VDB;
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Extracting sequence with pattern \"$SPECIFIC_ID\" from VDB.fa ...\e[0m";
-      gto_fasta_extract_read_by_pattern -p "$SPECIFIC_ID" < VDB.fa > SPECIFIC-$SPECIFIC_ID.fa
+      gto_fasta_extract_read_by_pattern -p "$SPECIFIC_ID" < VDB.fa | awk "/^>/ {n++} n>1 {exit} 1" > SPECIFIC-$SPECIFIC_ID.fa
       echo -e "\e[34m[TRACESPipe]\e[32m Aligning ... \e[0m";
       ./TRACES_viral_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID $THREADS $REMOVE_DUPLICATIONS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
@@ -1404,7 +1405,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       CHECK_VDB;
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Extracting sequence with pattern \"$SPECIFIC_ID\" from VDB.fa ...\e[0m";
-      gto_fasta_extract_read_by_pattern -p "$SPECIFIC_ID" < VDB.fa > SPECIFIC-$SPECIFIC_ID.fa
+      gto_fasta_extract_read_by_pattern -p "$SPECIFIC_ID" < VDB.fa | awk "/^>/ {n++} n>1 {exit} 1" > SPECIFIC-$SPECIFIC_ID.fa
       echo -e "\e[34m[TRACESPipe]\e[32m Aligning ...\e[0m";
       ./TRACES_viral_sensitive_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID $THREADS $REMOVE_DUPLICATIONS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
@@ -1789,7 +1790,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       CHECK_VDB;
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Extracting sequence with pattern \"$SPECIFIC_DENOVO_ID\" from VDB.fa ...\e[0m";
-      gto_fasta_extract_read_by_pattern -p "$SPECIFIC_DENOVO_ID" < VDB.fa > SPECIFIC-$SPECIFIC_DENOVO_ID.fa
+      gto_fasta_extract_read_by_pattern -p "$SPECIFIC_DENOVO_ID" < VDB.fa | awk "/^>/ {n++} n>1 {exit} 1" > SPECIFIC-$SPECIFIC_DENOVO_ID.fa
       echo -e "\e[34m[TRACESPipe]\e[32m Aligning and creating consensus ... \e[0m";
       SCAFFOLDS_PATH="../output_data/TRACES_denovo_$ORGAN_T/scaffolds.fasta";
       ./TRACES_denovo_specific.sh SPECIFIC-$SPECIFIC_DENOVO_ID.fa $SCAFFOLDS_PATH $SPECIFIC_DENOVO_ID $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;

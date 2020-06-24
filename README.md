@@ -88,6 +88,7 @@ tracespipe/
 │   ├── TRACES_mtdna_consensus/        # where mtdna consensus (FASTA) will appear
 │   ├── TRACES_mtdna_bed/              # where mtdna BED files will appear (SNPs and Coverage)
 │   ├── TRACES_mtdna_statistics/       # where mtdna statistics appear (depth/wide coverage)
+│   ├── TRACES_mtdna_authentication/   # where mtdna species and population authentication appears
 │   │
 │   ├── TRACES_cy_alignments/          # where cy alignments and index will appear
 │   ├── TRACES_cy_consensus/           # where cy consensus (FASTA) will appear

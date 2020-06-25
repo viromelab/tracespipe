@@ -33,6 +33,12 @@ ADD_EXTRA_SPECIFIC=0;
 ADD_FASTA=0;
 NEW_FASTA="";
 #
+DOWNLOAD_MITO_SPECIES=0;
+DOWNLOAD_MITO_POPULATION=0;
+#
+RUN_MITO_SPECIES=0;
+RUN_MITO_POPULATION=0;
+#
 CREATE_BLAST_DB=0;
 UPDATE_BLAST_DB=0;
 SEARCH_BLAST_DB=0;
@@ -452,6 +458,26 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift 2
     ;;
+    -dwms|--download-mito-species)
+      DOWNLOAD_MITO_SPECIES=1;
+      SHOW_HELP=0;
+      shift; 
+    ;;
+    -dwmp|--download-mito-population)
+      DOWNLOAD_MITO_POPULATION=1;
+      SHOW_HELP=0;
+      shift;
+    ;;
+    -aums|--auth-mito-species)
+      RUN_MITO_SPECIES=1;
+      SHOW_HELP=0;
+      shift;
+    ;;
+    -aump|--auth-mito-population)
+      RUN_MITO_POPULATION=1;
+      SHOW_HELP=0;
+      shift;
+    ;;
     -cmt|--change-mito)
       RUN_CHANGE_MT=1;
       NEW_MT="$2";
@@ -721,6 +747,20 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -gp,    --get-phix        Extracts PhiX genomes (Needs viral DB),  "
   echo "    -gm,    --get-mito        Downloads human Mitochondrial genome,    "
   echo "                                                                       "
+  echo "    -dwms,  --download-mito-species                                    "
+  echo "                              Downloads the complete NCBI mitogenomes  "
+  echo "                              database containing the existing species,"
+  echo "                                                                       "
+  echo "    -dwmp,  --download-mito-population                                 "
+  echo "                              Downloads two complete mitogenome databases "
+  echo "                              with healthy and pathogenic sequences,   "
+  echo "                                                                       "
+  echo "    -aums,  --auth-mito-species                                        "
+  echo "                              Autheticate the mitogenome species,      "
+  echo "                                                                       "
+  echo "    -aump,  --auth-mito-population                                     "
+  echo "                              Authenticate closest population,         "
+  echo "                                                                       "
   echo "    -cmt <ID>, --change-mito <ID>                                      "
   echo "                              Set any Mitochondrial genome by ID,      "
   echo "                                                                       "
@@ -890,6 +930,24 @@ if [[ "$RUN_COVERAGE_TABLE_CSV" -eq "1" ]];
   then
   ./TRACES_coverage_table_csv.sh
   exit 0;
+  fi
+#
+# ==============================================================================
+#
+if [[ "$DOWNLOAD_MITO_SPECIES" -eq "1" ]];
+  then
+  echo -e "\e[34m[TRACESPipe]\e[32m Downloading species mitogenome database ...\e[0m";
+  ./TRACES_download_base_species.sh
+  echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+  fi
+#
+# ==============================================================================
+#
+if [[ "$DOWNLOAD_MITO_POPULATION" -eq "1" ]];
+  then
+  echo -e "\e[34m[TRACESPipe]\e[32m Downloading two mitogenomes population databases ...\e[0m";
+  ./TRACES_download_base_population.sh
+  echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
   fi
 #
 # ==============================================================================
@@ -1119,6 +1177,28 @@ if [[ "$RUN_DIFF" -eq "1" ]];
    fi
 #
 # ==============================================================================
+#
+if [[ "$RUN_MITO_POPULATION" -eq "1" ]];
+  then
+  #
+  echo -e "\e[34m[TRACESPipe]\e[32m Running population mitogenome authentication ...\e[0m";
+  ./TRACES_auth_population.sh $TRHEADS
+  echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+  #
+  fi
+#
+# ==========================================================================
+#
+if [[ "$RUN_MITO_SPECIES" -eq "1" ]];
+  then
+  #       
+  echo -e "\e[34m[TRACESPipe]\e[32m Running species mitogenome authentication ...\e[0m";  
+  ./TRACES_auth_species.sh $THREADS
+  echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+  #
+  fi
+#
+# ==========================================================================
 #
 if [[ "$RUN_ANALYSIS" -eq "1" ]];
   then

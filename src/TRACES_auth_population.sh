@@ -35,8 +35,8 @@ for read in "${READS[@]}" #
   #
   echo -e "\e[34m[TRACESPipe]\e[32m Running $ORGAN sample ...\e[0m";
   zcat ../input_data/$SPL_Forward ../input_data/$SPL_Reverse > reads_human_auth.fq
-  FALCON -c 30 -l 47 -t 200 -x $OUTPUT/MT-HEALT-$ORGAN.txt -n $THREADS reads_human_auth.fq alg_tot.fasta 1>> ../logs/Log-stdout-$ORGAN.txt 2>> ../logs/Log-stderr-$ORGAN.txt;
-  FALCON -c 30 -l 47 -t 200 -x $OUTPUT/MT-PATHO-$ORGAN.txt -n $THREADS reads_human_auth.fq alg_pa_tot.fasta 1>> ../logs/Log-stdout-$ORGAN.txt 2>> ../logs/Log-stderr-$ORGAN.txt;
+  FALCON -F -c 30 -l 47 -t 200 -x $OUTPUT/MT-HEALT-$ORGAN.txt -n $THREADS reads_human_auth.fq alg_tot.fasta 1>> ../logs/Log-stdout-$ORGAN.txt 2>> ../logs/Log-stderr-$ORGAN.txt;
+  FALCON -F -c 30 -l 47 -t 200 -x $OUTPUT/MT-PATHO-$ORGAN.txt -n $THREADS reads_human_auth.fq alg_pa_tot.fasta 1>> ../logs/Log-stdout-$ORGAN.txt 2>> ../logs/Log-stderr-$ORGAN.txt;
   done
 echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
 #

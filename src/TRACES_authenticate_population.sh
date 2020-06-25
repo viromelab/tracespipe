@@ -59,8 +59,8 @@ if [[ "$RUN" -eq "1" ]];
     #
     echo -e "\e[34m[TRACESPipe]\e[36m Running $ORGAN sample ...\e[0m";
     zcat ../input_data/$SPL_Forward ../input_data/$SPL_Reverse > reads_human_auth.fq
-    FALCON -c 30 -l 47 -t 200 -x $OUTPUT/MT-HEALT-$ORGAN.txt -n $THREADS reads_human_auth.fq alg_tot.fasta
-    FALCON -c 30 -l 47 -t 200 -x $OUTPUT/MT-PATHO-$ORGAN.txt -n $THREADS reads_human_auth.fq alg_pa_tot.fasta
+    FALCON -F -c 30 -l 47 -t 200 -x $OUTPUT/MT-HEALT-$ORGAN.txt -n $THREADS reads_human_auth.fq alg_tot.fasta
+    FALCON -F -c 30 -l 47 -t 200 -x $OUTPUT/MT-PATHO-$ORGAN.txt -n $THREADS reads_human_auth.fq alg_pa_tot.fasta
     done
   echo -e "\e[34m[TRACESPipe]\e[36m Done!\e[0m";
   fi

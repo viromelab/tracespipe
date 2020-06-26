@@ -103,6 +103,11 @@ TSIZE=10;
 #
 # ==============================================================================
 # THESE ARE THE CURRENT FLAGGED VIRUSES OR VIRUSES GROUPS FOR ENHANCED ASSEMBLY:
+# IF THIS LIST IS AUGMENTED THEN IT REQUIRES -> TRACES_get_best_<$pattern>.sh
+# FILE TO SEARCH FOR SPECIFIC CHARACTERISTICS OF EACH VIRUS TYPE
+# 
+# HERV IS CURRENTLY BEING ADDRESSED AS HAPLOID IN ALIGNMENTS -> THIS WILL 
+# REQUIRE ADAPTATION IN THE FUTURE.
 #
 declare -a VIRUSES=("B19" "HV1" "HV2" "HV3" "HV4" "HV5" "HV6" "HV6A" "HV6B" 
                     "HV7" "HV8" "POLY1" "POLY2" "POLY3" "POLY4" "POLY5" 
@@ -1828,6 +1833,12 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         done
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
+    # 
+    # DISCLAIMER:
+    # THE PREVIOUS CODE IS A HACK TO MERGE THE BEST OF ALIGNMENT-FREE AND 
+    # DE-NOVO APPROACHES. IT HAS ADVANTAGES AND DISADVANTAGES. STILL WAITING FOR
+    # AN EFFICIENT PROGRAM TO BE DEVELOPED FOR THIS... PERHAPS WE WILL NEED TO 
+    # DEPELOP IT.
     #
     # ==========================================================================
     #
@@ -1978,6 +1989,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
           then         
           #
           rm -f $VIRUS-multiorgans.fa;
+	  #
 	  for read in "${READS[@]}" #
             do
             #

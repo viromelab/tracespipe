@@ -658,7 +658,6 @@ while [[ $# -gt 0 ]]
     ;;
     -sdiff|--run-specific-diff)
       RUN_SPECIFIC_DIFF=1;
-      RUN_ANALYSIS=1;
       RUN_DIFF_VIRUS="$2";
       RUN_DIFF_ID="$3";
       SHOW_HELP=0;
@@ -1188,7 +1187,7 @@ if [[ "$ADD_EXTRA_SEQ" -eq "1" ]];
 if [[ "$RUN_DIFF" -eq "1" ]];
    then
    mkdir -p ../output_data/TRACES_diff
-   printf "Organ\tVirus\tID\tSimilarity\tAligned bases\tidentity\tSNPs\n" > ../output_data/TRACES_diff/Viral_Diff.txt
+   printf "Organ\tVirus\tID\tSimilarity\tAligned bases\tidentity\tSNPs\tBreadth\tDepth\n" > ../output_data/TRACES_diff/Viral_Diff.txt
    printf "Organ\tID\tSimilarity\tAligned bases\tidentity\tSNPs\tBreadth\tDepth\n" > ../output_data/TRACES_diff/mtDNA_Diff.txt
    fi
 #
@@ -1196,8 +1195,16 @@ if [[ "$RUN_DIFF" -eq "1" ]];
 #
 if [[ "$RUN_SPECIFIC_DIFF" -eq "1" ]];
    then
+   #
    echo -e "\e[34m[TRACESPipe]\e[32m Running specific diff [VIRUS: $RUN_DIFF_VIRUS ; ID: $RUN_DIFF_ID] ...\e[0m";
-   ./TRACES_run_specific_diff.sh $RUN_DIFF_VIRUS $RUN_DIFF_ID $THREADS
+   if [[ ! "${VIRUSES[@]}" =~ "$RUN_DIFF_VIRUS" ]]; 
+     then
+     echo -e "\e[34m[TRACESPipe]\e[31m ERROR: virus label does not exist!\e[0m";
+     echo -e "\e[34m[TRACESPipe]\e[33m TIP -> existing labels: ${VIRUSES[*]}\e[0m";
+     exit 1;
+     fi
+   #
+   ./TRACES_run_specific_diff.sh $RUN_DIFF_VIRUS $RUN_DIFF_ID $THREADS ${VIRUSES[@]}
    echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
    fi
 #
@@ -2010,7 +2017,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     ./TRACES_get_report_meta.sh
     fi
   #
-  # ============================================================================
+  # ==============================================================================
   # CLEAN DATA:
   rm -f FW_READS.fq.gz RV_READS.fq.gz
   #

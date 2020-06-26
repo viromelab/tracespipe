@@ -223,6 +223,20 @@ See the next section for more information about the usage.
     -gp,    --get-phix        Extracts PhiX genomes (Needs viral DB),  
     -gm,    --get-mito        Downloads human Mitochondrial genome,    
                                                                        
+    -dwms,  --download-mito-species                                    
+                              Downloads the complete NCBI mitogenomes  
+                              database containing the existing species,
+                                                                       
+    -dwmp,  --download-mito-population                                 
+                              Downloads two complete mitogenome databases 
+                              with healthy and pathogenic sequences,   
+                                                                       
+    -aums,  --auth-mito-species                                        
+                              Autheticate the mitogenome species,      
+                                                                       
+    -aump,  --auth-mito-population                                     
+                              Authenticate closest population,         
+                                                                       
     -cmt <ID>, --change-mito <ID>                                      
                               Set any Mitochondrial genome by ID,      
                                                                        
@@ -298,18 +312,23 @@ See the next section for more information about the usage.
                                                                        
     -diff,  --run-diff        Run diff -> reference and hybrid (ident/SNPs), 
                                                                        
-    -ra,    --run-analysis    Run data analysis,                       
-    -all,   --run-all         Run all the options.                     
+    -sdiff <V_NAME> <ID/PATTERN>, --run-specific-diff <V_NAME> <ID/PATTERN>  
+                              Run specific diff of reconstructed to a virus  
+                              pattern of ID. Example: -sdiff B19 AY386330.1, 
+                                                                             
+    -ra,    --run-analysis    Run data analysis (core),                      
+    -all,   --run-all         Run all the options (excluding the specific).  
                                                                        
-    Ex: ./TRACESPipe.sh --run-mito --run-meta --remove-dup --run-de-novo \ 
-    --run-hybrid --min-similarity 1 --best-of-bests --very-sensitive --run-diff 
+    Ex: ./TRACESPipe.sh --flush-output --flush-logs --run-mito --run-meta 
+    --remove-dup --run-de-novo --run-hybrid --min-similarity 1 --run-diff 
+    --very-sensitive --best-of-bests --run-multiorgan-consensus 
                                                                        
     Add the file meta_info.txt at ../meta_data/ folder. Example:       
     meta_info.txt -> 'organ:reads_forward.fa.gz:reads_reverse.fa.gz'   
     The reads must be GZIPed in the ../input_data/ folder.             
     The output results are at ../output_data/ folder.                  
                                                                        
-    Contact: projectraces@gmail.com  
+    Contact: projectraces@gmail.com 
 
 ```
 

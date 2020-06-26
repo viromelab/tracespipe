@@ -127,6 +127,7 @@ tracespipe/
 │   ├── TRACES_multiorgan_consensus/   # where the multi-organ consensus data appears
 │   │
 │   ├── TRACES_diff/                   # where the dnadiff results appear (identity & SNPs)
+│   ├── TRACES_specific_diff/          # where the dnadiff results appear for specific
 │   │
 │   └── TRACES_blasts/                 # where the specific blasted results appears
 │   

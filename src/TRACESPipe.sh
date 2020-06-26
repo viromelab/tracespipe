@@ -88,7 +88,11 @@ RUN_CY_QUANT_ON=0;
 RUN_DE_NOVO_ASSEMBLY=0;
 #
 RUN_HYBRID=0;
+#
 RUN_DIFF=0;
+RUN_SPECIFIC_DIFF=0;
+RUN_DIFF_VIRUS="";
+RUN_DIFF_ID="";
 #
 # ==============================================================================
 #
@@ -98,7 +102,7 @@ MINIMAL_SIMILARITY_VALUE=1.0;
 TSIZE=10;
 #
 # ==============================================================================
-# THESE ARE THE CURRENT FLAGGED VIRUSES OR VIRUSES GROUPS:
+# THESE ARE THE CURRENT FLAGGED VIRUSES OR VIRUSES GROUPS FOR ENHANCED ASSEMBLY:
 #
 declare -a VIRUSES=("B19" "HV1" "HV2" "HV3" "HV4" "HV5" "HV6" "HV6A" "HV6B" 
                     "HV7" "HV8" "POLY1" "POLY2" "POLY3" "POLY4" "POLY5" 
@@ -652,6 +656,14 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift
     ;;
+    -sdiff|--run-specific-diff)
+      RUN_SPECIFIC_DIFF=1;
+      RUN_ANALYSIS=1;
+      RUN_DIFF_VIRUS="$2";
+      RUN_DIFF_ID="$3";
+      SHOW_HELP=0;
+      shift 3
+    ;;
     -enc|--encrypt)
       RUN_ENCRYPT=1;
       SHOW_HELP=0;
@@ -836,8 +848,12 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                                                                       "
   echo "    -diff,  --run-diff        Run diff -> reference and hybrid (ident/SNPs), "
   echo "                                                                       "
-  echo "    -ra,    --run-analysis    Run data analysis,                       "
-  echo "    -all,   --run-all         Run all the options.                     "
+  echo "    -sdiff <V_NAME> <ID/PATTERN>, --run-specific-diff <V_NAME> <ID/PATTERN>  "
+  echo "                              Run specific diff of reconstructed to a virus  "
+  echo "                              pattern of ID. Example: -sdiff B19 AY386330.1, "
+  echo "                                                                             "
+  echo "    -ra,    --run-analysis    Run data analysis (core),                      "
+  echo "    -all,   --run-all         Run all the options (excluding the specific).  "
   echo "                                                                       "
   echo -e "\e[93m    Ex: ./TRACESPipe.sh --flush-output --flush-logs --run-mito --run-meta \e[0m"
   echo -e "\e[93m    --remove-dup --run-de-novo --run-hybrid --min-similarity 1 --run-diff \e[0m" 
@@ -1178,16 +1194,25 @@ if [[ "$RUN_DIFF" -eq "1" ]];
 #
 # ==============================================================================
 #
+if [[ "$RUN_SPECIFIC_DIFF" -eq "1" ]];
+   then
+   echo -e "\e[34m[TRACESPipe]\e[32m Running specific diff [VIRUS: $RUN_DIFF_VIRUS ; ID: $RUN_DIFF_ID] ...\e[0m";
+   ./TRACES_run_specific_diff.sh $RUN_DIFF_VIRUS $RUN_DIFF_ID $THREADS
+   echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+   fi
+#
+# ==============================================================================
+#
 if [[ "$RUN_MITO_POPULATION" -eq "1" ]];
   then
   #
   echo -e "\e[34m[TRACESPipe]\e[32m Running population mitogenome authentication ...\e[0m";
-  ./TRACES_auth_population.sh $TRHEADS
+  ./TRACES_auth_population.sh $THREADS
   echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
   #
   fi
 #
-# ==========================================================================
+# ==============================================================================
 #
 if [[ "$RUN_MITO_SPECIES" -eq "1" ]];
   then
@@ -1198,7 +1223,7 @@ if [[ "$RUN_MITO_SPECIES" -eq "1" ]];
   #
   fi
 #
-# ==========================================================================
+# ==============================================================================
 #
 if [[ "$RUN_ANALYSIS" -eq "1" ]];
   then
@@ -1811,10 +1836,10 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         do
         if [ -f ../output_data/TRACES_viral_alignments/$ORGAN_T-$VIRUS.fa ];
           then
-          if [ -f ../output_data/TRACES_hybrid_consensus/$VIRUS-consensus-$ORGAN_T.fa ];
+          if [ -f ../output_data/TRACES_hybrid_R5_consensus/$VIRUS-consensus-$ORGAN_T.fa ];
             then
             cp ../output_data/TRACES_viral_alignments/$ORGAN_T-$VIRUS.fa $ORGAN_T-$VIRUS-G_A.fa;
-            cp ../output_data/TRACES_hybrid_consensus/$VIRUS-consensus-$ORGAN_T.fa $ORGAN_T-$VIRUS-G_B.fa
+            cp ../output_data/TRACES_hybrid_R5_consensus/$VIRUS-consensus-$ORGAN_T.fa $ORGAN_T-$VIRUS-G_B.fa
             dnadiff $ORGAN_T-$VIRUS-G_A.fa $ORGAN_T-$VIRUS-G_B.fa 2>> ../logs/Log-stderr-$ORGAN_T.txt;
 	    IDEN=`cat out.report | grep "AvgIdentity "  | head -n 1 | awk '{ print $2;}'`;
             ALBA=`cat out.report | grep "AlignedBases " | head -n 1 | awk '{ print $2;}'`;

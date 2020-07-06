@@ -1759,10 +1759,11 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
           mkdir -p ../output_data/TRACES_hybrid_R4_bed/
           #
 	  FALCON -F -t 500 -x top-$VIRUS-$ORGAN_T.txt ../output_data/TRACES_hybrid_R2_consensus/$VIRUS-consensus-$ORGAN_T.fa ../output_data/TRACES_denovo_$ORGAN_T/scaffolds.fasta 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+	  BEST_TOP_SIM=`head -n 1 top-$VIRUS-$ORGAN_T.txt | awk '{ print $3;}'`; 
 	  cp top-$VIRUS-$ORGAN_T.txt ../output_data/TRACES_hybrid_R3_consensus/
 	  TOP_NLINES_SCAFFOLDS=`wc -l top-$VIRUS-$ORGAN_T.txt`;
-	  if [[ "$TOP_NLINES_SCAFFOLDS" > "0" ]];
-	    then 
+	  if [[ "$TOP_NLINES_SCAFFOLDS" > "0" ]] && [[ "$BEST_TOP_SIM" > "2" ]];
+	    then
 	    FIL_NAME=`cat top-$VIRUS-$ORGAN_T.txt | head -n 1 | awk '{ print $4;}'`; 
 	    gto_fasta_extract_read_by_pattern -p "$FIL_NAME" < ../output_data/TRACES_denovo_$ORGAN_T/scaffolds.fasta > $VIRUS-$ORGAN_T-SCAFFOLD.fa 2>> ../logs/Log-stderr-$ORGAN_T.txt;
 	    cp $VIRUS-$ORGAN_T-SCAFFOLD.fa ../output_data/TRACES_hybrid_R3_consensus/$VIRUS-consensus-$ORGAN_T.fa

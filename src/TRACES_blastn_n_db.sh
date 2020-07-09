@@ -4,9 +4,9 @@
 #
 # ==============================================================================
 #
-SPATH="../system_files/blast_dbs/db";
+SPATH="../system_files/blast_dbs/nt";
 QUERY="$1";
-DBASE="ref_viruses_rep_genomes";
+DBASE="nt";
 STYLE="6 qacc sacc pident mismatch btop";
 #
 # RUN ==========================================================================

@@ -996,10 +996,10 @@ if [[ "$UPDATE_BLAST_DB" -eq "1" ]];
 #
 if [[ "$SEARCH_BLAST_DB" -eq "1" ]];
   then
-  echo -e "\e[34m[TRACESPipe]\e[32m Searching $BLAST_QUERY in remote Blast nt database ...\e[0m";
+  echo -e "\e[34m[TRACESPipe]\e[32m Searching $BLAST_QUERY in local Blast nt database ...\e[0m";
   BLASTS_OUTPUT="../output_data/TRACES_blasts/";
   mkdir -p $BLASTS_OUTPUT;
-  ./TRACES_blastn_n_db.sh $BLAST_QUERY > $BLASTS_OUTPUT/x.txt 2>> ../logs/Log-stderr-system.txt;
+  ./TRACES_blastn_n_db.sh $BLAST_QUERY > $BLASTS_OUTPUT/$BLAST_QUERY.txt 2>> ../logs/Log-stderr-system.txt;
   echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
   exit 0;
   fi

@@ -1000,6 +1000,7 @@ if [[ "$SEARCH_BLAST_DB" -eq "1" ]];
   BLASTS_OUTPUT="../output_data/TRACES_blasts/";
   mkdir -p $BLASTS_OUTPUT;
   ./TRACES_blastn_n_db.sh $BLAST_QUERY > $BLASTS_OUTPUT/$BLAST_QUERY.txt 2>> ../logs/Log-stderr-system.txt;
+  head -n 10 $BLASTS_OUTPUT/$BLAST_QUERY.txt;
   echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
   exit 0;
   fi

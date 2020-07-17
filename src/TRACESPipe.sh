@@ -94,6 +94,8 @@ RUN_SPECIFIC_DIFF=0;
 RUN_DIFF_VIRUS="";
 RUN_DIFF_ID="";
 #
+RUN_BLAST_RECONSTRUCTED=0;
+#
 # ==============================================================================
 #
 # DEFAULT VALUES:
@@ -668,6 +670,12 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift 3
     ;;
+    -brec|--blast-reconstructed)
+      RUN_BLAST_RECONSTRUCTED=1;
+      RUN_ANALYSIS=1;
+      SHOW_HELP=0;
+      shift
+    ;;
     -enc|--encrypt)
       RUN_ENCRYPT=1;
       SHOW_HELP=0;
@@ -855,6 +863,9 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -sdiff <V_NAME> <ID/PATTERN>, --run-specific-diff <V_NAME> <ID/PATTERN>  "
   echo "                              Run specific diff of reconstructed to a virus  "
   echo "                              pattern of ID. Example: -sdiff B19 AY386330.1, "
+  echo "                                                                       "
+  echo "    -brec, --blast-reconstructed                                       "
+  echo "                              Run local blast over reconstructed genomes, "
   echo "                                                                             "
   echo "    -ra,    --run-analysis    Run data analysis (core),                      "
   echo "    -all,   --run-all         Run all the options (excluding the specific).  "
@@ -2018,6 +2029,39 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
 	  #
           fi
         fi
+      done
+    echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+    fi
+  #
+  # ==========================================================================
+  #
+  if [[ "$RUN_BLAST_RECONSTRUCTED" -eq "1" ]];
+    then
+    echo -e "\e[34m[TRACESPipe]\e[32m Running local blast for reconstructed data ...\e[0m";
+    #
+    BLASTS_OUTPUT="../output_data/TRACES_blasts/";
+    mkdir -p $BLASTS_OUTPUT;
+    R5PATH="../output_data/TRACES_hybrid_R5_consensus";
+    #
+    for VIRUS in "${VIRUSES[@]}"
+      do
+      #
+      for read in "${READS[@]}" #
+        do
+        ORGAN=`echo $read | tr ':' '\t' | awk '{ print $1 }'`;
+        if [ -f $R5PATH/$VIRUS-consensus-$ORGAN.fa ];
+          then
+          ./TRACES_blastn_n_db.sh $R5PATH/$VIRUS-consensus-$ORGAN.fa > $BLASTS_OUTPUT/SINGLE-LIST-$VIRUS-$ORGAN.txt 2>> ../logs/Log-stderr-system.txt;
+          head -n 1 $BLASTS_OUTPUT/SINGLE-LIST-$VIRUS-$ORGAN.txt > $BLASTS_OUTPUT/SINGLE-BEST-$VIRUS-$ORGAN.txt;
+          fi
+        done
+      #    
+      if [ -f ../output_data/TRACES_multiorgan_consensus/$VIRUS-multiorgans.fa ];
+        then
+        ./TRACES_blastn_n_db.sh ../output_data/TRACES_multiorgan_consensus/$VIRUS-multiorgans.fa > $BLASTS_OUTPUT/MULTI-LIST-$VIRUS.txt 2>> ../logs/Log-stderr-system.txt;
+        head -n 1 $BLASTS_OUTPUT/MULTI-LIST-$VIRUS.txt > $BLASTS_OUTPUT/MULTI-BEST-$VIRUS.txt;
+	fi
+      #
       done
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
     fi

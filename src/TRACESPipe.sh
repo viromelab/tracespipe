@@ -864,7 +864,7 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                              Run specific diff of reconstructed to a virus  "
   echo "                              pattern of ID. Example: -sdiff B19 AY386330.1, "
   echo "                                                                       "
-  echo "    -brec, --blast-reconstructed                                       "
+  echo "    -brec,  --blast-reconstructed                                      "
   echo "                              Run local blast over reconstructed genomes, "
   echo "                                                                             "
   echo "    -ra,    --run-analysis    Run data analysis (core),                      "

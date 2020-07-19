@@ -8,6 +8,8 @@ SPATH="../system_files/blast_dbs/nt";
 QUERY="$1";
 DBASE="nt";
 #
+# http://www.metagenomics.wiki/tools/blast/blastn-output-format-6
+#
 #STYLE="6 qacc sacc pident mismatch btop";
 #
 # qseqid    Query Seq-id

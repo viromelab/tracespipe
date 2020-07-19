@@ -7,7 +7,8 @@
 SPATH="../system_files/blast_dbs/nt";
 QUERY="$1";
 DBASE="nt";
-STYLE="6 qacc sacc pident mismatch btop";
+#STYLE="6 qacc sacc pident mismatch btop";
+STYLE="6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore btop";
 #
 # RUN ==========================================================================
 #

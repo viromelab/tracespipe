@@ -1869,8 +1869,10 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
           then
           if [ -f ../output_data/TRACES_hybrid_R5_consensus/$VIRUS-consensus-$ORGAN_T.fa ];
             then
-            cp ../output_data/TRACES_viral_alignments/$ORGAN_T-$VIRUS.fa $ORGAN_T-$VIRUS-G_A.fa;
-            cp ../output_data/TRACES_hybrid_R5_consensus/$VIRUS-consensus-$ORGAN_T.fa $ORGAN_T-$VIRUS-G_B.fa
+            # Sanitize dnadiff input with gto
+            gto_fasta_to_seq < ../output_data/TRACES_viral_alignments/$ORGAN_T-$VIRUS.fa | gto_fasta_from_seq -l 60 -n AtoCompare > $ORGAN_T-$VIRUS-G_A.fa;
+            gto_fasta_to_seq < ../output_data/TRACES_hybrid_R5_consensus/$VIRUS-consensus-$ORGAN_T.fa | gto_fasta_from_seq -l 60 -n BtoBeCompared > $ORGAN_T-$VIRUS-G_B.fa
+            #
             dnadiff $ORGAN_T-$VIRUS-G_A.fa $ORGAN_T-$VIRUS-G_B.fa 2>> ../logs/Log-stderr-$ORGAN_T.txt;
 	    IDEN=`cat out.report | grep "AvgIdentity "  | head -n 1 | awk '{ print $2;}'`;
             ALBA=`cat out.report | grep "AlignedBases " | head -n 1 | awk '{ print $2;}'`;
@@ -1901,7 +1903,11 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         then
         if [ -f ../output_data/TRACES_mtdna_consensus/mt-consensus-$ORGAN_T.fa ];
           then
-          cp ../output_data/TRACES_mtdna_alignments/mtDNA.fa MT-G_A.fa;
+	  # Sanitize dnadiff input
+	  gto_fasta_to_seq < TRACES_mtdna_alignments/mtDNA.fa | gto_fasta_from_seq -l 60 -n AtoCompare > MT-G_A.fa;
+          gto_fasta_to_seq < ../output_data/TRACES_mtdna_consensus/mt-consensus-$ORGAN_T.fa | gto_fasta_from_seq -l 60 -n BtoBeCompared > $ORGAN_T-MT-G_B.fa;
+          #
+	  cp ../output_data/TRACES_mtdna_alignments/mtDNA.fa MT-G_A.fa;
           cp ../output_data/TRACES_mtdna_consensus/mt-consensus-$ORGAN_T.fa $ORGAN_T-MT-G_B.fa;
           dnadiff MT-G_A.fa $ORGAN_T-MT-G_B.fa 2>> ../logs/Log-stderr-$ORGAN_T.txt;
           IDEN=`cat out.report | grep "AvgIdentity " | head -n 1 | awk '{ print $2;}'`;
@@ -2053,6 +2059,9 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
           then
           ./TRACES_blastn_n_db.sh $R5PATH/$VIRUS-consensus-$ORGAN.fa > $BLASTS_OUTPUT/SINGLE-LIST-$VIRUS-$ORGAN.txt 2>> ../logs/Log-stderr-system.txt;
           head -n 1 $BLASTS_OUTPUT/SINGLE-LIST-$VIRUS-$ORGAN.txt > $BLASTS_OUTPUT/SINGLE-BEST-$VIRUS-$ORGAN.txt;
+	  #
+	  IDBLAST=`awk '{print $3;}' $BLASTS_OUTPUT/SINGLE-LIST-$VIRUS-$ORGAN.txt`;
+	  #
           fi
         done
       #    

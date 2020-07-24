@@ -2074,7 +2074,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
             CHECK_VDB;
             gto_fasta_extract_read_by_pattern -p "$IDBLAST" < VDB.fa \
 	    | awk "/^>/ {n++} n>1 {exit} 1" > TMP-BEST-BLAST.fa
-	    NVALSEQ=`wc -l TMP-BEST-BLAST.fa`;
+	    NVALSEQ=`wc -l TMP-BEST-BLAST.fa | awk '{ print $1;}'`;
             if [[ "$NVALSEQ" -eq "0" ]];
               then
               efetch -db nucleotide -format fasta -id "$IDBLAST" > TMP-BEST-BLAST.fa 

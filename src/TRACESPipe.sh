@@ -2068,7 +2068,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
 	  #
           if [[ "$RUN_DIFF" -eq "1" ]];
             then
-            IDBLAST=`head -n 1 $BLASTS_OUTPUT/SINGLE-LIST-$VIRUS-$ORGAN.txt | awk '{ print $2}'`;
+            IDBLAST=`head -n 1 $BLASTS_OUTPUT/SINGLE-LIST-$VIRUS-$ORGAN.txt | awk '{ print $2}' | tr '|' '\t' | awk '{ print $2;}'`;
 	    #
 	    # Try to find genome in VDB.fa
             CHECK_VDB;

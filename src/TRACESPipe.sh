@@ -2065,29 +2065,29 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
           then
           ./TRACES_blastn_n_db.sh $R5PATH/$VIRUS-consensus-$ORGAN.fa > $BLASTS_OUTPUT/SINGLE-LIST-$VIRUS-$ORGAN.txt 2>> ../logs/Log-stderr-system.txt;
           head -n 1 $BLASTS_OUTPUT/SINGLE-LIST-$VIRUS-$ORGAN.txt > $BLASTS_OUTPUT/SINGLE-BEST-$VIRUS-$ORGAN.txt;
-	  #
+          #
           if [[ "$RUN_DIFF" -eq "1" ]];
             then
-            IDBLAST=`head -n 1 $BLASTS_OUTPUT/SINGLE-LIST-$VIRUS-$ORGAN.txt | awk '{ print $2}' | tr '|' '\t' | awk '{ print $2;}'`;
-	    #
-	    # Try to find genome in VDB.fa
+            IDBLAST=`head -n 1 $BLASTS_OUTPUT/SINGLE-LIST-$VIRUS-$ORGAN.txt | awk '{ print $2}' | tr '|' '\t' | awk '{ print $4;}'`;
+            #
+            # Try to find genome in VDB.fa
             CHECK_VDB;
             gto_fasta_extract_read_by_pattern -p "$IDBLAST" < VDB.fa \
-	    | awk "/^>/ {n++} n>1 {exit} 1" > TMP-BEST-BLAST.fa
-	    NVALSEQ=`wc -l TMP-BEST-BLAST.fa | awk '{ print $1;}'`;
+            | awk "/^>/ {n++} n>1 {exit} 1" > TMP-BEST-BLAST.fa
+            NVALSEQ=`wc -l TMP-BEST-BLAST.fa | awk '{ print $1;}'`;
             if [[ "$NVALSEQ" -eq "0" ]];
               then
-              efetch -db nucleotide -format fasta -id "$IDBLAST" > TMP-BEST-BLAST.fa 
-	      fi
-	    # Sanitize inputs to dnadiff     
-	    gto_fasta_to_seq < TMP-BEST-BLAST.fa \
-	    | gto_fasta_from_seq -l 60 -n AtoCompare > $ORGAN-$VIRUS-G_A.fa 2>> ../logs/Log-$ORGAN.txt;
-	    #
-	    gto_fasta_to_seq < $R5PATH/$VIRUS-consensus-$ORGAN.fa \
-	    | gto_fasta_from_seq -l 60 -n BtoBeCompared > $ORGAN-$VIRUS-G_B.fa
+              efetch -db nucleotide -format fasta -id "$IDBLAST" > TMP-BEST-BLAST.fa
+              fi
+            # Sanitize inputs to dnadiff     
+            gto_fasta_to_seq < TMP-BEST-BLAST.fa \
+            | gto_fasta_from_seq -l 60 -n AtoCompare > $ORGAN-$VIRUS-G_A.fa 2>> ../logs/Log-$ORGAN.txt;
+            #
+            gto_fasta_to_seq < $R5PATH/$VIRUS-consensus-$ORGAN.fa \
+            | gto_fasta_from_seq -l 60 -n BtoBeCompared > $ORGAN-$VIRUS-G_B.fa
             #
             dnadiff $ORGAN-$VIRUS-G_A.fa $ORGAN-$VIRUS-G_B.fa 2>> ../logs/Log-stderr-$ORGAN.txt;
-	    #
+            #
             IDEN=`cat out.report | grep "AvgIdentity "  | head -n 1 | awk '{ print $2;}'`;
             ALBA=`cat out.report | grep "AlignedBases " | head -n 1 | awk '{ print $2;}'`;
             SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;
@@ -2102,13 +2102,15 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
               if [[ "$RUN_BEST_OF_BESTS" -eq "1" ]]
                 then
                 V_GID=`sed "${IDX_V}q;d" ../output_data/TRACES_results/REPORT_META_VIRAL_BESTS_$ORGAN.txt | awk '{ print $2; }'`;
+                else
+                V_GID=$IDBLAST;
                 fi
+              printf "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" "$ORGAN" "$VIRUS" "$V_GID" "$V_VAL" "$ALBA" "$IDEN" "$SNPS" "$XBREADTH" "$XDEPTH" 1>> ../output_data/TRACES_diff/Viral_Diff_after_blastn.txt
               fi
-            printf "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" "$ORGAN" "$VIRUS" "$V_GID" "$V_VAL" "$ALBA" "$IDEN" "$SNPS" "$XBREADTH" "$XDEPTH" 1>> ../output_data/TRACES_diff/Viral_Diff_after_blastn.txt
             rm -f $ORGAN-$VIRUS-G_A.fa $ORGAN-$VIRUS-G_B.fa ;
-	    #
+            #
             fi
-	  #
+          #
           fi
         done
       #    
@@ -2116,7 +2118,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         then
         ./TRACES_blastn_n_db.sh ../output_data/TRACES_multiorgan_consensus/$VIRUS-multiorgans.fa > $BLASTS_OUTPUT/MULTI-LIST-$VIRUS.txt 2>> ../logs/Log-stderr-system.txt;
         head -n 1 $BLASTS_OUTPUT/MULTI-LIST-$VIRUS.txt > $BLASTS_OUTPUT/MULTI-BEST-$VIRUS.txt;
-	fi
+        fi
       #
       done
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";

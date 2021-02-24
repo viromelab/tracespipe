@@ -23,6 +23,7 @@ conda update -c bioconda mapdamage2 --yes
 conda update -c bioconda tabix --yes
 conda update -c bioconda adapterremoval --yes
 conda update -c bioconda bwa --yes
+conda update -c bioconda art --yes
 conda update -c bioconda blast --yes
 conda update -c bioconda mummer4 --yes
 #

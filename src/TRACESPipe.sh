@@ -20,6 +20,9 @@ THREADS=0;
 #
 INSTALL=0;
 UPDATE=0;
+#
+SAMPLE_TEST=0;
+#
 BUILD_VDB_ALL=0;
 BUILD_VDB_REF=0;
 BUILD_UDB=0;
@@ -391,6 +394,11 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift
     ;;
+    -st|--sample)
+      SAMPLE_TEST=1;
+      SHOW_HELP=0;
+      shift
+    ;;
     -vdb|--build-viral)
       BUILD_VDB_ALL=1;
       SHOW_HELP=0;
@@ -750,6 +758,8 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -i,     --install         Installation of all the tools,           "
   echo "    -up,    --update          Update all the tools in TRACESPipe,      "
   echo "                                                                       "
+  echo "    -st,    --sample          Creates human ref. VDB and sample organ, "
+  echo "                                                                       "
   echo "    -gmt,   --get-max-threads Get the number of maximum machine threads,"
   echo "    -t <THREADS>, --threads <THREADS>                                  "
   echo "                              Number of threads to use,                "
@@ -938,6 +948,14 @@ if [[ "$FLUSH_OUTPUT" -eq "1" ]];
   echo -e "\e[34m[TRACESPipe]\e[32m Flushing output data ...\e[0m";
   rm -fr ../output_data/*
   echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+  fi
+#
+# ==============================================================================
+#
+if [[ "$SAMPLE_TEST" -eq "1" ]];
+  then
+  ./TRACES_simulate_simple_sample.sh  
+  exit 0;
   fi
 #
 # ==============================================================================

@@ -18,8 +18,8 @@ conda update -c bioconda bedtools --yes
 conda update -c bioconda fastq-pair --yes
 conda update -c bioconda entrez-direct --yes
 conda update -c bioconda/label/cf201901 entrez-direct --yes
-#conda update -c bioconda mapdamage2 --yes
-conda update -c bioconda mapdamage2=2.1.1=pyr36_1
+conda update -c bioconda mapdamage2 --yes
+#conda update -c bioconda mapdamage2=2.1.1=pyr36_1
 conda update -c bioconda tabix --yes
 conda update -c bioconda adapterremoval --yes
 conda update -c bioconda bwa --yes

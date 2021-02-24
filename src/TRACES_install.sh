@@ -33,6 +33,10 @@ if [[ "$GET_UTILS" -eq "1" ]];
 # ============================== INSTALL PIPELINE ==============================
 if [[ "$INSTALL_PIPELINE" -eq "1" ]];
   then
+  conda config --add channels defaults
+  conda config --add channels bioconda
+  conda config --add channels conda-forge
+  #
   conda install -c bioconda trimmomatic --yes
   conda install -c seyedmorteza cryfa --yes
   conda install -c cobilab magnet --yes
@@ -48,8 +52,8 @@ if [[ "$INSTALL_PIPELINE" -eq "1" ]];
   conda install -c bioconda fastq-pair --yes
   conda install -c bioconda entrez-direct --yes
   conda install -c bioconda/label/cf201901 entrez-direct --yes
-  #conda install -c bioconda mapdamage2 --yes
-  conda install -c bioconda mapdamage2=2.1.1=pyr36_1
+  conda install -c bioconda mapdamage2 --yes
+ # conda install -c bioconda mapdamage2=2.1.1=pyr36_1
   conda install -c bioconda tabix --yes
   conda install -c bioconda adapterremoval --yes
   conda install -c bioconda bwa --yes

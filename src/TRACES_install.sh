@@ -33,9 +33,9 @@ if [[ "$GET_UTILS" -eq "1" ]];
 # ============================== INSTALL PIPELINE ==============================
 if [[ "$INSTALL_PIPELINE" -eq "1" ]];
   then
-  conda config --add channels defaults
-  conda config --add channels bioconda
   conda config --add channels conda-forge
+  conda config --add channels bioconda
+  conda config --add channels defaults
   #
   conda install -c bioconda trimmomatic --yes
   conda install -c seyedmorteza cryfa --yes
@@ -45,8 +45,8 @@ if [[ "$INSTALL_PIPELINE" -eq "1" ]];
   conda install -c bioconda spades --yes
   conda install -c bioconda igv --yes
   conda install -c bioconda bowtie2 --yes
-  conda install -c bioconda samtools --yes
-  conda install -c bioconda bcftools --yes
+  conda install -c bioconda samtools=1.9 --yes
+  conda install -c bioconda bcftools=1.9 --yes
   conda install -c bioconda bedops --yes
   conda install -c bioconda bedtools --yes
   conda install -c bioconda fastq-pair --yes
@@ -60,7 +60,6 @@ if [[ "$INSTALL_PIPELINE" -eq "1" ]];
   conda install -c bioconda art --yes
   conda install -c bioconda blast --yes
   conda install -c bioconda mummer4 --yes
-  #conda install -c anaconda curl
   #
   Program_installed "trimmomatic";
   Program_installed "cryfa";

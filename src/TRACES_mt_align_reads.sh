@@ -47,9 +47,10 @@ if [[ "$4" -eq "1" ]];
   #
   fi
 # INDEX BAM
-samtools index -@ $3 mt_aligned_sorted-$2.bam mt_aligned_sorted-$2.bam.bai
+samtools index -b mt_aligned_sorted-$2.bam mt_aligned_sorted-$2.bam.bai
 #
-samtools flagstat -@ $3 mt_aligned_sorted-$2.bam > ../output_data/TRACES_mtdna_statistics/Alignments-mt-$2.txt
+mkdir -p ../output_data/TRACES_mtdna_statistics/
+samtools flagstat mt_aligned_sorted-$2.bam > ../output_data/TRACES_mtdna_statistics/Alignments-mt-$2.txt
 #
 rm -f *.bt2
 #

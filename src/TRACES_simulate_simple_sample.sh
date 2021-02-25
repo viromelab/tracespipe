@@ -4,11 +4,15 @@ echo -e "\e[34m[TRACESPipe]\e[32m Simulation of human ref VDB.fa and experimenta
 #
 efetch -db nucleotide -format fasta -id "MT682520" > sample_B19.fa 2>> ../logs/Log-stderr-sample_blood.txt
 efetch -db nucleotide -format fasta -id "NC_007605" > sample_EBV.fa 2>> ../logs/Log-stderr-sample_blood.txt
-cat sample_B19.fa sample_EBV.fa > sample_blood.fa 2>> ../logs/Log-stderr-sample_blood.txt
+efetch -db nucleotide -format fasta -id "MT682522" > sample_MT.fa 2>> ../logs/Log-stderr-sample_blood.txt
+cat sample_B19.fa sample_EBV.fa sample_MT.fa > sample_blood.fa 2>> ../logs/Log-stderr-sample_blood.txt
 art_illumina -rs 0 -ss HS25 -i sample_blood.fa -p -l 150 -f 20 -m 200 -s 10 -o sample_blood 1>> ../logs/Log-stdout-sample_blood.txt 2>> ../logs/Log-stderr-sample_blood.txt
-mv sample_blood1.fq ../input_data/
-mv sample_blood2.fq ../input_data/
-echo "sample_blood:sample_blood1.fq:sample_blood2.fq" > ../meta_data/input_data.txt
+exit;
+gzip sample_blood1.fq
+gzip sample_blood2.fq
+mv sample_blood1.fq.gz ../input_data/
+mv sample_blood2.fq.gz ../input_data/
+echo "sample_blood:sample_blood1.fq.gz:sample_blood2.fq.gz" > ../meta_data/meta_info.txt
 rm -f sample_blood.fa sample_B19.fa sample_EBV.fa sample_blood1.aln sample_blood2.aln
 # 
 if test -f "VDB.fa"; then

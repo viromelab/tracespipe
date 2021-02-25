@@ -1923,7 +1923,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         if [ -f ../output_data/TRACES_mtdna_consensus/mt-consensus-$ORGAN_T.fa ];
           then
 	  # Sanitize dnadiff input
-	  gto_fasta_to_seq < TRACES_mtdna_alignments/mtDNA.fa | gto_fasta_from_seq -l 60 -n AtoCompare > MT-G_A.fa;
+	  gto_fasta_to_seq < ../output_data/TRACES_mtdna_alignments/mtDNA.fa | gto_fasta_from_seq -l 60 -n AtoCompare > MT-G_A.fa;
           gto_fasta_to_seq < ../output_data/TRACES_mtdna_consensus/mt-consensus-$ORGAN_T.fa | gto_fasta_from_seq -l 60 -n BtoBeCompared > $ORGAN_T-MT-G_B.fa;
           #
 	  cp ../output_data/TRACES_mtdna_alignments/mtDNA.fa MT-G_A.fa;

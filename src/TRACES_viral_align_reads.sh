@@ -32,26 +32,27 @@ if [[ "$5" -eq "1" ]];
   then
   echo "Removing Duplications ...";
   # SORT BY NAME
-  samtools sort --threads $4 -n viral_aligned_sorted-$2-$3.bam > viral_aligned_sorted_sorted-$2-$3.bam
+  samtools sort -n viral_aligned_sorted-$2-$3.bam > viral_aligned_sorted_sorted-$2-$3.bam
   #
   # ADD ms AND MC FOR MARKDUP
-  samtools fixmate --threads $4 -m viral_aligned_sorted_sorted-$2-$3.bam viral_aligned_sorted_sorted-$2-$3-fixmate.bam
+  samtools fixmate -m viral_aligned_sorted_sorted-$2-$3.bam viral_aligned_sorted_sorted-$2-$3-fixmate.bam
   rm -f viral_aligned_sorted_sorted-$2-$3.bam
   #
   # SORTING POSITION ORDER
-  samtools sort --threads $4 -o viral_aligned_sorted_sorted-$2-$3-fixmate-sort.bam viral_aligned_sorted_sorted-$2-$3-fixmate.bam
+  samtools sort -o viral_aligned_sorted_sorted-$2-$3-fixmate-sort.bam viral_aligned_sorted_sorted-$2-$3-fixmate.bam
   rm -f viral_aligned_sorted_sorted-$2-$3-fixmate.bam
   #
   # REMOVE DUPLICATES
-  samtools markdup --threads $4 -r viral_aligned_sorted_sorted-$2-$3-fixmate-sort.bam viral_aligned_sorted-$2-$3.bam
+  samtools markdup -r viral_aligned_sorted_sorted-$2-$3-fixmate-sort.bam viral_aligned_sorted-$2-$3.bam
   rm -f viral_aligned_sorted_sorted-$2-$3-fixmate-sort.bam
   #
   fi
 #
 # INDEX BAM
-samtools index -@ $4 viral_aligned_sorted-$2-$3.bam viral_aligned_sorted-$2-$3.bam.bai
+samtools index -b viral_aligned_sorted-$2-$3.bam viral_aligned_sorted-$2-$3.bam.bai
 #
-samtools flagstat -@ $4 viral_aligned_sorted-$2-$3.bam > ../output_data/TRACES_viral_statistics/Alignments-viral-$2-$3.txt
+mkdir -p ../output_data/TRACES_viral_statistics/
+samtools flagstat viral_aligned_sorted-$2-$3.bam > ../output_data/TRACES_viral_statistics/Alignments-viral-$2-$3.txt
 #
 rm -f *.bt2
 #

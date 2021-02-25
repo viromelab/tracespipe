@@ -16,7 +16,7 @@ RNAMES="NP-o_fw_pr.fq:NP-o_fw_unpr.fq:NP-o_rv_pr.fq:NP-o_rv_unpr.fq";
 ## RUN METAGENOMIC COMPOSITION
 FALCON -v -n $THREADS -t $TOP_SIZE -F -Z -m 6:1:1:0/0 -m 11:50:1:0/0 -m 18:500:1:5/10 -g 0.85 -c 70 -x top-non-viral-$ORGAN.csv -y $ORGAN.com $RNAMES $DB
 FALCON-filter -v -F -t 1.0 -o $ORGAN.pos $ORGAN.com
-FALCON-filter-visual -v -e 1 -F -o NV-$ORGAN.svg $ORGAN.pos
+#FALCON-filter-visual -v -e 1 -F -o NV-$ORGAN.svg $ORGAN.pos
 #
 ## CONVERT SVG OUTPUT TO PDF
 #rsvg-convert -f pdf -o NV-$ORGAN.pdf NV-$ORGAN.svg
@@ -49,8 +49,8 @@ if [[ "$THREADS" > "$MAX_VALUES" ]]
   TMP_THREADS=$THREADS;
   fi
 #
-FALCON-inter -v -m 6:1:1:0/0 -m 13:20:1:3/10 -m 20:100:1:5/10 -c 30 -n $TMP_THREADS -x $ORGAN-MATRIX.csv `cat $ORGAN-FNAMES.fil`
-FALCON-inter-visual -v -w 25 -a 8 -x NV-$ORGAN-HEAT.svg $ORGAN-MATRIX.csv
+#FALCON-inter -v -m 6:1:1:0/0 -m 13:20:1:3/10 -m 20:100:1:5/10 -c 30 -n $TMP_THREADS -x $ORGAN-MATRIX.csv `cat $ORGAN-FNAMES.fil`
+#FALCON-inter-visual -v -w 25 -a 8 -x NV-$ORGAN-HEAT.svg $ORGAN-MATRIX.csv
 #
 ## CONVERT SVG OUTPUT TO PDF
 # rsvg-convert -f pdf -o NV-$ORGAN-HEAT.pdf NV-$ORGAN-HEAT.svg

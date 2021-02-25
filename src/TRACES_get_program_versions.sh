@@ -2,6 +2,8 @@
 #
 # ==============================================================================
 #
+echo -e "\e[34m[TRACESPipe]\e[32m Extracting programs versions ... \e[0m";
+#
 echo "Trimmomatic    : `trimmomatic -version`";
 echo "Cryfa          : `cryfa 2> VX.tmp ; grep "Cryfa v" VX.tmp | awk '{ print $2;}'`";
 echo "MAGNET         : `MAGNET --version 2> VX.tmp | grep MAGNET VX.tmp | awk '{ print $3;}'`";
@@ -25,6 +27,8 @@ echo "blastn         : `blastn -version | head -n 1 | awk '{print $2;}'`";
 echo "dnadiff        : `dnadiff --version 2> VX.tmp; grep version VX.tmp | awk '{ print $3; }'`";
 #
 rm -f VX.tmp;
+#
+echo -e "\e[34m[TRACESPipe]\e[32m Done! \e[0m";
 #
 # ==============================================================================
 

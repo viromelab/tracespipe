@@ -19,6 +19,7 @@ GET_THREADS=0;
 THREADS=0;
 #
 INSTALL=0;
+SHOW_PROG_VER=0;
 UPDATE=0;
 #
 SAMPLE_TEST=0;
@@ -394,6 +395,11 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift
     ;;
+    -spv|--show-prog-ver)
+      SHOW_PROG_VER=1;
+      SHOW_HELP=0;
+      shift
+    ;;
     -st|--sample)
       SAMPLE_TEST=1;
       SHOW_HELP=0;
@@ -757,6 +763,7 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -fout,  --flush-output    Flush output data (delete all output_data), "
   echo "    -i,     --install         Installation of all the tools,           "
   echo "    -up,    --update          Update all the tools in TRACESPipe,      "
+  echo "    -spv,   --show-prog-ver   Show included programs versions,         "
   echo "                                                                       "
   echo "    -st,    --sample          Creates human ref. VDB and sample organ, "
   echo "                                                                       "
@@ -952,9 +959,17 @@ if [[ "$FLUSH_OUTPUT" -eq "1" ]];
 #
 # ==============================================================================
 #
+if [[ "$SHOW_PROG_VER" -eq "1" ]];
+  then
+  ./TRACES_get_program_versions.sh
+  exit 0;
+  fi
+#
+# ==============================================================================
+#
 if [[ "$SAMPLE_TEST" -eq "1" ]];
   then
-  ./TRACES_simulate_simple_sample.sh  
+  ./TRACES_simulate_simple_sample.sh
   exit 0;
   fi
 #

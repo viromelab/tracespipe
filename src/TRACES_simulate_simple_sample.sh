@@ -7,7 +7,6 @@ efetch -db nucleotide -format fasta -id "NC_007605" > sample_EBV.fa 2>> ../logs/
 efetch -db nucleotide -format fasta -id "MT682522" > sample_MT.fa 2>> ../logs/Log-stderr-sample_blood.txt
 cat sample_B19.fa sample_EBV.fa sample_MT.fa > sample_blood.fa 2>> ../logs/Log-stderr-sample_blood.txt
 art_illumina -rs 0 -ss HS25 -i sample_blood.fa -p -l 150 -f 20 -m 200 -s 10 -o sample_blood 1>> ../logs/Log-stdout-sample_blood.txt 2>> ../logs/Log-stderr-sample_blood.txt
-exit;
 gzip sample_blood1.fq
 gzip sample_blood2.fq
 mv sample_blood1.fq.gz ../input_data/

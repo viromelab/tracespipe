@@ -15,6 +15,8 @@ if [ ! -f "$1" ] || [ ! -f "$2" ];
 rm -f $1.* 
 bwa index $1
 bwa mem -t $THREADS -I 0 -O 2 -N 0.03 -L 1024 -E 7 $1 $2 > specific_aligned_$VIRUS-$ORGAN.sam 
+rm -f $1.amb $1.ann $1.bwt $1.pac $1.sa;
+#
 samtools sort specific_aligned_$VIRUS-$ORGAN.sam > specific_aligned_sorted_$VIRUS-$ORGAN.bam
 samtools index specific_aligned_sorted_$VIRUS-$ORGAN.bam specific_aligned_sorted_$VIRUS-$ORGAN.bam.bai
 rm -f specific_aligned_$VIRUS-$ORGAN.sam;

@@ -27,6 +27,8 @@ rm -f $REFERENCE.* $FIELD-data_aligned.bam $FIELD-data_aligned_sorted.bam $FIELD
 bwa index $REFERENCE
 #
 bwa mem -t $THREADS -I 0 -O 2 -N 0.02 -L 1024 -E 7 $REFERENCE $SCAFFOLDS > $FIELD-data_aligned.bam 
+rm -f $REFERENCE.amb $REFERENCE.ann $REFERENCE.bwt $REFERENCE.pac $REFERENCE.sa;
+#
 samtools sort $FIELD-data_aligned.bam > $FIELD-data_aligned_sorted.bam
 samtools index $FIELD-data_aligned_sorted.bam $FIELD-data_aligned_sorted.bam.bai
 #

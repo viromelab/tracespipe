@@ -1341,9 +1341,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         #
         echo -e "\e[34m[TRACESPipe]\e[32m Running viral metagenomic analysis with FALCON-meta ...\e[0m";
         mkdir -p ../output_data/TRACES_results
-        ./TRACES_metagenomics_viral.sh $ORGAN_T VDB.fa 10000 $THREADS $TSIZE 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
-        mv $ORGAN_T.svg ../output_data/TRACES_results/
-        mv $ORGAN_T-HEAT.svg ../output_data/TRACES_results/
+        ./TRACES_metagenomics_viral.sh $ORGAN_T VDB.fa 8000 $THREADS $TSIZE 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
         echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACESPipe]\e[32m Finding the best references ...\e[0m";
@@ -1449,8 +1447,6 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[TRACESPipe]\e[32m Running viral metagenomic analysis with FALCON-meta ...\e[0m";
       mkdir -p ../output_data/TRACES_results
       ./TRACES_metagenomics_viral.sh $ORGAN_T VDB.fa 10000 $THREADS $TSIZE 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
-      mv $ORGAN_T.svg ../output_data/TRACES_results/
-      mv $ORGAN_T-HEAT.svg ../output_data/TRACES_results/
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Finding the best references ...\e[0m";
@@ -1665,6 +1661,9 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[TRACESPipe]\e[32m Aligning data using bwa ...\e[0m";
       bwa index mtDNA.fa 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       bwa mem -t $THREADS -I 0 -O 2 -N 0.02 -L 1024 -E 7 mtDNA.fa reads.fq > mt-$ORGAN_T.sam 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+      #
+      rm -f mtDNA.fa.amb mtDNA.fa.ann mtDNA.fa.bwt mtDNA.fa.pac mtDNA.fa.sa;
+      #
       echo -e "\e[34m[TRACESPipe]\e[32m Adapting data with samtools ...\e[0m";
       samtools view -bSh mt-$ORGAN_T.sam > mt-$ORGAN_T.bam
       samtools view -bh -F4 mt-$ORGAN_T.bam > FIL-mt-$ORGAN_T.bam;

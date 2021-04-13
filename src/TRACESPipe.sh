@@ -60,6 +60,9 @@ RUN_META_NON_VIRAL_ON=0;
 RUN_MITO_ON=0;
 RUN_MITO_DAMAGE_ON=0;
 #
+RUN_GID_DAMAGE_ANALYSIS=0;
+GID_DAMAGE="";
+#
 VIEW_TOP=0;
 #
 REMOVE_DUPLICATIONS=0;
@@ -616,6 +619,12 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift
     ;;      
+    -rgid|--run-gid-damage)
+      RUN_GID_DAMAGE_ANALYSIS=1;
+      GID_DAMAGE="$2";
+      SHOW_HELP=0;
+      shift 2;
+    ;;
     -rava|--run-all-v-alig)
       RUN_ANALYSIS=1;
       RUN_ALL_VIRAL=1;
@@ -855,6 +864,9 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                                                                       "
   echo "    -rmt,   --run-mito        Run Mito align and consensus seq,        "
   echo "    -rmtd,  --run-mito-dam    Run Mito damage only,                    "
+  echo "                                                                       "
+  echo "    -rgid <ID>, --run-gid-damage <ID>                                  "
+  echo "                              Run damage pattern analysis by GID,      "
   echo "                                                                       "
   echo "    -rya,   --run-cy-align    Run CY align and consensus seq,          "
   echo "    -ryq,   --run-cy-quant    Estimate the quantity of CY DNA,         "
@@ -1278,6 +1290,39 @@ if [[ "$RUN_MITO_SPECIES" -eq "1" ]];
   echo -e "\e[34m[TRACESPipe]\e[32m Running species mitogenome authentication ...\e[0m";  
   ./TRACES_auth_species.sh $THREADS
   echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+  #
+  fi
+#
+# ==============================================================================
+#
+if [[ "$RUN_GID_DAMAGE_ANALYSIS" -eq "1" ]];
+  then
+  # 
+  CHECK_FILTERING_SYSTEM_FILES;
+  CHECK_META_INFO;
+  #
+  mapfile -t READS < ../meta_data/meta_info.txt
+  #
+  for read in "${READS[@]}" #
+    do
+    #
+    ORGAN_T=`echo $read | tr ':' '\t' | awk '{ print $1 }'`;
+    SPL_Forward=`echo $read | tr ':' '\t' | awk '{ print $2 }'`;
+    SPL_Reverse=`echo $read | tr ':' '\t' | awk '{ print $3 }'`;
+    #
+    CHECK_GZIP_FILES $SPL_Forward $SPL_Reverse;
+    #
+    echo -e "\e[34m[TRACESPipe]\e[93m Running organ=$ORGAN_T\e[0m";
+    #
+    rm -f FW_READS.fq.gz RV_READS.fq.gz
+    echo -e "\e[34m[TRACESPipe]\e[32m Copping an instance of the files ...\e[0m";
+    cp ../input_data/$SPL_Forward FW_READS.fq.gz;
+    cp ../input_data/$SPL_Reverse RV_READS.fq.gz;
+    echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+    #
+    ./TRACES_gid_damage_patterns.sh $GID_DAMAGE $ORGAN_T $THREADS
+    #
+    done
   #
   fi
 #

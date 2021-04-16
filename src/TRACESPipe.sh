@@ -1099,7 +1099,7 @@ gnuplot << EOF
     set xlabel "Position"
     set border linewidth 1.5
     set style line 1 lc rgb '#0060ad' lt 1 lw 2 pt 5 ps 0.4 # --- blue
-    set style line 2 lc rgb '#228B22' lt 1 lw 2 pt 6 ps 0.4 # --- green
+    set style line 2 lc rgb '#000000' lt 1 lw 2 pt 6 ps 0.4 # --- green
     set style line 3 lc rgb '#dd181f' lt 1 lw 4 pt 7 ps 0.4 # --- ?
     set style line 4 lc rgb '#4d1811' lt 1 lw 4 pt 8 ps 0.4 # --- ?
     set style line 5 lc rgb '#1d121f' lt 1 lw 4 pt 9 ps 0.4 # --- ?

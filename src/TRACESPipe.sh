@@ -335,6 +335,7 @@ ALIGN_AND_CONSENSUS () {
     mv $V_TAG-calls-$ORGAN.bed ../output_data/TRACES_viral_bed/
     mv $V_TAG-coverage-$ORGAN.bed ../output_data/TRACES_viral_bed/
     mv $V_TAG-zero-coverage-$ORGAN.bed ../output_data/TRACES_viral_bed/
+    mv $V_TAG-$ORGAN-calls.norm.flt-indels.vcf.gz ../output_data/TRACES_viral_bed/
     mkdir -p ../output_data/TRACES_viral_statistics;
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
     echo -e "\e[34m[TRACESPipe]\e[32m Calculating coverage ...\e[0m";
@@ -1582,13 +1583,12 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       mv viral_aligned_sorted-$ORGAN_T-$SPECIFIC_ID.bam ../output_data/TRACES_specific_alignments/
       mv viral_aligned_sorted-$ORGAN_T-$SPECIFIC_ID.bam.bai ../output_data/TRACES_specific_alignments/
       mkdir -p ../output_data/TRACES_specific_consensus;
-      #rm -f ../output_data/TRACES_specific_consensus/*
       mv $SPECIFIC_ID-consensus-$ORGAN_T.fa ../output_data/TRACES_specific_consensus/
       mkdir -p ../output_data/TRACES_specific_bed;
-      #rm -f ../output_data/TRACES_specific_bed/*
       mv $SPECIFIC_ID-calls-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
       mv $SPECIFIC_ID-coverage-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
       mv $SPECIFIC_ID-zero-coverage-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
+      mv $SPECIFIC_ID-$ORGAN_T-calls.norm.flt-indels.vcf.gz ../output_data/TRACES_specific_bed/
       mkdir -p ../output_data/TRACES_specific_statistics;
       echo -e "\e[34m[TRACESPipe]\e[32m Calculating coverage for alignment-based assembly ...\e[0m";
       ./TRACES_overall_specific.sh $SPECIFIC_ID $ORGAN_T
@@ -1630,6 +1630,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       mv $SPECIFIC_ID-calls-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
       mv $SPECIFIC_ID-coverage-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
       mv $SPECIFIC_ID-zero-coverage-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
+      mv $SPECIFIC_ID-$ORGAN_T-calls.norm.flt-indels.vcf.gz ../output_data/TRACES_specific_bed/
       mkdir -p ../output_data/TRACES_specific_statistics;
       echo -e "\e[34m[TRACESPipe]\e[32m Calculating coverage for alignment-based assembly ...\e[0m";
       ./TRACES_overall_specific.sh $SPECIFIC_ID $ORGAN_T

@@ -201,6 +201,9 @@ See the next section for more information about the usage.
     -fout,  --flush-output    Flush output data (delete all output_data), 
     -i,     --install         Installation of all the tools,           
     -up,    --update          Update all the tools in TRACESPipe,      
+    -spv,   --show-prog-ver   Show included programs versions,         
+                                                                       
+    -st,    --sample          Creates human ref. VDB and sample organ, 
                                                                        
     -gmt,   --get-max-threads Get the number of maximum machine threads,
     -t <THREADS>, --threads <THREADS>                                  
@@ -264,6 +267,13 @@ See the next section for more information about the usage.
                                                                        
     -rpro,  --run-profiles    Run complexity and relative profiles (control), 
                                                                        
+    -rpgi <ID>,  --run-gid-complexity-profile <ID>                     
+                              Run complexity profiles by GID,          
+    -cpwi <VALUE>, --complexity-profile-window <VALUE>                 
+                              Complexity profile window size,          
+    -cple <VALUE>, --complexity-profile-level <VALUE>                  
+                              Complexity profile compression level [1;10], 
+                                                                       
     -rm,    --run-meta        Run viral metagenomic identification,    
     -ro,    --run-meta-nv     Run NON-viral metagenomic identification,
                                                                        
@@ -291,6 +301,9 @@ See the next section for more information about the usage.
     -rmt,   --run-mito        Run Mito align and consensus seq,        
     -rmtd,  --run-mito-dam    Run Mito damage only,                    
                                                                        
+    -rgid <ID>, --run-gid-damage <ID>                                  
+                              Run damage pattern analysis by GID,      
+                                                                       
     -rya,   --run-cy-align    Run CY align and consensus seq,          
     -ryq,   --run-cy-quant    Estimate the quantity of CY DNA,         
                                                                        
@@ -315,6 +328,9 @@ See the next section for more information about the usage.
     -sdiff <V_NAME> <ID/PATTERN>, --run-specific-diff <V_NAME> <ID/PATTERN>  
                               Run specific diff of reconstructed to a virus  
                               pattern of ID. Example: -sdiff B19 AY386330.1, 
+                                                                       
+    -brec,  --blast-reconstructed                                      
+                              Run local blast over reconstructed genomes, 
                                                                              
     -ra,    --run-analysis    Run data analysis (core),                      
     -all,   --run-all         Run all the options (excluding the specific).  

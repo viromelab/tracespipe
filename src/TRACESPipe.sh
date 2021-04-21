@@ -81,6 +81,9 @@ RUN_COVERAGE_TABLE_CSV=0;
 RUN_COVERAGE_PROFILE=0;
 COVERAGE_NAME="";
 MAX_COVERAGE_PROFILE=0;
+COVERAGE_LOG_SCALE="";
+COVERAGE_WINDOW_SIZE="5";
+COVERAGE_DROP="1";
 #
 RUN_CHANGE_MT=0;
 #
@@ -609,6 +612,21 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift 2;
     ;;
+    -clog|--coverage-log-scale)
+      COVERAGE_LOG_SCALE="$2";
+      SHOW_HELP=0;
+      shift 2;
+    ;;
+    -cwis|--coverage-window-size)
+      COVERAGE_WINDOW_SIZE="$2";
+      SHOW_HELP=0;
+      shift 2;
+    ;;
+    -cdro|--coverage-drop)
+      COVERAGE_DROP="$2";
+      SHOW_HELP=0;
+      shift 2;
+    ;;
     -rsx|--run-extreme)
       RUN_ANALYSIS=1;
       RUN_SPECIFIC_SENSITIVE=1;
@@ -910,10 +928,17 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -vis,   --visual-align    Run Visualization tool for alignments,   "
   echo "    -covl,  --coverage-latex  Run coverage table in Latex format,      "
   echo "    -covc,  --coverage-csv    Run coverage table in CSV format,        "
-  echo "    -covp <NAME>, --coverage-profile <BED_NAME_FILE>                   "
+  echo "                                                                       "
+  echo "    -covp <NAME>,  --coverage-profile <BED_NAME_FILE>                   "
   echo "                              Run coverage profile for specific BED file, "
-  echo "    -cmax <MAX>,  --max-coverage <MAX_COVERAGE>                        "
+  echo "    -cmax <MAX>,   --max-coverage <MAX_COVERAGE>                        "
   echo "                              Maximum depth coverage (depth normalization), "
+  echo "    -clog <VALUE>, --coverage-log-scale <VALUE>                        "
+  echo "                              Coverage profile logarithmic scale VALUE=Base, "
+  echo "    -cwis <VALUE>, --coverage-window-size <VALUE>                      "
+  echo "                              Coverage window size for low-pass filter, "
+  echo "    -cdro <VALUE>, --coverage-drop <VALUE>                             "
+  echo "                              Coverage drop size (sampling),           "
   echo "                                                                       "
   echo "    -diff,  --run-diff        Run diff -> reference and hybrid (ident/SNPs), "
   echo "                                                                       "
@@ -1120,9 +1145,15 @@ if [[ "$RUN_GID_COMPLEXITY_PROFILE" -eq "1" ]];
 #
 if [[ "$RUN_COVERAGE_PROFILE" -eq "1" ]];
   then
+  #
   CHECK_E_FILE $COVERAGE_NAME
-  ./TRACES_project_coordinates.sh $COVERAGE_NAME $COVERAGE_MAX > x.projectd.profile;
-  #XXX: OPTIONALLY, LOW-PASS FILTER CAN BE APPLIED HERE (for larger sequences)!
+  #
+  rm -f x.projected.profile;
+  ./TRACES_project_coordinates.sh $COVERAGE_NAME $COVERAGE_MAX \
+  | gto_filter -w $COVERAGE_WINDOW_SIZE -d $COVERAGE_DROP > x.projected.profile;
+  #
+  if [[ "$COVERAGE_LOG_SCALE" -eq "" ]];
+    then
 gnuplot << EOF
     reset
     set terminal pdfcairo enhanced color font 'Verdana,12'
@@ -1145,8 +1176,36 @@ gnuplot << EOF
     set style line 3 lc rgb '#dd181f' lt 1 lw 4 pt 7 ps 0.4 # --- ?
     set style line 4 lc rgb '#4d1811' lt 1 lw 4 pt 8 ps 0.4 # --- ?
     set style line 5 lc rgb '#1d121f' lt 1 lw 4 pt 9 ps 0.4 # --- ?
-    plot "x.projectd.profile" using 2 with lines ls 2
+    plot "x.projected.profile" using 2 with lines ls 2
 EOF
+    else
+    gnuplot << EOF
+    reset
+    set terminal pdfcairo enhanced color font 'Verdana,12'
+    set output "$COVERAGE_NAME.pdf"
+    set style line 101 lc rgb '#000000' lt 1 lw 4
+    set border 3 front ls 101
+    set tics nomirror out scale 0.75
+    set format '%g'
+    set size ratio 0.2
+    set key outside horiz center top
+    set yrange [:]
+    set xrange [:]
+    set xtics auto
+    set logscale y $COVERAGE_LOG_SCALE
+    set grid
+    set ylabel "Depth"
+    set xlabel "Position"
+    set border linewidth 1.5
+    set style line 1 lc rgb '#0060ad' lt 1 lw 2 pt 5 ps 0.4 # --- blue
+    set style line 2 lc rgb '#000000' lt 1 lw 2 pt 6 ps 0.4 # --- green
+    set style line 3 lc rgb '#dd181f' lt 1 lw 4 pt 7 ps 0.4 # --- ?
+    set style line 4 lc rgb '#4d1811' lt 1 lw 4 pt 8 ps 0.4 # --- ?
+    set style line 5 lc rgb '#1d121f' lt 1 lw 4 pt 9 ps 0.4 # --- ?
+    plot "x.projected.profile" using 2 with lines ls 2
+EOF
+    fi
+  rm -f x.projected.profile;
   exit 0;
   fi
 #

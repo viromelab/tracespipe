@@ -56,6 +56,10 @@ RUN_META_ON=0;
 RUN_BEST_OF_BESTS=0;
 RUN_PROFILES_ON=0;
 RUN_META_NON_VIRAL_ON=0;
+RUN_GID_COMPLEXITY_PROFILE=0;
+GID_COMPLEXITY_PROFILE="";
+COMPLEXITY_PROFILE_WINDOW="";
+COMPLEXITY_PROFILE_LEVEL="";
 #
 RUN_MITO_ON=0;
 RUN_MITO_DAMAGE_ON=0;
@@ -537,6 +541,22 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift 2
     ;;
+    -rpgi|--run-gid-complexity-profile)
+      RUN_GID_COMPLEXITY_PROFILE=1;
+      GID_COMPLEXITY_PROFILE="$2";
+      SHOW_HELP=0;
+      shift 2
+    ;;
+    -cpwi|--complexity-profile-window)
+      COMPLEXITY_PROFILE_WINDOW="$2";
+      SHOW_HELP=0;
+      shift 2
+    ;;
+    -cple|--complexity-profile-level)
+      COMPLEXITY_PROFILE_LEVEL="$2";
+      SHOW_HELP=0;
+      shift 2
+    ;;
     -afs|--add-fasta)
       ADD_FASTA=1;
       NEW_FASTA="$2";
@@ -839,6 +859,13 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                                                                       "
   echo "    -rpro,  --run-profiles    Run complexity and relative profiles (control), "
   echo "                                                                       "
+  echo "    -rpgi <ID>,  --run-gid-complexity-profile <ID>                     "
+  echo "                              Run complexity profiles by GID,          "
+  echo "    -cpwi <VALUE>, --complexity-profile-window <VALUE>                 "
+  echo "                              Complexity profile window size,          "
+  echo "    -cple <VALUE>, --complexity-profile-level <VALUE>                  "
+  echo "                              Complexity profile compression level [1;10], "
+  echo "                                                                       "
   echo "    -rm,    --run-meta        Run viral metagenomic identification,    "
   echo "    -ro,    --run-meta-nv     Run NON-viral metagenomic identification,"
   echo "                                                                       "
@@ -922,7 +949,7 @@ if [ "$SHOW_VERSION" -eq "1" ];
   echo "                                                                      ";
   echo "                              TRACESPipe                              ";
   echo "                                                                      ";
-  echo "                            Version: 1.0.1                            ";
+  echo "                            Version: 1.0.2                            ";
   echo "                                                                      ";
   echo "                      Department of Virology and                      ";
   echo "                   Department of Forensic Medicine,                   ";
@@ -1073,6 +1100,20 @@ if [[ "$SEARCH_BLAST_REMOTE_DB" -eq "1" ]];
   blastn -db nt -task blastn-short -query $BLAST_QUERY -remote > $BLASTS_OUTPUT/x.txt 2>> ../logs/Log-stderr-system.txt;
   echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
   exit 0;
+  fi
+#
+# ==============================================================================
+#
+if [[ "$RUN_GID_COMPLEXITY_PROFILE" -eq "1" ]];
+  then
+  efetch -db nucleotide -format fasta -id "$GID_COMPLEXITY_PROFILE" > $GID_COMPLEXITY_PROFILE.fa 
+  CHECK_E_FILE $GID_COMPLEXITY_PROFILE.fa
+  #
+  echo -e "\e[34m[TRACESPipe]\e[32m Building complexity profiles for $GID_COMPLEXITY_PROFILE ...\e[0m";
+  ./TRACES_complexity_profile.sh $GID_COMPLEXITY_PROFILE.fa $COMPLEXITY_PROFILE_LEVEL $COMPLEXITY_PROFILE_WINDOW 1>> ../logs/Log-stdout.txt 2>> ../logs/Log-stderr.txt;
+  cp complexity-profile-$GID_COMPLEXITY_PROFILE.fa.pdf ../output_data/TRACES_results/profiles/
+  echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+  #
   fi
 #
 # ==============================================================================

@@ -76,8 +76,8 @@ tracespipe/
 ├── output_data/       # where the results will appear using the following subfolders: 
 │   │
 │   ├── TRACES_results/                # where the files regarding the metagenomic 
-│   │                                  # analysis, redundancy and control will appear
-│   ├── TRACES_results/profiles/       # where the redundancy profiles appear 
+│   │                                  # analysis, redundancy (complexity) and control will appear
+│   ├── TRACES_results/profiles/       # where the redundancy (complexity) profiles appear 
 │   │
 │   ├── TRACES_viral_alignments/       # where viral alignments and index will appear
 │   ├── TRACES_viral_consensus/        # where viral consensus (FASTA) will appear

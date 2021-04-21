@@ -19,7 +19,7 @@ bedtools genomecov -ibam $Alignments -bga > $Label-coverage-$Organ.bed
 awk '$4 < 1' $Label-coverage-$Organ.bed > $Label-zero-coverage-$Organ.bed 
 #
 # CALLS 
-samtools faidx $Reference # -P 9.9e-1                                      # here!
+samtools faidx $Reference # -P 9.9e-1                                      # uses the new variations for consensus
 bcftools mpileup -Ou -f $Reference $Alignments | bcftools call --ploidy 1 -M -mv -Oz -o $Label-$Organ-calls.vcf.gz
 bcftools index $Label-$Organ-calls.vcf.gz
 #

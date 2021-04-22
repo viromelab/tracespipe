@@ -1136,6 +1136,7 @@ if [[ "$RUN_GID_COMPLEXITY_PROFILE" -eq "1" ]];
   #
   echo -e "\e[34m[TRACESPipe]\e[32m Building complexity profiles for $GID_COMPLEXITY_PROFILE ...\e[0m";
   ./TRACES_complexity_profile.sh $GID_COMPLEXITY_PROFILE.fa $COMPLEXITY_PROFILE_LEVEL $COMPLEXITY_PROFILE_WINDOW 1>> ../logs/Log-stdout.txt 2>> ../logs/Log-stderr.txt;
+  mkdir -p ../output_data/TRACES_results/profiles/
   cp complexity-profile-$GID_COMPLEXITY_PROFILE.fa.pdf ../output_data/TRACES_results/profiles/
   echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
   #

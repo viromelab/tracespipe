@@ -16,8 +16,8 @@ SHOW_MENU () {
   echo " TRACESPipe_damage_analysis.sh : damage pattern analysis  ";
   echo "                                                          ";
   echo " This subpipeline of TRACESPipe automatically generates   ";
-  echo " plots for analysis of damage patterns using maDamage2.   ";
-  echo " Any sequence can be used through the GID.                ";
+  echo " plots for analysis of damage patterns using mapDamage2.  ";
+  echo " Any reference sequence can be used through the GID.      ";
   echo "                                                          ";
   echo " Program options ---------------------------------------- ";
   echo "                                                          ";

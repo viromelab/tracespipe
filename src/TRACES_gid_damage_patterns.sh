@@ -32,8 +32,8 @@ bwa mem -t $THREADS $GID.fa reads.fq > $GID-$ORGAN.sam 2>> ../logs/Log-stderr-$O
 echo -e "\e[34m[TRACESPipe]\e[32m Adapting data with samtools ...\e[0m";
 samtools view -bSh $GID-$ORGAN.sam > $GID-$ORGAN.bam 2>> ../logs/Log-stderr-$ORGAN.txt;
 samtools view -bh -F4 $GID-$ORGAN.bam > FIL-$GID-$ORGAN.bam 2>> ../logs/Log-stderr-$ORGAN.txt;
-samtools sort -o SORT-FIL-$GID-$READS.bam FIL-$GID-$READS.bam 1>> ../logs/Log-stdout-$ORGAN.txt 2>> ../logs/Log-stderr-$ORGAN.txt;
-samtools index -b SORT-FIL-$GID-$READS.bam SORT-FIL-$GID-$READS.bam.bai 1>> ../logs/Log-stdout-$ORGAN.txt 2>> ../logs/Log-stderr-$ORGAN.txt;
+samtools sort -o SORT-FIL-$GID-$ORGAN.bam FIL-$GID-$ORGAN.bam 1>> ../logs/Log-stdout-$ORGAN.txt 2>> ../logs/Log-stderr-$ORGAN.txt;
+samtools index -b SORT-FIL-$GID-$ORGAN.bam SORT-FIL-$GID-$ORGAN.bam.bai 1>> ../logs/Log-stdout-$ORGAN.txt 2>> ../logs/Log-stderr-$ORGAN.txt;
 echo -e "\e[34m[TRACESPipe]\e[32m Estimating the damage of mtDNA using mapDamage2 ...\e[0m";
 rm -fr ../output_data/TRACES_damage_$GID-$ORGAN
 mapDamage --rescale -d ../output_data/TRACES_damage_$GID-$ORGAN -i SORT-FIL-$GID-$ORGAN.bam -r $GID.fa 1>> ../logs/Log-stdout-$ORGAN.txt 2>> ../logs/Log-stderr-$ORGAN.txt;

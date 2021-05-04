@@ -135,11 +135,11 @@ if [[ "$HELP" -eq "1" ]];
 if [[ "$INSTALL" -eq "1" ]];
   then
   #
-  #conda install -c bioconda AdapterRemoval -y
-  #conda install -c bioconda entrez-direct -y
-  #conda install -c bioconda bwa -y
-  #conda install -c bioconda mapdamage2=2.2.1 -y
-  #conda install -c bioconda samtools -y
+  conda install -c bioconda AdapterRemoval -y
+  conda install -c bioconda entrez-direct -y
+  conda install -c bioconda bwa -y
+  conda install -c bioconda mapdamage2=2.2.1 -y
+  conda install -c bioconda samtools -y
   #
   PROGRAM_EXISTS "AdapterRemoval";
   PROGRAM_EXISTS "efetch";

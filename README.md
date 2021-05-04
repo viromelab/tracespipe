@@ -555,8 +555,8 @@ If you use this pipeline, please cite:
 Pratas, D., Toppinen, M., Pyöriä, L., Hedman, K., Sajantila, A. and Perdomo, M.F., 2020. 
 A hybrid pipeline for reconstruction and analysis of viral genomes at multi-organ level. 
 GigaScience, 9(8), p.giaa086.
-[PDF Link](https://doi.org/10.1093/gigascience/giaa086)
 ```
+[PDF Link](https://doi.org/10.1093/gigascience/giaa086)
 
 ## 8. Issues ##
 

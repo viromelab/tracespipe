@@ -190,7 +190,8 @@ if [[ "$RUN" -eq "1" ]];
   #
   rm -f $GID.fa* $GID-READS.sam $GID-READS.bam FIL-$GID-READS.bam \
   SORT-FIL-$GID-READS.bam SORT-FIL-$GID-READS.bam.bai \
-  reads-tracespipe-run-tmp.fq 
+  reads-tracespipe-run-tmp.fq $GID.fa.amb $GID.fa.ann \
+  $GID.fa.bwt $GID.fa.fai $GID.fa.pac $GID.fa.sa;
   #
   fi
 #

@@ -344,7 +344,7 @@ See the next section for more information about the usage.
     The reads must be GZIPed in the ../input_data/ folder.             
     The output results are at ../output_data/ folder.                  
                                                                        
-    Contact: projectraces@gmail.com 
+    Contact: tracespipe@gmail.com 
 
 ```
 

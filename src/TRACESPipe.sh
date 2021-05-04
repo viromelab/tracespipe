@@ -961,7 +961,7 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    The reads must be GZIPed in the ../input_data/ folder.             "
   echo "    The output results are at ../output_data/ folder.                  "
   echo "                                                                       "
-  echo -e "\e[32m    Contact: projectraces@gmail.com                      \e[0m"
+  echo -e "\e[32m    Contact: tracespipe@gmail.com                        \e[0m"
   echo "                                                                       "
   exit 1;
   fi
@@ -983,7 +983,7 @@ if [ "$SHOW_VERSION" -eq "1" ];
   echo "                             IEETA/DETI,                              ";
   echo "                    University of Aveiro, Portugal.                   ";
   echo "                                                                      ";
-  echo "                        projectraces@gmail.com                        ";
+  echo "                        tracespipe@gmail.com                          ";
   echo "                                                                      ";
   exit 0;
   fi

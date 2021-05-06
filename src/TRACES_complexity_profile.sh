@@ -91,7 +91,7 @@ if [[ "$RUN_COMPARISON" -eq "1" ]];
     set ylabel "Bps"
     set xlabel "Length"
     set border linewidth 1.5
-    set style line 1 lc rgb '#0060ad' lt 1 lw 2 pt 5 ps 0.4 # --- blue
+    set style line 1 lc rgb '#000000' lt 1 lw 2 pt 5 ps 0.4 # --- blue
     set style line 2 lc rgb '#0060ad' lt 1 lw 4 pt 6 ps 0.4 # --- green
     plot "PROFILE_N" using 1:2 with lines ls 1
 EOF

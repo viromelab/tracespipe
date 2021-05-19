@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# ./Lari.sh ../output_data/TRACES_viral_alignments/H_N-HV6B.fa ../output_data/TRACES_viral_alignments/viral_aligned_sorted-H_N-HV6B.bam H_N HV6B
+# ./TRACES_ivar.sh ../output_data/TRACES_viral_alignments/H_N-HV6B.fa ../output_data/TRACES_viral_alignments/viral_aligned_sorted-H_N-HV6B.bam H_N HV6B 0.2
 #
 Reference=$1;     # EXAMPLE: TTV.fa
 Alignments=$2;    # EXAMPLE: ttv_aligned_sorted-heart.bam

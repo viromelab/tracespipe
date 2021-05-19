@@ -1150,8 +1150,7 @@ if [[ "$RUN_COVERAGE_PROFILE" -eq "1" ]];
   CHECK_E_FILE $COVERAGE_NAME
   #
   rm -f x.projected.profile;
-  ./TRACES_project_coordinates.sh $COVERAGE_NAME $COVERAGE_MAX \
-  | gto_filter -w $COVERAGE_WINDOW_SIZE -d $COVERAGE_DROP > x.projected.profile;
+  ./TRACES_project_coordinates.sh $COVERAGE_NAME $COVERAGE_MAX | gto_filter -w $COVERAGE_WINDOW_SIZE -d $COVERAGE_DROP > x.projected.profile;
   #
   if [[ "$COVERAGE_LOG_SCALE" -eq "" ]];
     then

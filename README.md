@@ -546,6 +546,7 @@ TRACES Pipeline uses a combination of the following tools:
 | &#x1F49A;&nbsp; mapDamage2 | [[https://ginolhac.github.io/mapDamage/]](https://ginolhac.github.io/mapDamage/) | [![Article](https://img.shields.io/static/v1.svg?label=View&message=Article&color=green)](https://academic.oup.com/bioinformatics/article/29/13/1682/184965) |
 | &#x1F49A;&nbsp; Blastn | [[https://blast.ncbi.nlm.nih.gov/]](https://blast.ncbi.nlm.nih.gov) | [![Article](https://img.shields.io/static/v1.svg?label=View&message=Article&color=green)](https://www.liebertpub.com/doi/abs/10.1089/10665270050081478) |
 | &#x1F49A;&nbsp; mummer4 | [[https://mummer4.github.io/]](https://mummer4.github.io/) | [![Article](https://img.shields.io/static/v1.svg?label=View&message=Article&color=green)](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005944) |
+| &#x1F49A;&nbsp; ivar | [[https://andersen-lab.github.io/ivar]](https://andersen-lab.github.io/ivar) | [![Article](https://img.shields.io/static/v1.svg?label=View&message=Article&color=green)](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1618-7) |
 
 
 ## 7. Citation ##

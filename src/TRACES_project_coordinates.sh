@@ -15,14 +15,16 @@ for read in "${POSITIONS[@]}" #
     do
     if [[ "$2" -ne "0" ]];
       then
-      if [[ "$COVE" -gt "$2" ]];
+      COVE2=`echo $COVE | sed -E 's/([+-]?[0-9.]+)[eE]\+?(-?)([0-9]+)/(\1*10^\2\3)/g' | bc -l`;
+      COVE_PARSED=`printf "%.0f" "$COVE2"`;
+      if [[ "$COVE_PARSED" -gt "$2" ]];
         then
-        printf "%u\t%.0f\n" "$x" `echo $2 | sed -E 's/([+-]?[0-9.]+)[eE]\+?(-?)([0-9]+)/(\1*10^\2\3)/g' | bc -l`;
+        printf "%u\t%u\n" "$x" `echo $2`;
         else
-        printf "%u\t%.0f\n" "$x" `echo $COVE | sed -E 's/([+-]?[0-9.]+)[eE]\+?(-?)([0-9]+)/(\1*10^\2\3)/g' | bc -l`;
+        printf "%u\t%u\n" "$x" "$COVE_PARSED"     
         fi
       else
-      printf "%u\t%.0f\n" "$x" `echo $COVE | sed -E 's/([+-]?[0-9.]+)[eE]\+?(-?)([0-9]+)/(\1*10^\2\3)/g' | bc -l`;
+      printf "%u\t%u\n" "$x" "$COVE_PARSED" 
       fi
     done
   done

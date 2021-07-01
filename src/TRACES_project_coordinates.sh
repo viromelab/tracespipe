@@ -17,12 +17,12 @@ for read in "${POSITIONS[@]}" #
       then
       if [[ "$COVE" -gt "$2" ]];
         then
-        printf "%u\t%u\n" "$x" "$2";
+        printf "%u\t%.0f\n" "$x" `echo $2 | sed -E 's/([+-]?[0-9.]+)[eE]\+?(-?)([0-9]+)/(\1*10^\2\3)/g' | bc -l`;
         else
-        printf "%u\t%u\n" "$x" "$COVE";
+        printf "%u\t%.0f\n" "$x" `echo $COVE | sed -E 's/([+-]?[0-9.]+)[eE]\+?(-?)([0-9]+)/(\1*10^\2\3)/g' | bc -l`;
         fi
       else
-      printf "%u\t%u\n" "$x" "$COVE";
+      printf "%u\t%.0f\n" "$x" `echo $COVE | sed -E 's/([+-]?[0-9.]+)[eE]\+?(-?)([0-9]+)/(\1*10^\2\3)/g' | bc -l`;
       fi
     done
   done

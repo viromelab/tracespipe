@@ -318,10 +318,17 @@ See the next section for more information about the usage.
     -vis,   --visual-align    Run Visualization tool for alignments,   
     -covl,  --coverage-latex  Run coverage table in Latex format,      
     -covc,  --coverage-csv    Run coverage table in CSV format,        
-    -covp <NAME>, --coverage-profile <BED_NAME_FILE>                   
+                                                                       
+    -covp <NAME>,  --coverage-profile <BED_NAME_FILE>                   
                               Run coverage profile for specific BED file, 
-    -cmax <MAX>,  --max-coverage <MAX_COVERAGE>                        
+    -cmax <MAX>,   --max-coverage <MAX_COVERAGE>                        
                               Maximum depth coverage (depth normalization), 
+    -clog <VALUE>, --coverage-log-scale <VALUE>                        
+                              Coverage profile logarithmic scale VALUE=Base, 
+    -cwis <VALUE>, --coverage-window-size <VALUE>                      
+                              Coverage window size for low-pass filter, 
+    -cdro <VALUE>, --coverage-drop <VALUE>                             
+                              Coverage drop size (sampling),           
                                                                        
     -diff,  --run-diff        Run diff -> reference and hybrid (ident/SNPs), 
                                                                        

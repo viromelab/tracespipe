@@ -81,6 +81,7 @@ RUN_COVERAGE_TABLE_CSV=0;
 RUN_COVERAGE_PROFILE=0;
 COVERAGE_NAME="";
 MAX_COVERAGE_PROFILE=0;
+COVERAGE_MIN_X="0";
 COVERAGE_LOG_SCALE="";
 COVERAGE_WINDOW_SIZE="5";
 COVERAGE_DROP="1";
@@ -627,6 +628,11 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift 2;
     ;;
+    -covm|--coverage-min-x)
+      COVERAGE_MIN_X="$2";
+      SHOW_HELP=0;
+      shift 2;
+    ;;
     -rsx|--run-extreme)
       RUN_ANALYSIS=1;
       RUN_SPECIFIC_SENSITIVE=1;
@@ -939,6 +945,8 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                              Coverage window size for low-pass filter, "
   echo "    -cdro <VALUE>, --coverage-drop <VALUE>                             "
   echo "                              Coverage drop size (sampling),           "
+  echo "    -covm <VALUE>, --coverage-min-x <VALUE>                             "
+  echo "                              Coverage minimum value for x-axis        "
   echo "                                                                       "
   echo "    -diff,  --run-diff        Run diff -> reference and hybrid (ident/SNPs), "
   echo "                                                                       "
@@ -1164,7 +1172,7 @@ gnuplot << EOF
     set format '%g'
     set size ratio 0.2
     set key outside horiz center top
-    set yrange [0:]
+    set yrange [$COVERAGE_MIN_X:]
     set xrange [:]
     set xtics auto
     set grid
@@ -1189,7 +1197,7 @@ EOF
     set format '%g'
     set size ratio 0.2
     set key outside horiz center top
-    set yrange [0:]
+    set yrange [$COVERAGE_MIN_X:]
     set xrange [:]
     set xtics auto
     set logscale y $COVERAGE_LOG_SCALE

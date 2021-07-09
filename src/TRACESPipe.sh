@@ -1164,7 +1164,7 @@ gnuplot << EOF
     set format '%g'
     set size ratio 0.2
     set key outside horiz center top
-    set yrange [:]
+    set yrange [0:]
     set xrange [:]
     set xtics auto
     set grid
@@ -1176,7 +1176,7 @@ gnuplot << EOF
     set style line 3 lc rgb '#dd181f' lt 1 lw 4 pt 7 ps 0.4 # --- ?
     set style line 4 lc rgb '#4d1811' lt 1 lw 4 pt 8 ps 0.4 # --- ?
     set style line 5 lc rgb '#1d121f' lt 1 lw 4 pt 9 ps 0.4 # --- ?
-    plot "x.projected.profile" using 2 with lines ls 2
+    plot "x.projected.profile" using 1:2 t "Depth coverage" with lines ls 2
 EOF
     else
     gnuplot << EOF
@@ -1189,7 +1189,7 @@ EOF
     set format '%g'
     set size ratio 0.2
     set key outside horiz center top
-    set yrange [:]
+    set yrange [0:]
     set xrange [:]
     set xtics auto
     set logscale y $COVERAGE_LOG_SCALE
@@ -1202,7 +1202,7 @@ EOF
     set style line 3 lc rgb '#dd181f' lt 1 lw 4 pt 7 ps 0.4 # --- ?
     set style line 4 lc rgb '#4d1811' lt 1 lw 4 pt 8 ps 0.4 # --- ?
     set style line 5 lc rgb '#1d121f' lt 1 lw 4 pt 9 ps 0.4 # --- ?
-    plot "x.projected.profile" using 2 with lines ls 2
+    plot "x.projected.profile" using 1:2 t "Depth coverage" with lines ls 2
 EOF
     fi
   rm -f x.projected.profile;

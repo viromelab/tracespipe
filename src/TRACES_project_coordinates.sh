@@ -2,6 +2,11 @@
 #
 # TRACES_project_coordinates.sh positions_files max_coverage
 #
+if [ ! -f "$1" ]; then
+  echo "ERROR: Input file $1 does not exists!";
+  exit;
+fi
+#
 mapfile -t POSITIONS < $1
 #
 for read in "${POSITIONS[@]}" #
@@ -11,7 +16,7 @@ for read in "${POSITIONS[@]}" #
   EPOS=`echo $read | awk '{ print $3 }'`;
   COVE=`echo $read | awk '{ print $4 }'`;
   #
-  for(( x = $IPOS ; x < $EPOS ; ++x ));
+  for((x = $IPOS ; x < $EPOS ; ++x));
     do
     if [[ "$2" -ne "0" ]];
       then
@@ -24,7 +29,7 @@ for read in "${POSITIONS[@]}" #
         printf "%u\t%u\n" "$x" "$COVE_PARSED"     
         fi
       else
-      printf "%u\t%u\n" "$x" "$COVE_PARSED" 
+      printf "%u\t%u\n" "$x" "$COVE" 
       fi
     done
   done

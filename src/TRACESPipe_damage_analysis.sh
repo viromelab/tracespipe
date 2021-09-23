@@ -169,29 +169,41 @@ if [[ "$RUN" -eq "1" ]];
   #
   efetch -db nucleotide -format fasta -id "$GID" > $GID.fa
   #
-  if [[ $READS2 = *[!\ ]* ]]; 
+  if [[ $READS2 = *[!\ ]* ]];
     then
     AdapterRemoval --threads $THREADS --file1 $READS1 --file2 $READS2 \
     --outputcollapsed reads-tracespipe-run-tmp.fq --trimns --trimqualities \
-    --minlength 30 --collapse --adapter-list adapters_ar.fa;
+    --minlength 20 --collapse --adapter-list adapters_ar.fa;
     else
     AdapterRemoval --threads $THREADS --file1 $READS1 \
     --outputcollapsed reads-tracespipe-run-tmp.fq --trimns --trimqualities \
-    --minlength 30 --collapse --adapter-list adapters_ar.fa;
+    --minlength 20 --collapse --adapter-list adapters_ar.fa;
     fi
   #
   bwa index $GID.fa
-  bwa mem -t $THREADS $GID.fa reads-tracespipe-run-tmp.fq > $GID-READS.sam
-  samtools view -bSh $GID-READS.sam > $GID-READS.bam
+  #
+  bwa aln -l 1000 -n 0.01 $GID.fa reads-tracespipe-run-tmp.fq > $GID-READS.sai
+  bwa samse $GID.fa $GID-READS.sai reads-tracespipe-run-tmp.fq > $GID-READS.sam
+  #
+  samtools view -bSh $GID-READS.sam > $GID-READS.bam;
   samtools view -bh -F4 $GID-READS.bam > FIL-$GID-READS.bam;
-  samtools sort -o SORT-FIL-$GID-READS.bam FIL-$GID-READS.bam
-  samtools index -b SORT-FIL-$GID-READS.bam SORT-FIL-$GID-READS.bam.bai
-  mapDamage --rescale -d $OUTPUT -i SORT-FIL-$GID-READS.bam -r $GID.fa
+  samtools sort -o SORT-FIL-$GID-READS.bam FIL-$GID-READS.bam;
+  samtools rmdup -s SORT-FIL-$GID-READS.bam RD-SORT-FIL-$GID-READS.bam;
+  samtools view -h RD-SORT-FIL-$GID-READS.bam \
+        | grep -v 'XT:A:R'\
+        | grep -v 'XA:Z' \
+        | grep -v 'XT:A:M' \
+        | awk '{if($0~/X1:i:0/||$0~/^@/  )print $0}' \
+        | samtools view -bS - > UNK-RD-SORT-FIL-$GID-READS.bam;
+  #
+  samtools index -b UNK-RD-SORT-FIL-$GID-READS.bam UNK-RD-SORT-FIL-$GID-READS.bam.bai
+  #
+  mapDamage --rescale -d $OUTPUT -i UNK-RD-SORT-FIL-$GID-READS.bam -r $GID.fa
   #
   rm -f $GID.fa* $GID-READS.sam $GID-READS.bam FIL-$GID-READS.bam \
-  SORT-FIL-$GID-READS.bam SORT-FIL-$GID-READS.bam.bai \
-  reads-tracespipe-run-tmp.fq $GID.fa.amb $GID.fa.ann \
-  $GID.fa.bwt $GID.fa.fai $GID.fa.pac $GID.fa.sa;
+  SORT-FIL-$GID-READS.bam SORT-FIL-$GID-READS.bam.bai \ 
+  RD-SORT-FIL-$GID-READS.bam reads-tracespipe-run-tmp.fq $GID.fa.amb \
+  $GID.fa.ann $GID.fa.bwt $GID.fa.fai $GID.fa.pac $GID.fa.sa;
   #
   fi
 #

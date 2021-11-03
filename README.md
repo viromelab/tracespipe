@@ -362,7 +362,7 @@ The common use of TRACESPipe as command is:
 ./TRACESPipe.sh \
 --flush-logs \
 --run-meta \
---inter-sim-size 10 \
+--inter-sim-size 2 \
 --run-all-v-alig \
 --run-mito \
 --remove-dup \

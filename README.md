@@ -530,6 +530,14 @@ The output is included at
 ../output_data/TRACES_blastn
 ```
 
+### 5.12 Calculate depth coverage with normalized value ###
+
+This approach assumes that the reconstruction has already been processed:
+```
+./TRACES_normalized_depth.sh ../output_data/TRACES_viral_bed/B19-coverage-blood.bed 200
+```
+The output is provided to the stdout.
+
 ## 6. Programs ##
 
 TRACES Pipeline uses a combination of the following tools:

@@ -3,7 +3,7 @@
 ORGAN=$1;
 #
 RESULT=`cat top-$ORGAN.csv \
-| grep -a -e "_TT_virus" -e " TT virus" -e "anello" -e "Anello" -e " torque " -e " Torque " -e "_torque_" -e "_Torque_" \
+| grep -a -e "_TT_virus" -e " TT virus" -e "anello" -e "Anello" -e " torque " -e " Torque " -e "_torque_" -e "_Torque_" -e "MN765195.1" -e "AB00A394" -e "AJ620212" -e "AB049607" -e "AB038622" -e "AB064604"  \
 | grep -a -e "omplete genome" -e "omplete_genome" \
 | awk '{ if($3 > 0 && $2 > 2000 && $2 < 5000) print $3"\t"$4; }' \
 | head -n 1 \

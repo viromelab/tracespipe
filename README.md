@@ -5,6 +5,7 @@
 [![Speed](https://img.shields.io/static/v1.svg?label=Speed&message=Ultra-fast&color=green)](#)
 [![Release](https://img.shields.io/static/v1.svg?label=Release&message=v1.1.1&color=orange)](#)
 [![TinyURL](https://img.shields.io/static/v1.svg?label=TinyURL&message=traces-pipe&color=blue)](https://tinyurl.com/traces-pipe)
+[![DOI](https://zenodo.org/badge/175676601.svg)](https://zenodo.org/badge/latestdoi/175676601)
 
 </div>
 <br>

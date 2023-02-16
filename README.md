@@ -2,10 +2,9 @@
 <div align="center">
   
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](LICENSE)
-[![Speed](https://img.shields.io/static/v1.svg?label=Ultra-Fast&message=High%20speed%20performance&color=green)](#)
-[![Release](https://img.shields.io/static/v1.svg?label=Release&message=v1.0.0&color=orange)](#)
+[![Speed](https://img.shields.io/static/v1.svg?label=Speed&message=Ultra-fast&color=green)](#)
+[![Release](https://img.shields.io/static/v1.svg?label=Release&message=v1.1.1&color=orange)](#)
 [![TinyURL](https://img.shields.io/static/v1.svg?label=TinyURL&message=traces-pipe&color=blue)](https://tinyurl.com/traces-pipe)
-<!--[![Build Status](https://travis-ci.org/pratas/traces.svg?branch=master)](https://travis-ci.org/pratas/traces)-->
 
 </div>
 <br>

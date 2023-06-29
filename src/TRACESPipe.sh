@@ -116,7 +116,10 @@ RUN_BLAST_RECONSTRUCTED=0;
 # DEFAULT VALUES:
 #
 MINIMAL_SIMILARITY_VALUE=1.0;
-TSIZE=10;
+TSIZE=2;
+CACHE=70;
+TOP_SIZE_VIR=8000;
+TOP_SIZE=12000;
 #
 # ==============================================================================
 # THESE ARE THE CURRENT FLAGGED VIRUSES OR VIRUSES GROUPS FOR ENHANCED ASSEMBLY:
@@ -779,6 +782,21 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift
     ;;
+    -c|--cache)
+      CACHE="$2";
+      SHOW_HELP=0;
+      shift 2;
+    ;;
+    -tsv|--top-size-virus)
+      TOP_SIZE_VIR="$2";
+      SHOW_HELP=0;
+      shift 2;
+    ;;
+    -ts|--top-size)
+      TOP_SIZE="$2";
+      SHOW_HELP=0;
+      shift 2;
+    ;;    
     -*) # unknown option with small
     echo "Invalid arg ($1)!";
     echo "For help, try: ./TRACESPipe.sh -h"
@@ -900,6 +918,15 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -top <VALUE>, --view-top <VALUE>                                   "
   echo "                              Display the top <VALUE> with the highest "
   echo "                              similarity (by descending order),        "
+  echo "                                                                       "
+  echo "    -c <VALUE>,   --cache <VALUE>                                      "
+  echo "                              Cache to be used by FALCON-meta,         "
+  echo "    -tsv <VALUE>,   --top-size-virus <VALUE>                           "
+  echo "                              Top size to be used by FALCON-meta when  "
+  echo "                              using TRACES_metagenomic_viral.sh,       "
+  echo "    -ts <VALUE>,   --top-size <VALUE>                                  "
+  echo "                              Top size to be used by FALCON-meta when  "
+  echo "                              using TRACES_metagenomic.sh,             "
   echo "                                                                       "
   echo "    -rava,  --run-all-v-alig  Run all viral align/sort/consensus seqs  "
   echo "                              from a specific list,                    "
@@ -1495,7 +1522,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         #
         echo -e "\e[34m[TRACESPipe]\e[32m Running viral metagenomic analysis with FALCON-meta ...\e[0m";
         mkdir -p ../output_data/TRACES_results
-        ./TRACES_metagenomics_viral.sh $ORGAN_T VDB.fa 8000 $THREADS $TSIZE 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+        ./TRACES_metagenomics_viral.sh $ORGAN_T VDB.fa $TOP_SIZE_VIR $THREADS $TSIZE $CACHE 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
         echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACESPipe]\e[32m Finding the best references ...\e[0m";
@@ -1600,7 +1627,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Running viral metagenomic analysis with FALCON-meta ...\e[0m";
       mkdir -p ../output_data/TRACES_results
-      ./TRACES_metagenomics_viral.sh $ORGAN_T VDB.fa 10000 $THREADS $TSIZE 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+      ./TRACES_metagenomics_viral.sh $ORGAN_T VDB.fa $TOP_SIZE_VIR $THREADS $TSIZE $CACHE 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Finding the best references ...\e[0m";
@@ -1642,7 +1669,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       CHECK_DB;
       #	
       echo -e "\e[34m[TRACESPipe]\e[32m Running NON viral metagenomic analysis with FALCON ...\e[0m";
-      ./TRACES_metagenomics.sh $ORGAN_T DB.fa 12000 $THREADS $TSIZE 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+      ./TRACES_metagenomics.sh $ORGAN_T DB.fa $TOP_SIZE $THREADS $TSIZE $CACHE 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       mkdir -p ../output_data/TRACES_results;
       #rm -f ../output_data/TRACES_results/*
       mv NV-$ORGAN_T.svg ../output_data/TRACES_results/

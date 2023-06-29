@@ -8,13 +8,14 @@ DB="$2";
 TOP_SIZE="$3";
 THREADS="$4";
 TSIZE="$5";
+CACHE="$6";
 #
 RNAMES="NP-o_fw_pr.fq:NP-o_fw_unpr.fq:NP-o_rv_pr.fq:NP-o_rv_unpr.fq";
 #
 # ==============================================================================
 #
 ## RUN METAGENOMIC COMPOSITION
-FALCON -v -n $THREADS -t $TOP_SIZE -F -Z -m 6:1:1:0/0 -m 11:50:1:0/0 -m 18:500:1:5/10 -g 0.85 -c 70 -x top-$ORGAN.csv -y $ORGAN.com $RNAMES $DB
+FALCON -v -n $THREADS -t $TOP_SIZE -F -Z -m 6:1:1:0/0 -m 11:50:1:0/0 -m 18:500:1:5/10 -g 0.85 -c $CACHE -x top-$ORGAN.csv -y $ORGAN.com $RNAMES $DB
 FALCON-filter -v -F -t 1.0 -o $ORGAN.t.pos $ORGAN.com
 head -n 500 $ORGAN.t.pos | tr ' ' '_' > $ORGAN.pos
 #FALCON-filter-visual -v -e 1 -F -o $ORGAN.svg $ORGAN.pos

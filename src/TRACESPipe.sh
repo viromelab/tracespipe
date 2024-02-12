@@ -267,6 +267,44 @@ CHECK_TOP () {
   }
 #
 #
+PROGRAM_EXISTS () {
+  printf "Checking $1 ... ";
+  if ! [ -x "$(command -v $1)" ];
+    then
+    echo -e "\e[41mERROR\e[49m: $1 is not installed." >&2;
+    echo -e "\e[42mTIP\e[49m: Try: ./TRACESPipe.sh --install" >&2;
+    exit 1;
+    else
+    echo -e "\e[42mSUCCESS!\e[49m";
+    fi
+  }
+#
+#
+CHECK_PROGRAMS () {
+  PROGRAM_EXISTS "trimmomatic";
+  PROGRAM_EXISTS "cryfa";
+  PROGRAM_EXISTS "MAGNET";
+  PROGRAM_EXISTS "FALCON";
+  PROGRAM_EXISTS "gto";
+  PROGRAM_EXISTS "spades.py";
+  PROGRAM_EXISTS "igv";
+  PROGRAM_EXISTS "bowtie2";
+  PROGRAM_EXISTS "samtools";
+  PROGRAM_EXISTS "bcftools";
+  PROGRAM_EXISTS "bedops";
+  PROGRAM_EXISTS "bedtools";
+  PROGRAM_EXISTS "fastq_pair";
+  PROGRAM_EXISTS "efetch";
+  PROGRAM_EXISTS "mapDamage";
+  PROGRAM_EXISTS "tabix";
+  PROGRAM_EXISTS "AdapterRemoval";
+  PROGRAM_EXISTS "bwa";
+  PROGRAM_EXISTS "art_illumina";
+  PROGRAM_EXISTS "blastn";
+  PROGRAM_EXISTS "dnadiff";
+  }
+#
+#
 CHECK_ENRICH () {
   if [ ! -f ../system_files/ids_enrichment.txt ];
     then
@@ -1018,16 +1056,21 @@ if [ "$SHOW_VERSION" -eq "1" ];
   echo "                             IEETA/DETI,                              ";
   echo "                    University of Aveiro, Portugal.                   ";
   echo "                                                                      ";
-  echo "                        tracespipe@gmail.com                          ";
+  echo "                       diogo.pratas@helsinki.fi                       ";
   echo "                                                                      ";
   exit 0;
   fi
 #
 # ==============================================================================
+#
 # MAKE SURE FOLDERS EXIST
 #
 mkdir -p ../logs/
 mkdir -p ../output_data/
+#
+# MAKE SURE PROGRAMS EXIST
+#
+CHECK_PROGRAMS;
 #
 # DELETE OLD RUN FILES
 #
@@ -1613,7 +1656,8 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Removing PhiX from the samples with MAGNET ...\e[0m";
       #./TRACES_remove_phix.sh $THREADS 
-      # XXX: REMOVE FROM THE DB PHIX OR CORRECT MAGNET AT READ LEVEL
+      # XXX: REMOVE FROM THE DB PHIX OR CHANGE MAGNET FOR PAIRED-END READS 
+      # XXX: ALTERNATIVE - USE BWA OR OTHER ALIGNER TO EXTRACT THOSE READS 
       cp o_fw_pr.fq NP-o_fw_pr.fq;
       cp o_fw_unpr.fq NP-o_fw_unpr.fq;
       cp o_rv_pr.fq NP-o_rv_pr.fq;

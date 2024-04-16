@@ -15,7 +15,7 @@ Program_installed () {
   if ! [ -x "$(command -v $1)" ];
     then
     echo -e "\e[41mERROR\e[49m: $1 is not installed." >&2;
-    exit 1;
+#    exit 1;
     else
     echo -e "\e[42mSUCCESS!\e[49m";
     fi

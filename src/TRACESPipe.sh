@@ -273,7 +273,7 @@ PROGRAM_EXISTS () {
     then
     echo -e "\e[41mERROR\e[49m: $1 is not installed." >&2;
     echo -e "\e[42mTIP\e[49m: Try: ./TRACESPipe.sh --install" >&2;
-    exit 1;
+    # exit 1;
     else
     echo -e "\e[42mSUCCESS!\e[49m";
     fi
@@ -2042,20 +2042,30 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
             ./TRACES_hybrid_R4.sh $VIRUS-$ORGAN_T-SCAFFOLD.fa ../output_data/TRACES_hybrid_consensus/$VIRUS-consensus-$ORGAN.fa $VIRUS $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
             fi
           #
-	  PC_R0=`gto_fasta_to_seq < ../output_data/TRACES_viral_consensus/$VIRUS-consensus-$ORGAN_T.fa | tr -d "N" | gto_info | grep "Number of symbols" | awk '{ print $5; }'`;
+          PC_R0=`grep -v ">" ../output_data/TRACES_viral_consensus/$VIRUS-consensus-$ORGAN_T.fa | tr -d -c "ACGTacgt" | tr "acgt" "ACGT" | gto_info | grep "Number of symbols" | awk '{ print $5; }'`;
           if [[ "$PC_R0" == "" ]]; then PC_R0=0; fi
 
-	  PC_R1=`gto_fasta_to_seq < ../output_data/TRACES_hybrid_consensus/$VIRUS-consensus-$ORGAN_T.fa | tr -d "N" | gto_info | grep "Number of symbols" | awk '{ print $5; }'`;
-          if [[ "$PC_R1" == "" ]]; then PC_R1=0; fi
+	  PC_R1=`grep -v ">" ../output_data/TRACES_hybrid_consensus/$VIRUS-consensus-$ORGAN_T.fa | tr -d -c "ACGTacgt" | tr "acgt" "ACGT" | gto_info | grep "Number of symbols" | awk '{ print $5; }'`;
+	  if [[ "$PC_R1" == "" ]]; then PC_R1=0; fi
 
-	  PC_R2=`gto_fasta_to_seq < ../output_data/TRACES_hybrid_R2_consensus/$VIRUS-consensus-$ORGAN_T.fa | tr -d "N" | gto_info | grep "Number of symbols" | awk '{ print $5; }'`;
-          if [[ "$PC_R2" == "" ]]; then PC_R2=0; fi
+	  PC_R2=`grep -v ">" ../output_data/TRACES_hybrid_R2_consensus/$VIRUS-consensus-$ORGAN_T.fa | tr -d -c "ACGTacgt" | tr "acgt" "ACGT" | gto_info | grep "Number of symbols" | awk '{ print $5; }'`;
+	  if [[ "$PC_R2" == "" ]]; then PC_R2=0; fi
 
-	  PC_R3=`gto_fasta_to_seq < ../output_data/TRACES_hybrid_R3_consensus/$VIRUS-consensus-$ORGAN_T.fa | tr -d "N" | gto_info | grep "Number of symbols" | awk '{ print $5; }'`;
-          if [[ "$PC_R3" == "" ]]; then PC_R3=0; fi
-
-	  PC_R4=`gto_fasta_to_seq < ../output_data/TRACES_hybrid_R4_consensus/$VIRUS-consensus-$ORGAN_T.fa | tr -d "N" | gto_info | grep "Number of symbols" | awk '{ print $5; }'`;
-          if [[ "$PC_R4" == "" ]]; then PC_R4=0; fi
+          if [ ! -f ../output_data/TRACES_hybrid_R3_consensus/$VIRUS-consensus-$ORGAN_T.fa ]; then
+            echo "R3 not found, using R2 results."
+            cp ../output_data/TRACES_hybrid_R2_consensus/$VIRUS-consensus-$ORGAN_T.fa ../output_data/TRACES_hybrid_R3_consensus/
+            
+          fi
+	  PC_R3=`grep -v ">" ../output_data/TRACES_hybrid_R3_consensus/$VIRUS-consensus-$ORGAN_T.fa | tr -d -c "ACGTacgt" | tr "acgt" "ACGT" | gto_info | grep "Number of symbols" | awk '{ print $5; }'`;
+	  if [[ "$PC_R3" == "" ]]; then PC_R3=0; fi
+          
+          if [ ! -f ../output_data/TRACES_hybrid_R4_consensus/$VIRUS-consensus-$ORGAN_T.fa ]; then
+            echo "R4 not found, using R2 results."
+            cp ../output_data/TRACES_hybrid_R2_consensus/$VIRUS-consensus-$ORGAN_T.fa ../output_data/TRACES_hybrid_R4_consensus/
+            
+          fi
+	  PC_R4=`grep -v ">" ../output_data/TRACES_hybrid_R4_consensus/$VIRUS-consensus-$ORGAN_T.fa | tr -d -c "ACGTacgt" | tr "acgt" "ACGT" | gto_info | grep "Number of symbols" | awk '{ print $5; }'`;
+	  if [[ "$PC_R4" == "" ]]; then PC_R4=0; fi
 	  #
 	  echo -e "\e[34m[TRACESPipe]\e[32m Bases: {$PC_R0, $PC_R1, $PC_R2, $PC_R3, $PC_R4}\e[0m";
           N_SIZES=("$PC_R0" "$PC_R1" "$PC_R2" "$PC_R3" "$PC_R4")

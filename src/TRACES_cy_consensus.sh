@@ -25,13 +25,16 @@ bcftools norm -f $Reference calls-cy-$Organ.vcf.gz -Oz -o calls-cy-$Organ.norm.v
 #
 # filter adjacent indels within 5bp
 bcftools filter --IndelGap 5 calls-cy-$Organ.norm.vcf.gz -Oz -o calls-cy-$Organ.norm.flt-indels.vcf.gz
+# filter incompatible variants
+finalVCF="calls-cy-$Organ.norm.flt-indels-incompat.vcf.gz"
+./TRACES_filter_incompatible_variants.sh calls-cy-$Organ.norm.flt-indels.vcf.gz >| $finalVCF;
 #
 # create bed file
-zcat calls-cy-$Organ.norm.flt-indels.vcf.gz |vcf2bed --snvs > cy-calls-$Organ.bed
+zcat "$finalVCF" | vcf2bed --snvs > cy-calls-$Organ.bed
 #
 # CONSENSUS
-tabix -f calls-cy-$Organ.norm.flt-indels.vcf.gz
-bcftools consensus -m cy-zero-coverage-$Organ.bed -f $Reference calls-cy-$Organ.norm.flt-indels.vcf.gz > cy-consensus-$Organ.fa
+tabix -f "$finalVCF"
+bcftools consensus -m cy-zero-coverage-$Organ.bed -f $Reference $finalVCF > cy-consensus-$Organ.fa
 #
 # Give new header name for the consensus sequence
 tail -n +2 cy-consensus-$Organ.fa > CY_TMP_FILE_$Organ.xki
@@ -40,6 +43,6 @@ cat CY_TMP_FILE_$Organ.xki >> cy-consensus-$Organ.fa
 rm -f CY_TMP_FILE_$Organ.xki;
 #
 #
-rm -f calls-cy-$Organ.vcf.gz calls-cy-$Organ.vcf.gz.csi calls-cy-$Organ.norm.bcf calls-cy-$Organ.norm.flt-indels.bcf calls-cy-$Organ.norm.flt-indels.vcf.gz calls-cy-$Organ.norm.vcf.gz;
+rm -f calls-cy-$Organ.vcf.gz calls-cy-$Organ.vcf.gz.csi calls-cy-$Organ.norm.bcf calls-cy-$Organ.norm.flt-indels.bcf calls-cy-$Organ.norm.flt-indels.vcf.gz calls-cy-$Organ.norm.vcf.gz "$finalVCF" ${finalVCF/.vcf.gz/.bcf};
 #
 #

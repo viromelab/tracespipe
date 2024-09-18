@@ -39,9 +39,12 @@ bcftools mpileup -Ou -f $REFERENCE $FIELD-data_aligned_sorted.bam \
 | bcftools call --ploidy 1 -mv -Oz -o $FIELD-calls.vcf.gz
 bcftools index $FIELD-calls.vcf.gz
 bcftools norm -f $REFERENCE $FIELD-calls.vcf.gz -Oz -o $FIELD-calls.norm.vcf.gz
-zcat $FIELD-calls.norm.vcf.gz |vcf2bed --snvs > $FIELD-calls.bed
-tabix -f $FIELD-calls.norm.vcf.gz
-bcftools consensus -f $REFERENCE $FIELD-calls.norm.vcf.gz > $FIELD-consensus.fa
+# filter incompatible variants
+finalVCF="$FIELD-calls.norm.filt-incompat.vcf.gz"
+./TRACES_filter_incompatible_variants.sh $FIELD-calls.norm.vcf.gz >| "$finalVCF";
+zcat "$finalVCF" | vcf2bed --snvs > $FIELD-calls.bed
+tabix -f "$finalVCF"
+bcftools consensus -f $REFERENCE "$finalVCF" > $FIELD-consensus.fa
 #
 # Give new header name for the consensus sequence
 tail -n +2 $FIELD-consensus.fa > $FIELD-TMP2_FILE.xki

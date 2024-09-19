@@ -57,7 +57,6 @@ fi |
 			for(i = n; i >= 1; i--){
 				#Iterate from longest to shortest 
 				idx = substr(sortableLength[i],length(sortableLength[i])-5)+0
-				print sortableLength[i],idx,left[idx],qual[idx],left[idx],right[idx] > "/dev/stderr";
 				if(Filtered[idx]){continue;}
 				jdx = idx;
 				bestQual=qual[idx];
@@ -66,13 +65,10 @@ fi |
 				while(bestQual==qual[idx] && jdx < counter &&
 						testOverlap(idx,jdx+1)){
 					jdx++;
-					print "\t",jdx,left[jdx],qual[jdx],left[jdx],right[jdx] > "/dev/stderr";
 					if(qual[jdx] > qual[idx]){
-						print "\t\tBetter" > "/dev/stderr";
 						Filtered[idx] = 1;
 						bestQual = qual[jdx];
 					} else {
-						print "\t\tWorse" > "/dev/stderr";
 						Filtered[jdx] = 1;
 					}
 				}

@@ -35,7 +35,7 @@ bcftools norm -f $Reference "$rawCalls" -Oz -o $Label-$Organ-calls.norm.vcf.gz
 bcftools filter --IndelGap 5 $Label-$Organ-calls.norm.vcf.gz -Oz -o $Label-$Organ-calls.norm.flt-indels.vcf.gz
 # filter incompatible variants
 finalVCF="$Label-$Organ-calls.vcf.gz"
-./TRACES_filter_incompatible_variants.sh $Label-$Organ-calls.norm.filt-incompat.vcf.gz >| "$finalVCF";
+./TRACES_filter_incompatible_variants.sh $Label-$Organ-calls.norm.flt-indels.vcf.gz >| "$finalVCF";
 
 #
 # create bed file

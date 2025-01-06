@@ -9,7 +9,7 @@
 #	Example two cariant sites covered by a deletion, where the deletion is lower
 #	quality than either variant, in this way the maximum number of variants are
 #	retained
-#Written by Zachery Dickson, Sepetember 2024
+#Written by Zachery Dickson, September 2024
 #	Contact:	dicksoz@mcmaster.ca
 #				zachery.dickson@helski.fi
 

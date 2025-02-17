@@ -15,14 +15,14 @@
 # BUILD THE INDEX
 rm -f index-$2-$3-file* viral_aligned_sorted-$2-$3.bam.bai
 bowtie2-build $1 index-$2-$3-file 
-#
+# HANDLE OPTIONAL SENSITIVITY
+sensitivityArg=""
+if [[ "$6" == "1" ]]; then
+    sensitivityArg="--very-sensitive"
+fi
 # ALIGN
-if [[ "$6" == "1" ]];
-  then
-  bowtie2 -a --threads $4 --very-sensitive -x index-$2-$3-file -1 o_fw_pr.fq -2 o_rv_pr.fq -U o_fw_unpr.fq,o_rv_unpr.fq > aligned-$2-$3.sam
-  else
-  bowtie2 -a --threads $4 -x index-$2-$3-file -1 o_fw_pr.fq -2 o_rv_pr.fq -U o_fw_unpr.fq,o_rv_unpr.fq > aligned-$2-$3.sam
-  fi
+bowtie2 -a --threads $4 "$sensitivityArg" -x index-$2-$3-file \
+        -1 o_fw_pr.fq -2 o_rv_pr.fq -U o_fw_unpr.fq,o_rv_unpr.fq > aligned-$2-$3.sam
 #
 # SORT & BIN
 samtools sort --threads $4 aligned-$2-$3.sam > viral_aligned_sorted-$2-$3.bam
@@ -32,18 +32,18 @@ if [[ "$5" -eq "1" ]];
   then
   echo "Removing Duplications ...";
   # SORT BY NAME
-  samtools sort -n viral_aligned_sorted-$2-$3.bam > viral_aligned_sorted_sorted-$2-$3.bam
+  samtools sort --thread $4 -n viral_aligned_sorted-$2-$3.bam > viral_aligned_sorted_sorted-$2-$3.bam
   #
   # ADD ms AND MC FOR MARKDUP
-  samtools fixmate -m viral_aligned_sorted_sorted-$2-$3.bam viral_aligned_sorted_sorted-$2-$3-fixmate.bam
+  samtools fixmate --threads $4 -m viral_aligned_sorted_sorted-$2-$3.bam viral_aligned_sorted_sorted-$2-$3-fixmate.bam
   rm -f viral_aligned_sorted_sorted-$2-$3.bam
   #
   # SORTING POSITION ORDER
-  samtools sort -o viral_aligned_sorted_sorted-$2-$3-fixmate-sort.bam viral_aligned_sorted_sorted-$2-$3-fixmate.bam
+  samtools sort --threads $4 -o viral_aligned_sorted_sorted-$2-$3-fixmate-sort.bam viral_aligned_sorted_sorted-$2-$3-fixmate.bam
   rm -f viral_aligned_sorted_sorted-$2-$3-fixmate.bam
   #
   # REMOVE DUPLICATES
-  samtools markdup -r viral_aligned_sorted_sorted-$2-$3-fixmate-sort.bam viral_aligned_sorted-$2-$3.bam
+  samtools markdup --threads $4 -r viral_aligned_sorted_sorted-$2-$3-fixmate-sort.bam viral_aligned_sorted-$2-$3.bam
   rm -f viral_aligned_sorted_sorted-$2-$3-fixmate-sort.bam
   #
   fi

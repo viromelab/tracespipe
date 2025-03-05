@@ -117,9 +117,10 @@ RUN_BLAST_RECONSTRUCTED=0;
 #
 MINIMAL_SIMILARITY_VALUE=1.0;
 TSIZE=2;
+TOP_SIZE=0;
+TOP_SIZE_VIR=0;
 CACHE=70;
-TOP_SIZE_VIR=8000;
-TOP_SIZE=12000;
+VIRAL_DATABASE_FILE="VDB.fa"
 #
 # ==============================================================================
 # THESE ARE THE CURRENT FLAGGED VIRUSES OR VIRUSES GROUPS FOR ENHANCED ASSEMBLY:
@@ -179,9 +180,9 @@ CHECK_GZIP_FILES () {
 #
 #
 CHECK_VDB () {
-  if [ ! -f VDB.fa ];
+  if [ ! -f "$VIRAL_DATABASE_FILE" ];
     then
-    echo -e "\e[31mERROR: viral database (VDB.fa) not found!\e[0m"
+    echo -e "\e[31mERROR: viral database ("$VIRAL_DATABASE_FILE") not found!\e[0m"
     echo "TIP: before this, run: ./TRACESPipe.sh --build-viral"
     echo "For addition information, see the instructions at the web page."
     exit 1;
@@ -360,9 +361,9 @@ ALIGN_AND_CONSENSUS () {
       fi
     #
     echo -e "\e[34m[TRACESPipe]\e[96m Similarity best match: $V_INFO\e[0m";
-    echo -e "\e[34m[TRACESPipe]\e[32m Extracting sequence from VDB.fa\e[0m";
+    echo -e "\e[34m[TRACESPipe]\e[32m Extracting sequence from "$VIRAL_DATABASE_FILE"\e[0m";
     CHECK_VDB;
-    gto_fasta_extract_read_by_pattern -p "$V_GID" < VDB.fa | awk "/^>/ {n++} n>1 {exit} 1" > $ORGAN-$V_TAG.fa 2>> ../logs/Log-$ORGAN.txt;
+    gto_fasta_extract_read_by_pattern -p "$V_GID" < "$VIRAL_DATABASE_FILE" | awk "/^>/ {n++} n>1 {exit} 1" > $ORGAN-$V_TAG.fa 2>> ../logs/Log-$ORGAN.txt;
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
     echo -e "\e[34m[TRACESPipe]\e[32m Aligning reads to $V_TAG best reference with bowtie2 ...\e[0m";
     ./TRACES_viral_align_reads.sh $ORGAN-$V_TAG.fa $ORGAN $V_TAG $THREADS $DUPL $HIGH 1>> ../logs/Log-stdout-$ORGAN.txt 2>> ../logs/Log-stderr-$ORGAN.txt;
@@ -826,16 +827,16 @@ while [[ $# -gt 0 ]]
       SHOW_HELP=0;
       shift 2;
     ;;
-    -tsv|--top-size-virus)
-      TOP_SIZE_VIR="$2";
-      SHOW_HELP=0;
-      shift 2;
-    ;;
     -ts|--top-size)
       TOP_SIZE="$2";
       SHOW_HELP=0;
       shift 2;
     ;;    
+    -tsv|--top-size-virus)
+      TOP_SIZE_VIR="$2";
+      SHOW_HELP=0;
+      shift 2;
+    ;;
     -*) # unknown option with small
     echo "Invalid arg ($1)!";
     echo "For help, try: ./TRACESPipe.sh -h"
@@ -890,9 +891,9 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -udb,   --build-unviral   Build non viral database (control),      "
   echo "                                                                       "
   echo "    -afs <FASTA>, --add-fasta <FASTA>                                  "
-  echo "                              Add a FASTA sequence to the VDB.fa,      "
+  echo "                              Add a FASTA sequence to the "$VIRAL_DATABASE_FILE",      "
   echo "    -aes <ID>, --add-extra-seq <ID>                                    "
-  echo "                              Add extra sequence to the VDB.fa,        "
+  echo "                              Add extra sequence to the "$VIRAL_DATABASE_FILE",        "
   echo "    -gx,    --get-extra-vir   Downloads/appends (VDB) extra viral seq, "
   echo "                                                                       "
   echo "    -gad,   --gen-adapters    Generate FASTA file with adapters,       "
@@ -962,10 +963,12 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                              Cache to be used by FALCON-meta,         "
   echo "    -tsv <VALUE>,   --top-size-virus <VALUE>                           "
   echo "                              Top size to be used by FALCON-meta when  "
-  echo "                              using TRACES_metagenomic_viral.sh,       "
+  echo "                              using TRACES_metagenomic_viral.sh;       "
+  echo "                              default:0 -> seq count in viral db       "
   echo "    -ts <VALUE>,   --top-size <VALUE>                                  "
   echo "                              Top size to be used by FALCON-meta when  "
-  echo "                              using TRACES_metagenomic.sh,             "
+  echo "                              using TRACES_metagenomic.sh;             "
+  echo "                              default:0 -> seq count in  non-viral db  "
   echo "                                                                       "
   echo "    -rava,  --run-all-v-alig  Run all viral align/sort/consensus seqs  "
   echo "                              from a specific list,                    "
@@ -1408,7 +1411,7 @@ if [[ "$GET_CY" -eq "1" ]];
 if [[ "$ADD_FASTA" -eq "1" ]];
   then
   CHECK_VDB;
-  ./TRACES_add_fasta_to_database.sh VDB.fa $NEW_FASTA
+  ./TRACES_add_fasta_to_database.sh "$VIRAL_DATABASE_FILE" $NEW_FASTA
   fi
 #
 # ==============================================================================
@@ -1416,7 +1419,7 @@ if [[ "$ADD_FASTA" -eq "1" ]];
 if [[ "$GET_EXTRA" -eq "1" ]];
   then
   CHECK_ENRICH;
-  ./TRACES_get_enriched_sequences.sh VDB.fa
+  ./TRACES_get_enriched_sequences.sh "$VIRAL_DATABASE_FILE"
   fi
 #
 # ==============================================================================
@@ -1424,7 +1427,7 @@ if [[ "$GET_EXTRA" -eq "1" ]];
 if [[ "$ADD_EXTRA_SEQ" -eq "1" ]];
   then
   CHECK_VDB;
-  ./TRACES_get_extra_seq.sh VDB.fa $NEW_SEQ_ID
+  ./TRACES_get_extra_seq.sh "$VIRAL_DATABASE_FILE" $NEW_SEQ_ID
   fi
 #
 #
@@ -1561,6 +1564,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
 	#
         CHECK_VDB;
         CHECK_PHIX;
+        [ $TOP_SIZE_VIR -eq 0 ] && TOP_SIZE_VIR=$(grep -c '^>' "$VIRAL_DATABASE_FILE");
         #
         mv o_fw_pr.fq NP-o_fw_pr.fq;
         mv o_fw_unpr.fq NP-o_fw_unpr.fq;
@@ -1569,7 +1573,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         #
         echo -e "\e[34m[TRACESPipe]\e[32m Running viral metagenomic analysis with FALCON-meta ...\e[0m";
         mkdir -p ../output_data/TRACES_results
-        ./TRACES_metagenomics_viral.sh $ORGAN_T VDB.fa $TOP_SIZE_VIR $THREADS $TSIZE $CACHE 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+        ./TRACES_metagenomics_viral.sh $ORGAN_T "$VIRAL_DATABASE_FILE" $TOP_SIZE_VIR $THREADS $TSIZE $CACHE 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
         echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
         #
         echo -e "\e[34m[TRACESPipe]\e[32m Finding the best references ...\e[0m";
@@ -1657,6 +1661,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       then
       CHECK_VDB;
       CHECK_PHIX;
+      [ $TOP_SIZE_VIR -eq 0 ] && TOP_SIZE_VIR=$(grep -c '^>' "$VIRAL_DATABASE_FILE");
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Removing PhiX from the samples with MAGNET ...\e[0m";
       #./TRACES_remove_phix.sh $THREADS 
@@ -1675,7 +1680,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Running viral metagenomic analysis with FALCON-meta ...\e[0m";
       mkdir -p ../output_data/TRACES_results
-      ./TRACES_metagenomics_viral.sh $ORGAN_T VDB.fa $TOP_SIZE_VIR $THREADS $TSIZE $CACHE 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+      ./TRACES_metagenomics_viral.sh $ORGAN_T "$VIRAL_DATABASE_FILE" $TOP_SIZE_VIR $THREADS $TSIZE $CACHE 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Finding the best references ...\e[0m";
@@ -1704,7 +1709,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Building complexity profiles with gto ...\e[0m";
       cat NP-o_fw_pr.fq NP-o_fw_unpr.fq NP-o_rv_pr.fq NP-o_rv_unpr.fq > P_TRACES_sample_reads.fq
-      ./TRACES_profiles.sh GIS-$ORGAN_T VDB.fa P_TRACES_sample_reads.fq $ORGAN_T 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+      ./TRACES_profiles.sh GIS-$ORGAN_T "$VIRAL_DATABASE_FILE" P_TRACES_sample_reads.fq $ORGAN_T 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
     #
@@ -1715,6 +1720,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       then
       #
       CHECK_DB;
+      [ $TOP_SIZE -eq 0 ] && TOP_SIZE=$(grep -c '^>' DB.fa);
       #	
       echo -e "\e[34m[TRACESPipe]\e[32m Running NON viral metagenomic analysis with FALCON ...\e[0m";
       ./TRACES_metagenomics.sh $ORGAN_T DB.fa $TOP_SIZE $THREADS $TSIZE $CACHE 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
@@ -1751,8 +1757,8 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       CHECK_VDB;
       #
-      echo -e "\e[34m[TRACESPipe]\e[32m Extracting sequence with pattern \"$SPECIFIC_ID\" from VDB.fa ...\e[0m";
-      gto_fasta_extract_read_by_pattern -p "$SPECIFIC_ID" < VDB.fa | awk "/^>/ {n++} n>1 {exit} 1" > SPECIFIC-$SPECIFIC_ID.fa
+      echo -e "\e[34m[TRACESPipe]\e[32m Extracting sequence with pattern \"$SPECIFIC_ID\" from "$VIRAL_DATABASE_FILE" ...\e[0m";
+      gto_fasta_extract_read_by_pattern -p "$SPECIFIC_ID" < "$VIRAL_DATABASE_FILE" | awk "/^>/ {n++} n>1 {exit} 1" > SPECIFIC-$SPECIFIC_ID.fa
       echo -e "\e[34m[TRACESPipe]\e[32m Aligning ... \e[0m";
       ./TRACES_viral_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID $THREADS $REMOVE_DUPLICATIONS 1>> ../logs/Log-stdout-$ORGAN_T.txt $RUN_SPECIFIC_SENSITIVE 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
@@ -2161,8 +2167,8 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       #
       CHECK_VDB;
       #
-      echo -e "\e[34m[TRACESPipe]\e[32m Extracting sequence with pattern \"$SPECIFIC_DENOVO_ID\" from VDB.fa ...\e[0m";
-      gto_fasta_extract_read_by_pattern -p "$SPECIFIC_DENOVO_ID" < VDB.fa | awk "/^>/ {n++} n>1 {exit} 1" > SPECIFIC-$SPECIFIC_DENOVO_ID.fa
+      echo -e "\e[34m[TRACESPipe]\e[32m Extracting sequence with pattern \"$SPECIFIC_DENOVO_ID\" from "$VIRAL_DATABASE_FILE" ...\e[0m";
+      gto_fasta_extract_read_by_pattern -p "$SPECIFIC_DENOVO_ID" < "$VIRAL_DATABASE_FILE" | awk "/^>/ {n++} n>1 {exit} 1" > SPECIFIC-$SPECIFIC_DENOVO_ID.fa
       echo -e "\e[34m[TRACESPipe]\e[32m Aligning and creating consensus ... \e[0m";
       SCAFFOLDS_PATH="../output_data/TRACES_denovo_$ORGAN_T/scaffolds.fasta";
       ./TRACES_denovo_specific.sh SPECIFIC-$SPECIFIC_DENOVO_ID.fa $SCAFFOLDS_PATH $SPECIFIC_DENOVO_ID $ORGAN_T $THREADS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
@@ -2299,9 +2305,9 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
             then
             IDBLAST=`head -n 1 $BLASTS_OUTPUT/SINGLE-LIST-$VIRUS-$ORGAN.txt | awk '{ print $2}' | tr '|' '\t' | awk '{ print $4;}'`;
             #
-            # Try to find genome in VDB.fa
+            # Try to find genome in "$VIRAL_DATABASE_FILE"
             CHECK_VDB;
-            gto_fasta_extract_read_by_pattern -p "$IDBLAST" < VDB.fa \
+            gto_fasta_extract_read_by_pattern -p "$IDBLAST" < "$VIRAL_DATABASE_FILE" \
             | awk "/^>/ {n++} n>1 {exit} 1" > TMP-BEST-BLAST.fa
             NVALSEQ=`wc -l TMP-BEST-BLAST.fa | awk '{ print $1;}'`;
             if [[ "$NVALSEQ" -eq "0" ]];

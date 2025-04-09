@@ -12,7 +12,7 @@
 #
 #Define Global Variables
 declare -A ValidRefTypes;
-for type in virus specific cy mtdna; do
+for type in cy mtdna specific viral; do
     ValidRefTypes[$type]=1
 done 
 declare -A RequiredPattern;
@@ -44,11 +44,11 @@ AlnBamSuffix="-$PATTERN" #pre-delimiter included as the suffix isn't present for
 StatsPrefix="$PATTERN" #post-delimiter is constant across all ref types
 #Handle cases where the -fixes aren't pattern
 case $REFTYPE in 
-    virus)
-        AlnBamPrefix="virus" 
+    viral)
+        AlnBamPrefix="viral" 
         ;;
     specific)
-        AlnBamPrefix="virus" 
+        AlnBamPrefix="viral" 
         ;;
     cy)
         AlnBamSuffix=""
@@ -78,7 +78,7 @@ bedEntry="$acc\t0\t$TOTAL_SIZE"
 #Updated Depth calculation which ignores peaks, but more importantly ignores secondary/supplementary alignments
 #Column 3 is the length of the genome (constructed in the bedEntry above
 #Column 4 is the total bases covered
-NORMALIZED_COVERAGE=$(samtools bedcov --max-depth "$MAX_DEPTH" <(echo -e "$bedEntry") "$AlnBamFile" | awk '{print $3/$4}')
+NORMALIZED_COVERAGE=$(samtools bedcov --max-depth "$MAX_DEPTH" <(echo -e "$bedEntry") "$AlnBamFile" | awk '{print $4/$3}')
 printf "$PATTERN\t$ORGAN\t%0.4f\n" "$NORMALIZED_COVERAGE" > "$DepthFile"
 #
 ZERO_COVERAGE=$(awk '{sum += ($3-$2)} END {print sum}' "$ZeroBedFile");

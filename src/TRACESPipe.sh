@@ -388,7 +388,7 @@ ALIGN_AND_CONSENSUS () {
     mkdir -p ../output_data/TRACES_viral_statistics;
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
     echo -e "\e[34m[TRACESPipe]\e[32m Calculating coverage ...\e[0m";
-    ./TRACES_overall_virus.sh $V_TAG $ORGAN
+    ./TRACES_overall.sh viral $V_TAG $ORGAN
     C_BREADTH=`cat ../output_data/TRACES_viral_statistics/$V_TAG-total-horizontal-coverage-$ORGAN.txt`;
     C_DEPTH=`cat ../output_data/TRACES_viral_statistics/$V_TAG-total-depth-coverage-$ORGAN.txt`;
     echo -e "\e[34m[TRACESPipe]\e[1m Breadth (H) coverage: $C_BREADTH \e[0m";
@@ -1770,7 +1770,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       mv $SPECIFIC_ID-$ORGAN_T-calls.vcf.gz ../output_data/TRACES_specific_bed/
       mkdir -p ../output_data/TRACES_specific_statistics;
       echo -e "\e[34m[TRACESPipe]\e[32m Calculating coverage for alignment-based assembly ...\e[0m";
-      ./TRACES_overall_specific.sh $SPECIFIC_ID $ORGAN_T
+      ./TRACES_overall.sh specific $SPECIFIC_ID $ORGAN_T
       C_BREADTH=`cat ../output_data/TRACES_specific_statistics/$SPECIFIC_ID-total-horizontal-coverage-$ORGAN_T.txt`;
       C_DEPTH=`cat ../output_data/TRACES_specific_statistics/$SPECIFIC_ID-total-depth-coverage-$ORGAN_T.txt`;
       echo -e "\e[34m[TRACESPipe]\e[1m Breadth (H) coverage: $C_BREADTH \e[0m";
@@ -1812,7 +1812,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       mv $SPECIFIC_ID-$ORGAN_T-calls.vcf.gz ../output_data/TRACES_specific_bed/
       mkdir -p ../output_data/TRACES_specific_statistics;
       echo -e "\e[34m[TRACESPipe]\e[32m Calculating coverage for alignment-based assembly ...\e[0m";
-      ./TRACES_overall_specific.sh $SPECIFIC_ID $ORGAN_T
+      ./TRACES_overall.sh specific $SPECIFIC_ID $ORGAN_T
       C_BREADTH=`cat ../output_data/TRACES_specific_statistics/$SPECIFIC_ID-total-horizontal-coverage-$ORGAN_T.txt`;
       C_DEPTH=`cat ../output_data/TRACES_specific_statistics/$SPECIFIC_ID-total-depth-coverage-$ORGAN_T.txt`;
       echo -e "\e[34m[TRACESPipe]\e[1m Breadth (H) coverage: $C_BREADTH \e[0m";
@@ -1866,7 +1866,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       mv mt-zero-coverage-$ORGAN_T.bed ../output_data/TRACES_mtdna_bed/
       mkdir -p ../output_data/TRACES_mtdna_statistics;
       echo -e "\e[34m[TRACESPipe]\e[32m Calculating coverage for alignment-based assembly ...\e[0m";
-      ./TRACES_overall_mtdna.sh $ORGAN_T
+      ./TRACES_overall.sh mtdna mt $ORGAN_T
       C_BREADTH=`cat ../output_data/TRACES_mtdna_statistics/mt-total-horizontal-coverage-$ORGAN_T.txt`;
       C_DEPTH=`cat ../output_data/TRACES_mtdna_statistics/mt-total-depth-coverage-$ORGAN_T.txt`;
       echo -e "\e[34m[TRACESPipe]\e[35m Breadth (H) coverage: $C_BREADTH \e[0m";
@@ -1929,7 +1929,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       mv cy-coverage-$ORGAN_T.bed ../output_data/TRACES_cy_bed/
       mv cy-zero-coverage-$ORGAN_T.bed ../output_data/TRACES_cy_bed/
       mkdir -p ../output_data/TRACES_cy_statistics;
-      ./TRACES_overall_cy.sh $ORGAN_T
+      ./TRACES_overall.sh cy cy $ORGAN_T
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m"
       fi
     #

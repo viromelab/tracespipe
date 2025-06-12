@@ -493,7 +493,7 @@ while [[ $# -gt 0 ]]
         VIRAL_DATABASE_METADATA="$2";
         if [ -s "$VIRAL_DATABASE_METADATA" ]; then
             #Parse the unique virus groups in the metadata (ignore lines without at least two columns
-            readarray -t VIRUSES < <(awk -f '\\t' '
+            readarray -t VIRUSES < <(awk -F '\\t' '
                 (FNR > 1 && $1 && $2){VirusSet[$2]=1;}
                 END {n=asorti(VirusSet,vl); for(i=1;i<=n;i++){print vl[i]}}
             ' "$VIRAL_DATABASE_METADATA")

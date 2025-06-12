@@ -11,6 +11,8 @@
 # ============================================================================== #
 ##################################################################################
 #
+SOURCE_DIR="$(dirname "$(readlink -f "$0")")"
+#
 SHOW_HELP=0;
 SHOW_VERSION=0;
 FORCE=0;
@@ -1048,12 +1050,14 @@ if [ "$SHOW_HELP" -eq "1" ];
 # ==============================================================================
 # VERSION
 #
-if [ "$SHOW_VERSION" -eq "1" ];
-  then
+if [ "$SHOW_VERSION" -eq "1" ]; then
+    version="1.1.3";
+    versionFile="$SOURCE_DIR/../Version.txt"
+    [ -f "$versionFile" ] && version=$(cat "$versionFile")
   echo "                                                                      ";
   echo "                              TRACESPipe                              ";
   echo "                                                                      ";
-  echo "                            Version: 1.1.3                            ";
+  echo "                            Version: $version                            ";
   echo "                                                                      ";
   echo "                      Department of Virology and                      ";
   echo "                   Department of Forensic Medicine,                   ";

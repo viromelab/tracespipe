@@ -145,16 +145,23 @@ declare -a VIRUSES=("B19" "HV1" "HV2" "HV3" "HV4" "HV5" "HV6" "HV6A" "HV6B"
 # CHECK INTERNAL SYSTEM FILES
 #
 CHECK_FILTERING_SYSTEM_FILES () {
-  for VIRUS in "${VIRUSES[@]}"
-    do
-    if [ ! -f TRACES_get_best_$VIRUS.sh ];
-      then
-      echo -e "\e[31mERROR: TRACES_get_best_$VIRUS.sh file not found!\e[0m"
-      echo "This file may have been deleted acidentally or VIRAL array changed."
-      echo "System is corrupted!"
-      exit 1;
+    if [ -n "$VIRAL_DATABASE_METADATA" ]; then
+        if [ ! -f TRACES_get_best_by_meta.sh ]; then
+            echo -e "\e[31mERROR: TRACES_get_best_by_meta.sh file not found!\e[0m"
+            echo "This file may have been deleted acidentally."
+            echo "System is corrupted!"
+            exit 1;
+        fi
+    else
+        for VIRUS in "${VIRUSES[@]}"; do
+            if [ ! -f TRACES_get_best_$VIRUS.sh ]; then
+                echo -e "\e[31mERROR: TRACES_get_best_$VIRUS.sh file not found!\e[0m"
+                echo "This file may have been deleted acidentally or VIRAL array changed."
+                echo "System is corrupted!"
+                exit 1;
+                fi
+        done
     fi
-    done
   }
 #
 # ==============================================================================
@@ -353,7 +360,11 @@ ALIGN_AND_CONSENSUS () {
   #
   CHECK_TOP "$ORGAN";
   #
-  V_INFO=`./TRACES_get_best_$V_TAG.sh $ORGAN`;
+  if [ -n "$VIRAL_DATABASE_METADATA" ]; then
+      V_INFO="$(./TRACES_get_best_by_meta.sh "$ORGAN" "$V_TAG" "$VIRAL_DATABASE_METADATA")";
+    else
+        V_INFO=`./TRACES_get_best_$V_TAG.sh $ORGAN`;
+    fi
   V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
   V_VAL=`echo "$V_INFO" | awk '{ print $1; }'`;
   # 
@@ -480,6 +491,21 @@ while [[ $# -gt 0 ]]
     ;;
     -vdbm|--viral-db-metadata)
         VIRAL_DATABASE_METADATA="$2";
+        if [ -s "$VIRAL_DATABASE_METADATA" ]; then
+            #Parse the unique virus groups in the metadata (ignore lines without at least two columns
+            readarray -t VIRUSES < <(awk -f '\\t' '
+                (FNR > 1 && $1 && $2){VirusSet[$2]=1;}
+                END {n=asorti(VirusSet,vl); for(i=1;i<=n;i++){print vl[i]}}
+            ' "$VIRAL_DATABASE_METADATA")
+            #Ensure at least one virus group is present
+            if [ "${#VIRUSES[@]}" -lt 1 ]; then
+                >&2 echo -e "\e[31mERROR: Provided Viral database Metadata file did not contain any valid accession-virus pairs\e[0m" 
+                exit 1;
+            fi
+        else
+            >&2 echo -e "\e[31mERROR: Provided Viral database Metadata file is non-existant or empty\e[0m" 
+            exit 1;
+        fi
         shift 2
     ;;
     -vdbr|--build-viral-r)
@@ -1641,7 +1667,11 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
         rm -f ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt;
         for VIRUS in "${VIRUSES[@]}"
           do
-          ./TRACES_get_best_$VIRUS.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+            if [ -n "$VIRAL_DATABASE_METADATA" ]; then
+                ./TRACES_get_best_by_meta.sh "$ORGAN_T" "$VIRUS" "$VIRAL_DATABASE_METADATA"
+            else
+                ./TRACES_get_best_$VIRUS.sh $ORGAN_T 
+            fi >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
           done
         echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
         #
@@ -1748,7 +1778,11 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       rm -f ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt;
       for VIRUS in "${VIRUSES[@]}"
         do
-        ./TRACES_get_best_$VIRUS.sh $ORGAN_T >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
+        if [ -n "$VIRAL_DATABASE_METADATA" ]; then
+                ./TRACES_get_best_by_meta.sh "$ORGAN_T" "$VIRUS" "$VIRAL_DATABASE_METADATA"
+            else
+                ./TRACES_get_best_$VIRUS.sh $ORGAN_T 
+            fi >> ../output_data/TRACES_results/REPORT_META_VIRAL_$ORGAN_T.txt
         done
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
@@ -2173,7 +2207,11 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
             SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;
 	    XBREADTH=`awk '{ print $3;}' ../output_data/TRACES_viral_statistics/$VIRUS-total-horizontal-coverage-$ORGAN_T.txt`;
             XDEPTH=`awk '{ print $3;}' ../output_data/TRACES_viral_statistics/$VIRUS-total-depth-coverage-$ORGAN_T.txt`;
-            V_INFO=`./TRACES_get_best_$VIRUS.sh $ORGAN_T`;
+            if [ -n "$VIRAL_DATABASE_METADATA" ]; then
+                V_INFO="$(./TRACES_get_best_by_meta.sh "$ORGAN" "$VIRUS" "$VIRAL_DATABASE_METADATA")";
+            else
+                V_INFO=`./TRACES_get_best_$VIRUS.sh $ORGAN`;
+            fi
             V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
             V_VAL=`echo "$V_INFO" | awk '{ print $1; }'`;
             #
@@ -2386,7 +2424,11 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
             SNPS=`cat out.report | grep TotalSNPs | awk '{ print $2;}'`;
             XBREADTH=`awk '{ print $3;}' ../output_data/TRACES_viral_statistics/$VIRUS-total-horizontal-coverage-$ORGAN.txt`;
             XDEPTH=`awk '{ print $3;}' ../output_data/TRACES_viral_statistics/$VIRUS-total-depth-coverage-$ORGAN.txt`;
-            V_INFO=`./TRACES_get_best_$VIRUS.sh $ORGAN`;
+            if [ -n "$VIRAL_DATABASE_METADATA" ]; then
+                V_INFO="$(./TRACES_get_best_by_meta.sh "$ORGAN" "$VIRUS" "$VIRAL_DATABASE_METADATA")";
+            else
+                V_INFO=`./TRACES_get_best_$VIRUS.sh $ORGAN`;
+            fi
             V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
             V_VAL=`echo "$V_INFO" | awk '{ print $1; }'`;
             #

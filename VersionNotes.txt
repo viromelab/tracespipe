@@ -4,5 +4,7 @@ Version 1.2.0dev
         Reorganized Usage Message into blocks for easier reading
         Added infrastructure for altVDB and VDBmetadata options
         Handled interactions between altVDB and internal database commands
+        Added General script for getting best result from top when virus group metadata is available
+	
 Version 1.2.0dev
 	

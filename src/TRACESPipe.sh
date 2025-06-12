@@ -113,6 +113,10 @@ RUN_DIFF_ID="";
 #
 RUN_BLAST_RECONSTRUCTED=0;
 #
+B_ALT_VIRAL_DB=0;
+VIRAL_DATABASE_METADATA="";
+VIRAL_DATABASE_FILE="VDB.fa"
+#
 # ==============================================================================
 #
 # DEFAULT VALUES:
@@ -122,7 +126,6 @@ TSIZE=2;
 TOP_SIZE=0;
 TOP_SIZE_VIR=0;
 CACHE=70;
-VIRAL_DATABASE_FILE="VDB.fa"
 #
 # ==============================================================================
 # THESE ARE THE CURRENT FLAGGED VIRUSES OR VIRUSES GROUPS FOR ENHANCED ASSEMBLY:
@@ -185,8 +188,12 @@ CHECK_VDB () {
   if [ ! -f "$VIRAL_DATABASE_FILE" ];
     then
     echo -e "\e[31mERROR: viral database ("$VIRAL_DATABASE_FILE") not found!\e[0m"
-    echo "TIP: before this, run: ./TRACESPipe.sh --build-viral"
-    echo "For addition information, see the instructions at the web page."
+    if [ "$B_ALT_VIRAL_DB" -eq 0 ]; then
+        echo "TIP: before this, run: ./TRACESPipe.sh --build-viral"
+        echo " OR"
+        echo "Use the --alt-viral-db option to specify an alternative VDB location"
+        echo "For addition information, see the instructions at the web page."
+    fi
     exit 1;
     fi
   }
@@ -425,6 +432,11 @@ while [[ $# -gt 0 ]]
       FORCE=1;
       shift
     ;;
+    -avdb|--alt-viral-db)
+        B_ALT_VIRAL_DB=1;
+        VIRAL_DATABASE_FILE="$2" 
+        shift 2;
+    ;;
     -flog|--flush-logs)
       FLUSH_LOGS=1;
       shift
@@ -465,6 +477,10 @@ while [[ $# -gt 0 ]]
       BUILD_VDB_ALL=1;
       SHOW_HELP=0;
       shift
+    ;;
+    -vdbm|--viral-db-metadata)
+        VIRAL_DATABASE_METADATA="$2";
+        shift 2
     ;;
     -vdbr|--build-viral-r)
       BUILD_VDB_REF=1;
@@ -870,11 +886,17 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                                                                "
   echo -e "\e[93m    Usage: ./TRACESPipe.sh [options]                     \e[0m"
   echo "                                                                       "
+  echo -e "\e[34m ===========            GENERAL OPTIONS              ==========\e[0m"
+  echo "                                                                       "
   echo "    -h,     --help            Show this help message and exit,         "
   echo "    -v,     --version         Show the version and some information,   "
   echo "    -f,     --force           Force running and overwrite of files,    "
   echo "    -flog,  --flush-logs      Flush logs (delete logs),                "
   echo "    -fout,  --flush-output    Flush output data (delete all output_data), "
+  echo "    -t <THREADS>, --threads <THREADS> Number of threads to use,        "
+  echo "                                                                       "
+  echo -e "\e[34m ===========            SETUP COMMANDS               ==========\e[0m"
+  echo "                                                                       "
   echo "    -i,     --install         Installation of all the tools,           "
   echo "    -up,    --update          Update all the tools in TRACESPipe,      "
   echo "    -spv,   --show-prog-ver   Show included programs versions,         "
@@ -882,8 +904,6 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -st,    --sample          Creates human ref. VDB and sample organ, "
   echo "                                                                       "
   echo "    -gmt,   --get-max-threads Get the number of maximum machine threads,"
-  echo "    -t <THREADS>, --threads <THREADS>                                  "
-  echo "                              Number of threads to use,                "
   echo "                                                                       "
   echo "    -dec,   --decrypt         Decrypt (all files in ../encrypted_data), "
   echo "    -enc,   --encrypt         Encrypt (all files in ../to_encrypt_data),"
@@ -925,53 +945,26 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -cbn,   --create-blast-db It creates a nucleotide blast database,  "
   echo "    -ubn,   --update-blast-db It updates a nucleotide blast database,  "
   echo "                                                                       "
+  echo -e "\e[34m ===========           ANALYSIS COMMANDS             ==========\e[0m"
+  echo "                                                                       "
+  echo "    -ra,    --run-analysis    Run data analysis (core),                      "
+  echo "    -all,   --run-all         Run all the options (excluding the specific).  "
+  echo "                                                                       "
   echo "    -sfs <FASTA>, --search-blast-db <FASTA>                            "
   echo "                              It blasts the nucleotide (nt) blast DB,  "
-  echo "                                                                       "
   echo "    -sfrs <FASTA>, --search-blast-remote-db <FASTA>                    "
   echo "                              It blasts remotly thenucleotide (nt) blast "
   echo "                              database (it requires internet connection), "
   echo "                                                                       "
-  echo "    -rdup,  --remove-dup      Remove duplications (e.g. PCR dup),      "
-  echo "    -vhs,   --very-sensitive  Aligns with very high sensitivity (slower),  "
-  echo "                                                                       "
   echo "    -gbb,   --best-of-bests   Identifies the best of bests references  "
   echo "                              between multiple organs [similar reference], "
-  echo "                                                                       "
-  echo "    -iss <SIZE>, --inter-sim-size <SIZE>                               "
-  echo "                              Inter-genome similarity top size (control), "
   echo "                                                                       "
   echo "    -rpro,  --run-profiles    Run complexity and relative profiles (control), "
   echo "                                                                       "
   echo "    -rpgi <ID>,  --run-gid-complexity-profile <ID>                     "
   echo "                              Run complexity profiles by GID,          "
-  echo "    -cpwi <VALUE>, --complexity-profile-window <VALUE>                 "
-  echo "                              Complexity profile window size,          "
-  echo "    -cple <VALUE>, --complexity-profile-level <VALUE>                  "
-  echo "                              Complexity profile compression level [1;10], "
-  echo "                                                                       "
   echo "    -rm,    --run-meta        Run viral metagenomic identification,    "
   echo "    -ro,    --run-meta-nv     Run NON-viral metagenomic identification,"
-  echo "                                                                       "
-  echo "    -mis <VALUE>, --min-similarity <VALUE>                             "
-  echo "                              Minimum similarity value to consider the "
-  echo "                              sequence for alignment-consensus (filter), "
-  echo "                                                                       "
-  echo "    -top <VALUE>, --view-top <VALUE>                                   "
-  echo "                              Display the top <VALUE> with the highest "
-  echo "                              similarity (by descending order),        "
-  echo "                                                                       "
-  echo "    -c <VALUE>,   --cache <VALUE>                                      "
-  echo "                              Cache to be used by FALCON-meta,         "
-  echo "    -tsv <VALUE>,   --top-size-virus <VALUE>                           "
-  echo "                              Top size to be used by FALCON-meta when  "
-  echo "                              using TRACES_metagenomic_viral.sh;       "
-  echo "                              default:0 -> seq count in viral db       "
-  echo "    -ts <VALUE>,   --top-size <VALUE>                                  "
-  echo "                              Top size to be used by FALCON-meta when  "
-  echo "                              using TRACES_metagenomic.sh;             "
-  echo "                              default:0 -> seq count in  non-viral db  "
-  echo "                                                                       "
   echo "    -rava,  --run-all-v-alig  Run all viral align/sort/consensus seqs  "
   echo "                              from a specific list,                    "
   echo "                                                                       "
@@ -1010,16 +1003,6 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                                                                       "
   echo "    -covp <NAME>,  --coverage-profile <BED_NAME_FILE>                   "
   echo "                              Run coverage profile for specific BED file, "
-  echo "    -cmax <MAX>,   --max-coverage <MAX_COVERAGE>                        "
-  echo "                              Maximum depth coverage (depth normalization), "
-  echo "    -clog <VALUE>, --coverage-log-scale <VALUE>                        "
-  echo "                              Coverage profile logarithmic scale VALUE=Base, "
-  echo "    -cwis <VALUE>, --coverage-window-size <VALUE>                      "
-  echo "                              Coverage window size for low-pass filter, "
-  echo "    -cdro <VALUE>, --coverage-drop <VALUE>                             "
-  echo "                              Coverage drop size (sampling),           "
-  echo "    -covm <VALUE>, --coverage-min-x <VALUE>                             "
-  echo "                              Coverage minimum value for x-axis        "
   echo "                                                                       "
   echo "    -diff,  --run-diff        Run diff -> reference and hybrid (ident/SNPs), "
   echo "                                                                       "
@@ -1030,8 +1013,67 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -brec,  --blast-reconstructed                                      "
   echo "                              Run local blast over reconstructed genomes, "
   echo "                                                                             "
-  echo "    -ra,    --run-analysis    Run data analysis (core),                      "
-  echo "    -all,   --run-all         Run all the options (excluding the specific).  "
+  echo "                                                                       "
+  echo -e "\e[34m ===========           ANALYSIS OPTIONS              ==========\e[0m"
+  echo "                                                                       "
+  echo "    -avdb <FASTA>, --alt-viral-db <FASTA>                              "
+  echo "                              Specify a path to fasta file containing  "
+  echo "                               viral sequences                         "
+  echo "    -vdbm <PATH>, --viral-db-metadata <PATH>                           "
+  echo "                              Specify a path to a tab del file which   "
+  echo "                               has sequence GID/ACC in the first column"
+  echo "                               and a Name representing a virus, or group"
+  echo "                               of viruses in the second                "
+  echo "                              This changes the meta-analysis behaviour:"
+  echo "                               rather than using internal virus names  "
+  echo "                               and inclusion criteria, the relationships"
+  echo "                               defined in the provided file are used.  "
+  echo "                              This allows the user to define groupings "
+  echo "                               of interest in the packaged, or user    "
+  echo "                               provided viral database.                "
+  echo "                                                                       "
+  echo "    -rdup,  --remove-dup      Remove duplications (e.g. PCR dup),      "
+  echo "    -vhs,   --very-sensitive  Aligns with very high sensitivity (slower),  "
+  echo "                                                                       "
+  echo "    -iss <SIZE>, --inter-sim-size <SIZE>                               "
+  echo "                              Inter-genome similarity top size (control), "
+  echo "                                                                       "
+  echo "    -cpwi <VALUE>, --complexity-profile-window <VALUE>                 "
+  echo "                              Complexity profile window size,          "
+  echo "    -cple <VALUE>, --complexity-profile-level <VALUE>                  "
+  echo "                              Complexity profile compression level [1;10], "
+  echo "                                                                       "
+  echo "    -mis <VALUE>, --min-similarity <VALUE>                             "
+  echo "                              Minimum similarity value to consider the "
+  echo "                              sequence for alignment-consensus (filter), "
+  echo "                                                                       "
+  echo "    -top <VALUE>, --view-top <VALUE>                                   "
+  echo "                              Display the top <VALUE> with the highest "
+  echo "                              similarity (by descending order),        "
+  echo "                                                                       "
+  echo "    -c <VALUE>,   --cache <VALUE>                                      "
+  echo "                              Cache to be used by FALCON-meta,         "
+  echo "    -tsv <VALUE>,   --top-size-virus <VALUE>                           "
+  echo "                              Top size to be used by FALCON-meta when  "
+  echo "                              using TRACES_metagenomic_viral.sh;       "
+  echo "                              default:0 -> seq count in viral db       "
+  echo "    -ts <VALUE>,   --top-size <VALUE>                                  "
+  echo "                              Top size to be used by FALCON-meta when  "
+  echo "                              using TRACES_metagenomic.sh;             "
+  echo "                              default:0 -> seq count in  non-viral db  "
+  echo "                                                                       "
+  echo "    -cmax <MAX>,   --max-coverage <MAX_COVERAGE>                       "
+  echo "                              Maximum depth coverage (depth normalization), "
+  echo "    -clog <VALUE>, --coverage-log-scale <VALUE>                        "
+  echo "                              Coverage profile logarithmic scale VALUE=Base, "
+  echo "    -cwis <VALUE>, --coverage-window-size <VALUE>                      "
+  echo "                              Coverage window size for low-pass filter, "
+  echo "    -cdro <VALUE>, --coverage-drop <VALUE>                             "
+  echo "                              Coverage drop size (sampling),           "
+  echo "    -covm <VALUE>, --coverage-min-x <VALUE>                             "
+  echo "                              Coverage minimum value for x-axis        "
+  echo "                                                                       "
+  echo -e "\e[34m ===========                EXAMPLES                 ==========\e[0m"
   echo "                                                                       "
   echo -e "\e[93m    Ex: ./TRACESPipe.sh --flush-output --flush-logs --run-mito --run-meta \e[0m"
   echo -e "\e[93m    --remove-dup --run-de-novo --run-hybrid --min-similarity 1 --run-diff \e[0m" 
@@ -1414,6 +1456,10 @@ if [[ "$GET_CY" -eq "1" ]];
 #
 if [[ "$ADD_FASTA" -eq "1" ]];
   then
+    if [ "$B_ALT_VIRAL_DB" -eq 1 ]; then
+       >&2 echo -e "\e[31mERROR: Cannot add fasta when using an alternative viral DB\e[0m" 
+       exit 1
+    fi
   CHECK_VDB;
   ./TRACES_add_fasta_to_database.sh "$VIRAL_DATABASE_FILE" $NEW_FASTA
   fi
@@ -1422,6 +1468,10 @@ if [[ "$ADD_FASTA" -eq "1" ]];
 #
 if [[ "$GET_EXTRA" -eq "1" ]];
   then
+  if [ "$B_ALT_VIRAL_DB" -eq 1 ]; then
+     >&2 echo -e "\e[31mERROR: Cannot add extra viral seq when using an alternative viral DB\e[0m" 
+     exit 1
+  fi
   CHECK_ENRICH;
   ./TRACES_get_enriched_sequences.sh "$VIRAL_DATABASE_FILE"
   fi
@@ -1430,6 +1480,10 @@ if [[ "$GET_EXTRA" -eq "1" ]];
 #
 if [[ "$ADD_EXTRA_SEQ" -eq "1" ]];
   then
+    if [ "$B_ALT_VIRAL_DB" -eq 1 ]; then
+       >&2 echo -e "\e[31mERROR: Cannot add extra seq when using an alternative viral DB\e[0m" 
+       exit 1
+    fi
   CHECK_VDB;
   ./TRACES_get_extra_seq.sh "$VIRAL_DATABASE_FILE" $NEW_SEQ_ID
   fi

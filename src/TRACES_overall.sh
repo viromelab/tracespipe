@@ -1,10 +1,10 @@
 #!/bin/bash
 #
 #USAGE: TRACES_overall.sh reftype pattern organ [maxdepth=1000]
-#   RefType is one of virus, specific, cy, mtdna and defines the type of reference we are calculating stats for
+#   RefType is one of viral, specific, cy, mtdna and defines the type of reference we are calculating stats for
 #   Pattern defines the specific reference used
 #       for cy and mtdna this should be cy and mt respectively
-#       for specific it tis the pattern used to find the reference in the DB
+#       for specific it is the pattern used to find the reference in the DB
 #       for virus it is the virus Name
 #   Organ is the identifier library being processed
 #   MaxDepth is the maximum depth to consider at any given position

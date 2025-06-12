@@ -1588,7 +1588,7 @@ if [[ "$RUN_GID_DAMAGE_ANALYSIS" -eq "1" ]];
     echo -e "\e[34m[TRACESPipe]\e[93m Running organ=$ORGAN_T\e[0m";
     #
     rm -f FW_READS.fq.gz RV_READS.fq.gz
-    echo -e "\e[34m[TRACESPipe]\e[32m Copping an instance of the files ...\e[0m";
+    echo -e "\e[34m[TRACESPipe]\e[32m Copying an instance of the files ...\e[0m";
     cp ../input_data/$SPL_Forward FW_READS.fq.gz;
     cp ../input_data/$SPL_Reverse RV_READS.fq.gz;
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
@@ -1628,7 +1628,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[TRACESPipe]\e[93m Running organ=$ORGAN_T\e[0m";
       #
       rm -f FW_READS.fq.gz RV_READS.fq.gz
-      echo -e "\e[34m[TRACESPipe]\e[32m Copping an instance of the files ...\e[0m";
+      echo -e "\e[34m[TRACESPipe]\e[32m Copying an instance of the files ...\e[0m";
       cp ../input_data/$SPL_Forward FW_READS.fq.gz;
       cp ../input_data/$SPL_Reverse RV_READS.fq.gz;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
@@ -1727,7 +1727,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
     echo -e "\e[34m[TRACESPipe]\e[93m Organ=$ORGAN_T Forward=$SPL_Forward Reverse=$SPL_Reverse\e[0m";
     #
     rm -f FW_READS.fq.gz RV_READS.fq.gz
-    echo -e "\e[34m[TRACESPipe]\e[32m Copping an instance of the files ...\e[0m";
+    echo -e "\e[34m[TRACESPipe]\e[32m Copying an instance of the files ...\e[0m";
     cp ../input_data/$SPL_Forward FW_READS.fq.gz;
     cp ../input_data/$SPL_Reverse RV_READS.fq.gz;
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";

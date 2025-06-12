@@ -4,11 +4,12 @@
 #The choice is made first by higher quality, then by VCF order
 #Confilicting alleles are snps at the same position as an insertion
 #	and other variants which appear in the region covered by a deletion
-#If there are multiple variants overlapping a position, the best one is retained
-#	variants are processed in an order such that come conflicts may be resolved
-#	Example two cariant sites covered by a deletion, where the deletion is lower
-#	quality than either variant, in this way the maximum number of variants are
-#	retained
+#If there are multiple variants overlapping a position, the best one is retained.
+#Variants are processed in an order such that some conflicts may be resolved
+#	Example two variant sites covered by a deletion, where the deletion is lower
+#	quality than either variant: the deletion is filtered and the two variants are
+#   retained. In this way the maximum number of variants are
+#
 #Written by Zachery Dickson, September 2024
 #	Contact:	dicksoz@mcmaster.ca
 #				zachery.dickson@helski.fi

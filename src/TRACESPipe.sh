@@ -524,6 +524,7 @@ while [[ $# -gt 0 ]]
     ;;
     -vhs|--very-sensitive)
       HIGH_SENSITIVITY=1;
+      RUN_SPECIFIC_SENSITIVE=1;
       SHOW_HELP=0;
       shift
     ;;
@@ -980,7 +981,9 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "                                                                       "
   echo "    -rsx <ID>, --run-extreme <ID/PATTERN>                              "
   echo "                              Run specific reference align/consensus   "
-  echo "                              using extreme sensitivity,               "
+  echo "                              using extreme sensitivity;               "
+  echo "                              Retained for backwards compatibility;    "
+  echo "                              Now an alias for -vhs -rsr <ID/PATTERN>, "
   echo "                                                                       "
   echo "    -rmt,   --run-mito        Run Mito align and consensus seq,        "
   echo "    -rmtd,  --run-mito-dam    Run Mito damage only,                    "
@@ -1050,7 +1053,7 @@ if [ "$SHOW_VERSION" -eq "1" ];
   echo "                                                                      ";
   echo "                              TRACESPipe                              ";
   echo "                                                                      ";
-  echo "                            Version: 1.0.2                            ";
+  echo "                            Version: 1.1.3                            ";
   echo "                                                                      ";
   echo "                      Department of Virology and                      ";
   echo "                   Department of Forensic Medicine,                   ";
@@ -1060,6 +1063,7 @@ if [ "$SHOW_VERSION" -eq "1" ];
   echo "                    University of Aveiro, Portugal.                   ";
   echo "                                                                      ";
   echo "                       diogo.pratas@helsinki.fi                       ";
+  echo "                      zachery.dickson@helsinki.fi                     ";
   echo "                                                                      ";
   exit 0;
   fi
@@ -1756,7 +1760,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[TRACESPipe]\e[32m Extracting sequence with pattern \"$SPECIFIC_ID\" from "$VIRAL_DATABASE_FILE" ...\e[0m";
       gto_fasta_extract_read_by_pattern -p "$SPECIFIC_ID" < "$VIRAL_DATABASE_FILE" | awk "/^>/ {n++} n>1 {exit} 1" > SPECIFIC-$SPECIFIC_ID.fa
       echo -e "\e[34m[TRACESPipe]\e[32m Aligning ... \e[0m";
-      ./TRACES_viral_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID $THREADS $REMOVE_DUPLICATIONS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
+      ./TRACES_viral_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID $THREADS $REMOVE_DUPLICATIONS $RUN_SPECIFIC_SENSITIVE 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       #
       echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
@@ -1783,49 +1787,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       echo -e "\e[34m[TRACESPipe]\e[1m Depth-x (V) coverage: $C_DEPTH \e[0m";
       echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
       fi
-    #
-    # ==========================================================================
-    # RUN SPECIFIC SPECIFIC ALIGN/CONSENSUS WITH EXTREME HIGH SENSITIVITY
-    #
-    if [[ "$RUN_SPECIFIC_SENSITIVE" -eq "1" ]];
-      then
-      echo -e "\e[34m[TRACESPipe]\e[32m Aligning reads to specific viral ref(s) with pattern \"$SPECIFIC_ID\" using bowtie2 with EXTREME sensitivity ...\e[0m";
-      #
-      CHECK_VDB;
-      #
-      echo -e "\e[34m[TRACESPipe]\e[32m Extracting sequence with pattern \"$SPECIFIC_ID\" from VDB.fa ...\e[0m";
-      gto_fasta_extract_read_by_pattern -p "$SPECIFIC_ID" < VDB.fa | awk "/^>/ {n++} n>1 {exit} 1" > SPECIFIC-$SPECIFIC_ID.fa
-      echo -e "\e[34m[TRACESPipe]\e[32m Aligning ...\e[0m";
-      ./TRACES_viral_sensitive_align_reads.sh SPECIFIC-$SPECIFIC_ID.fa $ORGAN_T $SPECIFIC_ID $THREADS $REMOVE_DUPLICATIONS 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
-      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
-      #
-      echo -e "\e[34m[TRACESPipe]\e[32m Generate a consensus sequence with bcftools ...\e[0m";
-      ./TRACES_viral_consensus.sh SPECIFIC-$SPECIFIC_ID.fa viral_aligned_sorted-$ORGAN_T-$SPECIFIC_ID.bam $ORGAN_T $SPECIFIC_ID 1>> ../logs/Log-stdout-$ORGAN_T.txt 2>> ../logs/Log-stderr-$ORGAN_T.txt;
-      mkdir -p ../output_data/TRACES_specific_alignments;
-      #rm -f ../output_data/TRACES_specific_alignments/*
-      cp SPECIFIC-$SPECIFIC_ID.fa ../output_data/TRACES_specific_alignments/
-      cp SPECIFIC-$SPECIFIC_ID.fa.fai ../output_data/TRACES_specific_alignments/
-      mv viral_aligned_sorted-$ORGAN_T-$SPECIFIC_ID.bam ../output_data/TRACES_specific_alignments/
-      mv viral_aligned_sorted-$ORGAN_T-$SPECIFIC_ID.bam.bai ../output_data/TRACES_specific_alignments/
-      mkdir -p ../output_data/TRACES_specific_consensus;
-      #rm -f ../output_data/TRACES_specific_consensus/*
-      mv $SPECIFIC_ID-consensus-$ORGAN_T.fa ../output_data/TRACES_specific_consensus/
-      mkdir -p ../output_data/TRACES_specific_bed;
-      #rm -f ../output_data/TRACES_specific_bed/*
-      mv $SPECIFIC_ID-calls-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
-      mv $SPECIFIC_ID-coverage-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
-      mv $SPECIFIC_ID-zero-coverage-$ORGAN_T.bed ../output_data/TRACES_specific_bed/
-      mv $SPECIFIC_ID-$ORGAN_T-calls.vcf.gz ../output_data/TRACES_specific_bed/
-      mkdir -p ../output_data/TRACES_specific_statistics;
-      echo -e "\e[34m[TRACESPipe]\e[32m Calculating coverage for alignment-based assembly ...\e[0m";
-      ./TRACES_overall.sh specific $SPECIFIC_ID $ORGAN_T
-      C_BREADTH=`cat ../output_data/TRACES_specific_statistics/$SPECIFIC_ID-total-horizontal-coverage-$ORGAN_T.txt`;
-      C_DEPTH=`cat ../output_data/TRACES_specific_statistics/$SPECIFIC_ID-total-depth-coverage-$ORGAN_T.txt`;
-      echo -e "\e[34m[TRACESPipe]\e[1m Breadth (H) coverage: $C_BREADTH \e[0m";
-      echo -e "\e[34m[TRACESPipe]\e[1m Depth-x (V) coverage: $C_DEPTH \e[0m";
-      echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
-      fi
-    #
+    # 
     # ========================================================================== 
     # DETAILED VIRAL ALIGN/CONSENSUS
     #

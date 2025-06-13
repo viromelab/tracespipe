@@ -7,3 +7,5 @@ Version 1.2.0dev
         Added General script for getting best result from top when virus group metadata is available
         If Metadata for the database is provided, virus groups from the database are used
             and mappings between accessions and viruses are used
+Version 1.2.0dev
+	

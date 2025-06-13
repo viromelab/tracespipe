@@ -12,6 +12,7 @@
 ##################################################################################
 #
 SOURCE_DIR="$(dirname "$(readlink -f "$0")")"
+DEFAULT_VIRAL_NAMES_FILE="../system_file/internal_viral_names.txt"
 #
 SHOW_HELP=0;
 SHOW_VERSION=0;
@@ -135,11 +136,20 @@ CACHE=70;
 # HERV IS CURRENTLY BEING ADDRESSED AS HAPLOID IN ALIGNMENTS -> THIS WILL 
 # REQUIRE ADAPTATION IN THE FUTURE.
 #
-declare -a VIRUSES=("B19" "HV1" "HV2" "HV3" "HV4" "HV5" "HV6" "HV6A" "HV6B" 
-                    "HV7" "HV8" "POLY1" "POLY2" "POLY3" "POLY4" "POLY5" 
-		    "POLY6" "POLY7" "POLY8" "POLY9" "POLY10" "POLY11" "POLY12" 
-		    "POLY13" "POLY14" "HBV" "HPV" "TTV" "HBOV1" "HBOVNOT1" 
-		    "VARV" "SV40" "CUTA" "HERV");
+#declare -a VIRUSES=("B19" "HV1" "HV2" "HV3" "HV4" "HV5" "HV6" "HV6A" "HV6B" 
+#                    "HV7" "HV8" "POLY1" "POLY2" "POLY3" "POLY4" "POLY5" 
+#		    "POLY6" "POLY7" "POLY8" "POLY9" "POLY10" "POLY11" "POLY12" 
+#		    "POLY13" "POLY14" "HBV" "HPV" "TTV" "HBOV1" "HBOVNOT1" 
+#		    "VARV" "SV40" "CUTA" "HERV");
+if [ -s "$DEFAULT_VIRAL_NAMES_FILE" ]; then
+    readarray -t VIRUSES  < "$DEFAULT_VIRAL_NAMES_FILE";
+else 
+    >&2 echo -e "\e[31mERROR: $DEFAULT_VIRAL_NAMES_FILE Not found!\e[0m"
+    >&2 echo "This file may have been deleted acidentally."
+    >&2 echo "System is corrupted!"
+    exit 1;
+fi
+
 #
 # ==============================================================================
 # CHECK INTERNAL SYSTEM FILES
@@ -491,21 +501,6 @@ while [[ $# -gt 0 ]]
     ;;
     -vdbm|--viral-db-metadata)
         VIRAL_DATABASE_METADATA="$2";
-        if [ -s "$VIRAL_DATABASE_METADATA" ]; then
-            #Parse the unique virus groups in the metadata (ignore lines without at least two columns
-            readarray -t VIRUSES < <(awk -F '\\t' '
-                (FNR > 1 && $1 && $2){VirusSet[$2]=1;}
-                END {n=asorti(VirusSet,vl); for(i=1;i<=n;i++){print vl[i]}}
-            ' "$VIRAL_DATABASE_METADATA")
-            #Ensure at least one virus group is present
-            if [ "${#VIRUSES[@]}" -lt 1 ]; then
-                >&2 echo -e "\e[31mERROR: Provided Viral database Metadata file did not contain any valid accession-virus pairs\e[0m" 
-                exit 1;
-            fi
-        else
-            >&2 echo -e "\e[31mERROR: Provided Viral database Metadata file is non-existant or empty\e[0m" 
-            exit 1;
-        fi
         shift 2
     ;;
     -vdbr|--build-viral-r)
@@ -1153,6 +1148,28 @@ mkdir -p ../output_data/
 # MAKE SURE PROGRAMS EXIST
 #
 CHECK_PROGRAMS;
+#
+# If viral database metadata was provided, parse it for the virus groups to analyze
+if [ -n "$VIRAL_DATABASE_METADATA" ]; then
+    if [ -s "$VIRAL_DATABASE_METADATA" ]; then
+        #Parse the unique virus groups in the metadata (ignore lines without at least two columns
+        readarray -t VIRUSES < <(awk -F '\\t' '
+            (FNR > 1 && $1 && $2){VirusSet[$2]=1;}
+            END {n=asorti(VirusSet,vl); for(i=1;i<=n;i++){print vl[i]}}
+        ' "$VIRAL_DATABASE_METADATA")
+        #Ensure at least one virus group is present
+        if [ "${#VIRUSES[@]}" -lt 1 ]; then
+            >&2 echo -e "\e[31mERROR: Provided Viral database Metadata file did not contain any valid accession-virus pairs\e[0m" 
+            exit 1;
+        fi
+    else
+        >&2 echo -e "\e[31mERROR: Provided Viral database Metadata file is non-existant or empty\e[0m" 
+        exit 1;
+    fi
+fi
+# Save the virus groups to be analyzed 
+rm -f viral_names.txt;
+{ printf "%s\n" "${VIRUSES[@]}"; echo ""; } > viral_names.txt
 #
 # DELETE OLD RUN FILES
 #

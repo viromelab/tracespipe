@@ -9,5 +9,3 @@ Version 1.2.0dev
             and mappings between accessions and viruses are used
         System file for default supported viruses created
         virus_names in src directory now contains the viruses used in the analysis
-
-	

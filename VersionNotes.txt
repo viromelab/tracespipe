@@ -1,2 +1,11 @@
 Version 1.1.4
 	GlobalSensitive and DynamicTop merged in; Added Versioning Files
+Version 1.2.0dev
+        Reorganized Usage Message into blocks for easier reading
+        Added infrastructure for altVDB and VDBmetadata options
+        Handled interactions between altVDB and internal database commands
+        Added General script for getting best result from top when virus group metadata is available
+        If Metadata for the database is provided, virus groups from the database are used
+            and mappings between accessions and viruses are used
+        System file for default supported viruses created
+        virus_names in src directory now contains the viruses used in the analysis

@@ -12,7 +12,7 @@
 ##################################################################################
 #
 SOURCE_DIR="$(dirname "$(readlink -f "$0")")"
-DEFAULT_VIRAL_NAMES_FILE="../system_files/internal_viral_names.txt"
+DEFAULT_VIRAL_NAMES_FILE="$SOURCE_DIR/../system_files/internal_viral_names.txt"
 #
 SHOW_HELP=0;
 SHOW_VERSION=0;

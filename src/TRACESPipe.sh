@@ -717,6 +717,7 @@ while [[ $# -gt 0 ]]
     ;;
     -rsx|--run-extreme)
       RUN_ANALYSIS=1;
+      RUN_SPECIFIC=1;
       RUN_SPECIFIC_SENSITIVE=1;
       SPECIFIC_ID="$2";
       SHOW_HELP=0;

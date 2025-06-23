@@ -10,4 +10,5 @@ Version 1.2.0
         System file for default supported viruses created
         virus_names in src directory now contains the viruses used in the analysis
 Version 1.2.1
+        Bug Fix - Run Extreme when specified alone now performs alignments
 	

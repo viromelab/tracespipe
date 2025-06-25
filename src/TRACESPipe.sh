@@ -123,6 +123,7 @@ VIRAL_DATABASE_FILE="VDB.fa"
 # DEFAULT VALUES:
 #
 MINIMAL_SIMILARITY_VALUE=1.0;
+MINIMAL_SIMILARITY_LENGTH=0;
 TSIZE=2;
 TOP_SIZE=0;
 TOP_SIZE_VIR=0;
@@ -357,14 +358,17 @@ CHECK_E_FILE () {
 #
 ALIGN_AND_CONSENSUS () {
   #
+  B_O_B="$3";
   ORGAN="$8";
   HIGH="$7";
   DUPL="$6";
   THREADS="$5";
   V_TAG="$1";
   IDX_TAG="$4";
+  MIN_SIM="$2"
+  MIN_SIM_LEN="$9";
   #
-  V_GID="X";
+  V_GID="-";
   #
   echo -e "\e[34m[TRACESPipe]\e[32m Assessing $V_TAG best reference ...\e[0m";
   #
@@ -375,15 +379,17 @@ ALIGN_AND_CONSENSUS () {
     else
         V_INFO=`./TRACES_get_best_$V_TAG.sh $ORGAN`;
     fi
-  V_GID=`echo "$V_INFO" | awk '{ print $2; }'`;
-  V_VAL=`echo "$V_INFO" | awk '{ print $1; }'`;
+  read -r V_GID V_VAL V_LEN <<< "$V_INFO"; 
+  [ -z "$V_LEN" ] && V_LEN=1;
   # 
   echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
   #
-  if [[ "$V_GID" != "-" ]] && [[ $(bc <<< "$V_VAL > $2") -eq 1  ]];
+  if [[ "$V_GID" != "-" ]] && \
+      [[ $(bc <<< "$V_VAL > $MIN_SIM") -eq 1 ]] && \
+      [[ $(bc <<< "0.01 * $V_VAL * $V_LEN >= $MIN_SIM_LEN") -eq 1 ]];
     then
     #
-    if [[ "$3" -eq "1" ]]
+    if [[ "$B_O_B" -eq "1" ]]
       then	    
       echo -e "\e[34m[TRACESPipe]\e[96m Best reference: $V_GID\e[0m";
       V_GID=`sed "${IDX_TAG}q;d" ../output_data/TRACES_results/REPORT_META_VIRAL_BESTS_$ORGAN.txt | awk '{ print $2; }'`;
@@ -395,6 +401,16 @@ ALIGN_AND_CONSENSUS () {
     CHECK_VDB;
     gto_fasta_extract_read_by_pattern -p "$V_GID" < "$VIRAL_DATABASE_FILE" | awk "/^>/ {n++} n>1 {exit} 1" > $ORGAN-$V_TAG.fa 2>> ../logs/Log-$ORGAN.txt;
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
+    #In the non-metadata case the length check happens here
+    if [ -z "$V_LEN" ]; then
+        V_LEN=$(gto_fasta_info < "$ORGAN-$V_TAG.fa" | awk '(FNR ==2){print $NF}')
+    fi
+    #If the length is too short the rest of the function can be skipped after cleaning up the extracted reference
+    if [[ $(bc <<< "0.01 * $V_VAL * $V_LEN < $MIN_SIM_LEN") -eq 1 ]]; then
+        echo -e "\e[34m[TRACESPipe]\e[96m Similarity Length too short for best match: $V_INFO\t$V_LEN\e[0m";
+        rm -f $ORGAN-$V_TAG.fa;
+        return 0;
+    fi
     echo -e "\e[34m[TRACESPipe]\e[32m Aligning reads to $V_TAG best reference with bowtie2 ...\e[0m";
     ./TRACES_viral_align_reads.sh $ORGAN-$V_TAG.fa $ORGAN $V_TAG $THREADS $DUPL $HIGH 1>> ../logs/Log-stdout-$ORGAN.txt 2>> ../logs/Log-stderr-$ORGAN.txt;
     echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";
@@ -576,6 +592,11 @@ while [[ $# -gt 0 ]]
       MINIMAL_SIMILARITY_VALUE="$2";
       SHOW_HELP=0;
       shift 2
+    ;;
+    -misl|--min-similarity-len)
+        MINIMAL_SIMILARITY_LENGTH="$2";
+        SHOW_HELP=0;
+        shift 2
     ;;
     -dwms|--download-mito-species)
       DOWNLOAD_MITO_SPECIES=1;
@@ -1071,6 +1092,11 @@ if [ "$SHOW_HELP" -eq "1" ];
   echo "    -mis <VALUE>, --min-similarity <VALUE>                             "
   echo "                              Minimum similarity value to consider the "
   echo "                              sequence for alignment-consensus (filter), "
+  echo "                                                                       "
+  echo "    -misl <VALUE>, --min-similarity-len <VALUE>                        "
+  echo "                              Minimum product of similarity value and  "
+  echo "                              best hit sequence length for             "
+  echo "                              alignment-consensus (filter),            "
   echo "                                                                       "
   echo "    -top <VALUE>, --view-top <VALUE>                                   "
   echo "                              Display the top <VALUE> with the highest "
@@ -1909,7 +1935,7 @@ if [[ "$RUN_ANALYSIS" -eq "1" ]];
       IDX=1;
       for VIRUS in "${VIRUSES[@]}"
         do
-        ALIGN_AND_CONSENSUS "$VIRUS" "$MINIMAL_SIMILARITY_VALUE" "$RUN_BEST_OF_BESTS" "$IDX" "$THREADS" "$REMOVE_DUPLICATIONS" "$HIGH_SENSITIVITY" "$ORGAN_T"
+        ALIGN_AND_CONSENSUS "$VIRUS" "$MINIMAL_SIMILARITY_VALUE" "$RUN_BEST_OF_BESTS" "$IDX" "$THREADS" "$REMOVE_DUPLICATIONS" "$HIGH_SENSITIVITY" "$ORGAN_T" "$MINIMAL_SIMILARITY_LENGTH"
 	((++IDX));
 	done
       fi

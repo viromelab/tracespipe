@@ -379,7 +379,7 @@ ALIGN_AND_CONSENSUS () {
     else
         V_INFO=`./TRACES_get_best_$V_TAG.sh $ORGAN`;
     fi
-  read -r V_GID V_VAL V_LEN <<< "$V_INFO"; 
+  read -r V_VAL V_GID V_LEN <<< "$V_INFO"; 
   [ -z "$V_LEN" ] && V_LEN=1;
   # 
   echo -e "\e[34m[TRACESPipe]\e[32m Done!\e[0m";

@@ -419,8 +419,8 @@ ALIGN_AND_CONSENSUS () {
     ./TRACES_viral_consensus.sh $ORGAN-$V_TAG.fa viral_aligned_sorted-$ORGAN-$V_TAG.bam $ORGAN $V_TAG 1>> ../logs/Log-stdout-$ORGAN.txt 2>> ../logs/Log-stderr-$ORGAN.txt;
     #
     mkdir -p ../output_data/TRACES_viral_alignments;
-    cp $ORGAN-$V_TAG.fa ../output_data/TRACES_viral_alignments/
-    cp $ORGAN-$V_TAG.fa.fai ../output_data/TRACES_viral_alignments/
+    mv $ORGAN-$V_TAG.fa ../output_data/TRACES_viral_alignments/
+    mv $ORGAN-$V_TAG.fa.fai ../output_data/TRACES_viral_alignments/
     mv viral_aligned_sorted-$ORGAN-$V_TAG.bam ../output_data/TRACES_viral_alignments/
     mv viral_aligned_sorted-$ORGAN-$V_TAG.bam.bai ../output_data/TRACES_viral_alignments/
     mkdir -p ../output_data/TRACES_viral_consensus;

@@ -35,13 +35,17 @@ samtools index $FIELD-data_aligned_sorted.bam $FIELD-data_aligned_sorted.bam.bai
 bedtools genomecov -ibam $FIELD-data_aligned_sorted.bam -bga > $FIELD-coverage.bed
 awk '$4 < 1' $FIELD-coverage.bed > $FIELD-zero-coverage.bed
 samtools faidx $REFERENCE
-bcftools mpileup -Ou -f $REFERENCE $FIELD-data_aligned_sorted.bam \
-| bcftools call --ploidy 1 -mv -Oz -o $FIELD-calls.vcf.gz
-bcftools index $FIELD-calls.vcf.gz
-bcftools norm -f $REFERENCE $FIELD-calls.vcf.gz -Oz -o $FIELD-calls.norm.vcf.gz
-zcat $FIELD-calls.norm.vcf.gz |vcf2bed --snvs > $FIELD-calls.bed
-tabix -f $FIELD-calls.norm.vcf.gz
-bcftools consensus -f $REFERENCE $FIELD-calls.norm.vcf.gz > $FIELD-consensus.fa
+rawCalls="$FIELD-raw.vcf.gz"
+bcftools mpileup -Ov -f $REFERENCE $FIELD-data_aligned_sorted.bam \
+| bcftools call --ploidy 1 -mv -Oz -o "$rawCalls"
+bcftools index "$rawCalls"
+bcftools norm -f $REFERENCE "$rawCalls" -Oz -o $FIELD-calls.norm.vcf.gz
+# filter incompatible variants
+finalVCF="$FIELD-calls.vcf.gz"
+./TRACES_filter_incompatible_variants.sh $FIELD-calls.norm.vcf.gz >| "$finalVCF";
+zcat "$finalVCF" | vcf2bed --snvs > $FIELD-calls.bed
+tabix -f "$finalVCF"
+bcftools consensus -f $REFERENCE "$finalVCF" > $FIELD-consensus.fa
 #
 # Give new header name for the consensus sequence
 tail -n +2 $FIELD-consensus.fa > $FIELD-TMP2_FILE.xki

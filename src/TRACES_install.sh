@@ -45,10 +45,10 @@ if [[ "$INSTALL_PIPELINE" -eq "1" ]];
   conda install -c bioconda spades --yes
   conda install -c bioconda igv --yes
   conda install -c bioconda bowtie2 --yes
-  conda install -c bioconda samtools=1.9 --yes
-  conda install -c bioconda bcftools=1.9 --yes
+  conda install -c bioconda samtools=1.21 --yes
+  conda install -c bioconda bcftools=1.21 --yes
   conda install -c bioconda bedops --yes
-  conda install -c bioconda bedtools --yes
+  conda install -c bioconda bedtools=2.31.1 --yes
   conda install -c bioconda fastq-pair --yes
   conda install -c bioconda entrez-direct --yes
   conda install -c bioconda/label/cf201901 entrez-direct --yes

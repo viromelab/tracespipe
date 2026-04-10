@@ -129,3 +129,5 @@ Version 1.14.2
 	Split TRACES_help.sh out to prevent unnecessary README regenerations
 Version 1.14.3
 	Checking for existence of dependencies spun out and auto-generated
+Version 1.14.4
+	Bug Fix: Errors causing denovo assembly to fail when digital normalization was not required

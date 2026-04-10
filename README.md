@@ -5,11 +5,11 @@
 [![Speed](https://img.shields.io/static/v1.svg?label=Speed&message=Ultra-fast&color=green)](#)
 <!-- BEGIN AUTO-GENERATED SECTION - VersionShield : DO NOT MODIFY-->
 <!-- ================================================== -->
-<!-- This snippet generated on Thu Mar 19 15:32:19 EET 2026, -->
+<!-- This snippet generated on Fri Apr 10 16:44:56 EEST 2026, -->
 <!-- using src/TRACES_generator_scripts/gen_readme.sh -->
 <!-- based on information in system_files/dependencies.yml -->
 <!-- ================================================== -->
-[![Version](https://img.shields.io/static/v1.svg?label=Release&message=v1.14.3&color=orange)](#)
+[![Version](https://img.shields.io/static/v1.svg?label=Release&message=v1.14.4&color=orange)](#)
 <!-- ================================================== -->
 <!-- END AUTO-GENERATED SECTION : DO NOT MODIFY-->
 [![TinyURL](https://img.shields.io/static/v1.svg?label=TinyURL&message=traces-pipe&color=yellow)](https://tinyurl.com/traces-pipe)
@@ -204,7 +204,7 @@ See the next section for more information about the usage.
 
 <!-- BEGIN AUTO-GENERATED SECTION - TracesHelp : DO NOT MODIFY -->
 <!-- ================================================== -->
-<!-- This snippet generated on Thu Mar 19 15:32:19 EET 2026, -->
+<!-- This snippet generated on Fri Apr 10 16:44:56 EEST 2026, -->
 <!-- using src/TRACES_generator_scripts/gen_readme.sh -->
 <!-- based on information in system_files/dependencies.yml -->
 <!-- ================================================== -->
@@ -709,7 +709,7 @@ TRACES Pipeline uses a combination of the following tools:
 
 <!-- BEGIN AUTO-GENERATED SECTION - DepInfoTable : DO NOT MODIFY -->
 <!-- ================================================== -->
-<!-- This snippet generated on Thu Mar 19 15:32:19 EET 2026, -->
+<!-- This snippet generated on Fri Apr 10 16:44:57 EEST 2026, -->
 <!-- using src/TRACES_generator_scripts/gen_readme.sh -->
 <!-- based on information in system_files/dependencies.yml -->
 <!-- ================================================== -->

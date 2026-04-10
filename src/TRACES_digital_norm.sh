@@ -7,7 +7,7 @@ function ConstructOutPath {
 
 function CreateLink {
     path=$1; shift
-    ln -s "$(readlink "$path")" "$(ConstructOutPath "$path")";
+    ln -s "$(readlink -f "$path")" "$(ConstructOutPath "$path")";
 }
 
 #Taken from stackoverflow question 1527049
